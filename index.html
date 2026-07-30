@@ -339,6 +339,14 @@ input{font-family:inherit;}
 .lb-grams-row{display:flex;gap:8px;}
 .lb-grams-row .field{flex:1;}
 .lb-grams-note{font-size:10.5px;color:var(--text-lt);line-height:1.6;margin:-2px 2px 8px;}
+/* 「何を食べたか」「何g食べたか」＝記録に必ず要るので、上部にまとめて必須で聞く */
+.lb-req{background:var(--pastel-1);border-radius:14px;padding:11px 12px 4px;margin:6px 0 10px;}
+.lb-req-head{font-size:11.5px;font-weight:700;color:var(--gold-dk);margin:0 2px 8px;display:flex;align-items:center;gap:5px;}
+.lb-quick{display:flex;gap:6px;margin:-2px 2px 9px;flex-wrap:wrap;}
+.lb-quick button{flex:1;min-width:64px;padding:8px 6px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-size:11.5px;font-weight:700;cursor:pointer;}
+.lb-quick button.on{border-color:var(--gold);background:var(--gold);color:#fff;}
+.lb-req .field{margin-bottom:9px;}
+.lb-miss{border-color:#e2645c !important;background:#fff6f5 !important;}
 /* 料理以外の写真（成分表示など）だった時の「何を食べましたか」パネル */
 .fp-nonfood{flex:0 0 auto;background:var(--pastel-1);border-radius:14px;padding:14px 13px 12px;margin:2px 0 8px;overflow-y:auto;}
 .fnf-field label{display:block;font-size:11.5px;font-weight:700;color:var(--text-mid);margin-bottom:5px;}
@@ -2531,7 +2539,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-07-28b</b>（品目1087品・写真は候補トップ5・成分表の2段読みとグラム換算）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-07-30a</b>（成分表の読み取り精度を改善・食べた量とメニュー名の入力を追加）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -2907,9 +2915,26 @@ input{font-family:inherit;}
         </button>
         <input type="file" id="lbPhoto" accept="image/*" capture="environment" style="display:none;" onchange="scanLabelPhoto(this)">
         <div class="lb-scan-status" id="lbScanStatus"></div>
-        <div class="field">
-          <label>名前（任意）</label>
-          <input type="text" id="lbName" placeholder="例：プロテインヨーグルト">
+        <!-- 成分表の数字だけでは記録にならない。「何を」「何g」は必ず聞く -->
+        <div class="lb-req">
+          <div class="lb-req-head">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            この2つは必ず教えてね
+          </div>
+          <div class="field">
+            <label>何を食べた？</label>
+            <input type="text" id="lbName" placeholder="例：プロテインヨーグルト">
+          </div>
+          <div class="field">
+            <label>何g食べた？</label>
+            <input type="number" id="lbEaten" inputmode="decimal" placeholder="例：63">
+          </div>
+          <!-- 「表示が何g当たりか」が分かっていれば、割合ボタンで入れられる -->
+          <div class="lb-quick" id="lbQuick">
+            <button type="button" onclick="lbQuickEat(1)">表示のぶん全部</button>
+            <button type="button" onclick="lbQuickEat(0.5)">半分</button>
+            <button type="button" onclick="lbQuickEat(0.3333)">1/3</button>
+          </div>
         </div>
         <div class="field">
           <label>エネルギー（kcal）※必須</label>
@@ -2938,15 +2963,11 @@ input{font-family:inherit;}
         <!-- 「100g当たり」表示や食べ残しに対応：食べた量ぶんへ自動換算する -->
         <div class="lb-grams-row">
           <div class="field">
-            <label>表示は何g当たり？</label>
-            <input type="number" id="lbBasis" inputmode="numeric" placeholder="例：63">
-          </div>
-          <div class="field">
-            <label>実際に食べた量（g）</label>
-            <input type="number" id="lbEaten" inputmode="numeric" placeholder="全部なら同じ数">
+            <label>上の数字は何g当たり？</label>
+            <input type="number" id="lbBasis" inputmode="decimal" placeholder="例：63">
           </div>
         </div>
-        <div class="lb-grams-note">両方入れると、上の数字を食べた量ぶんに換算して追加します（例：100g当たり表示のうち30gだけ食べた）</div>
+        <div class="lb-grams-note">ここと「何g食べた？」がそろうと、上の数字を食べたぶんに換算して記録します（例：100g当たり表示のうち30gだけ食べた）。撮影で読み取れた時は自動で入ります</div>
         <button class="sheet-btn" onclick="addLabelItem()">この内容で追加する</button>
         <button class="sheet-cancel" onclick="hideSheet('labelSheet')">もどる</button>
       </div>
@@ -4803,6 +4824,10 @@ function preloadMealAI(){
       return buildNonFoodEmbeddings();
     })
     .then(function(){
+      // 視覚プロトタイプ（取得できなくても従来どおり動くので、失敗は握って進む）
+      return loadImgProto();
+    })
+    .then(function(){
       MEAL_AI.status = 'ready';
     })
     .catch(function(e){
@@ -4886,6 +4911,104 @@ function loadPresetEmb(){
     .then(function(j){ MEAL_TEXTEMB_PRESET = j; return j; })
     .catch(function(){ MEAL_TEXTEMB_PRESET = false; return null; });   // false = 取得失敗（再試行しない）
 }
+
+/* ============ 視覚プロトタイプ（実写真から作った「見た目の代表ベクトル」） ============
+   品目の説明文（英語）だけで判定すると、全1087品のテキストベクトルが互いに cos 0.90〜0.94 と
+   ひしめき合い、正解と2位の差が中央値0.003しかない。実測でも正解が1位になるのは13.5%だった。
+   （とんかつ定食・サバ味噌煮定食・ハンバーグ定食のように、盛り付けが似た定食は特に潰し合う）
+
+   そこで Wikimedia Commons の実写真を品目ごとに集め、同じCLIPの画像側で埋め込んで平均した
+   「視覚プロトタイプ」を持たせ、写真どうしの近さでも順位を付ける。画像どうしの比較は
+   画像とテキストの比較よりずっと分離がよいので、ここが効く。
+
+   ⚠️ 加点は「しきい値を超えた分だけ・減点はしない」形にしてある。素直に足す方式にすると
+   プロトタイプを持つ品目のスコアのばらつきが増え、**プロトタイプを持たない品目が
+   巻き添えで順位を落とす**（実測 top5 16.7%→7.1%）。この形なら持たない品目は一切変わらない。 */
+/* ⚠️ 既定は無効。理由（2026-07-30時点の実測）：
+   Commonsの写真を除外キー（pageid）で学習用と評価用に分けて測ると top5 32.0%→38.8% と出たが、
+   これは見かけ倒しだった。Commonsには同じ料理の近い写真が多数あり、pageidが違っても
+   ほぼ同じ写真が学習側と評価側に入る。実際、評価写真は正解プロトタイプとの近さ z の中央値が
+   1.95（47%がz>2）なのに、学習に一切使っていない写真では中央値 1.40（z>2は17%）しかない。
+
+   学習に使っていない写真6枚で通しで試すと、押し上げられるのは「見た目がほぼ同じ別料理」だった：
+     カレーライス→ビーフシチュー / 唐揚げ→バッファローウィング /
+     かけうどん→かけそば / トマト→パプリカ・ピーマン
+   順位が上がった品目は無く、トマト(1位→2位)・かけうどん(8位→9位)は下がった。
+   画像の近さ自体は機能しているが、この粒度（かけうどん と かけそば の区別）を
+   CLIPの画像埋め込みで分けるのは無理だった、というのが結論。
+
+   有効化するには実写真での評価が先。スマホ実写30〜50枚（品目名つき）で
+   スマイル24/mealai-tools/build.mjs の測定をやり直し、伸びを確認してから true にする。
+   データ（smile24-mealai-imgproto.json・693品）と処理は残してあるので、切り替えは1行。 */
+var MEAL_IMGPROTO_ENABLED = false;
+var MEAL_IMGPROTO_URL = 'smile24-mealai-imgproto.json?v=-1973537613';
+var MEAL_IMGPROTO_RAW = null;   // 取得したJSON（false = 取得失敗）
+var MEAL_IMGPROTO = null;       // { idx:[品目番号], rows:[Float32Array] }
+var MEAL_PROTO_TAU = 1.5;       // これ以下の似方では加点しない（標準化後の値）
+var MEAL_PROTO_W = 1.0;         // 加点の強さ
+/* 加点する品目数の上限。しきい値だけで絞ると、条件を満たす品目数が
+   プロトタイプの総数に比例して増えてしまう（38品で調整した設定を507品に当てたら、
+   プロトタイプを持たない品目が top5 10.2%→2.6% と巻き添えで落ちた）。
+   「画像として最も近い上位K品だけ」に限れば、総数が増えても押し上げる数は変わらない */
+var MEAL_PROTO_TOPK = 3;
+/* 「この確率を超えたら、その品目を先に選んだ状態にする」しきい値。
+   視覚プロトタイプを足すとスコアの散らばりが変わり、確率の出方も変わる。
+   加点前は 0.5 超えが全体の1%（的中86%）＝ほぼ発火しない飾りだったが、
+   加点後は発火頻度が上がるぶん的中率が下がる。断定して外すのが一番の不信につながるので、
+   実測の校正結果から「的中がじゅうぶん高い」点を build.mjs が決めて同梱する */
+var MEAL_ASSERT_P = 0.5;
+/* テキストのプリセットと同じく外部ファイル。無くても（オフラインでも）判定は従来どおり動く */
+function loadImgProto(){
+  /* 無効な間は取りに行かない（468KBを毎回落としても使わないので無駄になる） */
+  if(!MEAL_IMGPROTO_ENABLED){ MEAL_IMGPROTO_RAW = false; return Promise.resolve(null); }
+  if(MEAL_IMGPROTO_RAW !== null) return Promise.resolve(MEAL_IMGPROTO_RAW);
+  return fetch(MEAL_IMGPROTO_URL, { cache:'force-cache' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      MEAL_IMGPROTO_RAW = j || false;
+      /* 品目を増減するとハッシュが変わる＝古いプロトタイプを黙って使ってしまうのを防ぐ */
+      if(j && j.idx && j.hash === mealPromptHash(mealPromptTexts().texts)){
+        MEAL_IMGPROTO = { idx: j.idx, rows: decodePresetEmb(j) };
+        /* 調整値はプロトタイプを作った側（build.mjs）が同梱する＝
+           データと設定がずれない。入っていなければコード側の既定値のまま */
+        if(typeof j.tau === 'number') MEAL_PROTO_TAU = j.tau;
+        if(typeof j.w === 'number') MEAL_PROTO_W = j.w;
+        if(typeof j.topK === 'number') MEAL_PROTO_TOPK = j.topK;
+        if(typeof j.assertP === 'number') MEAL_ASSERT_P = j.assertP;
+      }
+      return MEAL_IMGPROTO_RAW;
+    })
+    .catch(function(){ MEAL_IMGPROTO_RAW = false; return null; });
+}
+/* 品目スコアに視覚プロトタイプぶんを加点して返す（元の配列は壊さない）。
+   bestCos は「全クロップ中の最大コサイン類似度」を返す関数（呼び出し側と共有） */
+function applyImgProto(scores, bestCos){
+  var P = MEAL_IMGPROTO;
+  if(!P || !P.rows.length || P.rows.length < 2) return scores;
+  var ic = P.rows.map(bestCos), k;
+  var m = 0; for(k = 0; k < ic.length; k++) m += ic[k];
+  m /= ic.length;
+  var sd = 0; for(k = 0; k < ic.length; k++) sd += (ic[k] - m) * (ic[k] - m);
+  sd = Math.sqrt(sd / ic.length) || 1e-6;
+  /* テキスト側のばらつきを単位にして足す＝softmaxの温度(×100)をそのまま使える */
+  var bm = 0; for(k = 0; k < scores.length; k++) bm += scores[k];
+  bm /= scores.length;
+  var bsd = 0; for(k = 0; k < scores.length; k++) bsd += (scores[k] - bm) * (scores[k] - bm);
+  bsd = Math.sqrt(bsd / scores.length) || 1e-6;
+  var z = [];
+  for(k = 0; k < ic.length; k++) z.push({ k: k, z: (ic[k] - m) / sd });
+  /* 似ている順に上位K品だけを押し上げる（Kはプロトタイプ総数に依らない） */
+  z.sort(function(a, b){ return b.z - a.z; });
+  var lim = Math.min(MEAL_PROTO_TOPK, z.length);
+  var out = scores.slice();
+  for(k = 0; k < lim; k++){
+    if(z[k].z <= MEAL_PROTO_TAU) break;   // 降順なので、以降はすべてしきい値以下
+    var i = P.idx[z[k].k];
+    out[i] = scores[i] + MEAL_PROTO_W * bsd * (z[k].z - MEAL_PROTO_TAU);
+  }
+  return out;
+}
+
 function b64ToBytes(b64){
   var bin = atob(b64);
   var u = new Uint8Array(bin.length);
@@ -5071,9 +5194,41 @@ function recognizeMeal(dataUrl){
         });
         return best;
       }
-      var scores = MEAL_AI.textEmb.map(bestCos);
+      var textScores = MEAL_AI.textEmb.map(bestCos);
       var nfEmb = MEAL_AI.nonFoodEmb || [];
       var nfScores = nfEmb.map(bestCos);
+
+      /* 「料理以外か」の判定は視覚プロトタイプを足す前のスコアで行う。
+         加点後の値で判定すると、成分表示の写真でもどれかの品目が必ず上振れして
+         料理と誤判定しやすくなる（プロトタイプ側は常に最大値を持つため）。
+         ここを分けておけば、料理以外の弾き方は従来と一字一句同じ挙動になる */
+      var nonfood = null;
+      if(nfEmb.length){
+        var rawAll = textScores.concat(nfScores);
+        var rawMx = Math.max.apply(null, rawAll);
+        var rawEx = rawAll.map(function(s){ return Math.exp((s - rawMx) * 100); });
+        var rawSum = rawEx.reduce(function(a,b){ return a+b; }, 0);
+        var nfP = nfScores.map(function(s,i){ return { i:i, p: rawEx[textScores.length+i]/rawSum }; })
+          .sort(function(a,b){ return b.p - a.p; });
+        var topFoodP = 0;
+        for(var fi = 0; fi < textScores.length; fi++){
+          var pv = rawEx[fi]/rawSum;
+          if(pv > topFoodP) topFoodP = pv;
+        }
+        var nfTotal = nfP.reduce(function(a,b){ return a + b.p; }, 0);
+        /* 「料理以外の合計が半分を超える」か「最有力の料理以外が最有力の料理を上回る」時だけ
+           料理以外とみなす。料理の写真を誤って弾くほうが体験として悪いので判定は厳しめ */
+        nonfood = {
+          key: MEAL_NONFOOD[nfP[0].i].key,
+          label: MEAL_NONFOOD[nfP[0].i].label,
+          p: nfTotal,
+          top: nfP[0].p,
+          is: nfTotal >= 0.5 || nfP[0].p > topFoodP
+        };
+      }
+
+      /* ここから先の並び順にだけ視覚プロトタイプを効かせる */
+      var scores = applyImgProto(textScores, bestCos);
       /* softmaxは料理と料理以外をまとめて正規化する。料理だけで正規化すると合計が必ず1になり、
          成分表示の写真でも「たぶんカレー」と高確率が出てしまう */
       var all = scores.concat(nfScores);
@@ -5082,21 +5237,6 @@ function recognizeMeal(dataUrl){
       var sum = exps.reduce(function(a,b){ return a+b; }, 0);
       var rank = scores.map(function(s,i){ return { i:i, p: exps[i]/sum, cos:s }; })
         .sort(function(a,b){ return b.p - a.p; });
-      var nonfood = null;
-      if(nfEmb.length){
-        var nfRank = nfScores.map(function(s,i){ return { i:i, p: exps[scores.length+i]/sum, cos:s }; })
-          .sort(function(a,b){ return b.p - a.p; });
-        var nfTotal = nfRank.reduce(function(a,b){ return a + b.p; }, 0);
-        /* 「料理以外の合計が半分を超える」か「最有力の料理以外が最有力の料理を上回る」時だけ
-           料理以外とみなす。料理の写真を誤って弾くほうが体験として悪いので判定は厳しめ */
-        nonfood = {
-          key: MEAL_NONFOOD[nfRank[0].i].key,
-          label: MEAL_NONFOOD[nfRank[0].i].label,
-          p: nfTotal,
-          top: nfRank[0].p,
-          is: nfTotal >= 0.5 || (rank.length ? nfRank[0].p > rank[0].p : true)
-        };
-      }
       return { rank: rank, nonfood: nonfood };
     })
     .catch(function(){ return null; });
@@ -5289,7 +5429,7 @@ function openFoodPicker(photo, aiRank, nonfood){
     }
     /* 「たぶん◯◯だね！」と1品を断定して外すのが一番の不信になる（実機で指摘された）。
        どの確信度でも必ず「候補トップ5」を並べて選んでもらい、断定は最有力の事前チェックまでに留める */
-    if(top.p >= 0.5){
+    if(top.p >= MEAL_ASSERT_P){
       fpTemp.push({ kind:'db', idx:top.i, portion:(FOOD_DB[top.i].def||0), qty:1 });
       note.textContent = '【' + FOOD_DB[top.i].name + '】に見えるよ。下の候補トップ5で違ったら選び直してね（複数OK）';
     } else if(famRank.length && famScore[famRank[0]] >= 0.30 && famTotalOf(famRank[0]) >= 3){
@@ -5821,9 +5961,38 @@ function addItemToCurrentMeal(item){
 
 /* ── 成分表示からの直接入力 ── */
 function openLabelSheet(){
-  ['lbName','lbKcal','lbP','lbF','lbC','lbSalt','lbFib','lbBasis','lbEaten'].forEach(function(id){ document.getElementById(id).value = ''; });
+  ['lbName','lbKcal','lbP','lbF','lbC','lbSalt','lbFib','lbBasis','lbEaten'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.value = '';
+    el.classList.remove('lb-miss');
+  });
   document.getElementById('lbScanStatus').textContent = '';
+  lbClearQuick();
   showSheet('labelSheet');
+}
+function lbClearQuick(){
+  var q = document.getElementById('lbQuick');
+  if(q) Array.prototype.forEach.call(q.children, function(b){ b.classList.remove('on'); });
+}
+/* 「表示のぶん全部／半分／1/3」で食べた量を入れる。
+   基準量（何g当たりの表示か）が分かっている時だけ使える近道で、
+   分からない時は素直にg数を打ってもらう（勝手に決め打ちしない） */
+function lbQuickEat(frac){
+  var basis = parseFloat(document.getElementById('lbBasis').value);
+  if(!(basis > 0)){
+    showToast('先に「上の数字は何g当たり？」を入れてね（パッケージの「1袋◯g当たり」の数字）');
+    document.getElementById('lbBasis').classList.add('lb-miss');
+    document.getElementById('lbBasis').focus();
+    return;
+  }
+  var g = Math.round(basis * frac * 10) / 10;
+  var el = document.getElementById('lbEaten');
+  el.value = g;
+  el.classList.remove('lb-miss');
+  lbClearQuick();
+  var q = document.getElementById('lbQuick');
+  var i = (frac === 1) ? 0 : (frac === 0.5 ? 1 : 2);
+  if(q && q.children[i]) q.children[i].classList.add('on');
 }
 /* ── 成分表示ラベルの撮影読み取り（Tesseract.js・端末内OCR・費用ゼロ） ──
    コンビニのパン等はパッケージ裏の栄養成分表示が正確な値。撮影→OCR→数値を
@@ -5839,10 +6008,66 @@ function loadOcr(){
   }
   return ocrLoading;
 }
+/* 版面の読み方（PSM）を指定して読む。
+   簡易APIの recognize() は既定のPSM3（自動版面解析）で動くが、栄養成分表示のような
+   罫線つきの表だと「項目名の列」と「数値の列」を別々の塊として読み、名前と数値の
+   対応が崩れる（実測：エネルギー|たんぱく質|…|378kcal|25.6|… の順で出てきて、
+   エネルギーが 8kcal と記録されかけた）。
+   PSM6（ページ全体を1つの塊として読む）にすると「エネルギー 378 kcal」と正しく並ぶ。
+   PSMの指定には worker を自前で持つ必要があるので、1つ作って使い回す。 */
+var ocrWorker = null, ocrWorkerFail = false;
+function ocrWith(img, psm){
+  if(ocrWorkerFail) return loadOcr().then(function(T){ return T.recognize(img, 'jpn+eng'); });
+  var p = ocrWorker ? Promise.resolve(ocrWorker)
+    : loadOcr().then(function(T){
+        if(!T.createWorker) throw new Error('no worker api');
+        return T.createWorker('jpn+eng');
+      }).then(function(w){ ocrWorker = w; return w; });
+  return p.then(function(w){
+    return w.setParameters({ tessedit_pageseg_mode: String(psm) }).then(function(){
+      return w.recognize(img);
+    });
+  }).catch(function(){
+    /* 古い版・worker生成失敗でも読み取り自体は続けられるようにする */
+    ocrWorkerFail = true;
+    return loadOcr().then(function(T){ return T.recognize(img, 'jpn+eng'); });
+  });
+}
 /* 撮影画像をOCR向けに前処理：拡大＋グレースケール＋コントラスト強調。
    スマホ写真は文字が小さく影・反射も多いため、そのまま読むと誤読が多い。
    引数は File（撮り直し）と dataURL（食事カメラで撮った写真の使い回し）の両方を受ける。
    opts.plain=true なら拡大だけ行う（前処理が裏目に出る写真向けの2回目読み取り用） */
+/* 表の罫線を白で塗りつぶす。
+   栄養成分表示は「罫線つきの2列の表」が最も多い形なのに、罫線が残っているとOCRの
+   版面解析が崩れ、見出しは読めるのに各行の中身がまるごと雑音になる
+   （実測：はっきり写っている表組みで「エネルギー378kcal」の行が "eae «dee es" になった。
+    罫線を消しただけで全項目が読めるようになった）。
+   長く続く暗い画素の並び＝罫線とみなす。日本語の行は文字間に隙間があるので消えない。 */
+function eraseTableRules(px, w, h, lo, hi){
+  var th = (hi - lo >= 20) ? 128 : Math.max(40, lo + (hi - lo) * 0.5);
+  var rowDark = new Uint32Array(h), colDark = new Uint32Array(w);
+  var x2, y2, i;
+  for(y2 = 0; y2 < h; y2++){
+    var base = y2 * w * 4;
+    for(x2 = 0; x2 < w; x2++){
+      if(px[base + x2 * 4] < th){ rowDark[y2]++; colDark[x2]++; }
+    }
+  }
+  /* 全面が暗い写真（逆光・黒背景）では大量の行が該当してしまう。
+     そういう画像は表ではないので、消しすぎる前に何もしないで返す */
+  var rowHit = 0, colHit = 0;
+  for(y2 = 0; y2 < h; y2++) if(rowDark[y2] > w * 0.35) rowHit++;
+  for(x2 = 0; x2 < w; x2++) if(colDark[x2] > h * 0.35) colHit++;
+  if(rowHit > h * 0.25 || colHit > w * 0.25) return;
+  for(y2 = 0; y2 < h; y2++){
+    if(rowDark[y2] <= w * 0.35) continue;
+    for(x2 = 0, i = y2 * w * 4; x2 < w; x2++, i += 4) px[i] = px[i+1] = px[i+2] = 255;
+  }
+  for(x2 = 0; x2 < w; x2++){
+    if(colDark[x2] <= h * 0.35) continue;
+    for(y2 = 0; y2 < h; y2++){ i = (y2 * w + x2) * 4; px[i] = px[i+1] = px[i+2] = 255; }
+  }
+}
 function preprocessLabelImage(src, opts){
   var plain = !!(opts && opts.plain);
   return new Promise(function(res, rej){
@@ -5887,6 +6112,7 @@ function preprocessLabelImage(src, opts){
             px[i] = px[i+1] = px[i+2] = s;
           }
         }
+        if(!(opts && opts.keepRules)) eraseTableRules(px, c.width, c.height, lo, hi);
         x.putImageData(d, 0, 0);
         res(c.toDataURL('image/png'));
       }catch(e){ rej(e); }
@@ -5939,21 +6165,19 @@ function mergeLabelReads(a, b){
 function runLabelOcr(source){
   var st = document.getElementById('lbScanStatus');
   st.textContent = '読み取りの準備中…（初回だけ認識データを取得します）';
-  var ocr;
-  return loadOcr().then(function(o){
-    ocr = o;
-    return preprocessLabelImage(source);
-  }).then(function(img1){
+  return preprocessLabelImage(source).then(function(img1){
     st.textContent = '成分表示を読み取り中…（10〜20秒ほどかかることがあります）';
-    return ocr.recognize(img1, 'jpn+eng');
+    // 1回目：罫線を消した画像を「1つの塊」として読む（表組みに強い）
+    return ocrWith(img1, 6);
   }).then(function(out1){
     var got1 = parseNutritionLabel((out1 && out1.data && out1.data.text) || '');
     var missing = ['kcal','p','f','c'].filter(function(k){ return got1[k] == null; }).length;
     if(missing === 0) return got1;
-    // 主要4項目に未読があれば、前処理なしの画像でもう一度読んで補完する
+    /* 主要4項目に未読があれば、前処理も版面の読み方も変えてもう一度読む。
+       同じ写真でも、前処理の相性とPSMの組み合わせで読める項目が変わる */
     st.textContent = '読めなかった項目があるので、別の処理でもう一度読み取り中…';
     return preprocessLabelImage(source, {plain:true}).then(function(img2){
-      return ocr.recognize(img2, 'jpn+eng');
+      return ocrWith(img2, 4);
     }).then(function(out2){
       return mergeLabelReads(got1, parseNutritionLabel((out2 && out2.data && out2.data.text) || ''));
     }).catch(function(){ return got1; });   // 2回目の失敗で1回目の成果を捨てない
@@ -5975,12 +6199,11 @@ function applyLabelRead(got, st){
   if(got.c != null) document.getElementById('lbC').value = got.c;
   if(got.salt != null) document.getElementById('lbSalt').value = got.salt;
   if(got.fib != null) document.getElementById('lbFib').value = got.fib;
-  // 基準量（「1袋63g当たり」の63）が読めたら換算欄に入れておく
+  /* 基準量（「1袋63g当たり」の63）が読めたら換算欄に入れておく。
+     食べた量のほうは自動で埋めない。全部食べたとは限らないし、ここを勝手に
+     決めると「表示のぶんを食べたことにされた記録」が黙って残る。割合ボタンで一発で入る */
   var basisG = got.servingG || (got.basis === '100g' ? 100 : null);
-  if(basisG){
-    document.getElementById('lbBasis').value = basisG;
-    if(!document.getElementById('lbEaten').value) document.getElementById('lbEaten').value = basisG;
-  }
+  if(basisG) document.getElementById('lbBasis').value = basisG;
   // 読めた数字をそのまま見せて、必ず確認してもらう
   var read = [];
   read.push(got.kcal != null ? got.kcal + 'kcal' : 'エネルギー未読');
@@ -6001,7 +6224,9 @@ function applyLabelRead(got, st){
     msg += '　※' + got.odd.join('・') + 'は数字のつじつまが合わなかったので空欄にしたよ（小数点の読み落としが多いところ）。パッケージを見て入れてね';
   }
   if(basisG){
-    msg += '　※この表示は「' + basisG + 'g当たり」。食べた量(g)を直すと自動で換算するよ';
+    msg += '　※この表示は「' + basisG + 'g当たり」。あとは【何を食べた？】と【何g食べた？】を入れてね（全部なら「表示のぶん全部」をタップ）';
+  } else {
+    msg += '　※【何を食べた？】【何g食べた？】と、上の数字が何g当たりかも入れてね';
   }
   st.textContent = msg;
 }
@@ -6012,7 +6237,23 @@ function parseNutritionLabel(raw){
     // 「9.8」が「9,8」と誤読されることが多い。桁区切り（1,234）と区別して小数点に戻す
     .replace(/([0-9])[,，]\s?([0-9])(?![0-9]{2})/g, '$1.$2')
     .replace(/[,，]/g, '')
-    .replace(/\s+/g, '')   // 日本語OCRは「た ん ぱく 質」と分かち書きされるため空白は全除去
+    /* 空白の詰め方：日本語OCRは「た ん ぱく 質」と分かち書きするので詰めないと項目名が拾えない。
+       ただし数字どうしの空白まで一律に詰めると事故る。罫線を消したあとの実測テキストは
+       「炭水化物 25. 9 8」（末尾の8は g の誤読）で、全部詰めると 25.98 になり、
+       表示より多い値を黙って記録してしまう。そこで
+         ①日本語の文字に接する空白　②小数点の直後　③数値と単位の間
+       だけを詰め、数字と数字の間の空白は境界として残す */
+    .replace(/([^\x00-\x7F])[ \t]+/g, '$1')
+    .replace(/[ \t]+([^\x00-\x7F])/g, '$1')
+    .replace(/\.[ \t]+/g, '.')
+    /* 「378」が「3 7 8」と1桁ずつ離れて出ることがある（表組みで顕著）。
+       1桁の数字が空白で連なっている時だけ繋ぐ。直前が数字か小数点なら繋がない＝
+       「25.9 8」（末尾の8はgの誤読）を 25.98 に化けさせない。
+       ※後読み(?<=)はiOS Safari 16.3以前で構文エラーになりアプリ全体が止まるので使わない */
+    .replace(/([^0-9.]|^)([0-9](?:[ \t]+[0-9])+)(?![0-9.])/g,
+             function(_, pre, run){ return pre + run.replace(/[ \t]+/g, ''); })
+    .replace(/([0-9])[ \t]+(kcal|kj|mg|g)\b/gi, '$1$2')
+    .replace(/[ \t]*\r?\n[ \t]*/g, '\n')
     .replace(/k[cсo]a[l1iI|]/gi, 'kcal')   // kcaI・kca1 などの誤読を补正
     .replace(/㎉/g, 'kcal');
   function grab(re, min, max){
@@ -6037,7 +6278,9 @@ function parseNutritionLabel(raw){
      「たんばぱく質」「たんばぱばく質」「たぼく質」と崩れた。た＋かな数文字＋質 で拾う */
   var p = grab(/(?:た[んぼ][ぁ-んァ-ヶ白ー_]{0,6}質|タンパク質|蛋白質|たんぱく|タンパク)[^0-9A-Za-z]{0,14}([0-9]+(?:\.[0-9]+)?)/, 0, 150);
   var f = grab(/脂[質貿賀][^0-9A-Za-z]{0,14}([0-9]+(?:\.[0-9]+)?)/, 0, 150);
-  var c = grab(/(?:炭水化物|炭水化|糖質)[^0-9A-Za-z]{0,14}([0-9]+(?:\.[0-9]+)?)/, 0, 200);
+  /* 「炭」は 灰・淡・映 に、「水」は 氷 に誤読されやすい（実測：灰水化物）。
+     先頭1文字だけの誤読で項目ごと拾えなくなるのはもったいないので幅を持たせる */
+  var c = grab(/(?:[炭灰淡映][水氷]化物?|糖質)[^0-9A-Za-z]{0,14}([0-9]+(?:\.[0-9]+)?)/, 0, 200);
   /* 表組みラベルは「項目名の列→数値の列」の順でOCRされ、項目名の直後の数字が
      全部エネルギー値になってしまう。その時はkcalの後ろに並ぶ g付き数値を
      たんぱく質→脂質→炭水化物の順（成分表示の標準順）とみなして拾い直す */
@@ -6061,9 +6304,24 @@ function parseNutritionLabel(raw){
      つじつま検証だけでは、1項目が未読のときにすり抜けてしまう */
   var odd = [];
   if(kcal != null){
-    if(p != null && 4*p > kcal*1.3) { odd.push('たんぱく質'); p = null; }
-    if(f != null && 9*f > kcal*1.3) { odd.push('脂質'); f = null; }
-    if(c != null && 4*c > kcal*1.3) { odd.push('炭水化物'); c = null; }
+    var conflict = [];
+    if(p != null && 4*p > kcal*1.3) conflict.push('p');
+    if(f != null && 9*f > kcal*1.3) conflict.push('f');
+    if(c != null && 4*c > kcal*1.3) conflict.push('c');
+    var have = (p != null ? 1 : 0) + (f != null ? 1 : 0) + (c != null ? 1 : 0);
+    /* 3つとも（または読めた全部が）カロリーと矛盾する時は、3つ全部を誤読したと考えるより
+       カロリー側の桁が落ちたと考えるほうが自然。実測でも「266kcal→26kcal」と1桁落ち、
+       正しく読めていたたんぱく質・脂質・炭水化物が巻き添えで全部消え、
+       残った 26kcal だけが記録される状態になった（一番まずい形の誤読）。
+       この場合はカロリーを捨てて、3つの数値を残す＝手入力に回す */
+    if(have >= 2 && conflict.length === have){
+      odd.push('エネルギー');
+      kcal = null;
+    }else{
+      if(conflict.indexOf('p') >= 0) { odd.push('たんぱく質'); p = null; }
+      if(conflict.indexOf('f') >= 0) { odd.push('脂質'); f = null; }
+      if(conflict.indexOf('c') >= 0) { odd.push('炭水化物'); c = null; }
+    }
   }
   /* 「100g当たり」の商品をそのまま1食分として記録すると、実際の内容量しだいで
      倍以上ずれる。数字は読めても基準量が違うので、ここで拾って呼び出し側で伝える */
@@ -6095,8 +6353,29 @@ function parseNutritionLabel(raw){
   return { kcal: kcal, p: p, f: f, c: c, salt: salt, fib: fib, basis: basis, servingG: servingG, odd: odd };
 }
 function addLabelItem(){
+  /* 「何を」「何g」は必須。成分表の数字だけ記録しても、あとから履歴を見た時に
+     何をどれだけ食べたのか分からず、記録として使えない */
+  ['lbName','lbEaten','lbKcal'].forEach(function(id){ document.getElementById(id).classList.remove('lb-miss'); });
+  var name = document.getElementById('lbName').value.trim();
+  if(!name){
+    document.getElementById('lbName').classList.add('lb-miss');
+    document.getElementById('lbName').focus();
+    showToast('何を食べたか教えてね（例：プロテインヨーグルト）');
+    return;
+  }
+  var eaten = parseFloat(document.getElementById('lbEaten').value);
+  if(!(eaten > 0)){
+    document.getElementById('lbEaten').classList.add('lb-miss');
+    document.getElementById('lbEaten').focus();
+    showToast('何g食べたか教えてね（全部なら「表示のぶん全部」をタップ）');
+    return;
+  }
   var kcal = parseFloat(document.getElementById('lbKcal').value);
-  if(!kcal || kcal <= 0){ showToast('エネルギー（kcal）を入力してね'); return; }
+  if(!kcal || kcal <= 0){
+    document.getElementById('lbKcal').classList.add('lb-miss');
+    showToast('エネルギー（kcal）を入力してね');
+    return;
+  }
   var p = parseFloat(document.getElementById('lbP').value);
   var f = parseFloat(document.getElementById('lbF').value);
   var c = parseFloat(document.getElementById('lbC').value);
@@ -6107,23 +6386,26 @@ function addLabelItem(){
   if(isNaN(p)){ p = kcal*0.20/4; est.push('たんぱく質'); }
   if(isNaN(f)){ f = kcal*0.25/9; est.push('脂質'); }
   if(isNaN(c)){ c = kcal*0.55/4; est.push('炭水化物'); }
-  var name = document.getElementById('lbName').value.trim() || '成分表示の1品';
   if(est.length) showToast(est.join('・') + 'は空欄だったのでおよその値で入れたよ');
   /* 基準量→食べた量の換算。「100g当たり」表示のまま記録すると内容量しだいで倍以上ずれるし、
-     半分だけ食べた時も実態に合わない。両方入っている時だけ比例換算する */
+     半分だけ食べた時も実態に合わない。基準量が分かっている時だけ比例換算する */
   var basis = parseFloat(document.getElementById('lbBasis').value);
-  var eaten = parseFloat(document.getElementById('lbEaten').value);
-  var factor = 1;
-  if(basis > 0 && eaten > 0){ factor = eaten / basis; }
-  var item = { kind:'custom', name:name, kcal:Math.round(kcal*factor), p:r1(p*factor), f:r1(f*factor), c:r1(c*factor), qty:1 };
-  if(factor !== 1) item.name = name + '（' + eaten + 'g）';
+  var factor = (basis > 0) ? (eaten / basis) : 1;
+  var item = { kind:'custom', name:name + '（' + eaten + 'g）',
+               kcal:Math.round(kcal*factor), p:r1(p*factor), f:r1(f*factor), c:r1(c*factor), qty:1 };
   /* 食塩・食物繊維は推定しない。書いていない数字を勝手に作ると、1日の塩分合計が
      実態とずれる。未入力は null のままにして「未入力ぶんがある」と表示側で伝える */
   var salt = parseFloat(document.getElementById('lbSalt').value);
   var fib = parseFloat(document.getElementById('lbFib').value);
   if(!isNaN(salt)) item.salt = r1(salt*factor);
   if(!isNaN(fib)) item.fib = r1(Math.min(fib*factor, item.c));
-  if(factor !== 1) showToast('表示' + basis + 'g当たり→食べた' + eaten + 'gぶんに換算したよ（' + item.kcal + 'kcal）');
+  if(basis > 0){
+    if(factor !== 1) showToast('表示' + basis + 'g当たり→食べた' + eaten + 'gぶんに換算したよ（' + item.kcal + 'kcal）');
+  }else{
+    /* 何g当たりの表示か分からないと換算できない。黙って等倍で入れると
+       「gを入れたのに反映されていない」記録になるので、必ず伝える */
+    showToast('「何g当たりの表示か」が空だから、表示の数字のまま記録したよ（' + item.kcal + 'kcal）');
+  }
   hideSheet('labelSheet');
   addItemToCurrentMeal(item);
 }
