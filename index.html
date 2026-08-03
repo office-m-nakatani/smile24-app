@@ -372,6 +372,13 @@ input{font-family:inherit;}
 .wk-sensor span{flex:1;text-align:center;font-size:10.5px;font-weight:700;padding:6px 4px;border-radius:100px;background:var(--white);border:1.5px solid var(--line);color:var(--text-lt);}
 .wk-sensor span.on{border-color:var(--gold);color:var(--gold-dk);background:var(--pastel-1);}
 .wk-privacy{font-size:10px;color:var(--text-lt);line-height:1.6;margin:8px 2px 0;}
+/* 自動計測の状態行（タップでON/OFF） */
+.walk-auto{display:flex;align-items:center;gap:7px;margin-top:9px;padding:9px 12px;border-radius:12px;background:var(--pastel-1);cursor:pointer;font-size:11.5px;color:var(--text-mid);}
+.walk-auto .wa-dot{width:8px;height:8px;border-radius:50%;background:#C9CBD4;flex:0 0 auto;}
+.walk-auto.on .wa-dot{background:#2FC98F;}
+.walk-auto .wa-label{flex:1;line-height:1.5;}
+.walk-auto b{font-weight:700;color:var(--text-lt);}
+.walk-auto.on b{color:var(--gold-dk);}
 /* 料理以外の写真（成分表示など）だった時の「何を食べましたか」パネル */
 .fp-nonfood{flex:0 0 auto;background:var(--pastel-1);border-radius:14px;padding:14px 13px 12px;margin:2px 0 8px;overflow-y:auto;}
 .fnf-field label{display:block;font-size:11.5px;font-weight:700;color:var(--text-mid);margin-bottom:5px;}
@@ -2056,7 +2063,12 @@ input{font-family:inherit;}
             歩数を入力
           </button>
         </div>
-        <div class="walk-note" id="walkNote">スマホの歩数計の数字を入れるか、さんぽ中だけGPSで距離と歩数を計測できるよ</div>
+        <div class="walk-auto" id="walkAutoRow" onclick="walkAutoToggle()">
+          <span class="wa-dot" id="walkAutoDot"></span>
+          <span class="wa-label" id="walkAutoLabel">自動計測（アプリを開いている間）</span>
+          <b id="walkAutoState">ON</b>
+        </div>
+        <div class="walk-note" id="walkNote">画面を消している間のぶんはスマホの歩数計に残っているから、「歩数を入力」で写せば重複なしで合算するよ</div>
       </div>
 
       <!-- 水分補給 -->
@@ -2595,7 +2607,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-03a</b>（歩数・さんぽ計測を追加・写真の系統判定をSNS風写真で強化）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-03b</b>（歩数の自動計測を追加：アプリを開いている間はボタン不要で数えるよ）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3807,27 +3819,30 @@ function walkMet(kmh){
   if(kmh < 6.5) return 5.0;
   return 7.0;   // 小走り
 }
-/* 当日データ。sessions=さんぽ計測の結果 / manual=スマホ歩数計の今日の合計（手入力） */
-var walkDay = { k:'', manual:0, sessions:[] };
+/* 当日データ。sessions=さんぽ計測の結果 / manual=スマホ歩数計の今日の合計（手入力）
+   / auto=アプリを開いている間に自動で数えた歩数（ボタン操作なし） */
+var walkDay = { k:'', manual:0, auto:0, sessions:[] };
 function walkAgg(){
   var sSteps = 0, sKcal = 0, sDist = 0;
   walkDay.sessions.forEach(function(s){ sSteps += s.steps; sKcal += s.kcal; sDist += s.dist; });
-  // 手入力（=スマホの合計）には計測中の歩数も含まれているはずなので、差分だけを足す
-  var extra = Math.max(0, walkDay.manual - sSteps);
+  var counted = sSteps + (walkDay.auto || 0);
+  // 手入力（=スマホの合計）には計測・自動カウント中の歩数も含まれているはずなので、差分だけを足す
+  var extra = Math.max(0, walkDay.manual - counted);
+  var looseSteps = (walkDay.auto || 0) + extra;   // GPSなしで数えた歩数（自動＋手入力の差分）
   return {
-    steps: sSteps + extra,
-    dist:  sDist + extra * walkStride(),
-    kcal:  sKcal + calcKcal(3.5, extra / 100)   // 徒歩はおよそ100歩/分で換算
+    steps: counted + extra,
+    dist:  sDist + looseSteps * walkStride(),
+    kcal:  sKcal + calcKcal(3.5, looseSteps / 100)   // 徒歩はおよそ100歩/分で換算
   };
 }
 function walkSave(){
-  try{ localStorage.setItem('smile24_walk', JSON.stringify({ k: waterKey(), m: walkDay.manual, s: walkDay.sessions })); }catch(e){}
+  try{ localStorage.setItem('smile24_walk', JSON.stringify({ k: waterKey(), m: walkDay.manual, a: walkDay.auto || 0, s: walkDay.sessions })); }catch(e){}
 }
 function walkLoad(){
-  walkDay = { k: waterKey(), manual: 0, sessions: [] };
+  walkDay = { k: waterKey(), manual: 0, auto: 0, sessions: [] };
   try{
     var j = JSON.parse(localStorage.getItem('smile24_walk') || 'null');
-    if(j && j.k === waterKey()){ walkDay.manual = j.m || 0; walkDay.sessions = j.s || []; }
+    if(j && j.k === waterKey()){ walkDay.manual = j.m || 0; walkDay.auto = j.a || 0; walkDay.sessions = j.s || []; }
   }catch(e){}
 }
 function activityKcal(){
@@ -3844,6 +3859,18 @@ function renderWalkCard(){
   el('walkGoalPct').textContent = Math.min(999, Math.round(a.steps / WALK_GOAL_STEPS * 100)) + '%';
   var note = el('walkNote');
   if(a.steps >= WALK_GOAL_STEPS) note.textContent = '今日の目標 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩を達成！よく歩いたね';
+  var row = el('walkAutoRow');
+  if(row){
+    var on = walkAutoOn();
+    row.classList.toggle('on', on && walkAuto.active);
+    el('walkAutoState').textContent = !on ? 'OFF' : (walkAuto.active ? '計測中' : (walkAuto.denied ? '許可なし' : 'ON'));
+    el('walkAutoLabel').textContent = !on ? '自動計測はOFF（タップでON）'
+      : walkAuto.active ? '自動計測中：このまま持って歩けば数えるよ'
+      : walkAuto.denied ? '自動計測：センサーの許可がありません（タップで再試行）'
+      : '自動計測ON（画面をタップすると数え始めるよ）';
+    if(walkAuto.denied && on) row.onclick = function(){ walkAuto.denied = false; walkAuto.armed = false; walkAutoArm(); renderWalkCard(); };
+    else row.onclick = walkAutoToggle;
+  }
 }
 
 /* ── 歩数の手入力 ── */
@@ -3949,7 +3976,8 @@ function walkArmMotion(){
 }
 /* 歩数検出：重力を除いた加速度の山を数える。
    しきい値1.2m/s²を上に抜けた回数＝歩数（300ms以内の連続は同じ一歩とみなす）。
-   走りでも歩きでも1歩ごとに上下動が1回来る、という単純な性質だけを使う */
+   走りでも歩きでも1歩ごとに上下動が1回来る、という単純な性質だけを使う。
+   さんぽ計測中はセッションへ、それ以外（自動計測）は当日の自動バケットへ数える */
 function walkOnMotion(e){
   var a = e.accelerationIncludingGravity;
   if(!a || a.x == null) return;
@@ -3958,15 +3986,102 @@ function walkOnMotion(e){
   walk.emaG = walk.emaG * 0.96 + mag * 0.04;          // ゆっくり動く成分＝重力とみなす
   var hp = mag - walk.emaG;
   walk.smooth = walk.smooth * 0.6 + hp * 0.4;          // 細かい振動をならす
-  if(!walk.motionOk){ walk.motionOk = true; walkSensorChip('wkSensorMotion', '歩数センサー 計測中', true); }
+  if(walk.on && !walk.motionOk){ walk.motionOk = true; walkSensorChip('wkSensorMotion', '歩数センサー 計測中', true); }
   var now = Date.now();
   if(!walk.above && walk.smooth > 1.2){
     walk.above = true;
-    if(now - walk.lastStepAt > 300){ walk.steps++; walk.lastStepAt = now; }
+    if(now - walk.lastStepAt > 300){
+      walk.lastStepAt = now;
+      if(walk.on) walk.steps++;
+      else walkAutoStep();
+    }
   }else if(walk.above && walk.smooth < 0.6){
     walk.above = false;                                 // ヒステリシス：戻るまで次の山を数えない
   }
 }
+
+/* ── 自動計測（アプリを開いている間、ボタン操作なしで歩数を数える） ──
+   Webの制約上できるのはここまでが正直な上限：
+   ・画面を消す／他のアプリに切り替えると計測は止まる（OSがWebページを停止するため）
+   ・その間の歩数はスマホ標準の歩数計が数えているので、「歩数を入力」で写せば
+     自動計測ぶんは差し引かれて二重にならない
+   iOSはセンサー許可がタップ起点でしか出せないため、最初の画面タップに便乗して
+   静かに許可を取る（専用ボタンは要らない）。Androidは開いた瞬間から数え始める */
+var walkAuto = { active:false, buf:0, flushTimer:null, armed:false, denied:false };
+function walkAutoOn(){
+  try{ return localStorage.getItem('smile24_walk_auto') !== '0'; }catch(e){ return true; }
+}
+function walkAutoStep(){
+  if(!walkAuto.active) return;
+  walkDay.auto = (walkDay.auto || 0) + 1;
+  walkAuto.buf++;
+  /* 保存と再描画は毎歩やらない（localStorage書き込みとDOM更新の無駄打ちを避ける） */
+  if(walkAuto.buf >= 20) walkAutoFlush();
+}
+function walkAutoFlush(){
+  if(walkAuto.buf === 0) return;
+  walkAuto.buf = 0;
+  walkSave();
+  renderWalkCard();
+  recalc();
+}
+function walkAutoStart(){
+  if(walkAuto.active || !walkAutoOn()) return;
+  if(typeof DeviceMotionEvent === 'undefined') return;   // センサーが無い端末では動かさない
+  walkAuto.active = true;
+  window.addEventListener('devicemotion', walkOnMotion);
+  if(!walkAuto.flushTimer) walkAuto.flushTimer = setInterval(walkAutoFlush, 15000);
+  renderWalkCard();
+}
+function walkAutoPause(){
+  if(!walkAuto.active) return;
+  walkAuto.active = false;
+  /* さんぽ計測中はリスナー共有のため外さない（walk.onが振り分ける）。それ以外は外す */
+  if(!walk.on) window.removeEventListener('devicemotion', walkOnMotion);
+  if(walkAuto.flushTimer){ clearInterval(walkAuto.flushTimer); walkAuto.flushTimer = null; }
+  walkAutoFlush();
+  renderWalkCard();
+}
+/* iOSの許可はタップ起点が必須なので、最初のタップに便乗して静かに取り付ける */
+function walkAutoArm(){
+  if(walkAuto.armed || !walkAutoOn()) return;
+  walkAuto.armed = true;
+  if(typeof DeviceMotionEvent === 'undefined') return;   // センサー非対応（PC等）
+  if(typeof DeviceMotionEvent.requestPermission === 'function'){
+    var once = function(){
+      document.removeEventListener('touchend', once, true);
+      document.removeEventListener('click', once, true);
+      DeviceMotionEvent.requestPermission().then(function(st){
+        if(st === 'granted') walkAutoStart();
+        else { walkAuto.denied = true; renderWalkCard(); }
+      }).catch(function(){ walkAuto.denied = true; renderWalkCard(); });
+    };
+    document.addEventListener('touchend', once, true);
+    document.addEventListener('click', once, true);
+  }else{
+    walkAutoStart();
+  }
+}
+function walkAutoToggle(){
+  var next = !walkAutoOn();
+  try{ localStorage.setItem('smile24_walk_auto', next ? '1' : '0'); }catch(e){}
+  if(next){ walkAuto.armed = false; walkAutoArm(); showToast('自動計測をONにしたよ。アプリを開いている間、歩数を自動で数えるね'); }
+  else { walkAutoPause(); showToast('自動計測をOFFにしたよ。「さんぽ計測」と「歩数を入力」はそのまま使えるよ'); }
+  renderWalkCard();
+}
+/* 画面を消した・他アプリに切り替えた時は止め、戻ってきたら再開する（電池への配慮） */
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){ walkAutoPause(); }
+  else if(walkAutoOn() && !walk.on){
+    /* 許可済みならタップ不要で再開できる。未許可(iOS初回)は次のタップで取り付く */
+    if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
+      if(!walkAuto.denied){ walkAuto.armed = false; walkAutoArm(); }
+    }else{
+      walkAutoStart();
+    }
+  }
+});
+window.addEventListener('pagehide', function(){ walkAutoFlush(); });
 /* GPS：精度の悪い測位とその場の揺らぎを捨て、徒歩としてあり得る移動だけ距離に足す */
 function walkOnFix(pos){
   var c = pos.coords;
@@ -4019,9 +4134,12 @@ function walkSessionKcal(){
 }
 function walkStopSensors(){
   if(walk.watchId != null && navigator.geolocation){ navigator.geolocation.clearWatch(walk.watchId); walk.watchId = null; }
-  window.removeEventListener('devicemotion', walkOnMotion);
+  /* 自動計測が動いている時はリスナーを外さない（セッション後も歩数を数え続ける） */
+  if(!walkAuto.active) window.removeEventListener('devicemotion', walkOnMotion);
   if(walk.timer){ clearInterval(walk.timer); walk.timer = null; }
   if(walk.wakeLock){ try{ walk.wakeLock.release(); }catch(e){} walk.wakeLock = null; }
+  /* さんぽ計測でセンサー許可が取れた直後なら、そのまま自動計測も動かせる */
+  if(walkAutoOn() && !walkAuto.denied) walkAutoStart();
 }
 function walkFinish(){
   walkStopSensors();
@@ -10002,6 +10120,7 @@ renderTrend();
   renderWater();
 })();
 walkLoad();        // 今日の歩数（手入力＋さんぽ計測）を復元。日付が変わっていれば0から
+walkAutoArm();     // 自動計測（Androidは即時・iOSは最初のタップで静かに開始）
 renderWalkCard();
 recalc();
 renderPlan();
