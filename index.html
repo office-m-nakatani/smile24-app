@@ -347,6 +347,31 @@ input{font-family:inherit;}
 .lb-quick button.on{border-color:var(--gold);background:var(--gold);color:#fff;}
 .lb-req .field{margin-bottom:9px;}
 .lb-miss{border-color:#e2645c !important;background:#fff6f5 !important;}
+/* ── 歩数・さんぽ（位置情報＋加速度センサー） ── */
+.walk-main{display:flex;align-items:center;gap:14px;margin:4px 0 10px;}
+.walk-steps{flex:0 0 auto;text-align:center;min-width:96px;}
+.walk-steps .wsv{font-family:var(--font-en);font-size:30px;font-weight:700;color:var(--gold-dk);line-height:1.1;}
+.walk-steps .wsl{font-size:10.5px;color:var(--text-lt);margin-top:2px;}
+.walk-info{flex:1;display:flex;flex-direction:column;gap:5px;}
+.walk-info .wir{display:flex;justify-content:space-between;font-size:12px;color:var(--text-mid);}
+.walk-info .wir b{font-family:var(--font-en);font-weight:700;color:var(--text);}
+.walk-btns{display:flex;gap:8px;}
+.walk-btns button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 8px;border-radius:100px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.walk-btns .wb-go{background:var(--grad-main);color:#fff;border:none;}
+.walk-btns .wb-manual{background:var(--white);color:var(--text-mid);border:1.5px solid var(--line);}
+.walk-note{font-size:10.5px;color:var(--text-lt);line-height:1.6;margin-top:8px;}
+/* さんぽ計測シート */
+.wk-live{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px;}
+.wk-cell{background:var(--pastel-1);border-radius:14px;padding:12px 10px;text-align:center;}
+.wk-cell .v{font-family:var(--font-en);font-size:24px;font-weight:700;color:var(--text);line-height:1.15;}
+.wk-cell .v span{font-size:11px;color:var(--text-lt);font-weight:600;margin-left:2px;}
+.wk-cell .l{font-size:10.5px;color:var(--text-lt);margin-top:3px;}
+.wk-status{font-size:11.5px;line-height:1.7;color:var(--text-mid);background:var(--pastel-1);border-radius:12px;padding:9px 12px;margin-bottom:10px;}
+.wk-status:empty{display:none;}
+.wk-sensor{display:flex;gap:6px;margin-bottom:10px;}
+.wk-sensor span{flex:1;text-align:center;font-size:10.5px;font-weight:700;padding:6px 4px;border-radius:100px;background:var(--white);border:1.5px solid var(--line);color:var(--text-lt);}
+.wk-sensor span.on{border-color:var(--gold);color:var(--gold-dk);background:var(--pastel-1);}
+.wk-privacy{font-size:10px;color:var(--text-lt);line-height:1.6;margin:8px 2px 0;}
 /* 料理以外の写真（成分表示など）だった時の「何を食べましたか」パネル */
 .fp-nonfood{flex:0 0 auto;background:var(--pastel-1);border-radius:14px;padding:14px 13px 12px;margin:2px 0 8px;overflow-y:auto;}
 .fnf-field label{display:block;font-size:11.5px;font-weight:700;color:var(--text-mid);margin-bottom:5px;}
@@ -2003,6 +2028,37 @@ input{font-family:inherit;}
         </div>
       </div>
 
+      <!-- 歩数・さんぽ（位置情報＋加速度センサーで計測。数字は消費カロリーに反映） -->
+      <div class="dash-card">
+        <div class="dash-head">
+          <div class="dh-ic ex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg></div>
+          <div><div class="dh-t">今日の歩数</div><div class="dh-s">歩いたぶんも「あと摂れる」に足されるよ</div></div>
+          <div class="dh-r" id="walkBurnVal">+0 kcal</div>
+        </div>
+        <div class="walk-main">
+          <div class="walk-steps">
+            <div class="wsv" id="walkStepsVal">0</div>
+            <div class="wsl">歩</div>
+          </div>
+          <div class="walk-info">
+            <div class="wir"><span>歩いた距離</span><b id="walkDistVal">0.0 km</b></div>
+            <div class="wir"><span>消費カロリー</span><b id="walkKcalVal">+0 kcal</b></div>
+            <div class="wir"><span>目標 8,000歩</span><b id="walkGoalPct">0%</b></div>
+          </div>
+        </div>
+        <div class="walk-btns">
+          <button class="wb-go" onclick="openWalkSheet()">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            さんぽ計測
+          </button>
+          <button class="wb-manual" onclick="openStepsSheet()">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            歩数を入力
+          </button>
+        </div>
+        <div class="walk-note" id="walkNote">スマホの歩数計の数字を入れるか、さんぽ中だけGPSで距離と歩数を計測できるよ</div>
+      </div>
+
       <!-- 水分補給 -->
       <div class="dash-card">
         <div class="dash-head">
@@ -2539,7 +2595,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-07-30a</b>（成分表の読み取り精度を改善・食べた量とメニュー名の入力を追加）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-03a</b>（歩数・さんぽ計測を追加・写真の系統判定をSNS風写真で強化）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -2970,6 +3026,44 @@ input{font-family:inherit;}
         <div class="lb-grams-note">ここと「何g食べた？」がそろうと、上の数字を食べたぶんに換算して記録します（例：100g当たり表示のうち30gだけ食べた）。撮影で読み取れた時は自動で入ります</div>
         <button class="sheet-btn" onclick="addLabelItem()">この内容で追加する</button>
         <button class="sheet-cancel" onclick="hideSheet('labelSheet')">もどる</button>
+      </div>
+    </div>
+
+    <!-- さんぽ計測（GPS距離＋加速度センサー歩数。計測中だけセンサーを使う） -->
+    <div class="sheet" id="walkSheet">
+      <div class="sheet-card">
+        <h3>さんぽを計測する</h3>
+        <div class="sheet-desc">GPSで歩いた距離、スマホの揺れで歩数を計測して、消費カロリーを自動で計算するよ</div>
+        <div class="wk-sensor">
+          <span id="wkSensorGps">GPS 待機中</span>
+          <span id="wkSensorMotion">歩数センサー 待機中</span>
+        </div>
+        <div class="wk-live">
+          <div class="wk-cell"><div class="v" id="wkTime">0:00</div><div class="l">経過時間</div></div>
+          <div class="wk-cell"><div class="v" id="wkSteps">0<span>歩</span></div><div class="l">歩数</div></div>
+          <div class="wk-cell"><div class="v" id="wkDist">0<span>m</span></div><div class="l">距離</div></div>
+          <div class="wk-cell"><div class="v" id="wkKcal">0<span>kcal</span></div><div class="l">消費カロリー</div></div>
+        </div>
+        <div class="wk-status" id="wkStatus"></div>
+        <button class="sheet-btn" id="wkMainBtn" onclick="walkToggle()">計測をはじめる</button>
+        <button class="sheet-cancel" id="wkCloseBtn" onclick="walkClose()">とじる</button>
+        <div class="wk-privacy">位置情報は距離の計算にその場で使うだけで、道順や座標は保存しません。残るのは距離・歩数・カロリーの数字だけ。計測はこの画面を開いている間だけ動きます</div>
+      </div>
+    </div>
+
+    <!-- 歩数の手入力（スマホ標準の歩数計から今日の合計を写す） -->
+    <div class="sheet" id="stepsSheet">
+      <div class="sheet-card">
+        <h3>今日の歩数を入力する</h3>
+        <div class="sheet-desc">スマホの歩数計（iPhoneはヘルスケア、Androidは Google Fit など）に出ている「今日の合計歩数」をそのまま写してね</div>
+        <div class="field">
+          <label>今日の合計歩数</label>
+          <input type="number" id="stepsInput" inputmode="numeric" placeholder="例：6800" min="0" max="99999">
+        </div>
+        <div class="wk-status" id="stepsPreview"></div>
+        <button class="sheet-btn" onclick="saveManualSteps()">この歩数で記録する</button>
+        <button class="sheet-cancel" onclick="hideSheet('stepsSheet')">もどる</button>
+        <div class="wk-privacy">さんぽ計測をした日は、その分の歩数を自動で差し引いてカロリーを計算するよ（二重に足さない）</div>
       </div>
     </div>
 
@@ -3690,6 +3784,273 @@ const GOALS = {
 function currentGoal(){ return GOALS[state.goalType] || GOALS.shape; }
 function calcKcal(met, minutes){
   return Math.round(met * state.weight * (minutes/60) * 1.05);
+}
+
+/* ============ 歩数・さんぽ（位置情報＋加速度センサー・費用ゼロ） ============
+   Webアプリの正直な限界：スマホ標準の歩数計（ヘルスケア/Google Fit）はWebから読めず、
+   画面を閉じている間のバックグラウンド計測もできない。そこで2本立てにする。
+   ①手入力：スマホに出ている「今日の合計歩数」を写す（毎日の主な使い方）
+   ②さんぽ計測：散歩の間だけ画面を点けたまま、GPSで距離・加速度センサーで歩数を実測
+   同じ日に両方使うと歩数が二重になるので、手入力は「計測ぶんを差し引いた残り」だけを
+   カロリー換算する（勝手に二重加算しない）。位置座標は保存しない＝残すのは数字だけ */
+var WALK_GOAL_STEPS = 8000;
+function walkStride(){
+  // 歩幅(m) ≒ 身長×0.43。極端な値にならないよう範囲を絞る
+  var h = state.height || 158;
+  return Math.max(0.5, Math.min(0.9, h * 0.0043));
+}
+/* 歩行速度(km/h)→MET（アプリ既存の calcKcal と同じ「総消費」の流儀に合わせる） */
+function walkMet(kmh){
+  if(kmh < 3.2) return 2.8;
+  if(kmh < 4.8) return 3.5;
+  if(kmh < 5.6) return 4.3;
+  if(kmh < 6.5) return 5.0;
+  return 7.0;   // 小走り
+}
+/* 当日データ。sessions=さんぽ計測の結果 / manual=スマホ歩数計の今日の合計（手入力） */
+var walkDay = { k:'', manual:0, sessions:[] };
+function walkAgg(){
+  var sSteps = 0, sKcal = 0, sDist = 0;
+  walkDay.sessions.forEach(function(s){ sSteps += s.steps; sKcal += s.kcal; sDist += s.dist; });
+  // 手入力（=スマホの合計）には計測中の歩数も含まれているはずなので、差分だけを足す
+  var extra = Math.max(0, walkDay.manual - sSteps);
+  return {
+    steps: sSteps + extra,
+    dist:  sDist + extra * walkStride(),
+    kcal:  sKcal + calcKcal(3.5, extra / 100)   // 徒歩はおよそ100歩/分で換算
+  };
+}
+function walkSave(){
+  try{ localStorage.setItem('smile24_walk', JSON.stringify({ k: waterKey(), m: walkDay.manual, s: walkDay.sessions })); }catch(e){}
+}
+function walkLoad(){
+  walkDay = { k: waterKey(), manual: 0, sessions: [] };
+  try{
+    var j = JSON.parse(localStorage.getItem('smile24_walk') || 'null');
+    if(j && j.k === waterKey()){ walkDay.manual = j.m || 0; walkDay.sessions = j.s || []; }
+  }catch(e){}
+}
+function activityKcal(){
+  return state.exerciseKcal + walkAgg().kcal;
+}
+function renderWalkCard(){
+  var a = walkAgg();
+  var el = function(id){ return document.getElementById(id); };
+  if(!el('walkStepsVal')) return;
+  el('walkStepsVal').textContent = a.steps.toLocaleString();
+  el('walkDistVal').textContent = (a.dist / 1000).toFixed(1) + ' km';
+  el('walkKcalVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal';
+  el('walkBurnVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal';
+  el('walkGoalPct').textContent = Math.min(999, Math.round(a.steps / WALK_GOAL_STEPS * 100)) + '%';
+  var note = el('walkNote');
+  if(a.steps >= WALK_GOAL_STEPS) note.textContent = '今日の目標 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩を達成！よく歩いたね';
+}
+
+/* ── 歩数の手入力 ── */
+function openStepsSheet(){
+  var el = document.getElementById('stepsInput');
+  el.value = walkDay.manual || '';
+  updateStepsPreview();
+  el.oninput = updateStepsPreview;
+  showSheet('stepsSheet');
+}
+function updateStepsPreview(){
+  var n = parseInt(document.getElementById('stepsInput').value) || 0;
+  var box = document.getElementById('stepsPreview');
+  if(n <= 0){ box.textContent = ''; return; }
+  var sSteps = 0; walkDay.sessions.forEach(function(s){ sSteps += s.steps; });
+  var extra = Math.max(0, n - sSteps);
+  var kcal = calcKcal(3.5, extra / 100);
+  var dist = (extra * walkStride() / 1000).toFixed(1);
+  box.textContent = sSteps > 0
+    ? 'さんぽ計測ぶん ' + sSteps.toLocaleString() + ' 歩を差し引いて、残り ' + extra.toLocaleString() + ' 歩 ≒ ' + dist + 'km・約' + kcal + 'kcal を足すよ'
+    : n.toLocaleString() + ' 歩 ≒ 約' + dist + 'km・消費 約' + kcal + 'kcal だよ';
+}
+function saveManualSteps(){
+  var n = parseInt(document.getElementById('stepsInput').value);
+  if(isNaN(n) || n < 0){ showToast('今日の合計歩数を入れてね'); return; }
+  if(n > 99999){ showToast('歩数が大きすぎるみたい。数字を確かめてね'); return; }
+  walkDay.manual = n;
+  walkSave();
+  renderWalkCard();
+  recalc();
+  hideSheet('stepsSheet');
+  var a = walkAgg();
+  showToast('今日の歩数 ' + a.steps.toLocaleString() + ' 歩を記録したよ（+' + a.kcal + 'kcal 消費）');
+  setFlagToday('smile24_walk_day');
+}
+
+/* ── さんぽ計測（セッション中だけセンサーを使う） ── */
+var walk = {
+  on:false, t0:0, elapsed:0, activeSecs:0, timer:null,
+  steps:0, dist:0, lastFix:null, watchId:null,
+  gpsOk:false, motionOk:false, wakeLock:null,
+  emaG:null, smooth:0, above:false, lastStepAt:0,
+  lastTickSteps:0, lastTickDist:0
+};
+function openWalkSheet(){
+  walkResetUi();
+  showSheet('walkSheet');
+}
+function walkResetUi(){
+  document.getElementById('wkTime').textContent = '0:00';
+  document.getElementById('wkSteps').innerHTML = '0<span>歩</span>';
+  document.getElementById('wkDist').innerHTML = '0<span>m</span>';
+  document.getElementById('wkKcal').innerHTML = '0<span>kcal</span>';
+  document.getElementById('wkStatus').textContent = '「計測をはじめる」を押すと、位置情報とセンサーの許可を聞くよ。画面は点けたまま歩いてね（画面を消すと計測が止まるのがWebアプリの仕様）';
+  document.getElementById('wkMainBtn').textContent = '計測をはじめる';
+  walkSensorChip('wkSensorGps', 'GPS 待機中', false);
+  walkSensorChip('wkSensorMotion', '歩数センサー 待機中', false);
+}
+function walkSensorChip(id, text, on){
+  var el = document.getElementById(id);
+  el.textContent = text;
+  el.classList.toggle('on', !!on);
+}
+function walkToggle(){
+  if(walk.on){ walkFinish(); } else { walkStart(); }
+}
+function walkStart(){
+  walk.on = true; walk.t0 = Date.now(); walk.elapsed = 0; walk.activeSecs = 0;
+  walk.steps = 0; walk.dist = 0; walk.lastFix = null;
+  walk.gpsOk = false; walk.motionOk = false;
+  walk.emaG = null; walk.smooth = 0; walk.above = false; walk.lastStepAt = 0;
+  walk.lastTickSteps = 0; walk.lastTickDist = 0;
+  document.getElementById('wkMainBtn').textContent = '終了して記録する';
+  document.getElementById('wkStatus').textContent = '計測中…。ポケットや手に持ったままでOK。終わったら「終了して記録する」を押してね';
+
+  // 位置情報（拒否されても歩数だけで続行できる）
+  if(navigator.geolocation){
+    walk.watchId = navigator.geolocation.watchPosition(walkOnFix, function(){
+      walkSensorChip('wkSensorGps', 'GPS なし（歩数で計算）', false);
+    }, { enableHighAccuracy:true, maximumAge:1000, timeout:15000 });
+  }else{
+    walkSensorChip('wkSensorGps', 'GPS 非対応', false);
+  }
+  // 加速度センサー（iOSは明示的な許可が必要。この関数はボタンタップから呼ばれるので出せる）
+  if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
+    DeviceMotionEvent.requestPermission().then(function(st){
+      if(st === 'granted') walkArmMotion();
+      else walkSensorChip('wkSensorMotion', '歩数センサー 許可なし', false);
+    }).catch(function(){ walkSensorChip('wkSensorMotion', '歩数センサー 許可なし', false); });
+  }else if(typeof DeviceMotionEvent !== 'undefined'){
+    walkArmMotion();
+  }else{
+    walkSensorChip('wkSensorMotion', '歩数センサー 非対応', false);
+  }
+  // 画面を点けたままにする（対応端末のみ。失敗しても計測は続く）
+  if(navigator.wakeLock && navigator.wakeLock.request){
+    navigator.wakeLock.request('screen').then(function(wl){ walk.wakeLock = wl; }).catch(function(){});
+  }
+  walk.timer = setInterval(walkTick, 1000);
+}
+function walkArmMotion(){
+  window.addEventListener('devicemotion', walkOnMotion);
+}
+/* 歩数検出：重力を除いた加速度の山を数える。
+   しきい値1.2m/s²を上に抜けた回数＝歩数（300ms以内の連続は同じ一歩とみなす）。
+   走りでも歩きでも1歩ごとに上下動が1回来る、という単純な性質だけを使う */
+function walkOnMotion(e){
+  var a = e.accelerationIncludingGravity;
+  if(!a || a.x == null) return;
+  var mag = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
+  if(walk.emaG == null) walk.emaG = mag;
+  walk.emaG = walk.emaG * 0.96 + mag * 0.04;          // ゆっくり動く成分＝重力とみなす
+  var hp = mag - walk.emaG;
+  walk.smooth = walk.smooth * 0.6 + hp * 0.4;          // 細かい振動をならす
+  if(!walk.motionOk){ walk.motionOk = true; walkSensorChip('wkSensorMotion', '歩数センサー 計測中', true); }
+  var now = Date.now();
+  if(!walk.above && walk.smooth > 1.2){
+    walk.above = true;
+    if(now - walk.lastStepAt > 300){ walk.steps++; walk.lastStepAt = now; }
+  }else if(walk.above && walk.smooth < 0.6){
+    walk.above = false;                                 // ヒステリシス：戻るまで次の山を数えない
+  }
+}
+/* GPS：精度の悪い測位とその場の揺らぎを捨て、徒歩としてあり得る移動だけ距離に足す */
+function walkOnFix(pos){
+  var c = pos.coords;
+  if(!walk.gpsOk){ walk.gpsOk = true; walkSensorChip('wkSensorGps', 'GPS 計測中', true); }
+  if(c.accuracy > 35) return;                           // ビル陰などの粗い測位は使わない
+  var cur = { lat: c.latitude, lon: c.longitude, t: pos.timestamp || Date.now() };
+  if(!walk.lastFix){ walk.lastFix = cur; return; }
+  var d = walkHaversine(walk.lastFix, cur);
+  var dt = (cur.t - walk.lastFix.t) / 1000;
+  if(dt <= 0) return;
+  if(d < Math.max(6, c.accuracy * 0.5)) return;         // 立ち止まり中のジッタは無視
+  var v = d / dt;
+  if(v <= 4.2) walk.dist += d;                          // 徒歩〜小走りの速度だけ加算（車やワープは捨てる）
+  walk.lastFix = cur;
+}
+function walkHaversine(a, b){
+  var R = 6371000, rad = Math.PI / 180;
+  var dLat = (b.lat - a.lat) * rad, dLon = (b.lon - a.lon) * rad;
+  var s = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  return 2 * R * Math.asin(Math.sqrt(s));
+}
+/* 毎秒の表示更新。カロリーは「動いていた時間」だけで計算する
+   （信号待ちや立ち話の間まで歩行の消費として足すと、実態より多く出てしまう） */
+function walkTick(){
+  walk.elapsed = Math.round((Date.now() - walk.t0) / 1000);
+  var moved = (walk.steps > walk.lastTickSteps) || (walk.dist - walk.lastTickDist > 1.5);
+  if(moved) walk.activeSecs++;
+  walk.lastTickSteps = walk.steps; walk.lastTickDist = walk.dist;
+  var m = Math.floor(walk.elapsed / 60), s = walk.elapsed % 60;
+  document.getElementById('wkTime').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  document.getElementById('wkSteps').innerHTML = walk.steps.toLocaleString() + '<span>歩</span>';
+  var dEff = walkEffectiveDist();
+  document.getElementById('wkDist').innerHTML = dEff >= 1000
+    ? (dEff/1000).toFixed(2) + '<span>km</span>'
+    : Math.round(dEff) + '<span>m</span>';
+  document.getElementById('wkKcal').innerHTML = walkSessionKcal() + '<span>kcal</span>';
+}
+/* 距離はGPSを優先し、GPSが使えない（屋内・許可なし）時だけ歩数×歩幅で推定する */
+function walkEffectiveDist(){
+  if(walk.dist > 30) return walk.dist;
+  return walk.steps * walkStride();
+}
+function walkSessionKcal(){
+  var mins = walk.activeSecs / 60;
+  if(mins <= 0) return 0;
+  var d = walkEffectiveDist();
+  var kmh = (d / 1000) / (walk.activeSecs / 3600 || 1);
+  return calcKcal(walkMet(kmh), mins);
+}
+function walkStopSensors(){
+  if(walk.watchId != null && navigator.geolocation){ navigator.geolocation.clearWatch(walk.watchId); walk.watchId = null; }
+  window.removeEventListener('devicemotion', walkOnMotion);
+  if(walk.timer){ clearInterval(walk.timer); walk.timer = null; }
+  if(walk.wakeLock){ try{ walk.wakeLock.release(); }catch(e){} walk.wakeLock = null; }
+}
+function walkFinish(){
+  walkStopSensors();
+  walk.on = false;
+  var dist = Math.round(walkEffectiveDist());
+  var steps = walk.steps > 0 ? walk.steps : Math.round(dist / walkStride());  // センサー無し端末は距離から推定
+  var kcal = walkSessionKcal();
+  var mins = Math.max(1, Math.round(walk.elapsed / 60));
+  if(walk.elapsed < 60 || (steps < 30 && dist < 50)){
+    document.getElementById('wkStatus').textContent = '短すぎたので記録しなかったよ（1分以上・30歩以上が目安）。もう一度どうぞ';
+    document.getElementById('wkMainBtn').textContent = '計測をはじめる';
+    return;
+  }
+  walkDay.sessions.push({ min: mins, steps: steps, dist: dist, kcal: kcal });
+  walkSave();
+  renderWalkCard();
+  recalc();
+  state.exerciseLog.push({ label:'さんぽ（計測）', minutes: mins, kcal: kcal });
+  if(typeof renderExerciseLog === 'function') renderExerciseLog();
+  addJewels(10); addXp(20);
+  setFlagToday('smile24_walk_day');
+  hideSheet('walkSheet');
+  showToast('さんぽ ' + mins + '分・' + steps.toLocaleString() + '歩・' +
+            (dist >= 1000 ? (dist/1000).toFixed(1) + 'km' : dist + 'm') +
+            ' を記録したよ（+' + kcal + 'kcal 消費）');
+}
+function walkClose(){
+  if(walk.on){ walkStopSensors(); walk.on = false; }   // 記録せず中断
+  hideSheet('walkSheet');
 }
 
 /* ============ 基礎代謝（BMR）簡易計算 ============ */
@@ -4828,6 +5189,10 @@ function preloadMealAI(){
       return loadImgProto();
     })
     .then(function(){
+      // 系統プロトタイプ（21KB。無くても系統判定がテキストのみに戻るだけ）
+      return loadFamProto();
+    })
+    .then(function(){
       MEAL_AI.status = 'ready';
     })
     .catch(function(e){
@@ -5009,6 +5374,43 @@ function applyImgProto(scores, bestCos){
   return out;
 }
 
+/* ── 系統プロトタイプ（SNS風写真での異ソース評価で効果を確認済み・こちらは有効） ──
+   品目単位の視覚プロトタイプは「かけうどん vs かけそば」を分けられず無効化したが、
+   系統単位（うどん系・カレー系…）なら画像の近さが正しく働く。
+   Commonsの1万枚から系統ごとの代表ベクトルを作り、テキスト判定と1:1で配合する。
+   実測（学習=Commons/評価=Flickr573枚・同一写真除去済み）：
+   系統top1 34.6%→41.9% / 「近い系統ボタン3つ」に正解が入る率 54.1%→61.3% */
+var MEAL_FAMPROTO_URL = 'smile24-mealai-family.json?v=-1973537613';
+var MEAL_FAMPROTO_RAW = null;
+var MEAL_FAMPROTO = null;       // { keys:[系統key], rows:[Float32Array] }
+var MEAL_FAM_BETA = 0.5;        // 画像の配合率
+var MEAL_FAM_ASK = 0.5;         // この確度以上で「何うどん？」の聞き返しを出す（実測 的中71%）
+function loadFamProto(){
+  if(MEAL_FAMPROTO_RAW !== null) return Promise.resolve(MEAL_FAMPROTO_RAW);
+  return fetch(MEAL_FAMPROTO_URL, { cache:'force-cache' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      MEAL_FAMPROTO_RAW = j || false;
+      if(j && j.keys && j.hash === mealPromptHash(mealPromptTexts().texts)){
+        MEAL_FAMPROTO = { keys: j.keys, rows: decodePresetEmb(j) };
+        if(typeof j.beta === 'number') MEAL_FAM_BETA = j.beta;
+        if(typeof j.thAsk === 'number') MEAL_FAM_ASK = j.thAsk;
+      }
+      return MEAL_FAMPROTO_RAW;
+    })
+    .catch(function(){ MEAL_FAMPROTO_RAW = false; return null; });
+}
+/* 写真の埋め込み→系統ごとの確率（softmax・CLIPと同じ温度）。無ければnull */
+function famImgScores(bestCos){
+  var P = MEAL_FAMPROTO;
+  if(!P || !P.rows.length) return null;
+  var s = P.rows.map(bestCos), mx = Math.max.apply(null, s);
+  var ex = s.map(function(x){ return Math.exp((x - mx) * 100); });
+  var sum = ex.reduce(function(a, b){ return a + b; }, 0);
+  var out = {};
+  P.keys.forEach(function(k, i){ out[k] = ex[i] / sum; });
+  return out;
+}
 function b64ToBytes(b64){
   var bin = atob(b64);
   var u = new Uint8Array(bin.length);
@@ -5237,7 +5639,9 @@ function recognizeMeal(dataUrl){
       var sum = exps.reduce(function(a,b){ return a+b; }, 0);
       var rank = scores.map(function(s,i){ return { i:i, p: exps[i]/sum, cos:s }; })
         .sort(function(a,b){ return b.p - a.p; });
-      return { rank: rank, nonfood: nonfood };
+      /* 系統の画像スコア（うどん系・カレー系…）。品目の順位とは独立に計算する */
+      var famImg = famImgScores(bestCos);
+      return { rank: rank, nonfood: nonfood, famImg: famImg };
     })
     .catch(function(){ return null; });
 }
@@ -5248,6 +5652,7 @@ var fpTemp = null;       // ピッカー編集中の作業コピー
 var fpCat = 'all';
 var fpAiRank = null;     // 直近のAI読み取り結果
 var fpNonFood = null;    // 「料理以外（成分表示など）」の判定結果
+var fpFamImg = null;     // 系統の画像スコア（うどん系・カレー系…の確率。無ければnull）
 var fpNonFoodOpen = false;  // 料理以外パネルを表示中か（true の間は品目リストを出さない）
 var fpFamily = null;     // 絞り込み質問モード：「うどんに見えるけど何うどん？」の系統
 var fpFamilyChoices = null;  // 低確信時に提示する「近い系統」ボタン（最大3つ）
@@ -5379,6 +5784,7 @@ function capture(){
   Promise.all([recog, minWait]).then(function(rs){
     an.classList.remove('active');
     var r = rs[0];
+    fpFamImg = r ? r.famImg : null;
     openFoodPicker(pendingMealPhoto, r ? r.rank : null, r ? r.nonfood : null);
   });
 }
@@ -5390,6 +5796,7 @@ function retake(){
   mealSel = [];
   fpAiRank = null;
   fpNonFood = null;
+  fpFamImg = null;
   fpNonFoodOpen = false;
   applyResultPhoto(null);
   startMealCamera();
@@ -5421,7 +5828,32 @@ function openFoodPicker(photo, aiRank, nonfood){
       famScore[f2.key] = (famScore[f2.key] || 0) + r.p;
       famObj[f2.key] = f2;
     });
-    var famRank = Object.keys(famScore).sort(function(a,b){ return famScore[b] - famScore[a]; });
+    /* 系統の画像スコアを1:1で配合する（異ソース評価で top1 +7pt / top3 +7pt を確認済み）。
+       テキスト側は合計1に正規化してから混ぜる＝配合後は「系統の確率」として読める。
+       画像側だけが推す系統（テキスト候補トップ10に1品も入っていない系統）も
+       ボタンに出せるよう、famObj をその場で補完する */
+    if(fpFamImg){
+      var tSum = 0, fk;
+      for(fk in famScore) tSum += famScore[fk];
+      var blended = {};
+      Object.keys(fpFamImg).forEach(function(k){
+        var t = tSum > 0 ? (famScore[k] || 0) / tSum : 0;
+        blended[k] = (1 - MEAL_FAM_BETA) * t + MEAL_FAM_BETA * fpFamImg[k];
+      });
+      famScore = blended;
+      for(fk in famScore){
+        if(!famObj[fk] && famScore[fk] > 0.05){
+          var hit = null;
+          for(var fi2 = 0; fi2 < FOOD_DB.length && !hit; fi2++){
+            var f3 = familyOf(FOOD_DB[fi2]);
+            if(f3 && f3.key === fk) hit = f3;
+          }
+          if(hit) famObj[fk] = hit;
+        }
+      }
+    }
+    var famRank = Object.keys(famScore).filter(function(k){ return famObj[k]; })
+      .sort(function(a,b){ return famScore[b] - famScore[a]; });
     function famTotalOf(key){
       var n = 0;
       FOOD_DB.forEach(function(it){ var f2 = familyOf(it); if(f2 && f2.key === key) n++; });
@@ -5432,7 +5864,7 @@ function openFoodPicker(photo, aiRank, nonfood){
     if(top.p >= MEAL_ASSERT_P){
       fpTemp.push({ kind:'db', idx:top.i, portion:(FOOD_DB[top.i].def||0), qty:1 });
       note.textContent = '【' + FOOD_DB[top.i].name + '】に見えるよ。下の候補トップ5で違ったら選び直してね（複数OK）';
-    } else if(famRank.length && famScore[famRank[0]] >= 0.30 && famTotalOf(famRank[0]) >= 3){
+    } else if(famRank.length && famScore[famRank[0]] >= (fpFamImg ? MEAL_FAM_ASK : 0.30) && famTotalOf(famRank[0]) >= 3){
       fpFamily = famObj[famRank[0]];
       note.textContent = '写真は【' + fpFamily.label + '】に見えるよ。まず候補トップ5を見て、違ったらどの' + fpFamily.label + 'か選んでね';
     } else {
@@ -5762,7 +6194,7 @@ function renderMealBadgeAndAdvice(tot){
   badge.style.background = color;
   // アドバイス（管理栄養士の観点：1食の目安との過不足→次の食事でのリカバリーまで具体的に）
   var lines = [];
-  var daily = state.baseConsumption + state.exerciseKcal;
+  var daily = state.baseConsumption + activityKcal();
   var SLOT_SHARE = { breakfast:0.25, lunch:0.35, dinner:0.35, snack:0.10 };
   var SLOT_NAME = { breakfast:'朝食', lunch:'昼食', dinner:'夕食', snack:'間食' };
   var budget = Math.round(daily * (SLOT_SHARE[slot] || 0.3));
@@ -6605,7 +7037,7 @@ function renderMealHistory(){
 
 /* ============ ホーム表示の再計算 ============ */
 function recalc(){
-  var totalConsumption = state.baseConsumption + state.exerciseKcal;
+  var totalConsumption = state.baseConsumption + activityKcal();
   var totalIntake = state.intakeKcal;
   var remaining = totalConsumption - totalIntake;
   var scale = 2400;
@@ -6624,7 +7056,8 @@ function recalc(){
   document.getElementById('remainLabel').textContent = remaining>=0 ? 'あと摂れます' : '目安をオーバー';
   document.getElementById('consumeVal').textContent = totalConsumption.toLocaleString()+' kcal';
   document.getElementById('intakeVal').textContent = totalIntake.toLocaleString()+' kcal';
-  document.getElementById('exerciseAddedVal').textContent = '+'+state.exerciseKcal.toLocaleString()+' kcal';
+  /* 「運動での追加消費」は運動記録＋歩き（さんぽ計測・歩数入力）の合計 */
+  document.getElementById('exerciseAddedVal').textContent = '+'+activityKcal().toLocaleString()+' kcal';
 
   var pPct = Math.min(Math.round(state.proteinIntake/state.proteinTarget*100), 100);
   document.getElementById('proteinPct').textContent = pPct+'%';
@@ -6863,7 +7296,7 @@ var chatTopics = [
       return 'おやすみなさい🌙 睡眠は最高の回復トレーニング。筋肉は寝ている間に育つから、今日の頑張りはちゃんと実になるよ。また明日ね！';
   }},
   { keys:['お腹すいた','おなかすいた','腹減った','はらへった','小腹'], gen:function(){
-      var remainK = Math.max((state.baseConsumption + state.exerciseKcal) - state.intakeKcal, 0);
+      var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
       return 'お腹すいたんだね！今日はあと約' + remainK + 'kcal食べられるよ。' +
         (remainK >= 400 ? '「献立を提案して」でしっかりごはんを組もうか！' : '残りが少なめだから、ゆで卵・ギリシャヨーグルト・ミックスナッツ少量あたりの「質のいい間食」がおすすめだよ。');
   }},
@@ -6994,7 +7427,7 @@ function foodAnswer(idx, intent, qty){
   var note = m.approx ? '（グラム換算のデータがない食品だから標準量で答えるね）' : '';
   var body;
   if(intent === 'kcal'){
-    var remainK = Math.max((state.baseConsumption + state.exerciseKcal) - state.intakeKcal, 0);
+    var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
     body = it.name + 'は' + m.label + 'で約' + m.kcal + 'kcalだよ' + note + '。今日はあと約' + remainK + 'kcal食べられる計算だから、' +
       (m.kcal <= remainK ? 'ちょうど収まるね。' : '少しオーバー気味。量を調整してもいいかも。');
   } else if(intent === 'p'){
@@ -7221,7 +7654,7 @@ function proposeMenu(text){
   var style = /コンビニ|こんびに/.test(nt) ? 'conbini'
             : /軽め|かるめ|あっさり|少なめ/.test(nt) ? 'light'
             : /がっつり|しっかり|たくさん/.test(nt) ? 'gatsuri' : null;
-  var remainK = Math.max((state.baseConsumption + state.exerciseKcal) - state.intakeKcal, 0);
+  var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
   var remainP = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
   // 「昼食何にしよう」のように食事の指定があればそちらを優先（今の時刻より発話が正）
   var slot = /朝食|朝ごはん|朝ご飯|朝めし/.test(text||'') ? 'breakfast'
@@ -7229,7 +7662,7 @@ function proposeMenu(text){
            : /夕食|夕飯|夜ごはん|夜ご飯|晩ごはん|晩ご飯|晩御飯|ディナー/.test(text||'') ? 'dinner'
            : mealSlotByHour();
   var SLOT_NAME = { breakfast:'朝食', lunch:'昼食', dinner:'夕食', snack:'間食' };
-  var budget = Math.min(remainK, Math.round((state.baseConsumption + state.exerciseKcal) * (slot==='breakfast'?0.25:slot==='snack'?0.15:0.35)));
+  var budget = Math.min(remainK, Math.round((state.baseConsumption + activityKcal()) * (slot==='breakfast'?0.25:slot==='snack'?0.15:0.35)));
   if(!style) style = budget < 450 ? 'light' : 'washoku';
   var set = MENU_SETS[style];
   // 予算に一番近い組み合わせを選ぶ（同点はローテーションで変化をつける）
@@ -7289,7 +7722,7 @@ function compareFoods(a, b){
 function canEatAnswer(idx){
   var it = FOOD_DB[idx];
   var po = it.portions[it.def||0] || it.portions[0];
-  var remainK = Math.max((state.baseConsumption + state.exerciseKcal) - state.intakeKcal, 0);
+  var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
   var h = new Date().getHours();
   var late = (h >= 21 || h <= 3);
   chatLastFood = idx;
@@ -7302,7 +7735,7 @@ function canEatAnswer(idx){
   return it.name + 'は' + po.label + 'で約' + po.kcal + 'kcal。今日の残り約' + remainK + 'kcalだとちょっと窮屈かな…。半分にする・シェアする・明日のお楽しみにする、のどれかで調整しよう。我慢しすぎもストレスだから「量で調整」が合言葉だよ！';
 }
 function balanceAnswer(){
-  var target = state.baseConsumption + state.exerciseKcal;
+  var target = state.baseConsumption + activityKcal();
   var kPct = target ? Math.round(state.intakeKcal / target * 100) : 0;
   var pGap = Math.round(state.proteinTarget - state.proteinIntake);
   var fOver = state.fatIntake - state.fatTarget;
@@ -8526,7 +8959,7 @@ function togglePrivacyPref(key){
 }
 /* ============ 記録データの書き出し・読み込み（端末変更・データ消失への備え） ============ */
 var APP_DATA_KEYS = ['smile24_account','smile24_members','smile24_entry_log','smile24_occupancy','smile24_checked_in',
-  'smile24_water','smile24_jewel_on','smile24_goal','smile24_partner_name','smile24_notif_prefs','smile24_privacy_prefs',
+  'smile24_water','smile24_walk','smile24_jewel_on','smile24_goal','smile24_partner_name','smile24_notif_prefs','smile24_privacy_prefs',
   'smile24_logged_in','smile24_font_scale','smile24_withdraw_request','smile24_trial','smile24_news_read'];
 function exportAppData(){
   var data = { app:'smile24', exportedAt:new Date().toISOString(), values:{} };
@@ -8960,7 +9393,7 @@ function trendWeight(){
 function trendKcal(kind){
   var isIn = kind==='in';
   var vals = state.weekCalorieHistory.map(function(d){ return isIn ? d.intake : d.burn; });
-  vals.push(isIn ? state.intakeKcal : state.baseConsumption + state.exerciseKcal);
+  vals.push(isIn ? state.intakeKcal : state.baseConsumption + activityKcal());
   var opts = isIn
     ? {grad:['#7FAFFA','#4A85F6'], base:'#DBE9FE', avg:true}
     : {grad:['#6FD6AC','#0E6E4D'], base:'#CFF2E4', avg:true};
@@ -9568,6 +10001,8 @@ renderTrend();
   }catch(e){}
   renderWater();
 })();
+walkLoad();        // 今日の歩数（手入力＋さんぽ計測）を復元。日付が変わっていれば0から
+renderWalkCard();
 recalc();
 renderPlan();
 renderWeightChart();
