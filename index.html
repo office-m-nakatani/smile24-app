@@ -2607,7 +2607,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-03c</b>（肉ぶっかけうどんを追加＆写真からうどんの種類を見分ける並べ替えを追加）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-04a</b>（写真の見分けを拡張：パスタは何ソースか・ピザの系統も読んで並べ替えるよ）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -5498,10 +5498,10 @@ function applyImgProto(scores, bestCos){
    Commonsの1万枚から系統ごとの代表ベクトルを作り、テキスト判定と1:1で配合する。
    実測（学習=Commons/評価=Flickr573枚・同一写真除去済み）：
    系統top1 34.6%→41.9% / 「近い系統ボタン3つ」に正解が入る率 54.1%→61.3% */
-var MEAL_FAMPROTO_URL = 'smile24-mealai-family.json?v=126865183';
+var MEAL_FAMPROTO_URL = 'smile24-mealai-family.json?v=126865183c';
 var MEAL_FAMPROTO_RAW = null;
 var MEAL_FAMPROTO = null;       // { keys:[系統key], rows:[Float32Array] }
-var MEAL_UDONSUB = null;        // うどんサブタイプ { keys, rows, map:{品目id→sub}, beta }。family JSONに同梱
+var MEAL_SUBS = null;           // 系統内サブタイプ { famKey: {keys, rows, map:{品目id→sub}, beta} }。family JSONに同梱（うどんの種類・パスタのソース系統・ピザの系統）
 var MEAL_FAM_BETA = 0.5;        // 画像の配合率
 var MEAL_FAM_ASK = 0.5;         // この確度以上で「何うどん？」の聞き返しを出す（実測 的中71%）
 function loadFamProto(){
@@ -5514,10 +5514,20 @@ function loadFamProto(){
         MEAL_FAMPROTO = { keys: j.keys, rows: decodePresetEmb(j) };
         if(typeof j.beta === 'number') MEAL_FAM_BETA = j.beta;
         if(typeof j.thAsk === 'number') MEAL_FAM_ASK = j.thAsk;
-        /* うどんサブタイプ（同梱sub）。無ければnullのまま＝従来どおりテキスト順 */
-        if(j.sub && j.sub.keys && j.sub.map){
-          MEAL_UDONSUB = { keys: j.sub.keys, rows: decodePresetEmb(j.sub), map: j.sub.map,
-                           beta: (typeof j.sub.beta === 'number') ? j.sub.beta : 0.5 };
+        /* 系統内サブタイプ（同梱subs: うどん/パスタ/ピザ）。無ければnullのまま＝従来どおりテキスト順 */
+        if(j.subs){
+          MEAL_SUBS = {};
+          Object.keys(j.subs).forEach(function(fk){
+            var s = j.subs[fk];
+            if(s && s.keys && s.map){
+              MEAL_SUBS[fk] = { keys: s.keys, rows: decodePresetEmb(s), map: s.map,
+                                beta: (typeof s.beta === 'number') ? s.beta : 0.5 };
+            }
+          });
+        } else if(j.sub && j.sub.keys && j.sub.map){
+          /* 旧形式（うどん単独）でも動くように */
+          MEAL_SUBS = { udon: { keys: j.sub.keys, rows: decodePresetEmb(j.sub), map: j.sub.map,
+                                beta: (typeof j.sub.beta === 'number') ? j.sub.beta : 0.5 } };
         }
       }
       return MEAL_FAMPROTO_RAW;
@@ -5535,15 +5545,22 @@ function famImgScores(bestCos){
   P.keys.forEach(function(k, i){ out[k] = ex[i] / sum; });
   return out;
 }
-/* うどんサブタイプ（汁・ぶっかけ・釜玉…）の確率。系統と同じ計算。無ければnull */
-function udonSubScores(bestCos){
-  var P = MEAL_UDONSUB;
-  if(!P || !P.rows.length) return null;
-  var s = P.rows.map(bestCos), mx = Math.max.apply(null, s);
-  var ex = s.map(function(x){ return Math.exp((x - mx) * 100); });
-  var sum = ex.reduce(function(a, b){ return a + b; }, 0);
-  var out = {};
-  P.keys.forEach(function(k, i){ out[k] = ex[i] / sum; });
+/* 系統内サブタイプ（うどんの種類・パスタのソース系統・ピザの系統）の確率。
+   系統と同じ計算を持っている系統ぶんだけ行う。無ければnull */
+function subScoresAll(bestCos){
+  if(!MEAL_SUBS) return null;
+  var out = null;
+  Object.keys(MEAL_SUBS).forEach(function(fk){
+    var P = MEAL_SUBS[fk];
+    if(!P.rows.length) return;
+    var s = P.rows.map(bestCos), mx = Math.max.apply(null, s);
+    var ex = s.map(function(x){ return Math.exp((x - mx) * 100); });
+    var sum = ex.reduce(function(a, b){ return a + b; }, 0);
+    var probs = {};
+    P.keys.forEach(function(k, i){ probs[k] = ex[i] / sum; });
+    out = out || {};
+    out[fk] = probs;
+  });
   return out;
 }
 function b64ToBytes(b64){
@@ -5776,9 +5793,9 @@ function recognizeMeal(dataUrl){
         .sort(function(a,b){ return b.p - a.p; });
       /* 系統の画像スコア（うどん系・カレー系…）。品目の順位とは独立に計算する */
       var famImg = famImgScores(bestCos);
-      /* うどんサブタイプの画像スコア（うどんと分かった後の並べ替え用） */
-      var udonSub = udonSubScores(bestCos);
-      return { rank: rank, nonfood: nonfood, famImg: famImg, udonSub: udonSub };
+      /* 系統内サブタイプの画像スコア（うどん/パスタ/ピザと分かった後の並べ替え用） */
+      var subScores = subScoresAll(bestCos);
+      return { rank: rank, nonfood: nonfood, famImg: famImg, subScores: subScores };
     })
     .catch(function(){ return null; });
 }
@@ -5790,7 +5807,7 @@ var fpCat = 'all';
 var fpAiRank = null;     // 直近のAI読み取り結果
 var fpNonFood = null;    // 「料理以外（成分表示など）」の判定結果
 var fpFamImg = null;     // 系統の画像スコア（うどん系・カレー系…の確率。無ければnull）
-var fpUdonSub = null;    // うどんサブタイプの画像スコア（汁・ぶっかけ・釜玉…の確率。無ければnull）
+var fpSubScores = null;  // 系統内サブタイプの画像スコア { famKey: {sub: 確率} }（うどんの種類・パスタのソース系統…。無ければnull）
 var fpNonFoodOpen = false;  // 料理以外パネルを表示中か（true の間は品目リストを出さない）
 var fpFamily = null;     // 絞り込み質問モード：「うどんに見えるけど何うどん？」の系統
 var fpFamilyChoices = null;  // 低確信時に提示する「近い系統」ボタン（最大3つ）
@@ -5802,7 +5819,9 @@ var FOOD_FAMILIES = [
   {key:'udon',   label:'うどん',       re:/うどん/},
   {key:'soba',   label:'そば',         re:/そば/},
   {key:'ramen',  label:'ラーメン',     re:/ラーメン|ちゃんぽん|つけ麺|冷やし中華|ワンタン麺|担々麺|まぜそば/},
-  {key:'pasta',  label:'パスタ',       re:/パスタ|スパゲ|ペペロンチーノ|カルボナーラ|ミートソース|ナポリタン|ジェノベーゼ|ボンゴレ|アラビアータ|ラザニア|ニョッキ/},
+  {key:'pasta',  label:'パスタ',       re:/パスタ|スパゲ|ペペロンチーノ|カルボナーラ|ミートソース|ナポリタン|ジェノベーゼ|ボンゴレ|アラビアータ|ラザニア|ニョッキ|ペンネ/},
+  /* ピザは焼き魚(照り焼き)・パン(トースト)より先に置く（照り焼きチキンピザ・ピザトーストを正しく吸う） */
+  {key:'pizza',  label:'ピザ',         re:/ピザ|ピッツ|マルゲリータ|マリナーラ/},
   {key:'don',    label:'丼もの',       re:/丼/},
   {key:'rice',   label:'ご飯もの',     re:/ご飯|ごはん|おかゆ|雑炊|お茶漬け|粥/},
   {key:'onigiri',label:'おにぎり',     re:/おにぎり|おむすび/},
@@ -5923,7 +5942,7 @@ function capture(){
     an.classList.remove('active');
     var r = rs[0];
     fpFamImg = r ? r.famImg : null;
-    fpUdonSub = r ? r.udonSub : null;
+    fpSubScores = r ? r.subScores : null;
     openFoodPicker(pendingMealPhoto, r ? r.rank : null, r ? r.nonfood : null);
   });
 }
@@ -5936,7 +5955,7 @@ function retake(){
   fpAiRank = null;
   fpNonFood = null;
   fpFamImg = null;
-  fpUdonSub = null;
+  fpSubScores = null;
   fpNonFoodOpen = false;
   applyResultPhoto(null);
   startMealCamera();
@@ -5975,10 +5994,14 @@ function openFoodPicker(photo, aiRank, nonfood){
     if(fpFamImg){
       var tSum = 0, fk;
       for(fk in famScore) tSum += famScore[fk];
-      var blended = {};
-      Object.keys(fpFamImg).forEach(function(k){
+      /* テキスト側と画像側の系統キーの和集合で配合する。画像プロトタイプに無い系統
+         （後から追加した系統）もテキスト側の点数で生き残れるようにする */
+      var blended = {}, unionKeys = {};
+      for(fk in famScore) unionKeys[fk] = 1;
+      Object.keys(fpFamImg).forEach(function(k){ unionKeys[k] = 1; });
+      Object.keys(unionKeys).forEach(function(k){
         var t = tSum > 0 ? (famScore[k] || 0) / tSum : 0;
-        blended[k] = (1 - MEAL_FAM_BETA) * t + MEAL_FAM_BETA * fpFamImg[k];
+        blended[k] = (1 - MEAL_FAM_BETA) * t + MEAL_FAM_BETA * (fpFamImg[k] || 0);
       });
       famScore = blended;
       for(fk in famScore){
@@ -6170,19 +6193,21 @@ function renderFoodPickList(){
     }
     list.push({ it:it, idx:idx, sim: rankMap ? rankMap[idx] : idx });
   });
-  if(fpFamily && fpFamily.key === 'udon' && fpUdonSub && !q && fpCat === 'all'){
-    /* うどん絞り込み中は、サブタイプ（汁・ぶっかけ・釜玉…）の画像スコアを
-       テキスト類似と配合して並べ替える（系統判定と同じ流儀・βはJSON同梱値）。
-       テキスト側は表示中のうどん品目内で正規化してから混ぜる。
-       サブタイプ対応表に無い品目（おでん・麺のみ等）は画像側0＝テキスト順のまま後方へ */
-    var subBeta = MEAL_UDONSUB ? MEAL_UDONSUB.beta : 0.5;
+  var subDef = (fpFamily && MEAL_SUBS && MEAL_SUBS[fpFamily.key]) ? MEAL_SUBS[fpFamily.key] : null;
+  var subProbs = (subDef && fpSubScores) ? fpSubScores[fpFamily.key] : null;
+  if(subDef && subProbs && !q && fpCat === 'all'){
+    /* 系統絞り込み中（うどん/パスタ/ピザ）は、サブタイプ（うどんの種類・パスタのソース系統…）の
+       画像スコアをテキスト類似と配合して並べ替える（系統判定と同じ流儀・βはJSON同梱値）。
+       テキスト側は表示中の系統品目内で正規化してから混ぜる。
+       サブタイプ対応表に無い品目は画像側0＝テキスト順のまま後方へ */
+    var subBeta = subDef.beta;
     var pMap = {}, tSum = 0;
     (fpAiRank || []).forEach(function(r){ pMap[r.i] = r.p; });
     list.forEach(function(e){ tSum += (pMap[e.idx] || 0); });
     list.forEach(function(e){
       var t = tSum > 0 ? (pMap[e.idx] || 0) / tSum : 0;
-      var g = MEAL_UDONSUB && MEAL_UDONSUB.map[e.it.id];
-      var sP = (g && fpUdonSub[g]) ? fpUdonSub[g] : 0;
+      var g = subDef.map[e.it.id];
+      var sP = (g && subProbs[g]) ? subProbs[g] : 0;
       e.blend = (1 - subBeta) * t + subBeta * sP;
     });
     list.sort(function(a,b){ return (b.blend - a.blend) || (a.sim - b.sim); });
