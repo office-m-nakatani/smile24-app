@@ -1855,6 +1855,81 @@ input{font-family:inherit;}
   min-height:44px; display:flex; align-items:center; justify-content:center;
 }
 .section-label a{ display:inline-flex; }
+
+/* ========================================
+   2026-08-04b ホーム再設計（情報量を絞り、ボタンで振り分ける）
+   ======================================== */
+/* 今日のアクション3ボタン（入館・今日のメニュー・食事記録） */
+.action-row{display:flex;gap:9px;margin:14px 22px 0;}
+.action-btn{flex:1;min-height:82px;background:#fff;border:none;border-radius:var(--radius-sm);box-shadow:var(--card-shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 4px;cursor:pointer;transition:transform .15s ease;font-family:inherit;}
+.action-btn:active{transform:scale(.96);}
+.action-btn svg{width:23px;height:23px;}
+.action-btn span{font-size:11px;font-weight:700;color:var(--text);line-height:1.3;}
+.action-btn .ab-sub{font-size:8.5px;color:var(--text-lt);font-weight:600;margin-top:-3px;}
+.action-btn.qr{background:linear-gradient(135deg,#27405E,#131C29);}
+.action-btn.qr svg{color:#fff;}
+.action-btn.qr span{color:#fff;}
+.action-btn.qr .ab-sub{color:rgba(255,255,255,.65);}
+.action-btn.menu svg{color:var(--gold-dk);}
+.action-btn.eat svg{color:var(--positive-dk);}
+
+/* カロリーカード：凡例3箱をやめて「目標−食事＋運動＝あと」の式1行に */
+.bc-formula{display:flex;align-items:center;justify-content:space-between;margin-top:14px;background:#F4F7FB;border-radius:12px;padding:9px 12px;}
+.bc-formula .f-item{text-align:center;min-width:0;}
+.bc-formula .f-item .f-l{display:block;font-size:9px;color:var(--text-lt);font-weight:600;}
+.bc-formula .f-item b{font-family:var(--font-en);font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;}
+.bc-formula .f-op{font-size:12px;color:var(--text-lt);font-weight:700;flex:0 0 auto;padding:0 1px;}
+.bc-formula .f-item.remain b{color:var(--gold-dk);}
+.bc-formula .f-unit{font-size:9px;color:var(--text-lt);font-weight:600;flex:0 0 auto;}
+
+/* からだの記録（歩数・水分・体重を1つの開閉にまとめ、初期は閉じる） */
+.acc-head{margin:16px 22px 0;background:#fff;border:none;width:calc(100% - 44px);border-radius:var(--radius-sm);box-shadow:var(--card-shadow);padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px;font-family:inherit;text-align:left;}
+.acc-head svg.acc-ic{width:19px;height:19px;color:var(--gold-dk);flex:0 0 auto;}
+.acc-head .acc-tw{flex:1;min-width:0;}
+.acc-head .acc-t{font-size:13px;font-weight:700;color:var(--text);}
+.acc-head .acc-s{font-size:9.5px;color:var(--text-lt);font-weight:600;margin-top:2px;}
+.acc-head svg.acc-chev{width:16px;height:16px;color:var(--text-lt);flex:0 0 auto;transition:transform .25s;}
+.acc-head.open svg.acc-chev{transform:rotate(180deg);}
+.acc-body{display:none;}
+.acc-body.open{display:block;}
+
+/* タブバー中央の入館ボタン（どの画面からでも1タップでQR） */
+.tab-btn.tab-qr{flex:0 0 62px;margin-top:-24px;}
+.tab-btn.tab-qr .tab-qr-circle{width:54px;height:54px;border-radius:50%;background:var(--grad-main);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(74,133,246,.45);border:3px solid #fff;}
+.tab-btn.tab-qr .tab-qr-circle svg{width:24px;height:24px;color:#fff;}
+.tab-btn.tab-qr span{margin-top:3px;}
+.tab-btn.tab-qr.active{background:transparent;box-shadow:none;color:var(--gold-dk);}
+
+/* ＋記録シート（最頻の記録動作を1か所に） */
+.rec-menu{display:flex;flex-direction:column;gap:9px;}
+.rec-item{display:flex;align-items:center;gap:12px;background:#F4F7FB;border:none;border-radius:14px;padding:13px 15px;min-height:56px;cursor:pointer;width:100%;text-align:left;font-family:inherit;}
+.rec-item svg{width:20px;height:20px;flex:0 0 auto;color:var(--gold-dk);}
+.rec-item .ri-t{font-size:13px;font-weight:700;color:var(--text);}
+.rec-item .ri-s{font-size:10px;color:var(--text-lt);font-weight:600;margin-top:1px;}
+
+/* ヘッダー常設のSOS（無人時間帯の緊急導線。全画面の右上に置く） */
+.icon-btn.sosq{background:#FEE9E5;color:#D1401F;}
+
+/* ホームを編集（カードの表示ON/OFF） */
+.hedit-link{margin:18px 22px 0;text-align:center;font-size:11.5px;font-weight:700;color:var(--text-lt);min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 44px);background:none;border:none;cursor:pointer;font-family:inherit;}
+.hedit-link svg{width:14px;height:14px;}
+.hedit-row{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-bottom:1px solid #EDF1F7;}
+.hedit-row .ht{font-size:13px;font-weight:700;}
+.hedit-row .hs{font-size:10px;color:var(--text-lt);font-weight:600;margin-top:2px;}
+.hedit-sw{width:46px;height:26px;border-radius:100px;background:#D8DFE8;position:relative;transition:background .2s;flex:0 0 auto;cursor:pointer;}
+.hedit-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.hedit-sw.on{background:var(--gold);}
+.hedit-sw.on::after{left:23px;}
+
+/* ミッションカードに集約した「がんばり」1行（ストリーク・ポイント） */
+.mission-card .streak-row{margin:10px 0 0;}
+.mission-card .streak-chip{background:#F4F7FB;box-shadow:none;}
+
+/* タブ文字は読める大きさに（9.5px→10.5px） */
+.tab-btn span{font-size:10.5px;}
+/* 食事4マスの＋ボタン（26px）にも44pxの当たり判定を */
+.mc-add{position:relative;}
+.mc-add::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%);}
 </style>
 </head>
 <body>
@@ -1877,27 +1952,19 @@ input{font-family:inherit;}
   <div class="screens">
 
     <!-- ============ HOME ============ -->
-    <section class="screen" data-screen="home">
+    <section class="screen active" data-screen="home">
       <div class="home-hero">
       <div class="home-headrow">
         <div class="home-top">
           <div class="greet-date" id="greetDate">2026年7月2日（木）</div>
           <div class="greet-main"><span id="greetPrefix">おかえりなさい</span>、<span id="greetName">みのりさん</span></div>
-          <div class="level-chip" onclick="openWeeklyReport()">
-            <span class="lv-num" id="lvNum">LV.7</span>
-            <span class="lv-bar"><i id="lvBarFill" style="width:40%"></i></span>
-            <span class="lv-next" id="lvNext">次まで 120XP</span>
-          </div>
         </div>
-        <div class="avatar" style="margin-top:16px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <div class="icon-btn sosq" style="margin-top:16px;" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
       </div>
 
-      <!-- 週間カレンダー（日付選択） -->
-      <div class="week-strip" id="weekStrip"></div>
-
-      <div class="ai-say" onclick="openChat()">
+      <div class="ai-say" onclick="openChat()" role="button" tabindex="0" aria-label="AIパートナーCocoに相談する">
         <div class="ai-avatar">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10.5c.3-1 1-1.5 1.7-1.5M15 10.5c-.3-1-1-1.5-1.7-1.5"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2"/></svg>
         </div>
@@ -1909,10 +1976,29 @@ input{font-family:inherit;}
       </div>
       </div>
 
-      <!-- 毎日の予算（残りカロリーリング＋PFC進捗バー） -->
+      <!-- 今日のアクション：会員が毎日する3つだけを最上部に固定 -->
+      <div class="action-row">
+        <button class="action-btn qr" onclick="openQR()" aria-label="入館QRを表示">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg>
+          <span>入館QR</span>
+          <span class="ab-sub">タップで表示</span>
+        </button>
+        <button class="action-btn menu" onclick="openOmakase()" aria-label="AIが今日のメニューをつくる">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <span>今日のメニュー</span>
+          <span class="ab-sub">AIにおまかせ</span>
+        </button>
+        <button class="action-btn eat" onclick="goTab('meal')" aria-label="食事を記録する">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span>食事を記録</span>
+          <span class="ab-sub">撮るだけでOK</span>
+        </button>
+      </div>
+
+      <!-- 今日あと食べられる量（リング1本＋式1行。旧称「毎日の予算」） -->
       <div class="budget-card">
         <div class="bc-head">
-          <div class="bc-title">毎日の予算</div>
+          <div class="bc-title">今日あと食べられる量</div>
           <div class="bc-date">7月2日（木）</div>
         </div>
         <div class="bc-main">
@@ -1920,8 +2006,9 @@ input{font-family:inherit;}
             <svg viewBox="0 0 150 150" width="126" height="126">
               <circle cx="75" cy="75" r="64" fill="none" stroke="#E9EEF5" stroke-width="13"/>
               <circle id="ringOuter" cx="75" cy="75" r="64" fill="none" stroke="url(#gGrad)" stroke-width="13" stroke-linecap="round"/>
-              <circle cx="75" cy="75" r="46" fill="none" stroke="#E1F7EE" stroke-width="13"/>
-              <circle id="ringInner" cx="75" cy="75" r="46" fill="none" stroke="#6FD6AC" stroke-width="13" stroke-linecap="round"/>
+              <!-- 内側リングは情報過多のため非表示（JSがIDを参照するので要素は残す） -->
+              <circle cx="75" cy="75" r="46" fill="none" stroke="#E1F7EE" stroke-width="13" style="display:none;"/>
+              <circle id="ringInner" cx="75" cy="75" r="46" fill="none" stroke="#6FD6AC" stroke-width="13" stroke-linecap="round" style="display:none;"/>
               <defs>
                 <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stop-color="#7FAFFA"/>
@@ -1950,90 +2037,59 @@ input{font-family:inherit;}
             </div>
           </div>
         </div>
-        <div class="bc-legend">
-          <div class="bc-leg"><div class="t1">消費カロリー</div><div class="t2" id="consumeVal">1,920 kcal</div></div>
-          <div class="bc-leg"><div class="t1">摂取カロリー</div><div class="t2" id="intakeVal">1,075 kcal</div></div>
-          <div class="bc-leg"><div class="t1">運動での追加消費</div><div class="t2" id="exerciseAddedVal">+0 kcal</div></div>
+        <div class="bc-formula" aria-label="今日の目標から食事を引き、運動を足した残りの計算">
+          <span class="f-item"><span class="f-l">今日の目標</span><b id="consumeVal">1,920</b></span>
+          <span class="f-op">−</span>
+          <span class="f-item"><span class="f-l">食べた分</span><b id="intakeVal">1,075</b></span>
+          <span class="f-op">＋</span>
+          <span class="f-item"><span class="f-l">運動した分</span><b id="exerciseAddedVal">+0</b></span>
+          <span class="f-op">＝</span>
+          <span class="f-item remain"><span class="f-l">あと</span><b id="fRemain">845</b></span>
+          <span class="f-unit">kcal</span>
         </div>
         <div class="note" id="proteinNote">あと目安 <b style="color:var(--gold-dk)">18g</b> でこの日の目標を達成できるよ</div>
         <div class="food-examples" id="foodExamples"></div>
       </div>
 
-      <!-- クイックアクション -->
-      <div class="qa-row">
-        <div class="qa-card scan" onclick="goTab('meal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
-          <div class="qa-t">フードスキャナー</div>
-          <div class="qa-d">撮るだけでAIがカロリー・栄養素を解析</div>
-        </div>
-        <div class="qa-card recipe" onclick="openRecipe()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg>
-          <div class="qa-t">AIレシピ</div>
-          <div class="qa-d">残りの栄養素からCocoが献立を提案</div>
-        </div>
-      </div>
-
-      <!-- 今日の食事（朝・昼・夕・軽食） -->
+      <!-- 今日の食事（朝・昼・夕・軽食）。＋は該当の食事としてそのまま記録へ -->
+      <div id="homeSecMeal">
       <div class="section-label">今日の食事<a href="javascript:void(0)" onclick="openMealHistory()">履歴を見る</a></div>
       <div class="meal-grid">
         <div class="meal-cell b">
           <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg></div>
           <div><div class="mc-name">朝食</div><div class="mc-kcal" id="mtBreakfast">320<span> kcal</span></div></div>
-          <button class="mc-add" onclick="goTab('meal')" aria-label="朝食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="mc-add" onclick="goTab('meal','breakfast')" aria-label="朝食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         </div>
         <div class="meal-cell l">
           <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></div>
           <div><div class="mc-name">昼食</div><div class="mc-kcal" id="mtLunch">585<span> kcal</span></div></div>
-          <button class="mc-add" onclick="goTab('meal')" aria-label="昼食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="mc-add" onclick="goTab('meal','lunch')" aria-label="昼食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         </div>
         <div class="meal-cell d">
           <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
           <div><div class="mc-name">夕食</div><div class="mc-kcal" id="mtDinner">0<span> kcal</span></div></div>
-          <button class="mc-add" onclick="goTab('meal')" aria-label="夕食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="mc-add" onclick="goTab('meal','dinner')" aria-label="夕食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         </div>
         <div class="meal-cell s">
           <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg></div>
           <div><div class="mc-name">軽食</div><div class="mc-kcal" id="mtSnack">170<span> kcal</span></div></div>
-          <button class="mc-add" onclick="goTab('meal')" aria-label="軽食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button class="mc-add" onclick="goTab('meal','snack')" aria-label="軽食を記録"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
         </div>
       </div>
 
-      <div class="omakase-card" onclick="openOmakase()">
-        <span class="ok-badge">NEW</span>
-        <div class="ok-kicker">AIおまかせワークアウト</div>
-        <div class="ok-title">「今日、何やろう」を<br>なくしました。</div>
-        <div class="ok-desc">目標・混雑状況・前回の記録から、AIが今日のメニューを自動で組み立てます</div>
-        <span class="ok-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>今日のメニューをつくる</span>
-        <button class="ok-quick" onclick="event.stopPropagation();openOmakase(true)">忙しい日は「15分だけ」版 ›</button>
-      </div>
+      </div><!-- /homeSecMeal -->
 
-      <!-- AI姿勢・骨格診断 -->
-      <div class="posture-card" onclick="openPosture()">
-        <span class="pc-badge">NEW</span>
-        <div class="pc-kicker">AI姿勢・骨格診断</div>
-        <div class="pc-title">カメラで30秒、<br>姿勢の「くせ」を見える化。</div>
-        <div class="pc-desc">猫背・ストレートネック・左右バランスをAIがチェック。原因の解説から、店内マシンでの改善トレーニングまで提案します</div>
-        <span class="pc-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v6"/><path d="M12 10l-3.5 2.5"/><path d="M12 10l3.5 2.5"/><path d="M12 13.5 9.5 20"/><path d="M12 13.5l2.5 6.5"/></svg>姿勢をチェックする</span>
-        <div class="pc-last" id="postureLastChip" style="display:none;"></div>
-      </div>
-
-      <!-- 運動消費カロリー -->
-      <div class="dash-card">
-        <div class="dash-head">
-          <div class="dh-ic ex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
-          <div><div class="dh-t">運動消費カロリー</div><div class="dh-s">記録するほど「あと摂れる」が増えるよ</div></div>
-          <div class="dh-r" id="exBurnVal">+0 kcal</div>
+      <!-- からだの記録：歩数・水分・体重は1つの開閉パネルに集約（初期は閉じる） -->
+      <div id="homeSecBody">
+      <button class="acc-head" id="accBodyHead" onclick="toggleBodyAcc()" aria-expanded="false" aria-controls="accBodyPanel">
+        <svg class="acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <div class="acc-tw">
+          <div class="acc-t">からだの記録</div>
+          <div class="acc-s">歩数・水分・体重はここにまとめました</div>
         </div>
-        <button class="exlog-add" onclick="openExerciseSheet()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          運動を記録する
-        </button>
-        <div class="ah-row" onclick="showToast('ヘルスケア連携は、アプリストア版（正式リリース）で対応予定です。それまでは運動記録ボタンから手動で記録してね')" style="cursor:pointer;">
-          <div class="ah-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div>
-          <div><div class="ah-t">Appleヘルスケアと接続</div><div class="ah-note" id="ahNote">アプリストア版で対応予定</div></div>
-          <span class="ah-soon">準備中</span>
-        </div>
-      </div>
+        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body" id="accBodyPanel">
 
       <!-- 歩数・さんぽ（位置情報＋加速度センサーで計測。数字は消費カロリーに反映） -->
       <div class="dash-card">
@@ -2106,25 +2162,11 @@ input{font-family:inherit;}
         <div class="wq-note" id="wqNote">目標まであと2.3kg。いいペースだよ！</div>
       </div>
 
-      <!-- ジム入退館ショートカット -->
-      <div class="gym-quick" onclick="openQR()">
-        <div class="gq-dot"></div>
-        <div class="gq-body">
-          <div class="gq-label">SMILE24 GYM・入退館</div>
-          <div class="gq-txt" id="occHomeText">現在の入館者数：<b>6名</b>（空いています）</div>
-        </div>
-        <div class="gq-score"><div class="v" id="occScore">92</div><div class="l">いま空いてる度</div></div>
-        <div class="gq-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg>
-          QRを表示
-        </div>
-      </div>
+      </div><!-- /accBodyPanel -->
+      </div><!-- /homeSecBody -->
 
-      <div class="streak-row">
-        <div class="streak-chip" id="streakChip"><span class="sc-ic" style="color:#F26D4F;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><div><div class="sc-val" id="streakVal"><b>5</b>日連続 来館中</div><div class="sc-lb" id="streakLabel">あと2日で「1週間」バッジ！</div></div></div>
-        <div class="streak-chip" id="jewelChip" style="display:none;cursor:pointer;" onclick="openJewelSheet()"><span class="sc-ic" style="color:var(--gold);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span><div><div class="sc-val"><b id="jewelVal">340</b> ジュエル</div><div class="sc-lb" id="jewelNext">タップで頑張りの記録を見る</div></div></div>
-      </div>
-
+      <!-- 今日のミッション（がんばりの記録＝連続来館・ポイントもここに集約） -->
+      <div id="homeSecMission">
       <div class="mission-card">
         <div class="mission-hd">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
@@ -2132,16 +2174,17 @@ input{font-family:inherit;}
           <span class="mh-count" id="missionCount">0/3</span>
         </div>
         <div id="missionList"></div>
-      </div>
-
-      <div class="pulse-card">
-        <div class="pulse-hd">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>今、みんなに選ばれているメニュー</span>
+        <div class="streak-row">
+          <div class="streak-chip" id="streakChip"><span class="sc-ic" style="color:#F26D4F;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><div><div class="sc-val" id="streakVal"><b>5</b>日連続 来館中</div><div class="sc-lb" id="streakLabel">あと2日で「1週間」バッジ！</div></div></div>
+          <div class="streak-chip" id="jewelChip" style="display:none;cursor:pointer;" onclick="openJewelSheet()"><span class="sc-ic" style="color:var(--gold);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span><div><div class="sc-val"><b id="jewelVal">340</b> ジュエル</div><div class="sc-lb" id="jewelNext">タップで頑張りの記録を見る</div></div></div>
         </div>
-        <div id="pulseList"></div>
-        <div class="pulse-note">過去の記録傾向をもとにした参考ランキング（デモ）</div>
       </div>
+      </div><!-- /homeSecMission -->
+
+      <button class="hedit-link" onclick="openHomeEdit()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        ホームの表示を編集する
+      </button>
     </section>
 
     <!-- ============ MEAL / CAMERA ============ -->
@@ -2153,7 +2196,7 @@ input{font-family:inherit;}
         </div>
         <div style="display:flex;gap:8px;">
           <div class="icon-btn" onclick="openMealHistory()" title="過去の記録を見る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
-          <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+          <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         </div>
       </div>
 
@@ -2178,6 +2221,7 @@ input{font-family:inherit;}
         </div>
         <button class="manual-meal-link" onclick="openFoodPicker(null)">写真を使わずリストから選んで記録する</button>
         <button class="manual-meal-link" onclick="openManualMealSheet()">名前とカロリーだけをサッと入力する</button>
+        <button class="manual-meal-link" onclick="openRecipe()">残りの栄養素からAIレシピを提案してもらう</button>
       </div>
 
       <div class="analyzing" id="analyzing">
@@ -2326,9 +2370,12 @@ input{font-family:inherit;}
     </section>
 
     <!-- ============ TRAINING / ENTRY ============ -->
-    <section class="screen active" data-screen="training">
-      <div class="scr-header"><h1>入退館・トレーニング</h1>
-        <div class="icon-btn" id="newsBell" onclick="openNewsSheet()" title="お知らせ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="news-dot" id="newsDot" style="display:none;"></span></div>
+    <section class="screen" data-screen="training">
+      <div class="scr-header"><h1>入館・ジム</h1>
+        <div style="display:flex;gap:8px;">
+          <div class="icon-btn" id="newsBell" onclick="openNewsSheet()" title="お知らせ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="news-dot" id="newsDot" style="display:none;"></span></div>
+          <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        </div>
       </div>
 
       <div class="member-card" onclick="openQR()">
@@ -2403,6 +2450,26 @@ input{font-family:inherit;}
         </div>
       </div>
 
+      <!-- AI提案系はジム画面に集約（ホームから移設・2026-08-04b） -->
+      <div class="omakase-card" onclick="openOmakase()">
+        <span class="ok-badge">NEW</span>
+        <div class="ok-kicker">AIおまかせワークアウト</div>
+        <div class="ok-title">「今日、何やろう」を<br>なくしました。</div>
+        <div class="ok-desc">目標・混雑状況・前回の記録から、AIが今日のメニューを自動で組み立てます</div>
+        <span class="ok-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>今日のメニューをつくる</span>
+        <button class="ok-quick" onclick="event.stopPropagation();openOmakase(true)">忙しい日は「15分だけ」版 ›</button>
+      </div>
+
+      <!-- AI姿勢・骨格診断（ホームから移設・2026-08-04b） -->
+      <div class="posture-card" onclick="openPosture()">
+        <span class="pc-badge">NEW</span>
+        <div class="pc-kicker">AI姿勢・骨格診断</div>
+        <div class="pc-title">カメラで30秒、<br>姿勢の「くせ」を見える化。</div>
+        <div class="pc-desc">猫背・ストレートネック・左右バランスをAIがチェック。原因の解説から、店内マシンでの改善トレーニングまで提案します</div>
+        <span class="pc-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5v6"/><path d="M12 10l-3.5 2.5"/><path d="M12 10l3.5 2.5"/><path d="M12 13.5 9.5 20"/><path d="M12 13.5l2.5 6.5"/></svg>姿勢をチェックする</span>
+        <div class="pc-last" id="postureLastChip" style="display:none;"></div>
+      </div>
+
       <div class="section-label">今週の来館履歴 <a href="javascript:void(0)" onclick="openCalendarSheet()">今月のカレンダー</a></div>
       <div class="week-cal" id="weekCalReal"></div>
 
@@ -2423,6 +2490,16 @@ input{font-family:inherit;}
         </div>
       </div>
 
+      <!-- 人気メニュー（ホームから移設・2026-08-04b） -->
+      <div class="pulse-card">
+        <div class="pulse-hd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>今、みんなに選ばれているメニュー</span>
+        </div>
+        <div id="pulseList"></div>
+        <div class="pulse-note">過去の記録傾向をもとにした参考ランキング（デモ）</div>
+      </div>
+
       <div class="sos-link" onclick="showSheet('sosSheet')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         緊急時はこちら（SOS・無人時間帯の連絡先）
@@ -2433,7 +2510,7 @@ input{font-family:inherit;}
     <!-- ============ TREND（トレンド分析） ============ -->
     <section class="screen" data-screen="trend">
       <div class="scr-header"><h1>からだの記録</h1>
-        <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       </div>
       <div class="trend-tabs" id="trendTabs"></div>
       <div id="trendContent"></div>
@@ -2441,7 +2518,7 @@ input{font-family:inherit;}
 
     <section class="screen" data-screen="mypage">
       <div class="scr-header"><h1>マイページ</h1>
-        <div class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div>
+        <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       </div>
 
       <div class="profile-card">
@@ -2465,6 +2542,28 @@ input{font-family:inherit;}
       <div class="setting-card">
         <div><div class="sl">基礎代謝（BMR）</div><div class="sv" id="bmrDisplay">1,320<span>kcal/日</span></div></div>
         <button class="edit-pencil" onclick="openBmrSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
+      </div>
+
+      <!-- レベル・ポイント（ホームから移設・2026-08-04b） -->
+      <div class="setting-card" onclick="openWeeklyReport()" style="cursor:pointer;">
+        <div>
+          <div class="sl">レベルとがんばりの記録</div>
+          <div class="level-chip" style="margin-top:6px;">
+            <span class="lv-num" id="lvNum">LV.7</span>
+            <span class="lv-bar"><i id="lvBarFill" style="width:40%"></i></span>
+            <span class="lv-next" id="lvNext">次まで 120ポイント</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--text-lt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </div>
+
+      <!-- ヘルスケア連携（ホームから移設・2026-08-04b。連携は設定の仕事） -->
+      <div class="setting-card" onclick="showToast('ヘルスケア連携は、アプリストア版（正式リリース）で対応予定です。それまでは運動記録ボタンから手動で記録してね')" style="cursor:pointer;">
+        <div>
+          <div class="sl">Appleヘルスケアと接続</div>
+          <div class="sv" id="ahNote" style="font-size:12.5px;color:var(--text-mid);font-family:var(--font-jp);">アプリストア版で対応予定</div>
+        </div>
+        <span class="ah-soon">準備中</span>
       </div>
 
       <div class="chart-card">
@@ -2607,7 +2706,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-04a</b>（写真の見分けを拡張：パスタは何ソースか・ピザの系統も読んで並べ替えるよ）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-04b</b>（ホームを整理：よく使うボタンを上に、細かい記録は「からだの記録」にまとめたよ。入館QRは下の真ん中の青いボタンからいつでも出せるよ）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3361,22 +3460,24 @@ input{font-family:inherit;}
 
   </div>
 
-  <button class="fab-chat" id="fabChat" onclick="openChat()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.2 0-2.4-.3-3.4-.8L3 21l1.8-4.9A8.5 8.5 0 1 1 21 11.5z"/></svg>
+  <!-- ＋記録：1日に何度も使う記録動作の入口を1つに（旧チャットFAB。チャットはCocoの吹き出しから） -->
+  <button class="fab-chat" id="fabChat" onclick="openRecordSheet()" aria-label="記録する">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
   </button>
 
+  <!-- タブ再編（2026-08-04b）：ホームを左端＝起動画面に。中央はどこからでも1タップの入館QR -->
   <div class="tabbar">
-    <button class="tab-btn active" data-tab="training" onclick="goTab('training')">
-      <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/><rect x="5.5" y="8" width="3" height="8" rx="0.8"/><rect x="15.5" y="8" width="3" height="8" rx="0.8"/></svg>
-      <span>入退館</span>
-    </button>
-    <button class="tab-btn" data-tab="home" onclick="goTab('home')">
+    <button class="tab-btn active" data-tab="home" onclick="goTab('home')">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
       <span>ホーム</span>
     </button>
     <button class="tab-btn" data-tab="meal" onclick="goTab('meal')">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
       <span>食事</span>
+    </button>
+    <button class="tab-btn tab-qr" data-tab="training" onclick="goTab('training');openQR()" aria-label="入館QRを表示してジム画面を開く">
+      <span class="tab-qr-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg></span>
+      <span>入館・ジム</span>
     </button>
     <button class="tab-btn" data-tab="trend" onclick="goTab('trend');renderTrend()">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16v-5"/><path d="M12 16V8"/><path d="M17 16v-3"/></svg>
@@ -3387,6 +3488,53 @@ input{font-family:inherit;}
       <span>マイページ</span>
       <span class="tab-dot" id="dmTabDot" style="display:none;"></span>
     </button>
+  </div>
+
+  <!-- ＋記録シート（2026-08-04b新設） -->
+  <div class="sheet" id="recordSheet">
+    <div class="sheet-card">
+      <h3>なにを記録する？</h3>
+      <div class="rec-menu">
+        <button class="rec-item" onclick="hideSheet('recordSheet');goTab('meal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>
+          <div><div class="ri-t">食事を記録</div><div class="ri-s">写真を撮るだけでAIが栄養計算</div></div>
+        </button>
+        <button class="rec-item" onclick="hideSheet('recordSheet');openExerciseSheet()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg>
+          <div><div class="ri-t">運動を記録</div><div class="ri-s">ウォーキング・マシン・水泳など</div></div>
+        </button>
+        <button class="rec-item" onclick="hideSheet('recordSheet');addWater(250);showToast('お水を250ml記録したよ')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+          <div><div class="ri-t">水を飲んだ（＋250ml）</div><div class="ri-s">コップ1杯ぶんをすぐ記録</div></div>
+        </button>
+        <button class="rec-item" onclick="hideSheet('recordSheet');openWeightSheet()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17l-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg>
+          <div><div class="ri-t">体重を記録</div><div class="ri-s">今日の体重をいれる</div></div>
+        </button>
+      </div>
+      <button class="sheet-cancel" onclick="hideSheet('recordSheet')">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ホームを編集シート（2026-08-04b新設）：カードの表示ON/OFF -->
+  <div class="sheet" id="heditSheet">
+    <div class="sheet-card">
+      <h3>ホームの表示を編集</h3>
+      <div class="sheet-desc">よく使うものだけ残せます。非表示にしても記録データは消えず、いつでも戻せます</div>
+      <div class="hedit-row">
+        <div><div class="ht">今日の食事</div><div class="hs">朝・昼・夕・軽食の4マス</div></div>
+        <div class="hedit-sw on" id="hsw-meal" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('meal')"></div>
+      </div>
+      <div class="hedit-row">
+        <div><div class="ht">からだの記録</div><div class="hs">歩数・水分・体重のパネル</div></div>
+        <div class="hedit-sw on" id="hsw-body" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('body')"></div>
+      </div>
+      <div class="hedit-row" style="border-bottom:none;">
+        <div><div class="ht">今日のミッション</div><div class="hs">ミッションと連続来館の記録</div></div>
+        <div class="hedit-sw on" id="hsw-mission" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('mission')"></div>
+      </div>
+      <button class="sheet-cancel" onclick="hideSheet('heditSheet')">閉じる</button>
+    </div>
   </div>
 
   <!-- ============ 初回登録・ログイン（オンボーディング） ============ -->
@@ -5167,10 +5315,12 @@ function renderPostureLastChip(){
 renderPostureLastChip();
 
 /* ============ タブ切替 ============ */
-function goTab(name){
+function goTab(name, mealSlot){
   // 各カメラ画面以外へ移動したらカメラを確実に停止（電池・プライバシー配慮）
   if(name !== 'posture' && typeof posStopCamera === 'function') posStopCamera();
   if(name !== 'meal' && typeof stopMealCamera === 'function') stopMealCamera();
+  // ホームの食事4マスの＋から来たときは、その食事（朝食など）として記録する
+  pendingMealSlot = (name === 'meal' && mealSlot) ? mealSlot : null;
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.dataset.screen===name));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
   // 食事タブでは撮影ステージ表示中に限り実カメラを起動（許可されなければデモ動作のまま）
@@ -7075,7 +7225,7 @@ function commitMeal(m){
   state.carbsIntake += m.c;
   if(m.salt != null) state.saltIntake = r1(state.saltIntake + m.salt);
   if(m.fib  != null) state.fibIntake  = r1(state.fibIntake  + m.fib);
-  state.mealTypeKcal[mealSlotByHour()] += m.kcal;
+  state.mealTypeKcal[currentMealSlot()] += m.kcal;
   state.mealLog.unshift({date:'7/2（木）・今日', time:'たった今', name:m.name, icon:m.icon||'bento', photo:m.photo||null, kcal:m.kcal, p:m.p, f:m.f, c:m.c});
   setFlagToday('smile24_meal_day');   // recalc内のミッション判定より先にフラグを立てる
   recalc();
@@ -7084,7 +7234,7 @@ function commitMeal(m){
 }
 /* 複数品目をまとめて記録（1品ずつmealLogへ・ごほうびは1食につき1回） */
 function commitMealItems(items, photo){
-  var slot = mealSlotByHour();
+  var slot = currentMealSlot();
   items.slice().reverse().forEach(function(s, ri){
     var m = mealItemMacros(s);
     state.intakeKcal += m.kcal;
@@ -7117,7 +7267,7 @@ var MEAL_DEFAULT_KCAL = {breakfast:350, lunch:550, dinner:600, snack:200};
 var mmSelFood = null;   // 予測変換で選んだ品目（栄養値をDBの実値から引くため）
 function openManualMealSheet(){
   document.getElementById('mmName').value = '';
-  document.getElementById('mmKcal').value = MEAL_DEFAULT_KCAL[mealSlotByHour()];
+  document.getElementById('mmKcal').value = MEAL_DEFAULT_KCAL[currentMealSlot()];
   mmSelFood = null;
   var box = document.getElementById('mmSuggest');
   box.style.display = 'none'; box.innerHTML = '';
@@ -7237,10 +7387,12 @@ function recalc(){
 
   document.getElementById('remainKcal').textContent = remaining;
   document.getElementById('remainLabel').textContent = remaining>=0 ? 'あと摂れます' : '目安をオーバー';
-  document.getElementById('consumeVal').textContent = totalConsumption.toLocaleString()+' kcal';
-  document.getElementById('intakeVal').textContent = totalIntake.toLocaleString()+' kcal';
-  /* 「運動での追加消費」は運動記録＋歩き（さんぽ計測・歩数入力）の合計 */
-  document.getElementById('exerciseAddedVal').textContent = '+'+activityKcal().toLocaleString()+' kcal';
+  /* 式1行（目標−食事＋運動＝あと）。単位は式の右端に1つだけ出すので数値のみ入れる */
+  document.getElementById('consumeVal').textContent = totalConsumption.toLocaleString();
+  document.getElementById('intakeVal').textContent = totalIntake.toLocaleString();
+  /* 「運動した分」は運動記録＋歩き（さんぽ計測・歩数入力）の合計 */
+  document.getElementById('exerciseAddedVal').textContent = '+'+activityKcal().toLocaleString();
+  var fr = document.getElementById('fRemain'); if(fr) fr.textContent = remaining.toLocaleString();
 
   var pPct = Math.min(Math.round(state.proteinIntake/state.proteinTarget*100), 100);
   document.getElementById('proteinPct').textContent = pPct+'%';
@@ -7462,7 +7614,7 @@ var chatTopics = [
       return '今日のおすすめトレーニングだよ！\n' +
         '①【' + COURSES[ck].name + '】' + b.items.length + '種目・約' + b.totalMin + '分（約' + b.totalKcal + 'kcal）\n' +
         '　「' + g.label + '」のあなた向け。入退館タブの【今日のおすすめコース】から1タップで始められるよ\n' +
-        '②時間がない日 → ホームの【AIおまかせワークアウト】で短時間コース\n' +
+        '②時間がない日 → ホームの【今日のメニュー】ボタンで短時間コース\n' +
         '③疲れ気味の日 → ストレッチ＋ウォーキング20分（約60kcal）で回復優先もアリ\n' +
         '迷ったら①がおすすめ！マシンの使い方は【スマート機材ガイド】で動画つきで見られるよ💪';
   }},
@@ -7494,7 +7646,7 @@ var chatTopics = [
       return '「'+g.label+'」が目標のあなたには「'+COURSES[ck].name+'」がおすすめ！'+b.items.length+'種目・約'+b.totalMin+'分で約'+b.totalKcal+'kcal消費できるよ。入退館タブの【今日のおすすめコース】から1タップで始められるよ💪';
   }},
   { keys:['おまかせ','決めて','考えたくない','迷う','迷って'], gen:function(){
-      return '決めるのはわたしに任せて！ホームの「AIおまかせワークアウト」を押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を3秒で組むよ⚡「今日何やろう」は、もう考えなくてOK！';
+      return '決めるのはわたしに任せて！ホームの「今日のメニュー」ボタンを押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を3秒で組むよ⚡「今日何やろう」は、もう考えなくてOK！';
   }},
   { keys:['マシン','機材','使い方','器具'], gen:function(){
       return 'マシンの使い方は【スマート機材ガイド】におまかせ！マシンのQRを読み取るか、入退館タブから選ぶと、その型番の使い方動画とあなた専用の推奨値（シート位置・重量）が見られるよ📱';
@@ -8794,7 +8946,7 @@ function renderTrialBanner(){
 }
 function startGuestMode(){
   document.getElementById('onboarding').classList.remove('active');
-  goTab('training');
+  goTab('home');
   showToast('ゲストモードで体験中です。気に入ったらいつでも入会できます ☺️');
 }
 
@@ -8968,7 +9120,7 @@ function finishOnboarding(){
   if(regData.goalType) state.goalType = regData.goalType;
   renderMenusForGoal();
   updateMemberIdentity();
-  goTab('training');
+  goTab('home');
 }
 function doLogin(){
   var id = val('loginId'), pw = val('loginPw');
@@ -8976,7 +9128,7 @@ function doLogin(){
   try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
   document.getElementById('onboarding').classList.remove('active');
   updateMemberIdentity();
-  goTab('training');
+  goTab('home');
 }
 function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
@@ -9316,6 +9468,63 @@ function mealSlotByHour(){
   if(h < 18) return 'snack';
   return 'dinner';
 }
+/* ホームの「夕食の＋」などから指定して来た場合はそれを優先（あすけん式の直行動線） */
+var pendingMealSlot = null;
+function currentMealSlot(){ return pendingMealSlot || mealSlotByHour(); }
+
+/* ============ 2026-08-04b ホーム再設計の新設UI ============ */
+/* からだの記録（歩数・水分・体重）の開閉。開閉状態は端末に記憶する */
+function toggleBodyAcc(){
+  var head = document.getElementById('accBodyHead');
+  var panel = document.getElementById('accBodyPanel');
+  if(!head || !panel) return;
+  var open = !panel.classList.contains('open');
+  panel.classList.toggle('open', open);
+  head.classList.toggle('open', open);
+  head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  try{ localStorage.setItem('smile24_acc_body', open ? '1' : '0'); }catch(e){}
+}
+function restoreBodyAcc(){
+  var saved = null;
+  try{ saved = localStorage.getItem('smile24_acc_body'); }catch(e){}
+  if(saved === '1') toggleBodyAcc();   /* 既定は閉じる。前回開けた人だけ開いた状態で戻す */
+}
+
+/* ＋記録シート（旧チャットFABの置き換え） */
+function openRecordSheet(){ showSheet('recordSheet'); }
+
+/* ホームの表示ON/OFF（chocoZAP・Fitbitのタイル編集式の簡易版） */
+var HOME_SECTIONS = { meal:'homeSecMeal', body:'homeSecBody', mission:'homeSecMission' };
+function loadHomePrefs(){
+  try{ return JSON.parse(localStorage.getItem('smile24_home_prefs')||'{}') || {}; }catch(e){ return {}; }
+}
+function applyHomePrefs(){
+  var prefs = loadHomePrefs();
+  Object.keys(HOME_SECTIONS).forEach(function(k){
+    var el = document.getElementById(HOME_SECTIONS[k]);
+    var on = prefs[k] !== false;   /* 既定は表示 */
+    if(el) el.style.display = on ? '' : 'none';
+    var sw = document.getElementById('hsw-'+k);
+    if(sw){ sw.classList.toggle('on', on); sw.setAttribute('aria-checked', on ? 'true' : 'false'); }
+  });
+}
+function toggleHomePref(key){
+  var prefs = loadHomePrefs();
+  prefs[key] = prefs[key] === false;   /* false（非表示）だったら戻す、表示中なら消す */
+  try{ localStorage.setItem('smile24_home_prefs', JSON.stringify(prefs)); }catch(e){}
+  applyHomePrefs();
+}
+function openHomeEdit(){ showSheet('heditSheet'); }
+
+/* onclick付きdiv（role="button"）をキーボードでも押せるようにする */
+document.addEventListener('keydown', function(e){
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  var t = e.target;
+  if(t && t.getAttribute && (t.getAttribute('role') === 'button' || t.getAttribute('role') === 'switch') && t.onclick){
+    e.preventDefault();
+    t.click();
+  }
+});
 
 /* recalc()から呼ばれる。予算カードのPFCバー・食事カード・運動消費を同期 */
 function renderDashboardExtras(){
@@ -9642,7 +9851,7 @@ function trendWater(){
     return '<div class="trend-card"><div class="trend-empty">'+
       '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></div>'+
       '<div class="te-t">まだデータがありません</div>'+
-      '<div class="te-d">ホームの「水を飲む」で記録すると、<br>ここに7日間の推移が表示されるよ</div>'+
+      '<div class="te-d">右下の＋ボタンかホームの「からだの記録」で<br>水を記録すると、ここに7日間の推移が出るよ</div>'+
       '<button class="te-btn" onclick="goTab(\'home\')">水分を記録しに行く</button>'+
       '</div></div>';
   }
@@ -9706,7 +9915,7 @@ function renderLevel(){
   var pct = Math.round((xp-cur)/(next-cur)*100);
   var el = document.getElementById('lvNum'); if(el) el.textContent = 'LV.' + lv;
   var bar = document.getElementById('lvBarFill'); if(bar) bar.style.width = pct + '%';
-  var nx = document.getElementById('lvNext'); if(nx) nx.textContent = '次まで ' + (next-xp) + 'XP';
+  var nx = document.getElementById('lvNext'); if(nx) nx.textContent = '次まで ' + (next-xp) + 'ポイント';
 }
 
 /* ---------- 今日のミッション ---------- */
@@ -10218,6 +10427,8 @@ checkStreakReminder();
   renderRank();
   renderMuscleMap();
   renderGoalForecast();
+  applyHomePrefs();
+  restoreBodyAcc();
   registerSW();
 })();
 
@@ -10230,7 +10441,7 @@ checkStreakReminder();
   if(loggedIn && account){
     document.getElementById('onboarding').classList.remove('active');
     updateMemberIdentity();
-    goTab('training');
+    goTab('home');
   } else {
     document.getElementById('onboarding').classList.add('active');
     var draft = loadRegDraft();
