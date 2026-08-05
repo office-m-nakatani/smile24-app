@@ -2787,7 +2787,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-05b</b>（会員登録の時に年齢・身長・体重・筋肉量から基礎代謝を計算してホームに最初から反映・食事の数字は写真や数値を記録するまで0からスタートに変更したよ）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-05c</b>（食卓全体の写真に強くなったよ：複数の皿を検知して各エリアから候補を出すよ。成分表示の写真は自動で数字を読み取って「何をどれくらい食べたか」だけ聞くようにしたよ）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -5611,6 +5611,10 @@ function preloadMealAI(){
       return buildNonFoodEmbeddings();
     })
     .then(function(){
+      // 食卓全体（複数の皿）の対照クラス（2026-08-05・実写真26枚で最弱と判明したパターンの強化）
+      return buildTableEmbeddings();
+    })
+    .then(function(){
       // 視覚プロトタイプ（取得できなくても従来どおり動くので、失敗は握って進む）
       return loadImgProto();
     })
@@ -5683,6 +5687,37 @@ function buildNonFoodEmbeddings(){
       localStorage.setItem(MEAL_NONFOOD_CACHE_KEY, JSON.stringify(packed));
     }catch(e){}
   }).catch(function(){ MEAL_AI.nonFoodEmb = null; });  // 失敗しても料理の判定は続行できる
+}
+/* ── 食卓全体（複数の皿が並ぶ写真）の対照クラス ──
+   実写真26枚の実測で「食卓全体」が最弱パターンだった（1品の名前を当てにいって外れる）。
+   食卓らしさを測り、食卓なら四分割クロップの候補も合流させて複数選択に誘導する。
+   nonfoodと違い「料理ではない」ではなく「料理がたくさん写っている」の判定なので別クラスにする */
+var MEAL_TABLE_PROMPTS = [
+  'overhead photo of a japanese dinner table with a rice bowl, miso soup and several separate small side dishes',
+  'a home cooked japanese meal set with many small plates and bowls spread out on a dining table',
+  'a full meal tray with multiple different dishes photographed from above',
+  'a dining table crowded with several plates of different foods and chopsticks'
+];
+var MEAL_TABLE_CACHE_KEY = 'smile24_meal_tableemb_v1';
+/* 食卓判定のしきい値：食卓クラスの最大cosが「最有力品目の最大cos − 0.005」以上なら食卓。
+   実写真26枚での較正：食卓#6=+0.009・仕出し弁当#13=0.000 / 単品写真の最大は−0.015＝誤発火ゼロ。
+   softmaxの質量方式は勝者総取りで食卓写真でも0.1%に潰れたため生cosの差で判定する */
+var MEAL_TABLE_MARGIN = -0.005;
+function buildTableEmbeddings(){
+  var hash = mealPromptHash(MEAL_TABLE_PROMPTS);
+  try{
+    var cached = JSON.parse(localStorage.getItem(MEAL_TABLE_CACHE_KEY) || 'null');
+    if(cached && cached.hash === hash){ MEAL_AI.tableEmb = b64ToEmbRows(cached); return Promise.resolve(); }
+  }catch(e){}
+  var ti = MEAL_AI.tokenizer(MEAL_TABLE_PROMPTS, { padding:true, truncation:true });
+  return MEAL_AI.textModel(ti).then(function(out){
+    MEAL_AI.tableEmb = tensorRowsNorm(out.text_embeds);
+    try{
+      var packed = embRowsToB64(MEAL_AI.tableEmb);
+      packed.hash = hash;
+      localStorage.setItem(MEAL_TABLE_CACHE_KEY, JSON.stringify(packed));
+    }catch(e){}
+  }).catch(function(){ MEAL_AI.tableEmb = null; });  // 失敗しても従来どおり動く
 }
 var MEAL_TEXTEMB_CACHE_KEY = 'smile24_meal_textemb_v1';
 /* ビルド時に同梱する計算済みテキスト埋め込み（int8量子化・全端末で初回から即時起動）。
@@ -6103,9 +6138,84 @@ function recognizeMeal(dataUrl){
       var famImg = famImgScores(bestCos);
       /* 系統内サブタイプの画像スコア（うどん/パスタ/ピザと分かった後の並べ替え用） */
       var subScores = subScoresAll(bestCos);
-      return { rank: rank, nonfood: nonfood, famImg: famImg, subScores: subScores };
+
+      /* ── 食卓全体の判定（2026-08-05強化）──
+         全体フレームの埋め込みだけで「食卓らしさ」を測る（中央クロップは1皿に寄るため使わない）。
+         判定は生コサインの差：食卓クラスの最大cosが最有力品目の最大cosに並んだら食卓とみなす */
+      var tableMargin = -1;
+      var tbl = MEAL_AI.tableEmb || [];
+      if(tbl.length && embs.length){
+        var fullEmb = embs[0];
+        var cosFull = function(t){ var s2 = 0; for(var j2 = 0; j2 < t.length; j2++) s2 += fullEmb[j2] * t[j2]; return s2; };
+        var maxItemFull = -1, maxTblFull = -1;
+        for(var ii2 = 0; ii2 < MEAL_AI.textEmb.length; ii2++){
+          var c2 = cosFull(MEAL_AI.textEmb[ii2]);
+          if(c2 > maxItemFull) maxItemFull = c2;
+        }
+        for(var ti2 = 0; ti2 < tbl.length; ti2++){
+          var c3 = cosFull(tbl[ti2]);
+          if(c3 > maxTblFull) maxTblFull = c3;
+        }
+        tableMargin = maxTblFull - maxItemFull;
+      }
+      var isTable = tableMargin >= MEAL_TABLE_MARGIN && !(nonfood && nonfood.is);
+      var baseResult = { rank: rank, nonfood: nonfood, famImg: famImg, subScores: subScores, table: isTable, tableMargin: tableMargin };
+      if(!isTable) return baseResult;
+
+      /* 食卓なら四分割クロップでも判定し、各エリアのトップ候補を全体候補に合流させる。
+         隅の小鉢・汁物を拾うのが目的。単品写真の確度を薄める副作用（実測でカレー67%→22%）が
+         あるため、食卓と判定した時だけ実行する */
+      return mealQuadrantUrls(dataUrl).then(function(qurls){
+        var qEmbs = [];
+        var qp = Promise.resolve();
+        qurls.forEach(function(u){
+          qp = qp.then(function(){ return imageEmbedding(u).then(function(v){ qEmbs.push(v); }); });
+        });
+        return qp.then(function(){
+          var boost = {};
+          qEmbs.forEach(function(qe){
+            var qs = MEAL_AI.textEmb.map(function(t){ var s4 = 0; for(var j4 = 0; j4 < t.length; j4++) s4 += qe[j4] * t[j4]; return s4; });
+            var qmx = Math.max.apply(null, qs);
+            var qex = qs.map(function(s5){ return Math.exp((s5 - qmx) * 100); });
+            var qsum = qex.reduce(function(a, b){ return a + b; }, 0);
+            var qrank = qs.map(function(s6, i6){ return { i: i6, p: qex[i6] / qsum }; })
+              .sort(function(a, b){ return b.p - a.p; });
+            // 各エリアの上位2件だけ。弱い候補まで合流させるとノイズになる
+            qrank.slice(0, 2).forEach(function(r2){
+              if(r2.p >= 0.05 && (boost[r2.i] == null || r2.p > boost[r2.i])) boost[r2.i] = r2.p;
+            });
+          });
+          var byIdx = {};
+          rank.forEach(function(r3){ byIdx[r3.i] = r3; });
+          Object.keys(boost).forEach(function(k2){
+            var i7 = +k2;
+            if(byIdx[i7]){ if(boost[k2] > byIdx[i7].p) byIdx[i7].p = boost[k2]; }
+            else rank.push({ i: i7, p: boost[k2], cos: 0 });
+          });
+          rank.sort(function(a, b){ return b.p - a.p; });
+          baseResult.rank = rank;
+          return baseResult;
+        });
+      }).catch(function(){ return baseResult; });   // 四分割が失敗しても全体判定の結果は返す
     })
     .catch(function(){ return null; });
+}
+/* 四分割クロップ（各60%サイズ・重なりあり）。食卓全体と判定した写真だけで使う */
+function mealQuadrantUrls(dataUrl){
+  return new Promise(function(res){
+    var img = new Image();
+    img.onload = function(){
+      var w = img.width, h = img.height, cw = w * 0.6, ch = h * 0.6;
+      res([
+        cropDataUrl(img, 0, 0, cw, ch),
+        cropDataUrl(img, w - cw, 0, cw, ch),
+        cropDataUrl(img, 0, h - ch, cw, ch),
+        cropDataUrl(img, w - cw, h - ch, cw, ch)
+      ]);
+    };
+    img.onerror = function(){ res([]); };
+    img.src = dataUrl;
+  });
 }
 
 /* ============ 選択中の食事（複数品・1品ずつ個別計算） ============ */
@@ -6114,6 +6224,7 @@ var fpTemp = null;       // ピッカー編集中の作業コピー
 var fpCat = 'all';
 var fpAiRank = null;     // 直近のAI読み取り結果
 var fpNonFood = null;    // 「料理以外（成分表示など）」の判定結果
+var fpTableWide = false; // 「食卓全体（複数の皿）」の判定結果（候補を広げ複数選択に誘導する）
 /* 食べた量の全体係数（全部食べた1.0／少し残した0.8／半分残した0.5）。
    「写真に写っている量」と「実際に食べた量」の乖離を吸収する（残す人ほど記録が過大になる）。
    食事の保存・撮り直しでリセットする */
@@ -6308,15 +6419,18 @@ function capture(){
   var an = document.getElementById('analyzing');
   an.classList.add('active');
   var minWait = new Promise(function(res){ setTimeout(res, 1200); });
+  /* タイムアウトは15秒（食卓全体と判定した写真は四分割クロップで最大4枚ぶん追加計算が走るため。
+     PC実測11.5秒＝低速端末の余裕をみて15秒。従来の6秒だと食卓写真で結果を捨ててしまう） */
   var recog = Promise.race([
     recognizeMeal(pendingMealPhoto),
-    new Promise(function(res){ setTimeout(function(){ res(null); }, 6000); })
+    new Promise(function(res){ setTimeout(function(){ res(null); }, 15000); })
   ]);
   Promise.all([recog, minWait]).then(function(rs){
     an.classList.remove('active');
     var r = rs[0];
     fpFamImg = r ? r.famImg : null;
     fpSubScores = r ? r.subScores : null;
+    fpTableWide = r ? !!r.table : false;
     openFoodPicker(pendingMealPhoto, r ? r.rank : null, r ? r.nonfood : null);
   });
 }
@@ -6331,6 +6445,7 @@ function retake(){
   fpFamImg = null;
   fpSubScores = null;
   fpNonFoodOpen = false;
+  fpTableWide = false;
   // 1食ごとの補正状態も白紙に戻す（前の食事の「半分残した」を引きずらない）
   mealAteRatio = 1;
   mealSizeHintShown = false;
@@ -6424,16 +6539,27 @@ function openFoodPicker(photo, aiRank, nonfood){
   } else {
     note.textContent = '複数えらべるよ。1品ずつ栄養を出して合算します';
   }
+  /* 食卓全体の写真は、1品を当てにいくより「写っている品を全部選んでもらう」のが正解。
+     候補も四分割クロップ由来を含めて広めに出している（renderFoodPickList側で8件表示） */
+  if(fpTableWide && fpAiRank && !fpNonFoodOpen){
+    note.textContent = '食卓全体の写真だね。写っている品を1つずつ全部タップしてね（ご飯・汁物・小鉢まで。1品ずつ栄養を出して合算するよ）';
+  }
   document.getElementById('fpSearch').value = '';
   fpCat = 'all';
   renderFpCats();
   renderFoodPickList();
   renderNonFoodPanel();
   showSheet('foodPickSheet');
+  /* 成分表示だけの写真は、ボタンを押させずに自動で読み取りへ進める（2026-08-05ユーザー指示）。
+     読み取り後に「何を・どれくらい食べたか」を必ず聞く流れは、ラベル入力シートの必須欄
+     （lbName・lbEaten）がそのまま担う */
+  if(fpNonFoodOpen && fpNonFood && fpNonFood.key === 'label' && (pendingMealPhotoRaw || pendingMealPhoto)){
+    setTimeout(function(){ openLabelSheetFromPhoto(); }, 300);
+  }
 }
 /* ── 料理以外の写真だった時の「何を食べましたか」パネル ── */
 var NONFOOD_NOTE = {
-  label:  'これは料理じゃなくて、栄養成分表示の写真みたいだね。何を食べたか教えてくれる？',
+  label:  '栄養成分表示の写真だね。いま数字を自動で読み取ってるよ。読み終わったら「何を・どれくらい食べたか」だけ教えてね',
   package:'食品のパッケージの写真みたいだね。何を食べたか教えてくれる？',
   text:   '文字が写った写真みたいだね。何を食べたか教えてくれる？',
   other:  '料理が写っていないみたい。何を食べたか教えてくれる？'
@@ -6531,10 +6657,12 @@ function renderFoodPickList(){
      検索・カテゴリ絞り込み中は主リストと重複するので出さない */
   var top5Set = {};
   if(fpAiRank && fpAiRank.length && !q && fpCat === 'all' && !fpNonFoodOpen){
+    /* 食卓全体の写真は四分割クロップ由来の候補も含むので8件まで広げる（通常は従来どおり5件） */
+    var topN = fpTableWide ? 8 : 5;
     rows.push('<div class="fp-top5-head">'+
       '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>'+
-      '写真に近い候補トップ5（タップで選択）</div>');
-    fpAiRank.slice(0,5).forEach(function(r, rank){
+      (fpTableWide ? '写真に写っていそうな候補（食卓の各エリアから・タップで選択）' : '写真に近い候補トップ5（タップで選択）')+'</div>');
+    fpAiRank.slice(0, topN).forEach(function(r, rank){
       top5Set[r.i] = 1;
       var it = FOOD_DB[r.i];
       var po = it.portions[it.def||0] || it.portions[0];
@@ -7061,6 +7189,8 @@ var ADDON_DB = [
   { g:'トッピング', name:'追い卵黄', po:'1個(17g)', kcal:57, p:2.8, f:5.7, c:0.1 },
   { g:'トッピング', name:'天かす', po:'大さじ2(10g)', kcal:58, p:0.5, f:4.5, c:4.5 },
   { g:'トッピング', name:'ふりかけ', po:'1袋(2.5g)', kcal:9, p:0.5, f:0.2, c:1, salt:0.2 },
+  { g:'トッピング', name:'大根おろし', po:'ひと盛り(50g)', kcal:13, p:0.2, f:0.1, c:3, fib:0.7 },
+  { g:'トッピング', name:'天つゆ', po:'小鉢1杯(50ml)', kcal:15, p:0.7, f:0, c:2.7, salt:1.0 },
   // トレ前後（ジム文脈の補給）
   { g:'トレ前後', name:'ミルクプロテイン', po:'紙パック200ml', kcal:102, p:15, f:0, c:10.4, salt:0.2 },
   { g:'トレ前後', name:'プロテイン(牛乳割り)', po:'粉30g+牛乳200ml', kcal:252, p:27.9, f:7.8, c:13.9, salt:0.4 },
@@ -7695,6 +7825,10 @@ function parseNutritionLabel(raw){
      直前が英字なら数字の頭が欠けている証拠なので採用しない（黙って桁違いを記録するより、
      読めなかったことにして手入力に回すほうが安全） */
   if(kcal == null) kcal = grab(/(?:^|[^0-9A-Za-z])([0-9]+(?:\.[0-9]+)?)kcal/i, 5, 2500);
+  /* 最終フォールバック：ラベル語も「kcal」も崩れて「ME173k」だけ残る実測例（おにぎり実写真）への救済。
+     直前の英字はOCRゴミとして許すが、3〜4桁に限定する＝「198→g98」のような頭欠け2桁の誤値は通らない。
+     kgの誤取得は除外。この経路で入った値はkcal単独読みの強め確認（lb-miss＋桁確認の文言）に必ず乗る */
+  if(kcal == null) kcal = grab(/(?:^|[^0-9])([0-9]{3,4})\s*k(?![gG])/, 100, 1500);
   /* 「0kcal」表示の実在商品（ゼロカロリーゼリー等）だけは0を許す（grabの下限5とは別扱い） */
   if(kcal == null && /(?:エネルギー|熱量|カロリー)[^0-9A-Za-z]{0,14}0\s*kcal/i.test(t)) kcal = 0;
   /* たんぱく質は表記も誤読も幅が広い。実測で「たん白質」（旧表記）のほか
