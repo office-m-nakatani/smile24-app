@@ -2787,7 +2787,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-05a</b>（ホームの「今日の食事」をタップ式に整理・朝食などをタップするとカメラがすぐ起動・とんかつ等は「何切れ食べた？」で1切れ単位の計算・家庭料理と食堂の小鉢を53品追加したよ）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-05b</b>（会員登録の時に年齢・身長・体重・筋肉量から基礎代謝を計算してホームに最初から反映・食事の数字は写真や数値を記録するまで0からスタートに変更したよ）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3763,6 +3763,32 @@ input{font-family:inherit;}
         <div class="ob-footer"><button class="ob-btn" onclick="obNextFromBasic()">次へ</button></div>
       </div>
 
+      <!-- からだ情報（年齢・性別は前の画面から引き継ぎ、基礎代謝をその場で計算して見せる。
+           2026-08-05ユーザー指示：登録の時点で基礎代謝を先に計算してホームに反映する） -->
+      <div class="ob-step" data-step="reg-body">
+        <div class="ob-body">
+          <div class="ob-title">からだの情報</div>
+          <div class="ob-desc">年齢・身長・体重・筋肉量から<b>あなたの基礎代謝</b>をその場で計算して、ホームのカロリー目安に最初から反映します（あとから変更もできます）</div>
+          <div class="ob-row2">
+            <div class="ob-field"><label>身長（cm）<span class="req">必須</span></label><input type="number" id="obHeight" placeholder="158" min="120" max="220" inputmode="decimal" oninput="updateObBmrPreview()"></div>
+            <div class="ob-field"><label>体重（kg）<span class="req">必須</span></label><input type="number" id="obWeight" placeholder="55" min="30" max="200" step="0.1" inputmode="decimal" oninput="updateObBmrPreview()"></div>
+          </div>
+          <div class="ob-field">
+            <label>筋肉量の目安</label>
+            <div class="ob-chip-group" id="obMuscleChips">
+              <button type="button" class="ob-chip" data-m="low" onclick="selectObMuscle('low',this)">少なめ</button>
+              <button type="button" class="ob-chip active" data-m="normal" onclick="selectObMuscle('normal',this)">普通</button>
+              <button type="button" class="ob-chip" data-m="high" onclick="selectObMuscle('high',this)">多め</button>
+            </div>
+          </div>
+          <div class="sheet-kcal-preview" id="obBmrBox" style="display:none;">
+            <div class="kv" id="obBmrPreview">—<span>kcal/日</span></div>
+            <div class="kl" id="obBmrDetail">あなたの基礎代謝（年齢・身長・体重・筋肉量からの概算）</div>
+          </div>
+        </div>
+        <div class="ob-footer"><button class="ob-btn" onclick="obNextFromBody()">次へ</button></div>
+      </div>
+
       <!-- ご連絡先（会員証発行・緊急連絡用） -->
       <div class="ob-step" data-step="reg-contact">
         <div class="ob-body">
@@ -3918,6 +3944,7 @@ input{font-family:inherit;}
           <h2>ご登録ありがとうございます！</h2>
           <p>スマイル24 AIパートナーアプリへようこそ。<br>デジタル会員証の準備ができました。</p>
           <div class="oc-no" id="obMemberNo">MEMBER No. 0192-XXXX</div>
+          <div class="ob-desc" id="obBmrDone" style="display:none;"></div>
           <button class="ob-btn" onclick="finishOnboarding()">アプリを始める</button>
         </div>
       </div>
@@ -4464,6 +4491,15 @@ function saveBmr(){
   state.bmr = calcBmrValue(h, w, selectedMuscle);
   state.baseConsumption = Math.round(state.bmr * 1.4);
   refreshMacroTargets();
+  /* 登録会員はアカウントにも体格を書き戻す。initAuthが起動時にアカウントから復元するため、
+     ここで更新しないと「シートで直したのに再読み込みで登録時の値に巻き戻る」（検証役M1指摘） */
+  try{
+    var acct = JSON.parse(localStorage.getItem('smile24_account') || 'null');
+    if(acct){
+      acct.height = h; acct.weight = w; acct.muscle = selectedMuscle;
+      localStorage.setItem('smile24_account', JSON.stringify(acct));
+    }
+  }catch(e){}
   document.getElementById('bmrDisplay').innerHTML = state.bmr.toLocaleString()+'<span>kcal/日</span>';
   recalc();
   renderPlan();
@@ -7899,9 +7935,10 @@ function commitMeal(m){
   if(m.salt != null) state.saltIntake = r1(state.saltIntake + m.salt);
   if(m.fib  != null) state.fibIntake  = r1(state.fibIntake  + m.fib);
   state.mealTypeKcal[currentMealSlot()] += m.kcal;
-  state.mealLog.unshift({date:'7/2（木）・今日', time:'たった今', name:m.name, icon:m.icon||'bento', photo:m.photo||null, kcal:m.kcal, p:m.p, f:m.f, c:m.c});
+  state.mealLog.unshift({date:'7/2（木）・今日', time:'たった今', name:m.name, icon:m.icon||'bento', photo:m.photo||null, kcal:m.kcal, p:m.p, f:m.f, c:m.c, salt:m.salt, fib:m.fib});
   setFlagToday('smile24_meal_day');   // recalc内のミッション判定より先にフラグを立てる
   recalc();
+  saveNutritionToday();   // 記録した日はリロードしても数字が残るように保存
   addJewels(10);
   addXp(10);
 }
@@ -7925,6 +7962,7 @@ function commitMealItems(items, photo){
   });
   setFlagToday('smile24_meal_day');
   recalc();
+  saveNutritionToday();   // 記録した日はリロードしても数字が残るように保存
   addJewels(10);
   addXp(10);
 }
@@ -9409,7 +9447,7 @@ var regData = {
   shower:false, payMethod:'card', acctType:'ordinary',
   memberNo:''
 };
-var obRegSteps = ['reg-basic','reg-contact','reg-goal','reg-account','reg-plan','reg-payment','reg-terms'];
+var obRegSteps = ['reg-basic','reg-body','reg-contact','reg-goal','reg-account','reg-plan','reg-payment','reg-terms'];
 function val(id){ return document.getElementById(id).value.trim(); }
 
 /* ── 入会フォームの下書き保存 ──
@@ -9458,6 +9496,9 @@ function restoreRegDraft(d){
     var el = document.querySelector(sel.replace('%v', String(d[key]).replace(/[^\w-]/g, '')));
     if(el) fn(d[key], el);
   }
+  set('obHeight', d.height); set('obWeight', d.weight);
+  pick('#obMuscleChips .ob-chip[data-m="%v"]', 'muscle', selectObMuscle);
+  if(typeof updateObBmrPreview === 'function') updateObBmrPreview();
   pick('.ob-chip[data-g="%v"]', 'gender', selectGender);
   pick('.ob-goal-card[data-goal="%v"]', 'goalType', selectGoal);
   pick('.ob-chip[data-pay="%v"]', 'payMethod', selectPayMethod);   // カード欄／口座欄の表示切替まで戻す
@@ -9468,7 +9509,7 @@ function restoreRegDraft(d){
   if(gb) gb.style.display = regData.isMinor ? 'block' : 'none';
 }
 function obPrevStep(step){
-  var map = {login:'welcome',trial:'welcome','reg-basic':'welcome','reg-contact':'reg-basic','reg-goal':'reg-contact','reg-account':'reg-goal','reg-plan':'reg-account','reg-payment':'reg-plan','reg-terms':'reg-payment'};
+  var map = {login:'welcome',trial:'welcome','reg-basic':'welcome','reg-body':'reg-basic','reg-contact':'reg-body','reg-goal':'reg-contact','reg-account':'reg-goal','reg-plan':'reg-account','reg-payment':'reg-plan','reg-terms':'reg-payment'};
   return map[step] || 'welcome';
 }
 function selectGoal(g, el){
@@ -9773,6 +9814,36 @@ function obNextFromBasic(){
   warnEl.style.display = 'none';
   regData.age = age;
   regData.isMinor = age < 18;
+  // 年齢・性別が確定したので、からだ情報ステップの基礎代謝プレビューを最新にして進む
+  obGoTo('reg-body');
+  updateObBmrPreview();
+}
+/* ── からだ情報ステップ（基礎代謝を登録の時点で計算する） ── */
+function selectObMuscle(m, el){
+  regData.muscle = m;
+  document.querySelectorAll('#obMuscleChips .ob-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  updateObBmrPreview();
+}
+function updateObBmrPreview(){
+  var h = parseFloat(val('obHeight'));
+  var w = parseFloat(val('obWeight'));
+  var box = document.getElementById('obBmrBox');
+  if(!(h > 0) || !(w > 0)){ if(box) box.style.display = 'none'; return; }
+  var bmr = calcBmrValue(h, w, regData.muscle || 'normal');
+  if(box) box.style.display = '';
+  document.getElementById('obBmrPreview').innerHTML = bmr.toLocaleString() + '<span>kcal/日</span>';
+  document.getElementById('obBmrDetail').textContent =
+    'あなたの基礎代謝の概算。1日の消費目安は約' + Math.round(bmr * 1.4).toLocaleString() + 'kcal（生活活動込み）だよ';
+}
+function obNextFromBody(){
+  var h = parseFloat(val('obHeight'));
+  var w = parseFloat(val('obWeight'));
+  if(!(h >= 120 && h <= 220)){ showToast('身長を入力してください（120〜220cm）'); return; }
+  if(!(w >= 30 && w <= 200)){ showToast('体重を入力してください（30〜200kg）'); return; }
+  regData.height = h;
+  regData.weight = w;
+  if(!regData.muscle) regData.muscle = 'normal';
   obGoTo('reg-contact');
 }
 function obNextFromContact(){
@@ -9811,11 +9882,22 @@ function completeRegistration(){
   }
   regData.memberNo = '0192-' + Math.floor(1000+Math.random()*9000);
   document.getElementById('obMemberNo').textContent = 'MEMBER No. '+regData.memberNo;
+  // 登録時に計算した基礎代謝を完了画面でも見せる（ホームに反映済みであることを伝える）
+  var bmrDone = document.getElementById('obBmrDone');
+  if(bmrDone && regData.height && regData.weight){
+    var bmr0 = calcBmrValue(regData.height, regData.weight, regData.muscle || 'normal');
+    bmrDone.style.display = '';
+    bmrDone.innerHTML = 'あなたの基礎代謝は<b>' + bmr0.toLocaleString() + 'kcal/日</b>（1日の消費目安 約' +
+      Math.round(bmr0 * 1.4).toLocaleString() + 'kcal）。ホーム画面のカロリー計算に反映済みです';
+  }
   try{
     // パスワードは保存しない（照合に使っておらず、平文で残すリスクだけが残るため）
     localStorage.setItem('smile24_account', JSON.stringify({
       loginId:regData.loginId,
-      lastName:regData.lastName, firstName:regData.firstName, memberNo:regData.memberNo
+      lastName:regData.lastName, firstName:regData.firstName, memberNo:regData.memberNo,
+      // からだ情報（次回起動時も基礎代謝・目標をホームに復元するため。連絡先等のPIIはここに入れない）
+      height:regData.height, weight:regData.weight, muscle:regData.muscle || 'normal',
+      age:regData.age, gender:regData.gender
     }));
     // 運営管理画面用の会員台帳（パスワードは含めない）
     var members = JSON.parse(localStorage.getItem('smile24_members') || '[]');
@@ -9851,11 +9933,75 @@ function updateMemberIdentity(){
   document.getElementById('profileName').textContent = fullName+'さん';
   document.getElementById('greetName').textContent = (account.firstName||'みのり')+'さん';
 }
+/* 登録・ログインした会員の体格をホームの計算に反映する。
+   profile = {height, weight, muscle, age, gender}。年齢・性別は calcBmrValue が
+   regData を読むため先に regData へ書き戻す（基礎代謝シートの再計算も一貫する） */
+function applyBodyProfile(profile){
+  if(!profile || !(profile.height > 0) || !(profile.weight > 0)) return false;
+  if(profile.age) regData.age = profile.age;
+  if(profile.gender) regData.gender = profile.gender;
+  state.height = profile.height;
+  state.weight = profile.weight;
+  state.muscleLevel = profile.muscle || 'normal';
+  state.bmr = calcBmrValue(state.height, state.weight, state.muscleLevel);
+  state.baseConsumption = Math.round(state.bmr * 1.4);
+  return true;
+}
+/* 食事の数字は「写真や数値を入れるまで0」が既定（2026-08-05ユーザー指示）。
+   登録会員のホームにデモの作り置き数値（1075kcal等）を出さない */
+function resetNutritionToday(){
+  state.intakeKcal = 0;
+  state.proteinIntake = 0;
+  state.carbsIntake = 0;
+  state.fatIntake = 0;
+  state.saltIntake = 0;
+  state.fibIntake = 0;
+  state.mealTypeKcal = { breakfast:0, lunch:0, dinner:0, snack:0 };
+  state.mealLog = [];
+}
+/* 当日の食事記録の保存・復元（記録した日はリロードしても数字が残る）。
+   写真dataURLは大きくlocalStorage枯渇の原因になるので保存しない（アイコン表示に落ちる） */
+var NUTRITION_TODAY_KEY = 'smile24_nutrition_today';
+function saveNutritionToday(){
+  try{
+    localStorage.setItem(NUTRITION_TODAY_KEY, JSON.stringify({
+      d: new Date().toDateString(),
+      intakeKcal: state.intakeKcal, proteinIntake: state.proteinIntake,
+      carbsIntake: state.carbsIntake, fatIntake: state.fatIntake,
+      saltIntake: state.saltIntake, fibIntake: state.fibIntake,
+      mealTypeKcal: state.mealTypeKcal,
+      mealLog: state.mealLog.slice(0, 40).map(function(m){
+        return { date:m.date, time:m.time, name:m.name, icon:m.icon, photo:null,
+                 kcal:m.kcal, p:m.p, f:m.f, c:m.c, salt:m.salt, fib:m.fib };
+      })
+    }));
+  }catch(e){}
+}
+function restoreNutritionToday(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem(NUTRITION_TODAY_KEY) || 'null'); }catch(e){}
+  if(!saved || saved.d !== new Date().toDateString()) return;   // 日が変わったら0から
+  state.intakeKcal = saved.intakeKcal || 0;
+  state.proteinIntake = saved.proteinIntake || 0;
+  state.carbsIntake = saved.carbsIntake || 0;
+  state.fatIntake = saved.fatIntake || 0;
+  state.saltIntake = saved.saltIntake || 0;
+  state.fibIntake = saved.fibIntake || 0;
+  if(saved.mealTypeKcal) state.mealTypeKcal = saved.mealTypeKcal;
+  if(saved.mealLog) state.mealLog = saved.mealLog;
+}
 function finishOnboarding(){
   document.getElementById('onboarding').classList.remove('active');
   try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
   if(regData.goalType) state.goalType = regData.goalType;
-  refreshMacroTargets();   // 目的（減量/ボディメイク等）が決まったらたんぱく質等の目標も追随させる
+  // 登録で入力した年齢・身長・体重・筋肉量の基礎代謝をホームへ即反映
+  applyBodyProfile({ height:regData.height, weight:regData.weight, muscle:regData.muscle,
+                     age:regData.age, gender:regData.gender });
+  // 食事の数字は記録するまで0スタート
+  resetNutritionToday();
+  refreshMacroTargets();   // 目的（減量/ボディメイク等）と体格に合わせて目標も追随させる
+  recalc();
+  renderPlan();
   renderMenusForGoal();
   updateMemberIdentity();
   goTab('home');
@@ -9865,6 +10011,17 @@ function doLogin(){
   if(!id || !pw){ showToast('IDとパスワードを入力してください'); return; }
   try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
   document.getElementById('onboarding').classList.remove('active');
+  // ログイン会員も登録会員と同じ：保存済みの体格を反映し、食事の数字は記録が無ければ0
+  var account0 = null;
+  try{ account0 = JSON.parse(localStorage.getItem('smile24_account')||'null'); }catch(e){}
+  if(account0){
+    applyBodyProfile(account0);
+    resetNutritionToday();
+    restoreNutritionToday();
+    refreshMacroTargets();
+    recalc();
+    renderPlan();
+  }
   updateMemberIdentity();
   goTab('home');
 }
@@ -11199,6 +11356,14 @@ checkStreakReminder();
   }catch(e){}
   if(loggedIn && account){
     document.getElementById('onboarding').classList.remove('active');
+    /* 登録済み会員：保存済みの体格から基礎代謝を復元し、
+       食事の数字は0スタート→今日すでに記録があればそれだけ復元（デモの作り置き数値は出さない） */
+    applyBodyProfile(account);
+    resetNutritionToday();
+    restoreNutritionToday();
+    refreshMacroTargets();
+    recalc();
+    renderPlan();
     updateMemberIdentity();
     goTab('home');
   } else {
