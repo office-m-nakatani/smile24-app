@@ -1437,6 +1437,42 @@ input{font-family:inherit;}
 .qa-card .qa-d{font-size:9px;opacity:.85;margin-top:3px;line-height:1.5;position:relative;}
 
 /* 食事カード（朝食・昼食・夕食・軽食） */
+/* ガチ勢モード（2026-08-07）: 運動の詳細入力・アスリート目標計算・筋トレ記録 */
+.field-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.ex-note{font-size:10.5px;color:var(--text-lt);margin:-4px 0 10px;line-height:1.6;}
+.ex-str-stats{
+  display:flex;gap:8px;margin-bottom:10px;
+}
+.ex-str-stats .st{
+  flex:1;background:#F4F7FB;border-radius:10px;padding:8px 6px;text-align:center;
+}
+.ex-str-stats .st b{display:block;font-family:var(--font-en);font-size:15px;}
+.ex-str-stats .st span{font-size:9.5px;color:var(--text-lt);font-weight:600;}
+.usual-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 0;margin-bottom:8px;border:1.5px dashed #B9CBE2;border-radius:12px;
+  background:#F8FAFD;color:var(--brand);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+}
+.usual-btn svg{width:14px;height:14px;}
+/* アスリート設定シート */
+.ath-result{background:#F4F7FB;border-radius:12px;padding:12px;margin:10px 0;}
+.ath-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;font-size:12.5px;color:var(--text-mid);}
+.ath-row b{font-family:var(--font-en);font-size:15px;color:var(--text);}
+.ath-row.main b{font-size:20px;color:var(--brand);}
+.ath-macro{display:flex;gap:7px;margin-top:8px;}
+.ath-macro .am{flex:1;background:var(--white);border-radius:10px;padding:8px 4px;text-align:center;box-shadow:var(--card-shadow);}
+.ath-macro .am b{display:block;font-family:var(--font-en);font-size:14px;}
+.ath-macro .am span{font-size:9px;color:var(--text-lt);font-weight:700;}
+.ath-note{font-size:10px;color:var(--text-lt);line-height:1.7;margin-top:8px;}
+/* 筋トレ記録（からだタブ） */
+.str-hist{margin-top:8px;}
+.str-hist .sh-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F0F3F7;font-size:12px;}
+.str-hist .sh-d{color:var(--text-lt);font-size:10.5px;flex:0 0 52px;}
+.str-hist .sh-n{font-weight:700;flex:1;}
+.str-hist .sh-v{font-family:var(--font-en);color:var(--text-mid);}
+.str-hist .sh-rm{font-family:var(--font-en);font-weight:700;color:var(--brand);flex:0 0 auto;}
+
 /* マイページ「頑張りの記録」（旧ホームのミッションカードの受け皿・2026-08-07） */
 .streak-card{
   margin:12px 22px 0;padding:13px 15px;border-radius:var(--radius-sm);
@@ -3014,12 +3050,14 @@ input{font-family:inherit;}
         <div class="list-item" onclick="openFontSizeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span>文字サイズ</span><span class="lval" id="fontSizeLval">標準</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openThemeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗テーマ（FCカスタマイズ・デモ）</span><span class="lval" id="themeLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="showSheet('sosSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>緊急連絡先・SOS</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
+        <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>ガチ勢モード（目標を詳しく計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>ジュエル（頑張りの見える化）</span><div class="ob-switch" id="jewelSwitch" onclick="toggleJewel()" style="flex:0 0 auto;"></div></div>
         <div class="list-item" onclick="openWithdrawSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>退会・休会のお手続き</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-07e</b>（「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-07h</b>（ガチ勢モードが<b>実測で賢くなる</b>ようになりました。食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は週±120kcalの小刻み・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3111,10 +3149,46 @@ input{font-family:inherit;}
           <label>時間（分）</label>
           <input type="number" id="exMinutes" value="30" min="1" max="240">
         </div>
+        <!-- 詳細入力（2026-08-07・ガチ勢要望）。かんたん＝従来のMETs概算、
+             詳細＝速度・傾斜（有酸素）や 重量×回数×セット（筋トレ）から計算 -->
+        <div class="field">
+          <label>計算のしかた</label>
+          <div class="chip-row">
+            <button class="chip-select active" id="exModeSimple" onclick="setExMode('simple')">かんたん</button>
+            <button class="chip-select" id="exModeDetail" onclick="setExMode('detail')">詳細（ガチ勢）</button>
+          </div>
+        </div>
+        <div id="exDetailCardio" style="display:none;">
+          <div class="field-row2">
+            <div class="field"><label>速度（km/h）</label><input type="number" id="exSpeed" value="8" min="2" max="20" step="0.5"></div>
+            <div class="field"><label>傾斜（%）</label><input type="number" id="exIncline" value="0" min="0" max="15" step="0.5"></div>
+          </div>
+          <div class="ex-note">トレッドミルの表示をそのまま入れてね（傾斜0%＝平地）</div>
+        </div>
+        <div id="exDetailStr" style="display:none;">
+          <div class="field">
+            <label>種目</label>
+            <select id="exStrName" class="mi-portion" style="width:100%;" onchange="updateExercisePreview()">
+              <option>ベンチプレス</option><option>スクワット</option><option>デッドリフト</option>
+              <option>ショルダープレス</option><option>ラットプルダウン</option><option>チェストプレス</option>
+              <option>レッグプレス</option><option>アームカール</option><option>ダンベルプレス</option>
+            </select>
+          </div>
+          <div class="field-row3">
+            <div class="field"><label>重量（kg）</label><input type="number" id="exStrKg" value="40" min="1" max="300" step="2.5"></div>
+            <div class="field"><label>回数</label><input type="number" id="exStrReps" value="10" min="1" max="30"></div>
+            <div class="field"><label>セット</label><input type="number" id="exStrSets" value="3" min="1" max="10"></div>
+          </div>
+          <div class="ex-str-stats" id="exStrStats"></div>
+        </div>
         <div class="sheet-kcal-preview">
           <div class="kv" id="exKcalPreview">110<span>kcal 消費</span></div>
-          <div class="kl">体重・運動強度から自動計算（推定値）</div>
+          <div class="kl" id="exKcalNote">体重・運動強度から自動計算（推定値）</div>
         </div>
+        <button class="usual-btn" id="exUsualBtn" style="display:none;" onclick="applyUsualExercise()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          いつもの運動（前回と同じ内容を入れる）
+        </button>
         <button class="sheet-btn" onclick="saveExercise()">記録する</button>
         <button class="sheet-cancel" onclick="hideSheet('exerciseSheet')">キャンセル</button>
       </div>
@@ -3159,6 +3233,89 @@ input{font-family:inherit;}
         </div>
         <button class="sheet-btn" onclick="saveBmr()">この内容で更新する</button>
         <button class="sheet-cancel" onclick="hideSheet('bmrSheet')">キャンセル</button>
+      </div>
+    </div>
+
+    <!-- ガチ勢モード：アスリート目標計算シート（2026-08-07）
+         基礎代謝(Mifflin-St Jeor／体脂肪率があればKatch-McArdle)→TDEE→目的別の目標kcal→マクロ配分。
+         出典: Mifflin 1990 / Katch-McArdle / Helms 2014 / Iraki 2019 / Morton 2018 / 日本人の食事摂取基準 -->
+    <div class="sheet" id="athleteSheet">
+      <div class="sheet-card">
+        <h3>ガチ勢モード（目標を詳しく計算）</h3>
+        <div class="sheet-desc">基礎代謝から「1日にいくらまで食べていいか」とマクロ配分を計算するよ（一般的な計算式による目安です）</div>
+        <div class="field-row2">
+          <div class="field"><label>身長（cm）</label><input type="number" id="athHeight" value="158" min="130" max="210" oninput="athPreview()"></div>
+          <div class="field"><label>体重（kg）</label><input type="number" id="athWeight" value="62" min="30" max="180" step="0.1" oninput="athPreview()"></div>
+        </div>
+        <div class="field-row2">
+          <div class="field"><label>年齢</label><input type="number" id="athAge" value="36" min="16" max="90" oninput="athPreview()"></div>
+          <div class="field"><label>体脂肪率（%・任意）</label><input type="number" id="athBf" placeholder="わかれば" min="3" max="60" step="0.1" oninput="athPreview()"></div>
+        </div>
+        <div class="field">
+          <label>性別（計算用）</label>
+          <div class="chip-row" id="athSexChips">
+            <button class="chip-select active" data-v="F" onclick="athPick('sex','F',this)">女性</button>
+            <button class="chip-select" data-v="M" onclick="athPick('sex','M',this)">男性</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>日常の活動量（ジムでの運動は含めない※）</label>
+          <select id="athAct" class="mi-portion" style="width:100%;" onchange="athPreview()">
+            <option value="1.2">ほぼ座り仕事・運動は別に記録（×1.2）</option>
+            <option value="1.375" selected>立ち仕事や家事が多め（×1.375）</option>
+            <option value="1.55">動き回る仕事（×1.55）</option>
+            <option value="1.725">肉体労働（×1.725）</option>
+          </select>
+          <div class="ex-note">※ジムでの運動は「運動を記録」から、歩数はホームの歩数計から足されるので、どちらもここに含めないでください（含めると二重になります）</div>
+        </div>
+        <div class="field">
+          <label>目的</label>
+          <div class="chip-row" id="athGoalChips">
+            <button class="chip-select active" data-v="cut" onclick="athPick('goal','cut',this)">減量（−15%）</button>
+            <button class="chip-select" data-v="keep" onclick="athPick('goal','keep',this)">維持</button>
+            <button class="chip-select" data-v="bulk" onclick="athPick('goal','bulk',this)">筋肥大（＋10%）</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>マクロ配分</label>
+          <div class="chip-row" id="athMacroChips">
+            <button class="chip-select active" data-v="balance" onclick="athPick('macro','balance',this)">バランス</button>
+            <button class="chip-select" data-v="highp" onclick="athPick('macro','highp',this)">高たんぱく</button>
+            <button class="chip-select" data-v="lowf" onclick="athPick('macro','lowf',this)">低脂質</button>
+            <button class="chip-select" data-v="lowc" onclick="athPick('macro','lowc',this)">低糖質</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>すすめ方（週1回の見直しをどこまで任せるか）</label>
+          <div class="chip-row" id="athStyleChips">
+            <button class="chip-select active" data-v="coached" onclick="athPick('style','coached',this)">おまかせ</button>
+            <button class="chip-select" data-v="collab" onclick="athPick('style','collab',this)">週の予算だけ</button>
+            <button class="chip-select" data-v="manual" onclick="athPick('style','manual',this)">自分で決める</button>
+          </div>
+          <div class="ex-note">おまかせ＝週1回、実測にもとづく目標の提案が届く（反映するかは毎回あなたが決める）。週の予算だけ＝週合計の提案のみで日々の配分は自由。自分で＝提案なし（記録と分析だけ）</div>
+        </div>
+        <div class="ath-result" id="athResult"></div>
+        <div class="ath-note" id="athNote"></div>
+        <button class="sheet-btn" onclick="applyAthlete()">この目標をアプリに反映する</button>
+        <button class="usual-btn" id="athCheckinBtn" style="display:none;" onclick="hideSheet('athleteSheet');openCheckin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16v-5"/><path d="M12 16V8"/><path d="M17 16v-3"/></svg>
+          週次チェックイン（実測にもとづく見直し）
+        </button>
+        <button class="jw-off" id="athOffBtn" style="display:none;" onclick="clearAthlete()">ガチ勢モードをやめる（通常の目標に戻す）</button>
+        <button class="sheet-cancel" onclick="hideSheet('athleteSheet')">閉じる</button>
+      </div>
+    </div>
+
+    <!-- 週次チェックイン（2026-08-07）: 記録から逆算した消費をもとに目標を見直す。
+         提案は必ず承認/見送りの2択で提示し、勝手に変えない。各週は自己完結
+         （先週の未達を今週の目標をきつくして取り返させることはしない） -->
+    <div class="sheet" id="checkinSheet">
+      <div class="sheet-card">
+        <h3>週次チェックイン</h3>
+        <div class="sheet-desc">この1週間の記録から、からだの実際の消費を逆算して目標を見直すよ</div>
+        <div id="ciBody"></div>
+        <button class="sheet-btn" id="ciApplyBtn" style="display:none;" onclick="applyCheckin()">この提案を反映する</button>
+        <button class="sheet-cancel" onclick="hideSheet('checkinSheet')" id="ciCancelBtn">今回は見送る</button>
       </div>
     </div>
 
@@ -3846,6 +4003,11 @@ input{font-family:inherit;}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg>
           <div><div class="ri-t">運動を記録</div><div class="ri-s">ウォーキング・マシン・水泳など</div></div>
         </button>
+        <!-- 毎日飲む人向けの1タップ（2026-08-07・ガチ勢要望）。DBのプロテインドリンクをそのまま記録する -->
+        <button class="rec-item" onclick="hideSheet('recordSheet');quickLogProtein()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8"/><path d="M9 2v2.4a2 2 0 0 1-.6 1.4L6 8.2a2 2 0 0 0-.6 1.4V20a2 2 0 0 0 2 2h9.2a2 2 0 0 0 2-2V9.6a2 2 0 0 0-.6-1.4l-2.4-2.4a2 2 0 0 1-.6-1.4V2"/><path d="M6 13h12"/></svg>
+          <div><div class="ri-t">プロテインを飲んだ（＋1杯）</div><div class="ri-s">水割り1杯＝約115kcal・たんぱく質21g</div></div>
+        </button>
         <button class="rec-item" onclick="hideSheet('recordSheet');addWater(250);showToast('お水を250ml記録したよ')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
           <div><div class="ri-t">水を飲んだ（＋250ml）</div><div class="ri-s">コップ1杯ぶんをすぐ記録</div></div>
@@ -4286,6 +4448,8 @@ const state = {
    アプリ自身のチャットが言う「筋肉を増やすなら体重×1.6〜2.0g」と自己矛盾していた。
    脂質は1日エネルギーの25%（目標帯20〜30%の中央）、炭水化物は残り */
 function refreshMacroTargets(){
+  /* ガチ勢モード中はマクロをアスリート設定が決める（体重更新等で上書きしない。2026-08-07） */
+  if(state.athleteOn) return;
   state.proteinTarget = Math.round(state.weight * proteinCoef());
   state.fatTarget = Math.round(state.baseConsumption * 0.25 / 9);
   state.carbsTarget = Math.round((state.baseConsumption - state.proteinTarget * 4 - state.fatTarget * 9) / 4);
@@ -4731,6 +4895,19 @@ function saveBmr(){
   var w = parseFloat(document.getElementById('bmrWeight').value);
   if(!h || !w){ showToast('身長と体重を入力してください'); return; }
   state.height = h; state.weight = w; state.muscleLevel = selectedMuscle;
+  /* ガチ勢モード中は目標を上書きしない（applyBodyProfileと同じ理由）。
+     体格だけ更新し、目標はガチ勢設定が優先される旨を伝える */
+  if(state.athleteOn){
+    try{
+      var acc0 = JSON.parse(localStorage.getItem('smile24_account') || 'null');
+      if(acc0){ acc0.height = h; acc0.weight = w; acc0.muscle = selectedMuscle;
+        localStorage.setItem('smile24_account', JSON.stringify(acc0)); }
+    }catch(e){}
+    recalc();
+    hideSheet('bmrSheet');
+    showToast('体格を更新したよ。カロリー目標はガチ勢モードの設定が優先されます（マイページから変更できます）');
+    return;
+  }
   state.bmr = calcBmrValue(h, w, selectedMuscle);
   state.baseConsumption = Math.round(state.bmr * 1.4);
   refreshMacroTargets();
@@ -6993,6 +7170,9 @@ function pMealTarget(){
 /* 1日のカロリー予算。目的が減量なら−12%・代謝アップなら−5%の緩やかな赤字にする
    （維持カロリー満タンを「ちょうどいい」と評価しない） */
 function dailyKcalBudget(){
+  /* ガチ勢モード中は baseConsumption 自体が目的込みの目標なので、
+     goalType の−12%等を重ねない（二重の赤字になる。2026-08-07） */
+  if(state.athleteOn) return Math.round(state.baseConsumption + activityKcal());
   var adj = { diet:-0.12, metabolism:-0.05 }[state.goalType] || 0;
   return Math.round((state.baseConsumption + activityKcal()) * (1 + adj));
 }
@@ -8657,6 +8837,8 @@ function addAddonToPick(ai){
 
 /* ── 朝食などのプリセット（1タップで内訳ごと記録画面へ） ── */
 var MEAL_PRESETS = [
+  /* 毎日飲む人向け（2026-08-07・ガチ勢要望）。先頭＝いちばん押しやすい位置 */
+  { name:'プロテイン', sub:'水割り1杯', foods:[['プロテインドリンク(水割り)',1]] },
   { name:'和朝食', sub:'ご飯・みそ汁・納豆・焼き鮭', foods:[['白ご飯',1],['味噌汁',1],['納豆',1],['焼き鮭',1]] },
   { name:'うどん（朝・昼）', sub:'かけうどん＋おにぎり', foods:[['かけうどん',1],['鮭おにぎり',1]] },
   { name:'パン朝食', sub:'トースト・ゆで卵・カフェオレ', foods:[['バタートースト',1],['ゆで卵',1],['カフェオレ',1]] },
@@ -9447,6 +9629,18 @@ function commitMealItems(items, photo){
   addJewels(10);
   addXp(10);
 }
+/* プロテイン1タップ記録（2026-08-07・ガチ勢要望）。
+   ＋記録シートから、カメラ・確認画面を通さずDBの実値で即記録する。
+   時間帯スロットは通常の食事と同じ判定（トレ後の間食帯なら snack に入る） */
+function quickLogProtein(){
+  var idx = findFoodIdx('プロテインドリンク(水割り)');
+  if(idx < 0){ showToast('プロテインの品目が見つかりませんでした'); return; }
+  var it = newMealItem(idx);
+  commitMealItems([it], null);
+  var po = FOOD_DB[idx].portions[FOOD_DB[idx].def || 0];
+  showToast('プロテイン1杯を記録したよ（+' + po.kcal + 'kcal・たんぱく質' + po.p + 'g）' + (state.jewelEnabled ? ' ＋10ジュエル' : ''));
+}
+
 function saveMeal(){
   if(!mealSel.length){ showToast('品目がありません。「品目を追加・修正する」からえらんでね'); return; }
   /* 昼・夕なのに合計が小さすぎる時は1回だけ確認する（過少記録の多くは「量」より「品目の記録漏れ」）。
@@ -9678,28 +9872,538 @@ function renderTrendChart(todayIntake, todayBurn){
 
 /* ============ 運動記録 ============ */
 var selectedActivity = 'walk';
+/* ============ 適応型TDEE（2026-08-07・実測から消費を逆算する） ============
+   考え方（公開されている適応型アルゴリズムの挙動仕様を、端末内ルールで自作近似）:
+   ・入力は「平滑化したトレンド体重」と「記録した摂取カロリー」の2つだけ
+   ・消費 ≒ 摂取 − 貯蔵エネルギーの変化（体重1kg ≒ 7700kcal）
+   ・初期値は式（Mifflin等）→ 記録が貯まるほど実測へ寄せる（2〜3週で校正）
+   ・更新は保守的に段階適用（急にトレンドが変わっても1週目は小さく、続けば大きく）
+   ・欠測の扱いは非対称: 体重は補間でOK・栄養の空白日は痛い（概算でも入れる方が良い）
+   ・データ不足の週は更新を保留（前回の値を保持）
+   ・各週は自己完結。未達を翌週に「取り返させる」調整はしない */
+var WEIGHT_KCAL_PER_KG = 7700;
+/* デモ用の直近21日の記録（TODAY基準・決め打ち）。
+   実運用では日々の記録が localStorage に積まれてここを置き換える */
+var DEMO_WEIGH_LOG = [   // ago=何日前, w=kg（週3回ペース・欠測日は補間される）
+  {ago:20,w:63.35},{ago:18,w:63.2},{ago:15,w:63.05},{ago:13,w:62.9},{ago:11,w:62.85},
+  {ago:8,w:62.6},{ago:6,w:62.5},{ago:4,w:62.35},{ago:2,w:62.2},{ago:0,w:62.1}
+];
+var DEMO_KCAL_LOG = [    // ago=何日前, kcal=その日の摂取（2日欠測＋1日だけ極端に少ない疑い日）
+  {ago:20,kcal:1680},{ago:19,kcal:1720},{ago:18,kcal:1590},{ago:17,kcal:1650},
+  {ago:16,kcal:1740},{ago:14,kcal:1620},{ago:13,kcal:1700},{ago:12,kcal:1560},
+  {ago:11,kcal:1690},{ago:10,kcal:650},{ago:9,kcal:1640},{ago:8,kcal:1710},
+  {ago:7,kcal:1580},{ago:6,kcal:1660},{ago:5,kcal:1730},{ago:3,kcal:1610},
+  {ago:2,kcal:1670},{ago:1,kcal:1640}
+];
+function loadDayLogs(){
+  try{
+    var j = JSON.parse(localStorage.getItem('smile24_adaptive_logs') || 'null');
+    if(j && j.weigh && j.kcal) return j;
+  }catch(e){}
+  return { weigh: DEMO_WEIGH_LOG, kcal: DEMO_KCAL_LOG };
+}
+/* トレンド体重: 計測日の間を線形補間 → 指数移動平均（α=0.25）で平滑化。
+   入浴・食事タイミング等の日々のノイズ（水分・グリコーゲン）を除くのが目的 */
+function trendWeightSeries(weigh){
+  var byAgo = {};
+  weigh.forEach(function(x){ byAgo[x.ago] = x.w; });
+  var maxAgo = Math.max.apply(null, weigh.map(function(x){ return x.ago; }));
+  var days = [], last = null;
+  for(var ago = maxAgo; ago >= 0; ago--){
+    if(byAgo[ago] != null){ days.push({ago:ago, w:byAgo[ago]}); }
+    else days.push({ago:ago, w:null});
+  }
+  /* 線形補間 */
+  for(var i = 0; i < days.length; i++){
+    if(days[i].w != null) continue;
+    var prev = null, next = null;
+    for(var a = i - 1; a >= 0; a--){ if(days[a].w != null){ prev = a; break; } }
+    for(var b = i + 1; b < days.length; b++){ if(days[b].w != null){ next = b; break; } }
+    if(prev != null && next != null){
+      days[i].w = days[prev].w + (days[next].w - days[prev].w) * (i - prev) / (next - prev);
+    } else if(prev != null) days[i].w = days[prev].w;
+    else if(next != null) days[i].w = days[next].w;
+  }
+  /* EMA */
+  var trend = [], ema = days[0].w;
+  days.forEach(function(d){ ema = ema + 0.25 * (d.w - ema); trend.push({ago:d.ago, w:ema}); });
+  return trend;
+}
+/* 実測TDEEの逆算。返り値: {status:'ok'|'holding'|'insufficient', tdee, calc, trendDelta, usedDays, excluded} */
+function adaptiveTDEE(formulaTdee){
+  var logs = loadDayLogs();
+  if(logs.kcal.length < 10 || logs.weigh.length < 4) return { status:'insufficient' };
+  /* 直近7日のデータ量ゲート: 栄養4日以上＋体重1回以上（満たさなければ保留） */
+  var k7 = logs.kcal.filter(function(x){ return x.ago <= 6; }).length;
+  var w7 = logs.weigh.filter(function(x){ return x.ago <= 6; }).length;
+  if(k7 < 4 || w7 < 1) return { status:'holding' };
+  /* 疑い日（中央値の半分未満＝記録し忘れの可能性）は計算から除外 */
+  var vals = logs.kcal.map(function(x){ return x.kcal; }).slice().sort(function(a,b){ return a-b; });
+  var med = vals[Math.floor(vals.length / 2)];
+  var used = logs.kcal.filter(function(x){ return x.kcal >= med * 0.5; });
+  var excluded = logs.kcal.length - used.length;
+  var meanIn = used.reduce(function(s,x){ return s + x.kcal; }, 0) / used.length;
+  var trend = trendWeightSeries(logs.weigh);
+  var span = trend[trend.length - 1].ago === 0 ? trend.length - 1 : trend.length;
+  var delta = trend[trend.length - 1].w - trend[0].w;      // kg（マイナス=減少）
+  var perDay = delta * WEIGHT_KCAL_PER_KG / span;
+  var calc = Math.round(meanIn - perDay);
+  /* 保守的な段階適用: 式の値から一気に飛ばず、データ週数に応じて実測へ寄せる。
+     3週ぶんの記録が貯まったら実測をほぼ採用（差の上限±350kcal） */
+  var weeks = Math.min(3, Math.floor(logs.kcal.length / 6));
+  var blended = Math.round(formulaTdee + Math.max(-350, Math.min(350, calc - formulaTdee)) * weeks / 3);
+  return { status:'ok', tdee: blended, calc: calc, trendDelta: Math.round(delta * 100) / 100,
+           usedDays: used.length, excluded: excluded, weeks: weeks };
+}
+
+/* ============ ガチ勢モード：アスリート目標計算（2026-08-07） ============
+   基礎代謝→TDEE→目的別目標→マクロ。適用すると通常の目標(baseConsumption等)を上書きする。
+   下限ガード: 目標kcalはBMRと（女性1200/男性1500）を下回らせない（AHA/ACC/TOS 2013の下端。
+   BMR下限はエビデンスではなくこのアプリの安全設計）。 */
+var athSel = { sex:'F', goal:'cut', macro:'balance', style:'coached' };
+function athPick(key, v, el){
+  athSel[key] = v;
+  el.parentElement.querySelectorAll('.chip-select').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  athPreview();
+}
+function athCompute(){
+  var h = parseFloat(document.getElementById('athHeight').value) || 158;
+  var w = parseFloat(document.getElementById('athWeight').value) || 62;
+  var age = parseInt(document.getElementById('athAge').value) || 36;
+  var bf = parseFloat(document.getElementById('athBf').value);
+  var act = parseFloat(document.getElementById('athAct').value) || 1.375;
+  var bmr, formula;
+  if(!isNaN(bf) && bf > 0){
+    var lbm = w * (1 - bf / 100);
+    bmr = 370 + 21.6 * lbm;                       // Katch-McArdle
+    formula = 'Katch-McArdle式（体脂肪率から）';
+  } else {
+    bmr = athSel.sex === 'M' ? (10 * w + 6.25 * h - 5 * age + 5)
+                             : (10 * w + 6.25 * h - 5 * age - 161);   // Mifflin-St Jeor
+    formula = 'Mifflin-St Jeor式';
+  }
+  var tdee = bmr * act;
+  var goalF = { cut: 0.85, keep: 1.0, bulk: 1.10 }[athSel.goal];
+  var target = tdee * goalF;
+  var floor = Math.max(bmr, athSel.sex === 'M' ? 1500 : 1200);
+  var floored = target < floor;
+  target = Math.max(target, floor);
+  var upperCap = Math.round(tdee * 1.20);          // 増量時の上限目安（Iraki 2019の上端）
+  var m = athMacroFor(target, w);
+  return {
+    bmr: Math.round(bmr), tdee: Math.round(tdee), target: Math.round(target),
+    upperCap: upperCap, floored: floored, formula: formula, w: w,
+    pG: m.pG, fG: m.fG, cG: m.cG, sfaMaxG: m.sfaMaxG, macroNote: m.note,
+  };
+}
+/* マクロ計算を目標kcalから引く（初期設定と週次チェックインで共用）。
+   高たんぱく系は「Pをg/kgで確定→Fを%→Cは残り」の順（%と混ぜない）。
+   C下限130g/日（IoM RDA）・飽和脂肪酸は目標kcalの7%以下（食事摂取基準） */
+function athMacroFor(target, w){
+  var pG, fKcal, note = '';
+  if(athSel.macro === 'balance'){ pG = target * 0.20 / 4; fKcal = target * 0.25; }
+  else if(athSel.macro === 'highp'){ pG = 2.0 * w; fKcal = target * 0.25; }
+  else if(athSel.macro === 'lowf'){ pG = target * 0.25 / 4; fKcal = target * 0.20; }
+  else { pG = 2.0 * w; fKcal = target * 0.40; note = '低糖質は国の目標量レンジ（炭水化物50〜65%）の外です。短期の調整向け'; }
+  var cKcal = target - pG * 4 - fKcal;
+  if(cKcal < 130 * 4){ cKcal = 130 * 4; fKcal = target - pG * 4 - cKcal; }   // C下限を最後にクランプ
+  /* 極端な入力（超高体重×低目標）でC下限が脂質を0近くまで潰さないよう、Fにも15%Eの下限。
+     この場合Cは130gを割るが、表示上の破綻（F=0g）よりまし（2026-08-07 検証役low指摘） */
+  if(fKcal < target * 0.15){ fKcal = target * 0.15; cKcal = target - pG * 4 - fKcal; }
+  return { pG: Math.round(pG), fG: Math.round(fKcal / 9), cG: Math.round(cKcal / 4),
+           sfaMaxG: Math.round(target * 0.07 / 9), note: note };
+}
+function athPreview(){
+  var r = athCompute();
+  var goalLabel = { cut:'減量', keep:'維持', bulk:'筋肥大' }[athSel.goal];
+  /* 記録が貯まっていれば、式だけでなく実測（摂取と体重変化からの逆算）も見せる */
+  var a = adaptiveTDEE(r.tdee);
+  var adaptRow = a.status === 'ok'
+    ? '<div class="ath-row"><span>実測の消費（記録から逆算・' + a.usedDays + '日ぶん）</span><b>' + a.tdee.toLocaleString() + ' kcal</b></div>'
+    : '';
+  document.getElementById('athResult').innerHTML =
+    '<div class="ath-row"><span>基礎代謝（' + r.formula + '）</span><b>' + r.bmr.toLocaleString() + ' kcal</b></div>' +
+    '<div class="ath-row"><span>1日の消費の目安（TDEE・式）</span><b>' + r.tdee.toLocaleString() + ' kcal</b></div>' + adaptRow +
+    '<div class="ath-row main"><span>' + goalLabel + 'の目標（1日にここまで）</span><b>' + r.target.toLocaleString() + ' kcal</b></div>' +
+    (athSel.goal === 'bulk' ? '<div class="ath-row"><span>食べすぎの上限目安（+20%）</span><b>' + r.upperCap.toLocaleString() + ' kcal</b></div>' : '') +
+    '<div class="ath-macro">' +
+      '<div class="am"><b>' + r.pG + 'g</b><span>たんぱく質<br>(' + (Math.round(r.pG / r.w * 10) / 10) + 'g/kg)</span></div>' +
+      '<div class="am"><b>' + r.fG + 'g</b><span>脂質<br>(飽和は' + r.sfaMaxG + 'g以下目安)</span></div>' +
+      '<div class="am"><b>' + r.cG + 'g</b><span>炭水化物</span></div>' +
+    '</div>';
+  document.getElementById('athNote').innerHTML =
+    (r.floored ? '目標が下限（基礎代謝・健康上の最低ライン）に当たったため引き上げています。' : '') +
+    (r.macroNote ? r.macroNote + '。' : '') +
+    '数値は一般的な計算式による目安です。体質や健康状態により実際とは異なります。持病のある方・通院中の方は、食事や運動の変更前に医師・管理栄養士にご相談ください';
+}
+function openAthleteSheet(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  /* 初期値: 保存値 → プロフィール/直近の記録 */
+  document.getElementById('athWeight').value = (saved && saved.w) || state.weight;
+  document.getElementById('athHeight').value = (saved && saved.h) || state.height;
+  if(saved && saved.age) document.getElementById('athAge').value = saved.age;
+  if(saved && saved.bf != null) document.getElementById('athBf').value = saved.bf;
+  if(saved && saved.act) document.getElementById('athAct').value = String(saved.act);
+  if(saved){
+    athSel = { sex: saved.sex, goal: saved.goal, macro: saved.macro, style: saved.style || 'coached' };
+    ['Sex', 'Goal', 'Macro', 'Style'].forEach(function(g){
+      var key = g.toLowerCase();
+      document.querySelectorAll('#ath' + g + 'Chips .chip-select').forEach(function(c){
+        c.classList.toggle('active', c.dataset.v === athSel[key]);
+      });
+    });
+  }
+  document.getElementById('athOffBtn').style.display = (saved ? 'block' : 'none');
+  document.getElementById('athCheckinBtn').style.display = (saved ? 'flex' : 'none');
+  athPreview();
+  showSheet('athleteSheet');
+}
+function applyAthlete(){
+  var r = athCompute();
+  var cfg = {
+    sex: athSel.sex, goal: athSel.goal, macro: athSel.macro, style: athSel.style || 'coached',
+    w: parseFloat(document.getElementById('athWeight').value) || state.weight,
+    h: parseFloat(document.getElementById('athHeight').value) || state.height,
+    age: parseInt(document.getElementById('athAge').value) || 36,
+    bf: (function(){ var v = parseFloat(document.getElementById('athBf').value); return isNaN(v) ? null : v; })(),
+    act: parseFloat(document.getElementById('athAct').value) || 1.375,
+  };
+  try{ localStorage.setItem('smile24_athlete', JSON.stringify(cfg)); }catch(e){}
+  applyAthleteToState(r, cfg);
+  hideSheet('athleteSheet');
+  showToast('ガチ勢モードを設定したよ。今日の目標 ' + r.target.toLocaleString() + 'kcal・たんぱく質' + r.pG + 'g');
+}
+function applyAthleteToState(r, cfg){
+  state.weight = cfg.w;
+  state.height = cfg.h;
+  state.bmr = r.bmr;
+  state.baseConsumption = r.target;      // 「今日の目標」＝目的込みの目標kcal
+  state.athleteOn = true;
+  state.proteinTarget = r.pG;
+  state.fatTarget = r.fG;
+  state.carbsTarget = r.cG;
+  var lv = document.getElementById('athLval');
+  if(lv) lv.textContent = { cut:'減量中', keep:'維持', bulk:'筋肥大' }[cfg.goal] + ' ' + r.target.toLocaleString() + 'kcal';
+  recalc();
+}
+function clearAthlete(){
+  try{ localStorage.removeItem('smile24_athlete'); }catch(e){}
+  state.athleteOn = false;
+  state.baseConsumption = Math.round(state.bmr * 1.4);
+  refreshMacroTargets();
+  var lv = document.getElementById('athLval');
+  if(lv) lv.textContent = 'オフ';
+  recalc();
+  hideSheet('athleteSheet');
+  showToast('通常の目標に戻したよ');
+}
+/* ============ 週次チェックイン（2026-08-07） ============
+   実測（適応型TDEE）にもとづいて目標kcal・マクロの見直し案を出す。
+   設計原則: ①提案は承認/見送りの2択（勝手に変えない） ②変更は週ごとに小さく
+   （現目標から±120kcal/週まで） ③各週は自己完結（未達の取り返しをさせない）
+   ④維持目的は「目標体重±0.7kgの帯」に収める小さな補正だけ行う */
+var ciProposal = null;
+function openCheckin(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  var body = document.getElementById('ciBody');
+  var applyBtn = document.getElementById('ciApplyBtn');
+  ciProposal = null;
+  if(!saved){
+    body.innerHTML = '<div class="ath-note">先に「ガチ勢モード」で目標を設定してね</div>';
+    applyBtn.style.display = 'none';
+    showSheet('checkinSheet'); return;
+  }
+  var r = athCompute();
+  var a = adaptiveTDEE(r.tdee);
+  var cur = state.baseConsumption;
+  var trend = trendWeightSeries(loadDayLogs().weigh);
+  var tNow = Math.round(trend[trend.length - 1].w * 10) / 10;
+  var tWeekAgo = trend[Math.max(0, trend.length - 8)].w;
+  var wkChange = Math.round((tNow - tWeekAgo) * 100) / 100;
+  var head =
+    '<div class="ex-note">（デモ表示：計算には直近21日ぶんのサンプル記録を使っています）</div>' +
+    '<div class="ath-result">' +
+    '<div class="ath-row"><span>トレンド体重（ノイズを除いた体重）</span><b>' + tNow.toFixed(1) + ' kg</b></div>' +
+    '<div class="ath-row"><span>先週からの変化</span><b>' + (wkChange > 0 ? '+' : '') + wkChange.toFixed(2) + ' kg</b></div>';
+  if(a.status !== 'ok'){
+    body.innerHTML = head + '</div>' +
+      '<div class="ath-note">' + (a.status === 'holding'
+        ? 'この1週間は記録が足りないため、目標は前回のまま保持します（食事の記録が週4日以上・体重が週1回以上で見直せるようになります）。ざっくりでも記録を入れる方が、空白のままより正確になります'
+        : '実測での見直しには、食事と体重の記録がもう少し必要です（目安：食事10日ぶん・体重4回以上）。それまでは式で計算した目標を使います') + '</div>';
+    applyBtn.style.display = 'none';
+    showSheet('checkinSheet'); return;
+  }
+  head += '<div class="ath-row"><span>実測の消費（摂取と体重変化から逆算）</span><b>' + a.tdee.toLocaleString() + ' kcal/日</b></div>' +
+          '<div class="ath-row"><span>式で見積もった消費</span><b>' + r.tdee.toLocaleString() + ' kcal/日</b></div></div>';
+  /* 新しい目標: 実測TDEE × 目的係数。維持はバンド制御 */
+  var goalF = { cut: 0.85, keep: 1.0, bulk: 1.10 }[athSel.goal];
+  var ideal;
+  var bandNote = '';
+  if(athSel.goal === 'keep'){
+    var targetW = state.weight - (state.goalDiffKg || 0);
+    var diff = tNow - targetW;
+    if(Math.abs(diff) <= 0.7){ ideal = a.tdee; bandNote = '目標体重の帯（±0.7kg）の中にいるので、実測どおりの維持カロリーを提案します'; }
+    else {
+      var corr = Math.round(0.0015 * state.weight * WEIGHT_KCAL_PER_KG / 7);   // 体重の0.15%/週ぶんの小さな補正
+      ideal = a.tdee + (diff > 0 ? -corr : corr);
+      bandNote = '目標体重から' + (diff > 0 ? '+' : '') + diff.toFixed(1) + 'kgずれているので、帯に戻す小さな補正（' + (diff > 0 ? '−' : '+') + corr + 'kcal/日）を入れます。帯に戻ったら維持カロリーに戻します';
+    }
+  } else {
+    ideal = Math.round(a.tdee * goalF);
+  }
+  var floor = Math.max(r.bmr, athSel.sex === 'M' ? 1500 : 1200);
+  ideal = Math.max(ideal, floor);
+  /* 週ごとの変更は小さく（±120kcal）。取り返し調整はしない */
+  var proposed = Math.max(cur - 120, Math.min(cur + 120, ideal));
+  var m = athMacroFor(proposed, r.w);
+  ciProposal = { target: proposed, macros: m };
+  /* 週1回の運用: 反映から6日間は再反映させない（±120ずつ何度も動かせてしまうため。検証役low指摘）。
+     見るだけはいつでもOK */
+  var lastAt = 0;
+  try{ lastAt = Number(localStorage.getItem('smile24_checkin_at') || 0); }catch(e){}
+  var withinWeek = lastAt && (Date.now() - lastAt) < 6 * 24 * 3600 * 1000;
+  var styleLabel = { coached: 'おまかせ', collab: '週の予算だけ', manual: '自分で決める' }[athSel.style || 'coached'];
+  var proposalHtml;
+  if((athSel.style || 'coached') === 'manual'){
+    proposalHtml = '<div class="ath-note">すすめ方が「自分で決める」なので提案はしません。実測の消費（' + a.tdee.toLocaleString() + 'kcal/日）を参考に、マイページのガチ勢モードから自分で調整してね</div>';
+    ciProposal = null;
+  } else if((athSel.style || 'coached') === 'collab'){
+    proposalHtml =
+      '<div class="ath-result"><div class="ath-row main"><span>今週の予算の提案（7日合計）</span><b>' + (proposed * 7).toLocaleString() + ' kcal</b></div>' +
+      '<div class="ath-row"><span>1日あたりの目安</span><b>' + proposed.toLocaleString() + ' kcal</b></div></div>' +
+      '<div class="ath-note">日々の配分は自由。外食の日に多め・翌日少なめ、のように週の中でやりくりしてOK</div>';
+  } else {
+    proposalHtml =
+      '<div class="ath-result"><div class="ath-row main"><span>新しい1日の目標</span><b>' + proposed.toLocaleString() + ' kcal</b></div>' +
+      '<div class="ath-macro">' +
+        '<div class="am"><b>' + m.pG + 'g</b><span>たんぱく質</span></div>' +
+        '<div class="am"><b>' + m.fG + 'g</b><span>脂質</span></div>' +
+        '<div class="am"><b>' + m.cG + 'g</b><span>炭水化物</span></div>' +
+      '</div></div>';
+  }
+  body.innerHTML = head + proposalHtml +
+    '<div class="ath-note">' + (bandNote ? bandNote + '。' : '') +
+    '現在の目標 ' + cur.toLocaleString() + 'kcal' + (proposed !== ideal ? '（変更は週±120kcalまでの小刻みにしています）' : '') +
+    '。先週の未達を取り返すような上乗せはしません（毎週まっさらに始める方が続きます）。すすめ方: ' + styleLabel + '</div>';
+  if(withinWeek && ciProposal){
+    body.innerHTML += '<div class="ath-note">今週ぶんの見直しは反映済みです。目標を頻繁に動かすより、週1回の見直しが続けやすいのでおすすめ（次の見直しは前回から1週間後）</div>';
+    ciProposal = null;
+  }
+  applyBtn.style.display = ciProposal ? 'block' : 'none';
+  showSheet('checkinSheet');
+}
+function applyCheckin(){
+  if(!ciProposal) return;
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(saved){
+    saved.curTarget = ciProposal.target;
+    try{ localStorage.setItem('smile24_athlete', JSON.stringify(saved)); }catch(e){}
+  }
+  state.baseConsumption = ciProposal.target;
+  state.proteinTarget = ciProposal.macros.pG;
+  state.fatTarget = ciProposal.macros.fG;
+  state.carbsTarget = ciProposal.macros.cG;
+  var lv = document.getElementById('athLval');
+  if(lv) lv.textContent = ({ cut:'減量中', keep:'維持', bulk:'筋肥大' }[athSel.goal]) + ' ' + ciProposal.target.toLocaleString() + 'kcal';
+  try{ localStorage.setItem('smile24_checkin_at', String(Date.now())); }catch(e){}
+  recalc();
+  hideSheet('checkinSheet');
+  showToast('目標を見直したよ。今日から ' + ciProposal.target.toLocaleString() + 'kcal・たんぱく質' + ciProposal.macros.pG + 'g');
+}
+
+/* 保存済みのガチ勢設定の復元。
+   ⚠️ここで即時実行してはいけない：この位置での recalc は、後方で定義される
+   WQ_TARGET 等をまだ参照できず TypeError でスクリプト全体が途中死する
+   （検証役が実測で検出。目標数値だけ復元されて見えるため気づきにくい）。
+   スクリプト末尾の initAuth の後に呼ぶ（applyBodyProfile の上書きより後にする必要もある） */
+function restoreAthleteFromStorage(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(!saved) return;
+  athSel = { sex: saved.sex, goal: saved.goal, macro: saved.macro, style: saved.style || 'coached' };
+  document.getElementById('athWeight').value = saved.w;
+  document.getElementById('athHeight').value = saved.h;
+  document.getElementById('athAge').value = saved.age;
+  if(saved.bf != null) document.getElementById('athBf').value = saved.bf;
+  document.getElementById('athAct').value = String(saved.act);
+  applyAthleteToState(athCompute(), saved);
+  /* 週次チェックインで承認済みの目標があればそれを優先復元する */
+  if(saved.curTarget){
+    var m0 = athMacroFor(saved.curTarget, saved.w);
+    state.baseConsumption = saved.curTarget;
+    state.proteinTarget = m0.pG; state.fatTarget = m0.fG; state.carbsTarget = m0.cG;
+    var lv0 = document.getElementById('athLval');
+    if(lv0) lv0.textContent = ({ cut:'減量中', keep:'維持', bulk:'筋肥大' }[saved.goal]) + ' ' + saved.curTarget.toLocaleString() + 'kcal';
+    recalc();
+  }
+}
+
+/* ============ ガチ勢モード：運動の詳細計算（2026-08-07） ============
+   かんたん＝従来のMETs概算（変更なし）。
+   詳細＝有酸素はACSM代謝方程式（速度・傾斜）、筋トレは重量×回数×セット。
+   式の出典: ACSM's Guidelines 11th ed. / Epley(1985) / 2011 Compendium。 */
+var exMode = 'simple';
+function setExMode(m){
+  exMode = m;
+  document.getElementById('exModeSimple').classList.toggle('active', m === 'simple');
+  document.getElementById('exModeDetail').classList.toggle('active', m === 'detail');
+  syncExDetailFields();
+  updateExercisePreview();
+}
+function syncExDetailFields(){
+  var isDetail = exMode === 'detail';
+  var isStr = selectedActivity === 'strength';
+  var cardioOk = (selectedActivity === 'walk' || selectedActivity === 'run' || selectedActivity === 'cardio');
+  document.getElementById('exDetailCardio').style.display = (isDetail && cardioOk) ? 'block' : 'none';
+  document.getElementById('exDetailStr').style.display = (isDetail && isStr) ? 'block' : 'none';
+}
+/* ACSMのトレッドミル式。歩行式3.0〜6.0km/h・走行式8.0km/h以上。
+   すき間（6〜8km/h）と範囲外はMETs表へフォールバック（傾斜は反映されない） */
+function acsmKcal(speedKmh, gradePct, minutes){
+  var S = speedKmh * 1000 / 60;          // m/min
+  var G = (gradePct || 0) / 100;
+  var vo2 = null, how = 'acsm';
+  if(speedKmh >= 3.0 && speedKmh <= 6.0)      vo2 = 3.5 + 0.1 * S + 1.8 * S * G;   // 歩行式
+  else if(speedKmh >= 8.0)                    vo2 = 3.5 + 0.2 * S + 0.9 * S * G;   // 走行式
+  if(vo2 === null){
+    /* Compendium 2011の代表値で近似（速度で補間はせず最寄りを使う） */
+    var mets = speedKmh < 3.0 ? 3.0 : 7.0;    // 3km/h未満=ゆっくり歩き / 6〜8km/h=ジョギング全般
+    how = 'mets';
+    return { kcal: Math.round(mets * state.weight * (minutes / 60) * 1.05), how: how };
+  }
+  return { kcal: Math.round(vo2 * state.weight / 1000 * 5.0 * minutes), how: how };
+}
+/* 推定1RM（Epley 1985）。11回以上は過大推定になるため出さない（LeSuer 1997） */
+function epley1RM(kg, reps){
+  if(reps <= 0 || kg <= 0) return null;
+  if(reps === 1) return kg;
+  if(reps > 10) return null;
+  return Math.round(kg * (1 + reps / 30) * 10) / 10;
+}
+function exStrInputs(){
+  return {
+    name: document.getElementById('exStrName').value,
+    kg: parseFloat(document.getElementById('exStrKg').value) || 0,
+    reps: parseInt(document.getElementById('exStrReps').value) || 0,
+    sets: parseInt(document.getElementById('exStrSets').value) || 0,
+  };
+}
+/* 筋トレ記録（永続）。からだタブの推移表示に使う */
+function loadStrengthLog(){
+  try{ return JSON.parse(localStorage.getItem('smile24_strength_log') || 'null') || []; }catch(e){ return []; }
+}
+function saveStrengthLog(){
+  try{ localStorage.setItem('smile24_strength_log', JSON.stringify(strengthLog.slice(-200))); }catch(e){}
+}
+var strengthLog = loadStrengthLog();
+if(!strengthLog.length){
+  /* デモ用の履歴（TODAY=7/2基準の過去4週。ベンチが少しずつ伸びている形） */
+  strengthLog = [
+    { d:'6/11', name:'ベンチプレス', kg:40,   reps:10, sets:3 },
+    { d:'6/14', name:'スクワット',   kg:50,   reps:8,  sets:3 },
+    { d:'6/18', name:'ベンチプレス', kg:42.5, reps:8,  sets:3 },
+    { d:'6/21', name:'デッドリフト', kg:60,   reps:5,  sets:3 },
+    { d:'6/25', name:'ベンチプレス', kg:42.5, reps:10, sets:3 },
+    { d:'6/28', name:'スクワット',   kg:55,   reps:8,  sets:3 },
+    { d:'7/1',  name:'ベンチプレス', kg:45,   reps:8,  sets:3 },
+  ].map(function(e){ e.vol = Math.round(e.kg * e.reps * e.sets); e.rm = epley1RM(e.kg, e.reps); return e; });
+}
+/* いつもの運動（前回の内容を1タップで再入力） */
+function loadUsualEx(){
+  try{ return JSON.parse(localStorage.getItem('smile24_ex_usual') || 'null'); }catch(e){ return null; }
+}
+function applyUsualExercise(){
+  var u = loadUsualEx();
+  if(!u) return;
+  selectActivity(u.act, document.querySelector('#activityChips .chip-select[data-act="' + u.act + '"]'));
+  document.getElementById('exMinutes').value = u.minutes || 30;
+  setExMode(u.mode || 'simple');
+  if(u.speed != null) document.getElementById('exSpeed').value = u.speed;
+  if(u.incline != null) document.getElementById('exIncline').value = u.incline;
+  if(u.strName){ document.getElementById('exStrName').value = u.strName; }
+  if(u.kg != null) document.getElementById('exStrKg').value = u.kg;
+  if(u.reps != null) document.getElementById('exStrReps').value = u.reps;
+  if(u.sets != null) document.getElementById('exStrSets').value = u.sets;
+  updateExercisePreview();
+}
+
 function selectActivity(key, el){
   selectedActivity = key;
   document.querySelectorAll('#activityChips .chip-select').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
+  syncExDetailFields();
   updateExercisePreview();
 }
 function updateExercisePreview(){
   var minutes = parseInt(document.getElementById('exMinutes').value) || 0;
-  var kcal = calcKcal(MET[selectedActivity].v, minutes);
+  var kcal, note = '体重・運動強度から自動計算（推定値）';
+  if(exMode === 'detail' && (selectedActivity === 'walk' || selectedActivity === 'run' || selectedActivity === 'cardio')){
+    var sp = parseFloat(document.getElementById('exSpeed').value) || 0;
+    var inc = parseFloat(document.getElementById('exIncline').value) || 0;
+    var r = acsmKcal(sp, inc, minutes);
+    kcal = r.kcal;
+    note = r.how === 'acsm' ? 'ACSMの式で計算（速度' + sp + 'km/h・傾斜' + inc + '%・推定値）'
+                            : 'この速度は概算表で計算（傾斜は反映されません・推定値）';
+  } else if(exMode === 'detail' && selectedActivity === 'strength'){
+    /* Compendium 02054（一般的なウェイトトレ 8-15レップ）= 3.5METs */
+    kcal = Math.round(3.5 * state.weight * (minutes / 60) * 1.05);
+    note = 'ウェイトトレの標準強度（3.5METs）で計算（推定値）';
+    var s = exStrInputs();
+    var rm = epley1RM(s.kg, s.reps);
+    var vol = Math.round(s.kg * s.reps * s.sets);
+    document.getElementById('exStrStats').innerHTML =
+      '<div class="st"><b>' + (vol ? vol.toLocaleString() : '－') + '</b><span>トン数(kg)</span></div>' +
+      '<div class="st"><b>' + (rm != null ? rm : '－') + '</b><span>推定1RM' + (rm == null && s.reps > 10 ? '(10回以下で測定)' : '(kg)') + '</span></div>';
+  } else {
+    kcal = calcKcal(MET[selectedActivity].v, minutes);
+    /* 詳細モードでも水泳は距離・ペースの詳細式を持たないため概算のまま（無言で落とさず一言添える） */
+    if(exMode === 'detail' && selectedActivity === 'swim') note = '水泳は概算（METs）で計算します（詳細式は未対応・推定値）';
+  }
   document.getElementById('exKcalPreview').innerHTML = kcal+'<span>kcal 消費</span>';
+  document.getElementById('exKcalNote').textContent = note;
 }
 function openExerciseSheet(){
   document.getElementById('exMinutes').value = 30;
+  document.getElementById('exUsualBtn').style.display = loadUsualEx() ? 'flex' : 'none';
   selectActivity('walk', document.querySelector('#activityChips .chip-select[data-act="walk"]'));
   showSheet('exerciseSheet');
 }
 function saveExercise(){
   var minutes = parseInt(document.getElementById('exMinutes').value) || 0;
   if(minutes<=0) return;
-  var kcal = calcKcal(MET[selectedActivity].v, minutes);
+  var kcal, label = MET[selectedActivity].label, detail = null;
+  if(exMode === 'detail' && (selectedActivity === 'walk' || selectedActivity === 'run' || selectedActivity === 'cardio')){
+    var sp = parseFloat(document.getElementById('exSpeed').value) || 0;
+    var inc = parseFloat(document.getElementById('exIncline').value) || 0;
+    kcal = acsmKcal(sp, inc, minutes).kcal;
+    label += '（' + sp + 'km/h・傾斜' + inc + '%）';
+    detail = { speed: sp, incline: inc };
+  } else if(exMode === 'detail' && selectedActivity === 'strength'){
+    var s = exStrInputs();
+    if(s.kg <= 0 || s.reps <= 0 || s.sets <= 0){ showToast('重量・回数・セットを入れてね'); return; }
+    kcal = Math.round(3.5 * state.weight * (minutes / 60) * 1.05);
+    label = s.name + '（' + s.kg + 'kg×' + s.reps + '回×' + s.sets + '）';
+    var entry = { d: (TODAY.getMonth()+1) + '/' + TODAY.getDate(), name: s.name, kg: s.kg, reps: s.reps, sets: s.sets,
+                  vol: Math.round(s.kg * s.reps * s.sets), rm: epley1RM(s.kg, s.reps) };
+    strengthLog.push(entry);
+    saveStrengthLog();
+    detail = entry;
+  } else {
+    kcal = calcKcal(MET[selectedActivity].v, minutes);
+  }
+  /* 次回の「いつもの運動」に覚えておく */
+  try{
+    var u = { mode: exMode, act: selectedActivity, minutes: minutes };
+    if(detail && detail.speed != null){ u.speed = detail.speed; u.incline = detail.incline; }
+    if(detail && detail.kg != null){ u.strName = detail.name; u.kg = detail.kg; u.reps = detail.reps; u.sets = detail.sets; }
+    localStorage.setItem('smile24_ex_usual', JSON.stringify(u));
+  }catch(e){}
   state.exerciseKcal += kcal;
-  state.exerciseLog.push({label:MET[selectedActivity].label, minutes:minutes, kcal:kcal, ts: Date.now()});
+  state.exerciseLog.push({label:label, minutes:minutes, kcal:kcal, ts: Date.now()});
   renderExerciseLog();
   recalc();
   addJewels(10);
@@ -9733,6 +10437,11 @@ function renderExerciseLog(){
   }).join('');
 }
 document.getElementById('exMinutes').addEventListener('input', updateExercisePreview);
+/* 詳細入力の各欄もプレビューへ即時反映（2026-08-07） */
+['exSpeed', 'exIncline', 'exStrKg', 'exStrReps', 'exStrSets'].forEach(function(id){
+  var el = document.getElementById(id);
+  if(el) el.addEventListener('input', updateExercisePreview);
+});
 
 /* ============ AIパートナー名前変更 ============ */
 function openRenameSheet(){
@@ -11432,8 +12141,13 @@ function applyBodyProfile(profile){
   state.height = profile.height;
   state.weight = profile.weight;
   state.muscleLevel = profile.muscle || 'normal';
-  state.bmr = calcBmrValue(state.height, state.weight, state.muscleLevel);
-  state.baseConsumption = Math.round(state.bmr * 1.4);
+  /* ガチ勢モード中は目標(baseConsumption)を上書きしない。
+     ここで bmr×1.4 に戻すと、マクロと表示だけガチ勢のまま予算が通常に戻る
+     「半端な復元」になる（2026-08-07 検証役指摘） */
+  if(!state.athleteOn){
+    state.bmr = calcBmrValue(state.height, state.weight, state.muscleLevel);
+    state.baseConsumption = Math.round(state.bmr * 1.4);
+  }
   return true;
 }
 /* 食事の数字は「写真や数値を入れるまで0」が既定（2026-08-05ユーザー指示）。
@@ -12067,7 +12781,74 @@ function renderTrend(){
     '<div class="trend-sec" id="trendsec-kcalin">' + trendKcal('in') + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalout">' + trendKcal('out') + '</div>' +
     '<div class="trend-sec" id="trendsec-pfc">' + trendPFC() + '</div>' +
+    '<div class="trend-sec" id="trendsec-str">' + trendStrength() + '</div>' +
     '<div class="trend-sec" id="trendsec-water">' + trendWater() + '</div>';
+}
+
+/* ============ 筋トレの記録（からだタブ・2026-08-07 ガチ勢要望） ============
+   種目ごとに 推定1RM（Epley・10回以下のみ）とトン数の推移を見る。
+   記録は運動シートの「詳細（ガチ勢）」×筋トレ から入る */
+var strTrendSel = null;   // 表示中の種目（null=ログの最新種目）
+function strExercises(){
+  var names = [];
+  strengthLog.forEach(function(e){ if(names.indexOf(e.name) < 0) names.push(e.name); });
+  return names;
+}
+function trendStrength(){
+  var names = strExercises();
+  if(!names.length){
+    return '<div class="trend-card"><div class="trend-empty">' +
+      '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg></div>' +
+      '<div class="te-t">まだ筋トレの記録がありません</div>' +
+      '<div class="te-d">運動の記録で「詳細（ガチ勢）」を選ぶと<br>重量×回数×セットからパワーの推移が見られるよ</div>' +
+      '</div></div>';
+  }
+  /* 既定は「最後に記録した種目」（今日ベンチをやったならベンチが開く） */
+  var sel = (strTrendSel && names.indexOf(strTrendSel) >= 0) ? strTrendSel
+          : strengthLog[strengthLog.length - 1].name;
+  var rows = strengthLog.filter(function(e){ return e.name === sel; });
+  var rms = rows.map(function(e){ return e.rm || 0; });
+  var best = Math.max.apply(null, rms);
+  var last = rows[rows.length - 1];
+  var chips = names.map(function(n){
+    return '<button class="chip-select' + (n === sel ? ' active' : '') + '" onclick="strTrendSel=\'' + escHtml(n) + '\';refreshStrTrend()">' + escHtml(n) + '</button>';
+  }).join('');
+  /* 種目は選択済みなので履歴の各行には出さない（狭い幅で折り返すだけ） */
+  var hist = rows.slice(-5).reverse().map(function(e){
+    return '<div class="sh-row"><span class="sh-d">' + escHtml(e.d) + '</span>' +
+      '<span class="sh-v" style="flex:1;">' + e.kg + 'kg × ' + e.reps + '回 × ' + e.sets + 'セット（' + e.vol.toLocaleString() + 'kg）</span>' +
+      '<span class="sh-rm">' + (e.rm != null ? e.rm + 'kg' : '—') + '</span></div>';
+  }).join('');
+  /* 1RMの推移チャート（記録日ラベル付き）。曜日固定の trendBarsSVG は7日用なので使わない。
+     値の幅が狭くても伸びが見えるよう、下端は最小値の少し下から描く */
+  var chart = '';
+  var pts = rows.slice(-6).filter(function(e){ return e.rm != null; });
+  if(pts.length >= 2){
+    var vmax = Math.max.apply(null, pts.map(function(e){ return e.rm; }));
+    var vmin = Math.min.apply(null, pts.map(function(e){ return e.rm; }));
+    var lo = vmin - Math.max((vmax - vmin) * 0.5, 2);
+    var W = 320, H = 96, bw = Math.min(34, (W - 20) / pts.length - 12);
+    chart = '<svg viewBox="0 0 ' + W + ' ' + (H + 26) + '" width="100%" style="margin-top:6px;">' +
+      pts.map(function(e, i){
+        var x = 10 + (W - 20) * (i + 0.5) / pts.length;
+        var h = Math.max(6, (e.rm - lo) / (vmax - lo) * (H - 22));
+        return '<rect x="' + (x - bw / 2) + '" y="' + (H - h) + '" width="' + bw + '" height="' + h + '" rx="5" fill="' + (e.rm === vmax ? '#4A85F6' : '#B8D0F5') + '"/>' +
+          '<text x="' + x + '" y="' + (H - h - 5) + '" text-anchor="middle" font-size="10" font-weight="700" fill="#2F507F">' + e.rm + '</text>' +
+          '<text x="' + x + '" y="' + (H + 14) + '" text-anchor="middle" font-size="9" fill="#8A99AC">' + escHtml(e.d) + '</text>';
+      }).join('') + '</svg>';
+  }
+  return '<div class="trend-card">' +
+    '<div class="cc-title-row"><div><div class="cc-title">筋トレのパワー（推定1RM）</div>' +
+    '<div class="cc-sub">' + escHtml(sel) + '　自己ベスト <b>' + (best || '—') + 'kg</b>／直近トン数 ' + (last ? last.vol.toLocaleString() : '—') + 'kg</div></div></div>' +
+    '<div class="chip-row" style="margin:8px 0 4px;">' + chips + '</div>' +
+    chart +
+    '<div class="str-hist">' + hist + '</div>' +
+    '<div class="ath-note">推定1RM＝Epley式（10回以下の記録のみ）。トン数＝重量×回数×セット</div>' +
+    '</div>';
+}
+function refreshStrTrend(){
+  var el = document.getElementById('trendsec-str');
+  if(el) el.innerHTML = trendStrength();
 }
 
 /* 直近7日の曜日ラベル（末尾=今日） */
@@ -12893,6 +13674,10 @@ checkStreakReminder();
   }
   renderTrialBanner();
 })();
+
+/* ガチ勢設定の復元は必ず最後（initAuth の applyBodyProfile が baseConsumption を
+   bmr×1.4 に戻した後に、ガチ勢の目標で上書きし直す順序。2026-08-07 検証役指摘の修正） */
+try{ restoreAthleteFromStorage(); }catch(e){ console.error('ガチ勢設定の復元に失敗:', e); }
 </script>
 </body>
 </html>
