@@ -1472,6 +1472,12 @@ input{font-family:inherit;}
 .str-hist .sh-n{font-weight:700;flex:1;}
 .str-hist .sh-v{font-family:var(--font-en);color:var(--text-mid);}
 .str-hist .sh-rm{font-family:var(--font-en);font-weight:700;color:var(--brand);flex:0 0 auto;}
+/* 次にやるときの目安（二重漸進＋RIR・2026-08-08） */
+.str-next{margin-top:10px;padding:11px 13px;border-radius:var(--radius-sm);background:#F2F7FF;border:1px solid #DCE8FB;}
+.str-next .sn-h{font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.02em;}
+.str-next .sn-v{font-family:var(--font-en);font-size:24px;font-weight:800;color:var(--text);line-height:1.25;margin-top:2px;}
+.str-next .sn-v span{font-family:var(--font-jp);font-size:12px;font-weight:700;color:var(--text-mid);margin:0 2px 0 1px;}
+.str-next .sn-w{font-size:11.5px;color:var(--text-mid);line-height:1.6;margin-top:3px;}
 
 /* マイページ「頑張りの記録」（旧ホームのミッションカードの受け皿・2026-08-07） */
 .streak-card{
@@ -3057,7 +3063,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-08a</b>（週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は週±120kcalの小刻み・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-08b</b>（筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は週±120kcalの小刻み・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3179,7 +3185,17 @@ input{font-family:inherit;}
             <div class="field"><label>回数</label><input type="number" id="exStrReps" value="10" min="1" max="30"></div>
             <div class="field"><label>セット</label><input type="number" id="exStrSets" value="3" min="1" max="10"></div>
           </div>
+          <div class="field" style="margin-top:2px;">
+            <label>あと何回できそうだった？（限界まであと何回・RIR）</label>
+            <div class="chip-row" id="exStrRirChips">
+              <button class="chip-select" onclick="pickStrRir(0,this)">限界だった</button>
+              <button class="chip-select" onclick="pickStrRir(1,this)">あと1回</button>
+              <button class="chip-select active" onclick="pickStrRir(2,this)">あと2回</button>
+              <button class="chip-select" onclick="pickStrRir(3,this)">あと3回以上</button>
+            </div>
+          </div>
           <div class="ex-str-stats" id="exStrStats"></div>
+          <div class="ex-note" id="exStrNext"></div>
         </div>
         <div class="sheet-kcal-preview">
           <div class="kv" id="exKcalPreview">110<span>kcal 消費</span></div>
@@ -10349,7 +10365,79 @@ function exStrInputs(){
     kg: parseFloat(document.getElementById('exStrKg').value) || 0,
     reps: parseInt(document.getElementById('exStrReps').value) || 0,
     sets: parseInt(document.getElementById('exStrSets').value) || 0,
+    rir: exStrRir,
   };
+}
+/* ============ 次回の漸進提案（2026-08-08・二重漸進＋RIR） ============
+   これまでは機材ガイドの「前回＋2.5kg」固定だったが、余力を見ずに毎回足すと
+   フォームが崩れるか、逆にまだ余裕があるのに足りない。
+   考え方（二重漸進＝回数を伸ばしてから重量を上げる古典的な方法に、RIRの物差しを足したもの）:
+   ・RIR＝「限界まであと何回できたか」。reps + RIR で“限界なら何回できたか”に換算すると、
+     余力がぶれた日どうしでも同じ物差しで比べられる
+   ・目標レンジの中央 + RIR目標 を「ちょうど良い」の基準にして、超えたら増やす・
+     届かなければ減らす・同じなら回数を1つ増やす
+   ・上げ幅は上半身2.5kg・下半身5kg（プレートの実際の刻み）。20kg未満は1.25kg
+     （軽い重量で2.5kgは一気に+12%以上になる）
+   ・端末内のルール計算のみ（費用ゼロの原則を維持） */
+var STR_RANGE = { min: 8, max: 12 };   // 既定の目標レップ範囲（筋肥大の一般的な帯）
+var STR_RIR_TARGET = 2;                 // 既定の「あと何回残す」
+var STR_LOWER = ['スクワット', 'デッドリフト', 'レッグプレス'];
+var exStrRir = 2;
+function pickStrRir(v, el){
+  exStrRir = v;
+  el.parentElement.querySelectorAll('.chip-select').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  updateExercisePreview();
+}
+/* チップの見た目と exStrRir をまとめて合わせる（「いつもの運動」の復元・シートを開き直した時） */
+function setStrRirChips(v){
+  exStrRir = v;
+  var wrap = document.getElementById('exStrRirChips');
+  if(!wrap) return;
+  var chips = wrap.querySelectorAll('.chip-select');
+  chips.forEach(function(c, i){ c.classList.toggle('active', i === Math.min(v, chips.length - 1)); });
+}
+function strIncrement(name, kg){
+  if(kg < 20) return 1.25;
+  return STR_LOWER.indexOf(name) >= 0 ? 5 : 2.5;
+}
+/* 直近の記録から今日の目安を作る。返り値 {kind, kg, reps, why} / 記録が無ければ null */
+function strengthSuggestion(name){
+  var rows = strengthLog.filter(function(e){ return e.name === name && e.rir != null; });
+  if(!rows.length) return null;
+  var last = rows[rows.length - 1];
+  var range = last.range || STR_RANGE;
+  var rirT = last.rirTarget != null ? last.rirTarget : STR_RIR_TARGET;
+  var step = strIncrement(name, last.kg);
+  var prev = last.kg + 'kg×' + last.reps + '回（あと' + last.rir + '回）';
+  /* ⚠️ レンジの中央値と比べてはいけない：目標が8〜12回なら「8回・あと2回」は
+     帯の中の正常な値なのに、中央値10で比べると「重すぎる」と誤判定して
+     いきなり減量をすすめてしまう。判定は必ず帯の上限・下限で行う */
+  if(last.reps >= range.max && last.rir >= rirT){
+    return { kind:'up', kg: last.kg + step, reps: range.min,
+             why: '前回は' + prev + '。回数が上限（' + range.max + '回）に届いて余力もあったので、重さを上げて' + range.min + '回から仕切り直し' };
+  }
+  /* 下げるのは「下限の回数も届かず、しかも限界近くだった」ときだけ（＝本当に重すぎる） */
+  if(last.reps < range.min && last.rir <= rirT - 2){
+    var down = Math.floor((last.kg * 0.95) / step) * step;
+    if(down >= last.kg) down = last.kg - step;
+    return { kind:'down', kg: Math.max(step, down), reps: range.min,
+             why: '前回は' + prev + '＝' + range.min + '回に届かず限界も近かった。少し軽くしてフォームを優先しよう' };
+  }
+  if(last.rir >= rirT){
+    return { kind:'reps', kg: last.kg, reps: Math.min(last.reps + 1, range.max),
+             why: '前回は' + prev + '＝余力は目安どおり。重さはそのままで回数を1回増やそう' };
+  }
+  return { kind:'hold', kg: last.kg, reps: last.reps,
+           why: '前回は' + prev + '＝余力が目安（あと' + rirT + '回）より少なめ。同じ重さでもう一度いこう' };
+}
+function renderStrNext(name){
+  var el = document.getElementById('exStrNext');
+  if(!el) return;
+  var s = strengthSuggestion(name);
+  el.innerHTML = s
+    ? '<b>今日の目安：' + s.kg + 'kg × ' + s.reps + '回</b>（' + escHtml(s.why) + '）'
+    : 'この種目はまだ記録がありません。「あと何回できそうだったか」まで記録すると、次回から重さ・回数の目安が出せるようになるよ（目標は' + STR_RANGE.min + '〜' + STR_RANGE.max + '回・あと' + STR_RIR_TARGET + '回残す）';
 }
 /* 筋トレ記録（永続）。からだタブの推移表示に使う */
 function loadStrengthLog(){
@@ -10387,6 +10475,7 @@ function applyUsualExercise(){
   if(u.kg != null) document.getElementById('exStrKg').value = u.kg;
   if(u.reps != null) document.getElementById('exStrReps').value = u.reps;
   if(u.sets != null) document.getElementById('exStrSets').value = u.sets;
+  if(u.rir != null) setStrRirChips(u.rir);
   updateExercisePreview();
 }
 
@@ -10417,6 +10506,7 @@ function updateExercisePreview(){
     document.getElementById('exStrStats').innerHTML =
       '<div class="st"><b>' + (vol ? vol.toLocaleString() : '－') + '</b><span>トン数(kg)</span></div>' +
       '<div class="st"><b>' + (rm != null ? rm : '－') + '</b><span>推定1RM' + (rm == null && s.reps > 10 ? '(10回以下で測定)' : '(kg)') + '</span></div>';
+    renderStrNext(s.name);
   } else {
     kcal = calcKcal(MET[selectedActivity].v, minutes);
     /* 詳細モードでも水泳は距離・ペースの詳細式を持たないため概算のまま（無言で落とさず一言添える） */
@@ -10447,7 +10537,10 @@ function saveExercise(){
     kcal = Math.round(3.5 * state.weight * (minutes / 60) * 1.05);
     label = s.name + '（' + s.kg + 'kg×' + s.reps + '回×' + s.sets + '）';
     var entry = { d: (TODAY.getMonth()+1) + '/' + TODAY.getDate(), name: s.name, kg: s.kg, reps: s.reps, sets: s.sets,
-                  vol: Math.round(s.kg * s.reps * s.sets), rm: epley1RM(s.kg, s.reps) };
+                  vol: Math.round(s.kg * s.reps * s.sets), rm: epley1RM(s.kg, s.reps),
+                  /* 次回の漸進提案の材料。目標は記録時点の値を一緒に残す
+                     （あとで既定値を変えても、過去の記録が別基準で読み替えられないように） */
+                  rir: s.rir, range: { min: STR_RANGE.min, max: STR_RANGE.max }, rirTarget: STR_RIR_TARGET };
     strengthLog.push(entry);
     saveStrengthLog();
     detail = entry;
@@ -10458,7 +10551,7 @@ function saveExercise(){
   try{
     var u = { mode: exMode, act: selectedActivity, minutes: minutes };
     if(detail && detail.speed != null){ u.speed = detail.speed; u.incline = detail.incline; }
-    if(detail && detail.kg != null){ u.strName = detail.name; u.kg = detail.kg; u.reps = detail.reps; u.sets = detail.sets; }
+    if(detail && detail.kg != null){ u.strName = detail.name; u.kg = detail.kg; u.reps = detail.reps; u.sets = detail.sets; u.rir = detail.rir; }
     localStorage.setItem('smile24_ex_usual', JSON.stringify(u));
   }catch(e){}
   state.exerciseKcal += kcal;
@@ -12903,13 +12996,21 @@ function trendStrength(){
           '<text x="' + x + '" y="' + (H + 14) + '" text-anchor="middle" font-size="9" fill="#8A99AC">' + escHtml(e.d) + '</text>';
       }).join('') + '</svg>';
   }
+  /* 次回の目安（二重漸進＋RIR）。「あと何回できたか」まで記録している種目でだけ出す */
+  var sg = strengthSuggestion(sel);
+  var next = sg
+    ? '<div class="str-next"><div class="sn-h">次にやるときの目安</div>' +
+      '<div class="sn-v">' + sg.kg + '<span>kg</span> × ' + sg.reps + '<span>回</span></div>' +
+      '<div class="sn-w">' + escHtml(sg.why) + '</div></div>'
+    : '<div class="ath-note">運動の記録で「あと何回できそうだったか」まで入れると、次にやるときの重さ・回数の目安が出せるようになるよ</div>';
   return '<div class="trend-card">' +
     '<div class="cc-title-row"><div><div class="cc-title">筋トレのパワー（推定1RM）</div>' +
     '<div class="cc-sub">' + escHtml(sel) + '　自己ベスト <b>' + (best || '—') + 'kg</b>／直近トン数 ' + (last ? last.vol.toLocaleString() : '—') + 'kg</div></div></div>' +
     '<div class="chip-row" style="margin:8px 0 4px;">' + chips + '</div>' +
     chart +
     '<div class="str-hist">' + hist + '</div>' +
-    '<div class="ath-note">推定1RM＝Epley式（10回以下の記録のみ）。トン数＝重量×回数×セット</div>' +
+    next +
+    '<div class="ath-note">推定1RM＝Epley式（10回以下の記録のみ）。トン数＝重量×回数×セット。目安は' + STR_RANGE.min + '〜' + STR_RANGE.max + '回・あと' + STR_RIR_TARGET + '回残す設定で計算しています（一般的な考え方にもとづく目安です）</div>' +
     '</div>';
 }
 function refreshStrTrend(){
