@@ -1472,6 +1472,21 @@ input{font-family:inherit;}
 .str-hist .sh-n{font-weight:700;flex:1;}
 .str-hist .sh-v{font-family:var(--font-en);color:var(--text-mid);}
 .str-hist .sh-rm{font-family:var(--font-en);font-weight:700;color:var(--brand);flex:0 0 auto;}
+/* セットごとの回数と余力（2026-08-09・本家はセット単位で記録する） */
+.str-set-row{display:flex;align-items:center;gap:6px;margin-top:6px;}
+.str-set-row .ssr-n{font-size:11px;font-weight:700;color:var(--text-lt);flex:0 0 44px;}
+.str-set-row .ssr-reps{
+  width:56px;padding:8px 4px;border:1.5px solid var(--line);border-radius:10px;
+  font-size:15px;font-weight:700;text-align:center;font-family:inherit;color:var(--text);
+}
+.str-set-row .ssr-x{font-size:11px;color:var(--text-mid);}
+.str-set-row .ssr-rir{display:flex;gap:4px;margin-left:auto;}
+.str-set-row .ssr-chip{
+  border:1.5px solid var(--line);background:var(--white);border-radius:999px;
+  min-width:36px;min-height:30px;padding:4px 7px;font-size:11px;font-weight:700;
+  color:var(--text-mid);font-family:inherit;cursor:pointer;line-height:1.2;
+}
+.str-set-row .ssr-chip.on{border-color:var(--brand);color:var(--brand);background:#EDF4FF;}
 /* 次にやるときの目安（二重漸進＋RIR・2026-08-08） */
 .str-next{margin-top:10px;padding:11px 13px;border-radius:var(--radius-sm);background:#F2F7FF;border:1px solid #DCE8FB;}
 .str-next .sn-h{font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.02em;}
@@ -3063,7 +3078,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-09a</b>（ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は週±120kcalの小刻み・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-09b</b>（筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3172,27 +3187,27 @@ input{font-family:inherit;}
           <div class="ex-note">トレッドミルの表示をそのまま入れてね（傾斜0%＝平地）</div>
         </div>
         <div id="exDetailStr" style="display:none;">
+          <button class="usual-btn" type="button" onclick="toggleStrPlan()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+            今日のメニュー案（全身3種目）
+          </button>
+          <div class="ex-note" id="exStrPlan" style="display:none;"></div>
           <div class="field">
             <label>種目</label>
-            <select id="exStrName" class="mi-portion" style="width:100%;" onchange="updateExercisePreview()">
+            <select id="exStrName" class="mi-portion" style="width:100%;" onchange="onStrExerciseChange()">
               <option>ベンチプレス</option><option>スクワット</option><option>デッドリフト</option>
               <option>ショルダープレス</option><option>ラットプルダウン</option><option>チェストプレス</option>
               <option>レッグプレス</option><option>アームカール</option><option>ダンベルプレス</option>
             </select>
           </div>
-          <div class="field-row3">
+          <div class="ex-note" id="exSwapRow" style="display:none;"></div>
+          <div class="field-row2">
             <div class="field"><label>重量（kg）</label><input type="number" id="exStrKg" value="40" min="1" max="300" step="2.5"></div>
-            <div class="field"><label>回数</label><input type="number" id="exStrReps" value="10" min="1" max="30"></div>
-            <div class="field"><label>セット</label><input type="number" id="exStrSets" value="3" min="1" max="10"></div>
+            <div class="field"><label>セット数</label><input type="number" id="exStrSets" value="3" min="1" max="10" onchange="renderStrSetRows(true)"></div>
           </div>
           <div class="field" style="margin-top:2px;">
-            <label>あと何回できそうだった？（限界まであと何回・RIR）</label>
-            <div class="chip-row" id="exStrRirChips">
-              <button class="chip-select" onclick="pickStrRir(0,this)">限界だった</button>
-              <button class="chip-select" onclick="pickStrRir(1,this)">あと1回</button>
-              <button class="chip-select active" onclick="pickStrRir(2,this)">あと2回</button>
-              <button class="chip-select" onclick="pickStrRir(3,this)">あと3回以上</button>
-            </div>
+            <label>セットごとの回数と余力</label>
+            <div id="exStrSetRows"></div>
           </div>
           <div class="ex-str-stats" id="exStrStats"></div>
           <div class="ex-note" id="exStrNext"></div>
@@ -9901,6 +9916,20 @@ var selectedActivity = 'walk';
    ・各週は自己完結。未達を翌週に「取り返させる」調整はしない */
 var WEIGHT_KCAL_PER_KG = 7700;
 var ADAPT_WINDOW_DAYS = 28;   // 実測TDEEの計算に使う直近日数（記録の保持60日より短くする）
+var KCAL_PER_KG_FAT = 9440, KCAL_PER_KG_LEAN = 1820;   // 組織のエネルギー密度（Hall 2008）
+/* 体重1kgの変化ぶんのエネルギー（2026-08-09・可変エネルギー密度）。
+   固定7700は「変化が全部脂肪組織」という仮定。実際は除脂肪も一緒に動き、
+   その割合は体脂肪量で変わる（脂肪が少ない人ほど除脂肪から減る＝Forbes曲線）。
+   本家v3が密度を可変にしているのと同じ考え方の簡略形：
+   ・減量: 除脂肪の割合 = 10.4 / (10.4 + 脂肪量kg)（Forbes/Hallの近似）
+   ・増量: 筋トレ前提で除脂肪45%の固定比
+   ・体脂肪率が未入力なら従来どおり7700（勝手に推定しない） */
+function weightKcalPerKg(dir, w, bf){
+  if(!(bf > 0) || !(w > 0)) return WEIGHT_KCAL_PER_KG;
+  var fm = w * bf / 100;
+  var fLean = dir === 'gain' ? 0.45 : 10.4 / (10.4 + fm);
+  return Math.round(fLean * KCAL_PER_KG_LEAN + (1 - fLean) * KCAL_PER_KG_FAT);
+}
 /* ============ 実記録ストア（2026-08-08・適応型TDEEの配線） ============
    ⚠️ ago（何日前）で保存してはいけない：保存した翌日には全部1日ぶんズレる。
    必ず YYYY-MM-DD の日付キーで持ち、読み出すときに ago へ変換する。
@@ -10024,14 +10053,18 @@ function adaptiveTDEE(formulaTdee){
   if(trend.length < 2) return { status:'holding' };
   var span = trend.length - 1;                             // 日次の連続系列なので日数＝本数-1
   var delta = trend[trend.length - 1].w - trend[0].w;      // kg（マイナス=減少）
-  var perDay = delta * WEIGHT_KCAL_PER_KG / span;
+  /* 体脂肪率が入っていれば、変化の中身（脂肪と除脂肪の比率）で密度を可変に */
+  var bf = null;
+  try{ var sv = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); if(sv && sv.bf != null) bf = sv.bf; }catch(e){}
+  var rho = weightKcalPerKg(delta < 0 ? 'loss' : 'gain', trend[trend.length - 1].w, bf);
+  var perDay = delta * rho / span;
   var calc = Math.round(meanIn - perDay);
   /* 保守的な段階適用: 式の値から一気に飛ばず、データ週数に応じて実測へ寄せる。
      3週ぶんの記録が貯まったら実測をほぼ採用（差の上限±350kcal） */
   var weeks = Math.min(3, Math.floor(recent.length / 6));
   var blended = Math.round(formulaTdee + Math.max(-350, Math.min(350, calc - formulaTdee)) * weeks / 3);
   return { status:'ok', tdee: blended, calc: calc, trendDelta: Math.round(delta * 100) / 100,
-           usedDays: used.length, excluded: excluded, weeks: weeks };
+           usedDays: used.length, excluded: excluded, weeks: weeks, rho: rho };
 }
 
 /* ============ ガチ勢モード：アスリート目標計算（2026-08-07） ============
@@ -10067,7 +10100,7 @@ function athCompute(){
      速すぎになり、体格でペースがぶれる。減量−0.5%/週・筋肥大+0.25%/週は
      一般的な中庸ペース（除脂肪を保ちながら進められる帯の真ん中） */
   var rate = { cut: -0.005, keep: 0, bulk: 0.0025 }[athSel.goal];
-  var target = tdee + rate * w * WEIGHT_KCAL_PER_KG / 7;
+  var target = tdee + rate * w * weightKcalPerKg(athSel.goal === 'bulk' ? 'gain' : 'loss', w, bf) / 7;
   var floor = Math.max(bmr, athSel.sex === 'M' ? 1500 : 1200);
   var floored = target < floor;
   target = Math.max(target, floor);
@@ -10187,8 +10220,9 @@ function clearAthlete(){
 }
 /* ============ 週次チェックイン（2026-08-07） ============
    実測（適応型TDEE）にもとづいて目標kcal・マクロの見直し案を出す。
-   設計原則: ①提案は承認/見送りの2択（勝手に変えない） ②変更は週ごとに小さく
-   （現目標から±120kcal/週まで） ③各週は自己完結（未達の取り返しをさせない）
+   設計原則: ①提案は承認/見送りの2択（勝手に変えない） ②変更はスムージング
+   （差の半分ずつ寄せる・±60kcal以内はそのまま。旧±120ハードキャップは2026-08-09廃止）
+   ③各週は自己完結（未達の取り返しをさせない）
    ④維持目的は「目標体重±0.7kgの帯」に収める小さな補正だけ行う */
 var ciProposal = null;
 function openCheckin(){
@@ -10239,17 +10273,23 @@ function openCheckin(){
     var diff = tNow - targetW;
     if(Math.abs(diff) <= 0.7){ ideal = a.tdee; bandNote = '目標体重の帯（±0.7kg）の中にいるので、実測どおりの維持カロリーを提案します'; }
     else {
-      var corr = Math.round(0.0015 * state.weight * WEIGHT_KCAL_PER_KG / 7);   // 体重の0.15%/週ぶんの小さな補正
+      var corr = Math.round(0.0015 * state.weight * weightKcalPerKg(diff > 0 ? 'loss' : 'gain', state.weight, saved && saved.bf) / 7);   // 体重の0.15%/週ぶんの小さな補正
       ideal = a.tdee + (diff > 0 ? -corr : corr);
       bandNote = '目標体重から' + (diff > 0 ? '+' : '') + diff.toFixed(1) + 'kgずれているので、帯に戻す小さな補正（' + (diff > 0 ? '−' : '+') + corr + 'kcal/日）を入れます。帯に戻ったら維持カロリーに戻します';
     }
   } else {
-    ideal = Math.round(a.tdee + rate * r.w * WEIGHT_KCAL_PER_KG / 7);
+    ideal = Math.round(a.tdee + rate * r.w * weightKcalPerKg(athSel.goal === 'bulk' ? 'gain' : 'loss', r.w, saved && saved.bf) / 7);
   }
   var floor = Math.max(r.bmr, athSel.sex === 'M' ? 1500 : 1200);
   ideal = Math.max(ideal, floor);
-  /* 週ごとの変更は小さく（±120kcal）。取り返し調整はしない */
-  var proposed = Math.max(cur - 120, Math.min(cur + 120, ideal));
+  /* 急変を避けるスムージング（2026-08-09・本家の smoothing 相当）。
+     旧: ±120kcalのハードキャップ。差が大きいとき（生活が変わった直後など）に
+     何週も追いつけないのが欠点だった。差の半分ずつ寄せると、大きな差は大きく・
+     小さな差は小さく動き、数週で自然に収束する。±60kcal以内はそのまま採用。
+     取り返し調整はしない（各週は自己完結） */
+  var gap = ideal - cur;
+  var proposed = Math.abs(gap) <= 60 ? ideal : cur + Math.round(gap / 2 / 10) * 10;
+  proposed = Math.max(proposed, floor);
   var m = athMacroFor(proposed, r.w);
   ciProposal = { target: proposed, macros: m };
   /* 週1回の運用: 反映から6日間は再反映させない（±120ずつ何度も動かせてしまうため。検証役low指摘）。
@@ -10278,7 +10318,8 @@ function openCheckin(){
   }
   body.innerHTML = head + proposalHtml +
     '<div class="ath-note">' + (bandNote ? bandNote + '。' : '') +
-    '現在の目標 ' + cur.toLocaleString() + 'kcal' + (proposed !== ideal ? '（変更は週±120kcalまでの小刻みにしています）' : '') +
+    '現在の目標 ' + cur.toLocaleString() + 'kcal' + (proposed !== ideal ? '（計算上は' + ideal.toLocaleString() + 'kcalですが、急な変更を避けて差の半分ずつ寄せています）' : '') +
+    (a.rho && a.rho !== WEIGHT_KCAL_PER_KG ? '。体重1kgの変化は' + a.rho.toLocaleString() + 'kcalとして計算（体脂肪率から脂肪と除脂肪の割合を推定）' : '') +
     '。先週の未達を取り返すような上乗せはしません（毎週まっさらに始める方が続きます）。すすめ方: ' + styleLabel + '</div>';
   if(withinWeek && ciProposal){
     body.innerHTML += '<div class="ath-note">今週ぶんの見直しは反映済みです。目標を頻繁に動かすより、週1回の見直しが続けやすいのでおすすめ（次の見直しは前回から1週間後）</div>';
@@ -10352,6 +10393,11 @@ function syncExDetailFields(){
   var cardioOk = (selectedActivity === 'walk' || selectedActivity === 'run' || selectedActivity === 'cardio');
   document.getElementById('exDetailCardio').style.display = (isDetail && cardioOk) ? 'block' : 'none';
   document.getElementById('exDetailStr').style.display = (isDetail && isStr) ? 'block' : 'none';
+  /* 筋トレ詳細を出すときにセット行と振替候補を初期化（行が無いと集計が空になる） */
+  if(isDetail && isStr){
+    if(!document.querySelector('#exStrSetRows .str-set-row')) renderStrSetRows(false);
+    renderExSwap(document.getElementById('exStrName').value);
+  }
 }
 /* ACSMのトレッドミル式。歩行式3.0〜6.0km/h・走行式8.0km/h以上。
    すき間（6〜8km/h）と範囲外はMETs表へフォールバック（傾斜は反映されない） */
@@ -10377,13 +10423,124 @@ function epley1RM(kg, reps){
   return Math.round(kg * (1 + reps / 30) * 10) / 10;
 }
 function exStrInputs(){
+  var sd = exStrSetData();
+  var total = 0, best = 0, uniform = sd.length > 0;
+  sd.forEach(function(x){ total += x.reps; if(x.reps > best) best = x.reps; if(x.reps !== sd[0].reps) uniform = false; });
   return {
     name: document.getElementById('exStrName').value,
     kg: parseFloat(document.getElementById('exStrKg').value) || 0,
-    reps: parseInt(document.getElementById('exStrReps').value) || 0,
-    sets: parseInt(document.getElementById('exStrSets').value) || 0,
-    rir: exStrRir,
+    sets: sd.length,
+    setsDetail: sd,
+    /* 進歩判定（次回の目安）は1セット目＝いちばん元気な状態で行う。
+       セッション間で比べられるのは疲労が乗る前の1セット目だけ */
+    reps: sd.length ? sd[0].reps : 0,
+    rir: sd.length ? sd[0].rir : STR_RIR_TARGET,
+    totalReps: total, bestReps: best, uniform: uniform,
   };
+}
+/* ============ セット単位の記録（2026-08-09・本家はセットごとに回数とRIRを持つ） ============ */
+function exStrSetData(){
+  var out = [];
+  document.querySelectorAll('#exStrSetRows .str-set-row').forEach(function(row){
+    var reps = parseInt(row.querySelector('.ssr-reps').value) || 0;
+    var on = row.querySelector('.ssr-chip.on');
+    out.push({ reps: reps, rir: on ? +on.getAttribute('data-v') : STR_RIR_TARGET });
+  });
+  return out;
+}
+function pickSetRir(el){
+  el.parentElement.querySelectorAll('.ssr-chip').forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+  updateExercisePreview();
+}
+/* セット入力行を描く。preserve=true なら今の入力値を引き継いでセット数だけ合わせる。
+   prefill には [{reps,rir},...] を渡せる（不足ぶんは最後の行を引き伸ばす） */
+function renderStrSetRows(preserve, prefill){
+  var wrap = document.getElementById('exStrSetRows');
+  if(!wrap) return;
+  var n = Math.max(1, Math.min(10, parseInt(document.getElementById('exStrSets').value) || 3));
+  var cur = preserve ? exStrSetData() : [];
+  var html = '';
+  for(var i = 0; i < n; i++){
+    var src = cur[i] || (prefill && (prefill[i] || prefill[prefill.length - 1])) || cur[cur.length - 1] || { reps: 10, rir: STR_RIR_TARGET };
+    html += '<div class="str-set-row">' +
+      '<span class="ssr-n">セット' + (i + 1) + '</span>' +
+      '<input type="number" class="ssr-reps" value="' + src.reps + '" min="1" max="30" oninput="updateExercisePreview()">' +
+      '<span class="ssr-x">回</span>' +
+      '<div class="ssr-rir">' + [0, 1, 2, 3].map(function(v){
+        return '<button type="button" class="ssr-chip' + (v === src.rir ? ' on' : '') + '" data-v="' + v + '" onclick="pickSetRir(this)">' + (v === 0 ? '限界' : v === 3 ? '3+' : 'あと' + v) + '</button>';
+      }).join('') + '</div></div>';
+  }
+  wrap.innerHTML = html + '<div class="ex-note" style="margin-top:4px;">余力＝そのセット、限界まであと何回できそうだったか（3+＝3回以上）</div>';
+  updateExercisePreview();
+}
+/* 種目を替えたら、その種目の記録から重量・回数の目安を先に入れておく */
+function onStrExerciseChange(){
+  var name = document.getElementById('exStrName').value;
+  var s = strengthSuggestion(name);
+  if(s && s.kg) document.getElementById('exStrKg').value = s.kg;
+  renderStrSetRows(false, s ? [{ reps: s.reps, rir: STR_RIR_TARGET }] : null);
+  renderExSwap(name);
+}
+/* ============ スマートスワップ（2026-08-09・混雑時に近い部位の種目へ振替） ============
+   本家の smart swaps 相当。候補はこのアプリの9種目の中の同じ/近い部位に限る */
+var EX_SWAP = {
+  'ベンチプレス': ['チェストプレス', 'ダンベルプレス'], 'チェストプレス': ['ベンチプレス', 'ダンベルプレス'],
+  'ダンベルプレス': ['ベンチプレス', 'チェストプレス'], 'スクワット': ['レッグプレス'],
+  'レッグプレス': ['スクワット'], 'デッドリフト': ['スクワット', 'レッグプレス'],
+};
+function renderExSwap(name){
+  var el = document.getElementById('exSwapRow');
+  if(!el) return;
+  var alts = EX_SWAP[name] || [];
+  if(!alts.length){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.innerHTML = 'マシンが混んでいたら近い部位に振替: ' + alts.map(function(n){
+    return '<button type="button" class="mi-chip sm" onclick="swapStrExercise(\'' + n + '\')">' + n + '</button>';
+  }).join(' ');
+}
+function swapStrExercise(name){
+  document.getElementById('exStrName').value = name;
+  onStrExerciseChange();
+  showToast(name + 'に振替。目安はこの種目の記録から出すよ');
+}
+/* ============ 今日のメニュー案（2026-08-09・軽量プログラム） ============
+   全身テンプレ（胸・脚・背中から1種目ずつ）。各部位で「いちばん久しぶりの種目」を選び、
+   目安はその種目の記録（strengthSuggestion）から。本家のプログラムビルダーの縮小版 */
+function lastLoggedIdx(name){
+  for(var i = strengthLog.length - 1; i >= 0; i--){ if(strengthLog[i].name === name) return i; }
+  return -1;
+}
+function strTodayPlan(){
+  var groups = [['胸', ['ベンチプレス', 'チェストプレス', 'ダンベルプレス']],
+                ['脚', ['スクワット', 'レッグプレス']],
+                ['背中', ['ラットプルダウン', 'デッドリフト']]];
+  return groups.map(function(g){
+    var name = g[1].slice().sort(function(a, b){ return lastLoggedIdx(a) - lastLoggedIdx(b); })[0];
+    var s = strengthSuggestion(name);
+    var rg = strRangeFor(name);
+    return { part: g[0], name: name,
+             text: s ? s.kg + 'kg × ' + s.reps + '回 × 3セット'
+                     : '軽めから ' + rg.min + '〜' + rg.max + '回 × 3セット（余力' + STR_RIR_TARGET + '回残し）' };
+  });
+}
+function toggleStrPlan(){
+  var el = document.getElementById('exStrPlan');
+  if(!el) return;
+  if(el.style.display !== 'none'){ el.style.display = 'none'; return; }
+  el.innerHTML = '<b>全身をまんべんなく（大きい筋肉から）</b><br>' + strTodayPlan().map(function(p){
+    return '・' + p.part + ': <button type="button" class="mi-chip sm" onclick="swapStrExercise(\'' + p.name + '\')">' + p.name + '</button> ' + p.text;
+  }).join('<br>') + '<br><span style="color:var(--text-lt)">種目名を押すと下の入力に入るよ。各部位で「いちばん久しぶりの種目」を選んでいます</span>';
+  el.style.display = 'block';
+}
+/* セッション内の疲労（後半のセットの落ち込み）を助言にする。
+   落ち込み＝1セット目と最終セットの限界換算（回数+余力）の差 */
+function strFatigueNote(entry){
+  var sd = entry && entry.setsDetail;
+  if(!sd || sd.length < 2) return null;
+  var drop = (sd[0].reps + sd[0].rir) - (sd[sd.length - 1].reps + sd[sd.length - 1].rir);
+  if(drop >= 3) return '前回はセット後半で' + drop + '回ぶん落ちていたよ（疲労）。セット間の休憩を2〜3分に伸ばすか、最後のセットは回数少なめでOK';
+  return null;
 }
 /* ============ 次回の漸進提案（2026-08-08・二重漸進＋RIR） ============
    これまでは機材ガイドの「前回＋2.5kg」固定だったが、余力を見ずに毎回足すと
@@ -10408,21 +10565,7 @@ var STR_RANGE_BY_NAME = {
 };
 function strRangeFor(name){ return STR_RANGE_BY_NAME[name] || STR_RANGE; }
 var STR_LOWER = ['スクワット', 'デッドリフト', 'レッグプレス'];
-var exStrRir = 2;
-function pickStrRir(v, el){
-  exStrRir = v;
-  el.parentElement.querySelectorAll('.chip-select').forEach(function(c){ c.classList.remove('active'); });
-  el.classList.add('active');
-  updateExercisePreview();
-}
-/* チップの見た目と exStrRir をまとめて合わせる（「いつもの運動」の復元・シートを開き直した時） */
-function setStrRirChips(v){
-  exStrRir = v;
-  var wrap = document.getElementById('exStrRirChips');
-  if(!wrap) return;
-  var chips = wrap.querySelectorAll('.chip-select');
-  chips.forEach(function(c, i){ c.classList.toggle('active', i === Math.min(v, chips.length - 1)); });
-}
+/* （旧・全体1つのRIRチップは 2026-08-09 にセット単位入力へ置き換え） */
 function strIncrement(name, kg){
   if(kg < 20) return 1.25;
   return STR_LOWER.indexOf(name) >= 0 ? 5 : 2.5;
@@ -10467,8 +10610,12 @@ function renderStrNext(name){
   if(!el) return;
   var s = strengthSuggestion(name);
   var rg = strRangeFor(name);
+  var le = null;
+  for(var i = strengthLog.length - 1; i >= 0; i--){ if(strengthLog[i].name === name){ le = strengthLog[i]; break; } }
+  var fatigue = strFatigueNote(le);
   el.innerHTML = s
-    ? '<b>今日の目安：' + s.kg + 'kg × ' + s.reps + '回</b>（' + escHtml(s.why) + '）'
+    ? '<b>今日の目安：' + s.kg + 'kg × ' + s.reps + '回</b>（' + escHtml(s.why) + '）' +
+      (fatigue ? '<br>' + escHtml(fatigue) : '')
     : 'この種目はまだ記録がありません。「あと何回できそうだったか」まで記録すると、次回から重さ・回数の目安が出せるようになるよ（この種目の目標は' + rg.min + '〜' + rg.max + '回・あと' + STR_RIR_TARGET + '回残す）';
 }
 /* 筋トレ記録（永続）。からだタブの推移表示に使う */
@@ -10505,9 +10652,13 @@ function applyUsualExercise(){
   if(u.incline != null) document.getElementById('exIncline').value = u.incline;
   if(u.strName){ document.getElementById('exStrName').value = u.strName; }
   if(u.kg != null) document.getElementById('exStrKg').value = u.kg;
-  if(u.reps != null) document.getElementById('exStrReps').value = u.reps;
   if(u.sets != null) document.getElementById('exStrSets').value = u.sets;
-  if(u.rir != null) setStrRirChips(u.rir);
+  if(u.strName || u.sets != null){
+    /* 新形式は setsDetail、旧形式（reps/rir が1つ）は全セット同じとして展開 */
+    var pf = u.setsDetail || (u.reps != null ? [{ reps: u.reps, rir: (u.rir != null ? u.rir : STR_RIR_TARGET) }] : null);
+    renderStrSetRows(false, pf);
+    renderExSwap(document.getElementById('exStrName').value);
+  }
   updateExercisePreview();
 }
 
@@ -10533,8 +10684,8 @@ function updateExercisePreview(){
     kcal = Math.round(3.5 * state.weight * (minutes / 60) * 1.05);
     note = 'ウェイトトレの標準強度（3.5METs）で計算（推定値）';
     var s = exStrInputs();
-    var rm = epley1RM(s.kg, s.reps);
-    var vol = Math.round(s.kg * s.reps * s.sets);
+    var rm = epley1RM(s.kg, s.bestReps);          // 1RMはベストセットから
+    var vol = Math.round(s.kg * s.totalReps);     // トン数は全セットの合計挙上
     document.getElementById('exStrStats').innerHTML =
       '<div class="st"><b>' + (vol ? vol.toLocaleString() : '－') + '</b><span>トン数(kg)</span></div>' +
       '<div class="st"><b>' + (rm != null ? rm : '－') + '</b><span>推定1RM' + (rm == null && s.reps > 10 ? '(10回以下で測定)' : '(kg)') + '</span></div>';
@@ -10565,14 +10716,17 @@ function saveExercise(){
     detail = { speed: sp, incline: inc };
   } else if(exMode === 'detail' && selectedActivity === 'strength'){
     var s = exStrInputs();
-    if(s.kg <= 0 || s.reps <= 0 || s.sets <= 0){ showToast('重量・回数・セットを入れてね'); return; }
+    if(s.kg <= 0 || s.sets <= 0 || s.setsDetail.some(function(x){ return x.reps <= 0; })){ showToast('重量と各セットの回数を入れてね'); return; }
     kcal = Math.round(3.5 * state.weight * (minutes / 60) * 1.05);
-    label = s.name + '（' + s.kg + 'kg×' + s.reps + '回×' + s.sets + '）';
+    var repsLabel = s.uniform ? s.reps + '回×' + s.sets + 'セット'
+                              : s.setsDetail.map(function(x){ return x.reps; }).join('・') + '回';
+    label = s.name + '（' + s.kg + 'kg×' + repsLabel + '）';
     var rg = strRangeFor(s.name);
-    var entry = { d: (TODAY.getMonth()+1) + '/' + TODAY.getDate(), name: s.name, kg: s.kg, reps: s.reps, sets: s.sets,
-                  vol: Math.round(s.kg * s.reps * s.sets), rm: epley1RM(s.kg, s.reps),
-                  /* 次回の漸進提案の材料。目標は記録時点の値を一緒に残す
-                     （あとで既定値を変えても、過去の記録が別基準で読み替えられないように） */
+    var entry = { d: (TODAY.getMonth()+1) + '/' + TODAY.getDate(), name: s.name, kg: s.kg,
+                  /* reps/rir＝1セット目（進歩判定の基準）。setsDetail＝全セットの生値。
+                     vol＝総挙上（kg×全セット回数合計）・rm＝ベストセットから */
+                  reps: s.reps, sets: s.sets, setsDetail: s.setsDetail,
+                  vol: Math.round(s.kg * s.totalReps), rm: epley1RM(s.kg, s.bestReps),
                   rir: s.rir, range: { min: rg.min, max: rg.max }, rirTarget: STR_RIR_TARGET };
     strengthLog.push(entry);
     saveStrengthLog();
@@ -10584,7 +10738,7 @@ function saveExercise(){
   try{
     var u = { mode: exMode, act: selectedActivity, minutes: minutes };
     if(detail && detail.speed != null){ u.speed = detail.speed; u.incline = detail.incline; }
-    if(detail && detail.kg != null){ u.strName = detail.name; u.kg = detail.kg; u.reps = detail.reps; u.sets = detail.sets; u.rir = detail.rir; }
+    if(detail && detail.kg != null){ u.strName = detail.name; u.kg = detail.kg; u.sets = detail.sets; u.setsDetail = detail.setsDetail; }
     localStorage.setItem('smile24_ex_usual', JSON.stringify(u));
   }catch(e){}
   state.exerciseKcal += kcal;
@@ -10623,10 +10777,11 @@ function renderExerciseLog(){
 }
 document.getElementById('exMinutes').addEventListener('input', updateExercisePreview);
 /* 詳細入力の各欄もプレビューへ即時反映（2026-08-07） */
-['exSpeed', 'exIncline', 'exStrKg', 'exStrReps', 'exStrSets'].forEach(function(id){
+['exSpeed', 'exIncline', 'exStrKg'].forEach(function(id){
   var el = document.getElementById(id);
   if(el) el.addEventListener('input', updateExercisePreview);
 });
+/* セットごとの回数はrenderStrSetRowsが生成する行の oninput、セット数は onchange で処理 */
 
 /* ============ AIパートナー名前変更 ============ */
 function openRenameSheet(){
@@ -12942,6 +13097,7 @@ function openRecipe(){
 var TREND_TABS = [
   {key:'bmi', label:'BMI'},
   {key:'weight', label:'体重'},
+  {key:'tdee', label:'消費(実測)'},
   {key:'kcalin', label:'カロリー摂取'},
   {key:'kcalout', label:'カロリー消費'},
   {key:'pfc', label:'栄養素'},
@@ -12970,11 +13126,42 @@ function renderTrend(){
   wrap.innerHTML =
     '<div class="trend-sec" id="trendsec-bmi">' + trendBMI() + '</div>' +
     '<div class="trend-sec" id="trendsec-weight">' + trendWeight() + '</div>' +
+    '<div class="trend-sec" id="trendsec-tdee">' + trendTDEE() + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalin">' + trendKcal('in') + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalout">' + trendKcal('out') + '</div>' +
     '<div class="trend-sec" id="trendsec-pfc">' + trendPFC() + '</div>' +
     '<div class="trend-sec" id="trendsec-str">' + trendStrength() + '</div>' +
     '<div class="trend-sec" id="trendsec-water">' + trendWater() + '</div>';
+}
+
+/* ============ 消費エネルギー（実測）カード（2026-08-09） ============
+   本家は消費（expenditure）を毎日更新してダッシュボードに常時出す。
+   うちも「開くたびに最新の記録から計算」なので、週次チェックインの中だけでなく
+   からだタブに常時表示する。ガチ勢モード設定済みのときだけ出す（式のTDEEに
+   活動量の設定が要るため） */
+function trendTDEE(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(!saved) return '';
+  var bmr = (saved.bf > 0)
+    ? 370 + 21.6 * (saved.w * (1 - saved.bf / 100))
+    : (saved.sex === 'M' ? 10 * saved.w + 6.25 * saved.h - 5 * saved.age + 5
+                         : 10 * saved.w + 6.25 * saved.h - 5 * saved.age - 161);
+  var formulaTdee = Math.round(bmr * (saved.act || 1.375));
+  var a = adaptiveTDEE(formulaTdee);
+  var body;
+  if(a.status === 'ok'){
+    body = '<div class="sn-v" style="font-family:var(--font-en);font-size:24px;font-weight:800;">' + a.tdee.toLocaleString() + '<span style="font-size:12px;font-weight:700;color:var(--text-mid);"> kcal/日</span></div>' +
+      '<div class="ath-note">あなたの摂取と体重変化からの逆算（直近' + ADAPT_WINDOW_DAYS + '日・' + a.usedDays + '日ぶんの食事記録・開くたびに更新）。式の見積は ' + formulaTdee.toLocaleString() + ' kcal/日</div>';
+  } else {
+    body = '<div class="ath-note">' + (a.status === 'holding'
+      ? '直近の記録が足りないため計算を保留中（食事が週4日以上・体重が週1回以上で再開します）'
+      : '食事10日ぶん・体重4回以上の記録が貯まると、式ではなく実測で出せるようになるよ') + '</div>';
+  }
+  return '<div class="trend-card">' +
+    '<div class="cc-title-row"><div><div class="cc-title">消費エネルギー（実測）</div>' +
+    '<div class="cc-sub">食べた量と体重の動きから逆算した、あなたの実際の消費</div></div></div>' +
+    body + '</div>';
 }
 
 /* ============ 筋トレの記録（からだタブ・2026-08-07 ガチ勢要望） ============
@@ -13007,8 +13194,13 @@ function trendStrength(){
   }).join('');
   /* 種目は選択済みなので履歴の各行には出さない（狭い幅で折り返すだけ） */
   var hist = rows.slice(-5).reverse().map(function(e){
+    /* セットごとの回数が揃っていない記録は「10・9・8回」形式で見せる */
+    var sd = e.setsDetail;
+    var repsTxt = (sd && sd.length && sd.some(function(x){ return x.reps !== sd[0].reps; }))
+      ? sd.map(function(x){ return x.reps; }).join('・') + '回'
+      : e.reps + '回 × ' + e.sets + 'セット';
     return '<div class="sh-row"><span class="sh-d">' + escHtml(e.d) + '</span>' +
-      '<span class="sh-v" style="flex:1;">' + e.kg + 'kg × ' + e.reps + '回 × ' + e.sets + 'セット（' + e.vol.toLocaleString() + 'kg）</span>' +
+      '<span class="sh-v" style="flex:1;">' + e.kg + 'kg × ' + repsTxt + '（' + e.vol.toLocaleString() + 'kg）</span>' +
       '<span class="sh-rm">' + (e.rm != null ? e.rm + 'kg' : '—') + '</span></div>';
   }).join('');
   /* 1RMの推移チャート（記録日ラベル付き）。曜日固定の trendBarsSVG は7日用なので使わない。
@@ -13031,10 +13223,13 @@ function trendStrength(){
   }
   /* 次回の目安（二重漸進＋RIR）。「あと何回できたか」まで記録している種目でだけ出す */
   var sg = strengthSuggestion(sel);
+  var fatigue = strFatigueNote(rows[rows.length - 1]);
   var next = sg
     ? '<div class="str-next"><div class="sn-h">次にやるときの目安</div>' +
       '<div class="sn-v">' + sg.kg + '<span>kg</span> × ' + sg.reps + '<span>回</span></div>' +
-      '<div class="sn-w">' + escHtml(sg.why) + '</div></div>'
+      '<div class="sn-w">' + escHtml(sg.why) + '</div>' +
+      (fatigue ? '<div class="sn-w" style="margin-top:4px;">' + escHtml(fatigue) + '</div>' : '') +
+      '</div>'
     : '<div class="ath-note">運動の記録で「あと何回できそうだったか」まで入れると、次にやるときの重さ・回数の目安が出せるようになるよ</div>';
   return '<div class="trend-card">' +
     '<div class="cc-title-row"><div><div class="cc-title">筋トレのパワー（推定1RM）</div>' +
