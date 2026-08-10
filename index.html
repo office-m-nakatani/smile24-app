@@ -1476,6 +1476,10 @@ input{font-family:inherit;}
 .unit-wrap{display:flex;align-items:center;gap:7px;}
 .unit-wrap input{flex:1;min-width:0;width:auto;}
 .unit-wrap .uw-u{font-size:12.5px;font-weight:700;color:var(--text-mid);flex:0 0 auto;}
+/* 食事タブの減量目標（チェックした人にだけ中身を見せる・くどくしない） */
+.diet-goal{margin:12px 22px 0;padding:12px 15px;border-radius:var(--radius-sm);background:var(--white);border:1px solid #E3EAF3;}
+.diet-goal .dg-head{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;}
+.diet-goal .dg-head input{width:19px;height:19px;accent-color:var(--brand);flex:0 0 19px;margin:0;}
 /* ホームの目標内訳・チェックイン呼び出し（2026-08-10・埋もれ解消） */
 .goal-line{
   margin:12px 22px 0;padding:11px 15px;border-radius:var(--radius-sm);cursor:pointer;
@@ -2516,6 +2520,23 @@ input{font-family:inherit;}
         <div class="food-examples" id="foodExamples"></div>
       </div>
 
+      <!-- 減量の目標（任意・2026-08-10ユーザー要望）。ジム会員は減量目的が多いので
+           食事の画面から直接決められるように。ただしチェックした人にだけ入力を見せて
+           くどくしない。中身はマイページの目標コーチと同じ保存・計算を共有する -->
+      <div class="diet-goal">
+        <label class="dg-head">
+          <input type="checkbox" id="dietGoalChk" onchange="dietGoalToggle()">
+          <span>減量の目標を決める（いつまでに・何kg）</span>
+        </label>
+        <div id="dietGoalBody" style="display:none;">
+          <div class="field-row2" style="margin-top:9px;">
+            <div class="field"><label>減らしたい体重</label><div class="unit-wrap"><input type="number" id="dgKg" min="0.5" max="30" step="0.5" placeholder="例: 3" onchange="dietGoalInput()"><span class="uw-u">kg</span></div></div>
+            <div class="field"><label>期間</label><div class="unit-wrap"><input type="number" id="dgWeeks" min="1" max="52" step="1" placeholder="例: 8" onchange="dietGoalInput()"><span class="uw-u">週間</span></div></div>
+          </div>
+          <div class="ex-note" id="dietGoalNote">目標を入れると、その期間で届く「1日の食べる量」に上の目標が切り替わります</div>
+        </div>
+      </div>
+
         <!-- 過去の食事をふりかえる（2026-08-07・ユーザー指示で空きスペースに追加）。
              タップするとその日の記録の詳細がひらく -->
         <div class="section-label" style="margin-top:18px;">
@@ -3110,13 +3131,13 @@ input{font-family:inherit;}
         <div class="list-item" onclick="openThemeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗テーマ（FCカスタマイズ・デモ）</span><span class="lval" id="themeLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="showSheet('sosSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>緊急連絡先・SOS</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
-        <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>ガチ勢モード（目標を詳しく計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>目標コーチ（食べる量を計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>ジュエル（頑張りの見える化）</span><div class="ob-switch" id="jewelSwitch" onclick="toggleJewel()" style="flex:0 0 auto;"></div></div>
         <div class="list-item" onclick="openWithdrawSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>退会・休会のお手続き</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-10c</b>（ガチ勢モードの入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-10d</b>（「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3215,7 +3236,7 @@ input{font-family:inherit;}
           <label>計算のしかた</label>
           <div class="chip-row">
             <button class="chip-select active" id="exModeSimple" onclick="setExMode('simple')">かんたん</button>
-            <button class="chip-select" id="exModeDetail" onclick="setExMode('detail')">詳細（ガチ勢）</button>
+            <button class="chip-select" id="exModeDetail" onclick="setExMode('detail')">詳細（セットごと）</button>
           </div>
         </div>
         <div id="exDetailCardio" style="display:none;">
@@ -3311,7 +3332,7 @@ input{font-family:inherit;}
          出典: Mifflin 1990 / Katch-McArdle / Helms 2014 / Iraki 2019 / Morton 2018 / 日本人の食事摂取基準 -->
     <div class="sheet" id="athleteSheet">
       <div class="sheet-card">
-        <h3>ガチ勢モード（目標を詳しく計算）</h3>
+        <h3>目標コーチ（目標から食べる量を計算）</h3>
         <div class="sheet-desc">基礎代謝から「1日にいくらまで食べていいか」とマクロ配分を計算するよ（一般的な計算式による目安です）</div>
         <div class="field-row2">
           <div class="field"><label>身長</label><div class="unit-wrap"><input type="number" id="athHeight" value="158" min="130" max="210" oninput="athPreview()"><span class="uw-u">cm</span></div></div>
@@ -3379,7 +3400,7 @@ input{font-family:inherit;}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16v-5"/><path d="M12 16V8"/><path d="M17 16v-3"/></svg>
           週次チェックイン（実測にもとづく見直し）
         </button>
-        <button class="jw-off" id="athOffBtn" style="display:none;" onclick="clearAthlete()">ガチ勢モードをやめる（通常の目標に戻す）</button>
+        <button class="jw-off" id="athOffBtn" style="display:none;" onclick="clearAthlete()">目標コーチをやめる（通常の目標に戻す）</button>
         <button class="sheet-cancel" onclick="hideSheet('athleteSheet')">閉じる</button>
       </div>
     </div>
@@ -4237,8 +4258,8 @@ input{font-family:inherit;}
           <div class="ob-field">
             <label>性別<span class="req">必須</span></label>
             <div class="ob-chip-group">
-              <button type="button" class="ob-chip" data-g="female" onclick="selectGender('female',this)">女性</button>
               <button type="button" class="ob-chip" data-g="male" onclick="selectGender('male',this)">男性</button>
+              <button type="button" class="ob-chip" data-g="female" onclick="selectGender('female',this)">女性</button>
             </div>
           </div>
           <div class="ob-warn-box" id="basicAgeWarn" style="display:none;"></div>
@@ -4984,7 +5005,7 @@ function saveBmr(){
     }catch(e){}
     recalc();
     hideSheet('bmrSheet');
-    showToast('体格を更新したよ。カロリー目標はガチ勢モードの設定が優先されます（マイページから変更できます）');
+    showToast('体格を更新したよ。カロリー目標は目標コーチの設定が優先されます（マイページから変更できます）');
     return;
   }
   state.bmr = calcBmrValue(h, w, selectedMuscle);
@@ -6002,6 +6023,7 @@ function goTab(name, mealSlot){
     var cs = document.getElementById('camStage');
     if(cs && cs.style.display !== 'none' && typeof startMealCamera === 'function') startMealCamera();
     if(typeof renderMealPresets === 'function') renderMealPresets();
+    if(typeof dietGoalSyncFromSaved === 'function') dietGoalSyncFromSaved();
     if(typeof preloadMealAI === 'function') preloadMealAI();   // AI読み取りモデルを先読み（初回のみDL）
     /* 栄養データ較正（2026-08-04）の初回案内：同じ定食が昨日より高いkcalで出る理由を
        説明しないと「急に太った」ように見える。1端末1回だけ */
@@ -10266,7 +10288,7 @@ function openAthleteSheet(){
   athPreview();
   showSheet('athleteSheet');
 }
-function applyAthlete(){
+function applyAthlete(quiet){
   var r = athCompute();
   var cfg = {
     sex: athSel.sex, goal: athSel.goal, macro: athSel.macro, style: athSel.style || 'coached',
@@ -10288,7 +10310,78 @@ function applyAthlete(){
   try{ localStorage.setItem('smile24_athlete', JSON.stringify(cfg)); }catch(e){}
   applyAthleteToState(r, cfg);
   hideSheet('athleteSheet');
-  showToast('ガチ勢モードを設定したよ。今日の目標 ' + r.target.toLocaleString() + 'kcal・たんぱく質' + r.pG + 'g');
+  if(!quiet) showToast('目標コーチを設定したよ。今日の目標 ' + r.target.toLocaleString() + 'kcal・たんぱく質' + r.pG + 'g');
+}
+
+/* ============ 食事タブの減量目標（2026-08-10・チェック式） ============
+   ジム会員は減量目的が多いので、食事の画面から「いつまでに何kg」を直接決められる。
+   くどくしないため、チェックした人にだけ入力を見せる。
+   保存・計算・週次見直しはマイページの目標コーチと完全に同じ経路を共有する
+   （別の仕組みを作ると数字が2系統になり、どちらが本当か分からなくなる） */
+function dietGoalToggle(){
+  var on = document.getElementById('dietGoalChk').checked;
+  document.getElementById('dietGoalBody').style.display = on ? 'block' : 'none';
+  if(on){
+    dietGoalInput();   // すでに数字が入っていれば即適用（空なら案内文のまま）
+  } else {
+    var saved = null;
+    try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+    /* 解除するのは「減量×目標つき」の設定だけ（マイページで組んだ維持・筋肥大は触らない） */
+    if(saved && saved.goal === 'cut' && saved.goalKg > 0) clearAthlete();
+  }
+}
+function dietGoalInput(){
+  var kg = parseFloat(document.getElementById('dgKg').value);
+  var wk = parseFloat(document.getElementById('dgWeeks').value);
+  if(!(kg > 0 && wk > 0)){ dietGoalNoteUpdate(); return; }
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  /* 目標コーチ未設定の人は、プロフィール（アカウントの性別・年齢と現在の体重・身長）で既定を組む */
+  if(!saved){
+    var acct = null;
+    try{ acct = JSON.parse(localStorage.getItem('smile24_account') || 'null'); }catch(e){}
+    athSel.sex = (acct && acct.gender === 'male') ? 'M' : 'F';
+    athSel.macro = 'balance'; athSel.style = 'coached';
+    document.getElementById('athWeight').value = state.weight;
+    document.getElementById('athHeight').value = state.height;
+    if(acct && acct.age) document.getElementById('athAge').value = acct.age;
+  }
+  athSel.goal = 'cut';
+  document.getElementById('athGoalKg').value = kg;
+  document.getElementById('athGoalWeeks').value = wk;
+  applyAthlete(true);   // トーストは出さない（入力のたびに鳴るとくどい）
+  dietGoalNoteUpdate();
+}
+function dietGoalNoteUpdate(){
+  var el = document.getElementById('dietGoalNote');
+  if(!el) return;
+  var kg = parseFloat(document.getElementById('dgKg').value);
+  var wk = parseFloat(document.getElementById('dgWeeks').value);
+  if(!(kg > 0 && wk > 0) || !state.athleteOn){
+    el.innerHTML = '目標を入れると、その期間で届く「1日の食べる量」に上の目標が切り替わります';
+    return;
+  }
+  var r = athCompute();
+  el.innerHTML = 'きょうの目安 <b>' + r.target.toLocaleString() + 'kcal</b>（消費より1日 −' + r.deficit.toLocaleString() + 'kcal）。週1回、実際の記録から自動で見直します' +
+    (r.paceWarn ? '。' + r.paceWarn : '') + (r.floorNote ? '。' + r.floorNote : '');
+}
+/* 保存済み設定をチェック欄へ反映（起動時と食事タブを開いたとき。
+   recalcから毎回呼ぶと、ユーザーがチェックを入れた直後に書き戻して喧嘩になる） */
+function dietGoalSyncFromSaved(){
+  var chk = document.getElementById('dietGoalChk');
+  if(!chk) return;
+  if(document.activeElement === document.getElementById('dgKg') ||
+     document.activeElement === document.getElementById('dgWeeks')) return;   // 入力中は触らない
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  var on = !!(saved && saved.goal === 'cut' && saved.goalKg > 0 && saved.goalWeeks > 0 && state.athleteOn);
+  chk.checked = on;
+  document.getElementById('dietGoalBody').style.display = on ? 'block' : 'none';
+  if(on){
+    document.getElementById('dgKg').value = saved.goalKg;
+    document.getElementById('dgWeeks').value = saved.goalWeeks;
+    dietGoalNoteUpdate();
+  }
 }
 function applyAthleteToState(r, cfg){
   state.weight = cfg.w;
@@ -10328,7 +10421,7 @@ function openCheckin(){
   var applyBtn = document.getElementById('ciApplyBtn');
   ciProposal = null;
   if(!saved){
-    body.innerHTML = '<div class="ath-note">先に「ガチ勢モード」で目標を設定してね</div>';
+    body.innerHTML = '<div class="ath-note">先に「目標コーチ」で目標を設定してね</div>';
     applyBtn.style.display = 'none';
     showSheet('checkinSheet'); return;
   }
@@ -10389,7 +10482,7 @@ function openCheckin(){
       bandNote = '目標の−' + saved.goalKg + 'kgに到達しました！ここからは実測どおりの維持カロリーを提案します。マイページのガチ勢モードで「維持」への切り替えか、次の目標の設定を';
     } else if(remainDays < 7){
       ideal = Math.round(a.tdee - 0.005 * r.w * rhoL / 7);
-      bandNote = '目標の期間が終わりました（残り' + remainKg + 'kg）。いったん標準ペース（体重の−0.5%/週）で提案します。ガチ勢モードで目標を設定し直してね';
+      bandNote = '目標の期間が終わりました（残り' + remainKg + 'kg）。いったん標準ペース（体重の−0.5%/週）で提案します。目標コーチで目標を設定し直してね';
     } else {
       ideal = Math.round(a.tdee - remainKg * rhoL / remainDays);
       bandNote = '目標まであと' + remainKg + 'kg・残り' + Math.floor(remainDays / 7) + '週。進み具合を織り込んで、残りぶんから逆算しています';
@@ -10417,7 +10510,7 @@ function openCheckin(){
   var styleLabel = { coached: 'おまかせ', collab: '週の予算だけ', manual: '自分で決める' }[athSel.style || 'coached'];
   var proposalHtml;
   if((athSel.style || 'coached') === 'manual'){
-    proposalHtml = '<div class="ath-note">すすめ方が「自分で決める」なので提案はしません。実測の消費（' + a.tdee.toLocaleString() + 'kcal/日）を参考に、マイページのガチ勢モードから自分で調整してね</div>';
+    proposalHtml = '<div class="ath-note">すすめ方が「自分で決める」なので提案はしません。実測の消費（' + a.tdee.toLocaleString() + 'kcal/日）を参考に、マイページの目標コーチから自分で調整してね</div>';
     ciProposal = null;
   } else if((athSel.style || 'coached') === 'collab'){
     proposalHtml =
@@ -10537,6 +10630,7 @@ function restoreAthleteFromStorage(){
     if(lv0) lv0.textContent = ({ cut:'減量中', keep:'維持', bulk:'筋肥大' }[saved.goal]) + ' ' + saved.curTarget.toLocaleString() + 'kcal';
     recalc();
   }
+  dietGoalSyncFromSaved();   // 食事タブの「減量の目標」チェック欄にも反映
 }
 
 /* ============ ガチ勢モード：運動の詳細計算（2026-08-07） ============
@@ -10883,7 +10977,7 @@ function updateExercisePreview(){
       var ln = null;
       for(var hi = strengthLog.length - 1; hi >= 0; hi--){ if(strengthLog[hi].rir != null){ ln = strengthLog[hi].name; break; } }
       var hs = ln ? strengthSuggestion(ln) : null;
-      if(hs) hintHtml = '記録から出した今日の目安：' + escHtml(ln) + ' <b>' + hs.kg + 'kg × ' + hs.reps + '回</b>（「詳細（ガチ勢）」を押すと入力欄に入ります）';
+      if(hs) hintHtml = '記録から出した今日の目安：' + escHtml(ln) + ' <b>' + hs.kg + 'kg × ' + hs.reps + '回</b>（「詳細（セットごと）」を押すと入力欄に入ります）';
     }
     hintEl.style.display = hintHtml ? 'block' : 'none';
     if(hintHtml) hintEl.innerHTML = hintHtml;
@@ -13370,7 +13464,7 @@ function trendStrength(){
     return '<div class="trend-card"><div class="trend-empty">' +
       '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg></div>' +
       '<div class="te-t">まだ筋トレの記録がありません</div>' +
-      '<div class="te-d">運動の記録で「詳細（ガチ勢）」を選ぶと<br>重量×回数×セットからパワーの推移が見られるよ</div>' +
+      '<div class="te-d">運動の記録で「詳細（セットごと）」を選ぶと<br>重量×回数×セットからパワーの推移が見られるよ</div>' +
       '</div></div>';
   }
   /* 既定は「最後に記録した種目」（今日ベンチをやったならベンチが開く） */
