@@ -1472,6 +1472,28 @@ input{font-family:inherit;}
 .str-hist .sh-n{font-weight:700;flex:1;}
 .str-hist .sh-v{font-family:var(--font-en);color:var(--text-mid);}
 .str-hist .sh-rm{font-family:var(--font-en);font-weight:700;color:var(--brand);flex:0 0 auto;}
+/* ホームの目標内訳・チェックイン呼び出し（2026-08-10・埋もれ解消） */
+.goal-line{
+  margin:12px 22px 0;padding:11px 15px;border-radius:var(--radius-sm);cursor:pointer;
+  background:var(--white);border:1px solid #E3EAF3;font-size:12.5px;color:var(--text-mid);
+  line-height:1.65;box-shadow:0 1px 4px rgba(30,60,110,.05);
+}
+.goal-line b{color:var(--text);font-family:var(--font-en);font-size:14px;}
+.goal-line .gl-tag{font-size:10.5px;font-weight:700;color:var(--brand);margin-right:6px;}
+.checkin-callout{
+  margin:12px 22px 0;padding:13px 15px;border-radius:var(--radius-sm);cursor:pointer;
+  display:flex;align-items:center;gap:11px;
+  background:#F2F7FF;border:1.5px solid var(--brand);box-shadow:0 2px 8px rgba(74,133,246,.14);
+}
+.checkin-callout .co-ic{
+  width:36px;height:36px;border-radius:11px;background:var(--brand);color:#fff;
+  display:flex;align-items:center;justify-content:center;flex:0 0 36px;
+}
+.checkin-callout .co-ic svg{width:19px;height:19px;}
+.checkin-callout .co-tw{flex:1;min-width:0;}
+.checkin-callout .co-t{font-size:13.5px;font-weight:700;color:var(--text);}
+.checkin-callout .co-s{font-size:11px;color:var(--text-mid);line-height:1.5;margin-top:2px;}
+.checkin-callout .chev{width:16px;height:16px;color:var(--text-lt);flex:0 0 16px;}
 /* セットごとの回数と余力（2026-08-09・本家はセット単位で記録する） */
 .str-set-row{display:flex;align-items:center;gap:6px;margin-top:6px;}
 .str-set-row .ssr-n{font-size:11px;font-weight:700;color:var(--text-lt);flex:0 0 44px;}
@@ -2237,6 +2259,18 @@ input{font-family:inherit;}
 
       <!-- 今日の食事（朝・昼・夕・軽食）。ホームのごちゃつき対策で開閉式（既定は閉じる）。
            タイルをタップすると、その食事としてカメラがそのまま起動する -->
+      <!-- ガチ勢モードの目標の内訳（2026-08-10・「見えない位置では意味がない」指摘への対応）。
+           消費−少なく食べる＝目標 を毎日目に入る場所に。タップで設定シートへ -->
+      <div class="goal-line" id="homeGoalLine" style="display:none;" onclick="openAthleteSheet()" role="button" tabindex="0" aria-label="目標カロリーの内訳を見る"></div>
+      <!-- 週次チェックインの呼び出し（期限が来て提案が作れるときだけ出す） -->
+      <div class="checkin-callout" id="homeCheckinCallout" style="display:none;" onclick="openCheckin()" role="button" tabindex="0" aria-label="今週の目標見直しをひらく">
+        <div class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
+        <div class="co-tw">
+          <div class="co-t">今週の見直しができます</div>
+          <div class="co-s">実測の消費から今週の目標カロリーを提案します（反映するかは選べます）</div>
+        </div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
       <div id="homeSecMeal">
       <button class="acc-head" id="accMealHead" onclick="toggleMealAcc()" aria-expanded="false" aria-controls="accMealPanel">
         <svg class="acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
@@ -3078,7 +3112,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-10a</b>（減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-10b</b>（ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3165,6 +3199,7 @@ input{font-family:inherit;}
             <button class="chip-select" data-act="cardio" onclick="selectActivity('cardio',this)">有酸素マシン</button>
             <button class="chip-select" data-act="strength" onclick="selectActivity('strength',this)">筋トレ</button>
           </div>
+          <div class="ex-note" id="exSimpleStrHint" style="display:none;"></div>
         </div>
         <div class="field">
           <label>時間（分）</label>
@@ -9874,6 +9909,8 @@ function recalc(){
   renderBadges();
   renderMissions();
   renderGreeting();
+  renderHomeGoalLine();
+  renderCheckinCallout();
 }
 
 function renderFoodExamples(remainP){
@@ -10424,6 +10461,47 @@ function applyCheckin(){
   showToast('目標を見直したよ。今日から ' + ciProposal.target.toLocaleString() + 'kcal・たんぱく質' + ciProposal.macros.pG + 'g');
 }
 
+/* ============ ホームの目標内訳・チェックイン呼び出し（2026-08-10・埋もれ解消） ============
+   ガチ勢の計算がガチ勢シートの奥にしか無く「入っているのか分からない」という指摘への対応。
+   ①内訳の一行: 消費 − 少なく食べる ＝ きょうの目安 を毎日目に入る場所に
+   ②チェックイン: 期限が来て提案が作れる（実測あり）ときだけホームに呼び出しを出す
+   （本家が週次チェックインを通知で呼ぶのと同じ役割） */
+function renderHomeGoalLine(){
+  var el = document.getElementById('homeGoalLine');
+  if(!el) return;
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(!saved || !state.athleteOn){ el.style.display = 'none'; return; }
+  var r = athCompute();
+  var a = adaptiveTDEE(r.tdee);
+  var burn = a.status === 'ok' ? a.tdee : r.tdee;   // 実測が使えるなら実測の消費
+  var t = state.baseConsumption;                     // 適用中の目標（チェックイン反映後の値）
+  var diff = burn - t;
+  var goalTxt = { cut: '減量中', keep: '維持', bulk: '筋肥大' }[saved.goal] || '';
+  if(saved.goal === 'cut' && diff > 0){
+    el.innerHTML = '<span class="gl-tag">' + goalTxt + (saved.goalKg > 0 && saved.goalWeeks > 0 ? '（あと' + saved.goalKg + 'kgを' + saved.goalWeeks + '週間で）' : '') + '</span>' +
+      '消費の見込み <b>' + burn.toLocaleString() + '</b> − 少なく食べる <b>' + diff.toLocaleString() + '</b> ＝ きょうの目安 <b>' + t.toLocaleString() + '</b> kcal';
+  } else {
+    el.innerHTML = '<span class="gl-tag">' + goalTxt + '</span>きょうの目安 <b>' + t.toLocaleString() + '</b> kcal（消費の見込み <b>' + burn.toLocaleString() + '</b> kcal）';
+  }
+  el.style.display = 'block';
+}
+function renderCheckinCallout(){
+  var el = document.getElementById('homeCheckinCallout');
+  if(!el) return;
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  var show = false;
+  if(saved && state.athleteOn && (saved.style || 'coached') !== 'manual'){
+    var lastAt = 0;
+    try{ lastAt = Number(localStorage.getItem('smile24_checkin_at') || 0); }catch(e){}
+    if(!lastAt || (Date.now() - lastAt) >= 6 * 24 * 3600 * 1000){
+      show = adaptiveTDEE(athCompute().tdee).status === 'ok';
+    }
+  }
+  el.style.display = show ? 'flex' : 'none';
+}
+
 /* 保存済みのガチ勢設定の復元。
    ⚠️ここで即時実行してはいけない：この位置での recalc は、後方で定義される
    WQ_TARGET 等をまだ参照できず TypeError でスクリプト全体が途中死する
@@ -10717,7 +10795,8 @@ if(!strengthLog.length){
     { d:'6/21', name:'デッドリフト', kg:60,   reps:5,  sets:3 },
     { d:'6/25', name:'ベンチプレス', kg:42.5, reps:10, sets:3 },
     { d:'6/28', name:'スクワット',   kg:55,   reps:8,  sets:3 },
-    { d:'7/1',  name:'ベンチプレス', kg:45,   reps:8,  sets:3 },
+    /* 最新のベンチだけRIR付き＝デモでも「今日の目安」「筋トレの自動詳細オープン」が見える */
+    { d:'7/1',  name:'ベンチプレス', kg:45,   reps:8,  sets:3, rir:2, range:{min:6,max:10}, rirTarget:2 },
   ].map(function(e){ e.vol = Math.round(e.kg * e.reps * e.sets); e.rm = epley1RM(e.kg, e.reps); return e; });
 }
 /* いつもの運動（前回の内容を1タップで再入力） */
@@ -10748,6 +10827,19 @@ function selectActivity(key, el){
   selectedActivity = key;
   document.querySelectorAll('#activityChips .chip-select').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
+  /* 筋トレを選んだ瞬間、余力（RIR）付きの記録がある人は詳細モードを自動で開き、
+     最後にやった種目の目安を入力欄へ先に入れておく（従来4タップ→2タップ。
+     2026-08-10「見えない位置では意味がない」指摘への対応） */
+  if(key === 'strength' && exMode === 'simple'){
+    var lastStr = null;
+    for(var i = strengthLog.length - 1; i >= 0; i--){ if(strengthLog[i].rir != null){ lastStr = strengthLog[i].name; break; } }
+    if(lastStr){
+      document.getElementById('exStrName').value = lastStr;
+      setExMode('detail');
+      onStrExerciseChange();
+      return;
+    }
+  }
   syncExDetailFields();
   updateExercisePreview();
 }
@@ -10779,6 +10871,19 @@ function updateExercisePreview(){
   }
   document.getElementById('exKcalPreview').innerHTML = kcal+'<span>kcal 消費</span>';
   document.getElementById('exKcalNote').textContent = note;
+  /* かんたんモード×筋トレでも、今日の目安は扉の外に一行出す（2026-08-10） */
+  var hintEl = document.getElementById('exSimpleStrHint');
+  if(hintEl){
+    var hintHtml = '';
+    if(selectedActivity === 'strength' && exMode === 'simple'){
+      var ln = null;
+      for(var hi = strengthLog.length - 1; hi >= 0; hi--){ if(strengthLog[hi].rir != null){ ln = strengthLog[hi].name; break; } }
+      var hs = ln ? strengthSuggestion(ln) : null;
+      if(hs) hintHtml = '記録から出した今日の目安：' + escHtml(ln) + ' <b>' + hs.kg + 'kg × ' + hs.reps + '回</b>（「詳細（ガチ勢）」を押すと入力欄に入ります）';
+    }
+    hintEl.style.display = hintHtml ? 'block' : 'none';
+    if(hintHtml) hintEl.innerHTML = hintHtml;
+  }
 }
 function openExerciseSheet(){
   document.getElementById('exMinutes').value = 30;
