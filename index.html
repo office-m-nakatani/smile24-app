@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <!-- 会員向けの限定公開。検索エンジンには載せない（公開用へ同期しても消えないよう元ファイルにも置く） -->
 <meta name="robots" content="noindex, nofollow">
-<title>スマイル24 AIパートナーアプリ モックアップ</title>
+<title>スマイル24 AI会員アプリ</title>
 <!-- PWA（ホーム画面に追加してアプリとして起動できる） -->
 <link rel="manifest" href="smile24-manifest.json">
 <meta name="theme-color" content="#4A85F6">
@@ -108,6 +108,26 @@ input{font-family:inherit;}
 .notch{
   position:absolute; top:0; left:50%; transform:translateX(-50%);
   width:120px; height:28px; background:#1B2430; border-radius:0 0 18px 18px; z-index:50;
+}
+
+/* ========================================
+   実機対応（2026-08-12監査 D-04）
+   スマホ実機では「スマホの絵」（偽ノッチ・偽9:41・黒枠・844px固定）をやめて全画面化する。
+   PCで開いたときだけ従来のデモ用フレームを見せる。
+   ・iPhone SE等の背の低い端末で下タブバーが画面外に出る事故を解消
+   ・本物のステータスバーの下に偽ステータスバーが二重表示される事故を解消
+   ======================================== */
+@media (max-width: 480px){
+  body{ padding:0; min-height:100dvh; background:var(--bg); }
+  .device{
+    width:100%;
+    max-width:none;
+    height:100dvh;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+  }
+  .notch, .statusbar{ display:none !important; }
 }
 
 /* ブランドバー（スマイル24ロゴ） */
@@ -969,8 +989,8 @@ input{font-family:inherit;}
 .chat-hd .cname{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;}
 .chat-hd .cname .rename-btn{width:22px;height:22px;border-radius:50%;background:#E9EEF5;display:flex;align-items:center;justify-content:center;color:var(--gold-dk);}
 .chat-hd .cname .rename-btn svg{width:11px;height:11px;}
-.chat-hd .cstat{font-size:10.5px;color:var(--positive-dk);display:flex;align-items:center;gap:4px;}
-.chat-hd .cstat::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--positive-dk);}
+/* 「オンライン」＋緑ドットは人の応対と誤認させるためやめた（2026-08-12監査 D-10）。自動応答である事実をそのまま書く */
+.chat-hd .cstat{font-size:11px;color:var(--text-mid);display:flex;align-items:center;gap:4px;}
 .chat-hd .closeb{margin-left:auto;width:32px;height:32px;border-radius:50%;background:#E9EEF5;display:flex;align-items:center;justify-content:center;color:var(--text-mid);}
 .chat-hd .closeb svg{width:15px;height:15px;}
 .chat-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
@@ -1227,6 +1247,9 @@ input{font-family:inherit;}
 .trial-banner svg{width:15px;height:15px;color:var(--gold-dk);flex:0 0 auto;}
 .trial-banner span{flex:1;text-align:left;}
 .trial-banner b{flex:0 0 auto;color:var(--gold-dk);font-size:11px;}
+/* 体験モードの常設バナー（2026-08-12監査 D-11） */
+.guest-banner{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#FFF7E8;border-bottom:1.5px solid #E8C98D;padding:9px 16px;font-size:11.5px;font-weight:600;color:#7A5A18;cursor:pointer;}
+.guest-banner .gb-cta{color:var(--gold-dk);font-size:11.5px;flex:0 0 auto;}
 .trial-summary{width:100%;background:#F5F8FC;border-radius:14px;padding:6px 16px;margin-bottom:14px;}
 .trial-summary .ts-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #E9EEF5;font-size:12px;}
 .trial-summary .ts-row:last-child{border-bottom:none;}
@@ -1579,6 +1602,9 @@ input{font-family:inherit;}
 .dg-chip span{display:block;font-size:10px;font-weight:600;color:var(--text-lt);margin-top:1px;white-space:nowrap;}
 .dg-chip.on{border-color:var(--brand);background:#EDF4FF;}
 .dg-chip.on b,.dg-chip.on span{color:var(--brand);}
+/* 週1%超ペースになる組合せは選ばせない（2026-08-12監査 栄D-17） */
+.dg-chip.ng{opacity:.38;pointer-events:none;}
+.dg-chip.ng span{color:var(--notice-dk);}
 .dg-row{display:flex;align-items:center;gap:9px;margin-top:9px;}
 .dg-lead{font-size:12px;font-weight:700;color:var(--text-lt);flex:0 0 auto;}
 .dg-num{
@@ -2147,6 +2173,33 @@ input{font-family:inherit;}
 .week-cal .wd .wl, .week-cal .wd .wc,
 .news-item .ni-title .ni-new,
 .tabbar .tab-btn span{ font-size:11px; }
+/* ── 最小フォント11pxの総ざらい（2026-08-12監査 D-12）。
+   中高年会員が主要ターゲットのため、9〜10.5pxの残存を一掃する ── */
+.ai-say-role, .ring-legend .t1, .food-chip, .mm-sg .sg-ext, .lb-grams-note,
+.walk-steps .wsl, .walk-note, .wk-cell .l, .wk-sensor span, .wk-privacy,
+.fp-top5-head, .fp-pct, .fp-top5-tail,
+.mi-kcal span, .mi-pfc, .mi-glabel, .mi-chip i, .mi-chip.sm, .addon-chip i,
+.dm-msg .dm-meta, .dm-badge, .pfc-item .pl, .nc-legend, .nc-cell .l, .nc-cell .j,
+.cc-hourly-label, .exlog-hint, .goal-tag, .menu-card .md, .chart-legend span,
+.plan-stat .ps-val span, .plan-stat .ps-lbl, .badge .bt, .mc-status, .qr-real-chip,
+.ob-step-label, .ob-hint, .ob-plan-price span, .ob-tel-hint,
+.trial-summary .ts-row span, .ob-proof .pf .pl, .ob-safety span, .pulse-note,
+.rf-code button, .app-ver, .history-row .hr-time, .history-row .hr-pfc,
+.equip-card .eq-ai, .eq-video .ev-label, .eq-video .ev-soon span,
+.eq-rec .er-item .el, .eq-rec .er-item .ev span, .eq-rec .er-note, .eq-step .es-num,
+.ok-stat .os-v span, .ok-stat .os-l, .course-card .cc-meta,
+.macro .m-head span, .macro .m-head b, .ex-note, .ex-str-stats .st span,
+.ath-macro .am span, .ath-note, .str-hist .sh-d, .lnh-title .lnh-sub, .lnh-freeze,
+.ln-rec .ln-rec-tag, .ln-rec span, .ch-day, .ln-genre, .ln-done-mark, .ln-tile span,
+.dg-chip span, .goal-line .gl-tag, .streak-card .sk-t,
+.recent-row .rc-when, .recent-row .rc-kcal span, .meal-cell .mc-name,
+.dash-head .dh-s, .dash-head .dh-r span, .water-info .wv span, .water-info .wg,
+.wq-labels, .gq-label, .tc-legend span, .jw-sub, .jw-mrow .jm-l, .jw-mrow .jm-v,
+.history-total b i, .mission-row .mi-xp, .wr-stat .v span, .wr-stat .l,
+.wo-step-label, .cal-dow, .sos-btn .t, .sos-link, .theme-opt .tp-name,
+.eq-lastw .lw-save, .pos-score-ring .num span, .pos-chip,
+.bc-formula .f-item .f-l, .bc-formula .f-unit, .acc-head .acc-s,
+.rec-item .ri-s, .hedit-row .hs{ font-size:11px; }
 /* 文字が乗る面は色を濃い方へ寄せる（面用の色は文字に使わない） */
 .wq-note{ color:var(--positive-dk); }
 .cc-sub b, .plan-summary .ps-note{ color:var(--positive-dk); }
@@ -2303,7 +2356,7 @@ input{font-family:inherit;}
 .mission-card .streak-chip{background:#F4F7FB;box-shadow:none;}
 
 /* タブ文字は読める大きさに（9.5px→10.5px） */
-.tab-btn span{font-size:10.5px;}
+.tab-btn span{font-size:11px;}   /* 最小フォント11px（2026-08-12監査 D-12） */
 /* 食事4マスの＋ボタン（26px）にも44pxの当たり判定を */
 .mc-add{position:relative;}
 .mc-add::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%);}
@@ -2324,6 +2377,12 @@ input{font-family:inherit;}
 
   <div class="brandbar">
     <img src="images/logo-transparent-sm.png" alt="スマイル24">
+  </div>
+
+  <!-- 体験（ゲスト）モードの常設バナー：サンプル数値を自分の記録と誤認させない（2026-08-12監査 D-11） -->
+  <div class="guest-banner" id="guestBanner" style="display:none;" onclick="openTrialFromGuest()" role="button" tabindex="0" aria-label="体験モード中。無料体験を予約する">
+    <span><b>体験モード</b>｜画面の数字はサンプルです</span>
+    <b class="gb-cta">無料体験を予約 →</b>
   </div>
 
   <div class="screens">
@@ -2361,7 +2420,7 @@ input{font-family:inherit;}
             <div class="ai-say-role">からだ・食事・運動の相談あいて</div>
           </div>
         </div>
-        <div class="bubble-text" id="aiSayText">おはよう！今日はたんぱく質をあと少し意識できると、理想的な1日になりそうだよ ☺️</div>
+        <div class="bubble-text" id="aiSayText">おはよう！今日はたんぱく質をあと少し意識できると、理想的な1日になりそうだよ</div>
         <button class="ai-say-btn" onclick="openChat()" aria-label="AIパートナーCocoに相談する">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           Cocoに相談する
@@ -2578,7 +2637,7 @@ input{font-family:inherit;}
       <div class="budget-card">
         <div class="bc-head">
           <div class="bc-title">今日あと食べられる量</div>
-          <div class="bc-date">7月2日（木）</div>
+          <div class="bc-date" id="bcDate">—</div>
         </div>
         <div class="bc-main">
           <div class="ring-wrap">
@@ -2947,9 +3006,9 @@ input{font-family:inherit;}
            入館QRは下バー中央に集約済みで、カードの役割が無くなったため -->
 
       <div class="congestion-card">
-        <div class="ch-title">リアルタイム入館状況 <span class="now" id="occNow">今なら空いてます</span></div>
+        <div class="ch-title">混雑の目安（時間帯の傾向） <span class="now" id="occNow">—</span></div>
         <div class="congestion-bar"><div class="pointer" id="occPointer"></div></div>
-        <div class="cc-note" id="occNote"><b>入館者 6名</b>／ジム内は落ち着いています。今がチャンス！</div>
+        <div class="cc-note" id="occNote">読み込み中…</div>
         <div class="cc-hourly-label">混みやすい時間帯の目安（過去データ・デモ）</div>
         <div class="cc-hourly" id="occHourly"></div>
       </div>
@@ -3018,9 +3077,9 @@ input{font-family:inherit;}
       <div class="rank-card">
         <div class="rk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M5 4h3v10a4 4 0 0 0 8 0V4h3M5 4H3v2a4 4 0 0 0 4 4h1M19 4h2v2a4 4 0 0 1-4 4h-1"/></svg></div>
         <div>
-          <div class="rk-title">今週の館内ランキング（匿名）</div>
-          <div class="rk-val" id="rankVal">今週 <b>4回</b> 来館・館内 上位 <b>21%</b></div>
-          <div class="rk-note">来館回数をもとにした推定順位です。他の会員の個人情報は表示されません</div>
+          <div class="rk-title">今週の来館ペース</div>
+          <div class="rk-val" id="rankVal">まずは今週1回目の来館から！</div>
+          <div class="rk-note">あなたの入退館記録から数えています。館内ランキングは全店集計の準備ができたら登場予定</div>
         </div>
       </div>
 
@@ -3039,7 +3098,7 @@ input{font-family:inherit;}
           <span>今、みんなに選ばれているメニュー</span>
         </div>
         <div id="pulseList"></div>
-        <div class="pulse-note">過去の記録傾向をもとにした参考ランキング（デモ）</div>
+        <div class="pulse-note">サンプル表示です（全店の実データ集計は準備中）。並び順はコースの一般的な人気傾向</div>
       </div>
 
       <div class="sos-link" onclick="showSheet('sosSheet')">
@@ -3129,7 +3188,7 @@ input{font-family:inherit;}
         <div class="cc-title">日々のカロリー推移</div>
         <div class="cc-sub">運動や食事の記録がリアルタイムで反映されます</div>
         <svg viewBox="0 0 320 120" width="100%" height="120" id="trendSvg"></svg>
-        <div class="chart-legend">
+        <div class="chart-legend" id="trendLegend">
           <span><i style="background:#4A85F6"></i>摂取カロリー</span>
           <span><i style="background:#6FD6AC"></i>消費カロリー</span>
         </div>
@@ -3139,12 +3198,12 @@ input{font-family:inherit;}
         <div class="cc-title-row">
           <div>
             <div class="cc-title">週間 体重推移</div>
-            <div class="cc-sub" id="weightTrendSub" style="margin-bottom:0;">先週比 <b>−0.6kg</b></div>
+            <div class="cc-sub" id="weightTrendSub" style="margin-bottom:0;">—</div>
           </div>
           <button class="edit-pencil" onclick="openWeightSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
         <svg viewBox="0 0 320 110" width="100%" height="110" id="weightSvg" style="margin-top:10px;"></svg>
-        <div class="cc-encourage" id="weightEncourage">その調子！確実に前に進んでるよ ✨</div>
+        <div class="cc-encourage" id="weightEncourage">その調子！確実に前に進んでるよ</div>
       </div>
 
       <div class="chart-card" id="bodyFatCard">
@@ -3159,8 +3218,8 @@ input{font-family:inherit;}
 
       <div class="chart-card">
         <div class="cc-title">週間 栄養バランス</div>
-        <div class="cc-sub">たんぱく質はやや不足気味の日が続いています</div>
-        <svg viewBox="0 0 320 100" width="100%" height="100">
+        <div class="cc-sub" id="weekPfcSub">サンプル表示です</div>
+        <svg viewBox="0 0 320 100" width="100%" height="100" id="weekPfcSvg">
           <g font-family="Poppins">
           <rect x="8"  y="40" width="24" height="22" fill="#7FAFFA"/><rect x="8"  y="62" width="24" height="14" fill="#C3B5FD"/><rect x="8"  y="76" width="24" height="18" fill="#8EC6FB"/>
           <rect x="50" y="34" width="24" height="28" fill="#7FAFFA"/><rect x="50" y="62" width="24" height="12" fill="#C3B5FD"/><rect x="50" y="74" width="24" height="20" fill="#8EC6FB"/>
@@ -3203,6 +3262,8 @@ input{font-family:inherit;}
             <div class="ps-lbl">1日あたり<br>の目安</div>
           </div>
         </div>
+        <!-- 速すぎるペースの警告（saveGoalは任意のkg・日付を受けるため・2026-08-12監査 栄D-04） -->
+        <div id="planPaceWarn" style="display:none;background:#FDF0EC;border:1.5px solid #E8A08B;border-radius:10px;padding:9px 12px;margin-top:10px;font-size:11.5px;font-weight:600;color:#A6482E;"></div>
 
         <div class="plan-list">
           <div class="plan-item">
@@ -3260,6 +3321,8 @@ input{font-family:inherit;}
         <div class="list-item" onclick="openFontSizeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span>文字サイズ</span><span class="lval" id="fontSizeLval">標準</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openFcSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗（FC・店舗コードで切替）</span><span class="lval" id="fcLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="showSheet('sosSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>緊急連絡先・SOS</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <!-- スタッフゼロ時間帯の受け皿（2026-08-12監査 M-10） -->
+        <div class="list-item" onclick="showSheet('faqSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .3c0 1.7-2.5 2.2-2.5 3.7"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>よくある質問（FAQ）</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
         <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>目標コーチ（食べる量を計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>ジュエル（頑張りの見える化）</span><div class="ob-switch" id="jewelSwitch" onclick="toggleJewel()" style="flex:0 0 auto;"></div></div>
@@ -3267,7 +3330,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12e</b>（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12f</b>（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br><br>――以下は前版までの履歴――<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3276,15 +3339,13 @@ input{font-family:inherit;}
         <div class="ai-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10.5c.3-1 1-1.5 1.7-1.5M15 10.5c-.3-1-1-1.5-1.7-1.5"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2"/></svg></div>
         <div>
           <div class="cname"><span class="partner-name">Coco</span><button class="rename-btn" onclick="openRenameSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button></div>
-          <div class="cstat">オンライン</div>
+          <div class="cstat">自動応答AI・24時間いつでも</div>
         </div>
         <div class="closeb" onclick="closeChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
       </div>
+      <!-- 作り置きの会話履歴はやめた（「3日連続」等の嘘の実績を見せない・2026-08-12監査 D-03）。挨拶1件だけ -->
       <div class="chat-body" id="chatBody">
-        <div class="msg-row ai"><div class="mav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><div class="msg-bub">おはよう！今日はたんぱく質をあと少し意識できると、理想的な1日になりそうだよ ☺️</div></div>
-        <div class="msg-row me"><div class="msg-bub">おすすめの食材ある？</div></div>
-        <div class="msg-row ai"><div class="mav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><div class="msg-bub">ゆで卵、サラダチキン、豆腐がおすすめ！特に夜は消化にやさしい豆腐系がいいかも 🍃 プロテインなら寝る1時間前が効果的だよ。</div></div>
-        <div class="msg-row ai"><div class="mav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><div class="msg-bub">3日連続で記録できてる…！忙しい中えらすぎます、私もうれしい ✨</div></div>
+        <div class="msg-row ai"><div class="mav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></div><div class="msg-bub">こんにちは！わたしは自動応答のAIパートナーだよ。食事・運動・館内のこと、24時間いつでも聞いてね。下のボタンからも選べるよ。<br><span style="font-size:11px;opacity:.75;">※一般の健康な成人向けの情報です。持病・妊娠中・体調不良のときの食事や運動は、医師や管理栄養士に相談してね。</span></div></div>
       </div>
       <div class="chat-chips">
         <button onclick="quickChat('今日のメニュー決めて')">メニュー決めて</button>
@@ -3316,7 +3377,8 @@ input{font-family:inherit;}
       </div>
       <div class="qr-timer" id="qrTimer">有効期限 10:00</div>
       <div class="qname" id="qrCardName">田中 みのり</div>
-      <div class="qno" id="qrCardNo">MEMBER No. 0192-4471 ／ GOLD</div>
+      <!-- 「GOLD」ランク固定表示は廃止：ランク制度は未実装で、未獲得ステータスの捏造になる（2026-08-12再監査指摘） -->
+      <div class="qno" id="qrCardNo">MEMBER No. 0192-4471</div>
       <button class="qr-refresh" id="qrRefreshBtn" onclick="refreshQR()" style="display:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         新しいQRコードを発行
@@ -3586,7 +3648,7 @@ input{font-family:inherit;}
     <div class="sheet" id="equipSheet">
       <div class="sheet-card">
         <img class="eq-photo" id="eqPhoto" alt="" decoding="async">
-        <div style="font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--text-lt);" id="eqBrand"></div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--text-lt);" id="eqBrand"></div>
         <h3 id="eqModel" style="margin-top:2px;"></h3>
         <div class="chip-row" id="eqTargets" style="margin-top:8px;"></div>
         <div class="eq-video" id="eqVideoWrap"></div>
@@ -3710,6 +3772,7 @@ input{font-family:inherit;}
           <button class="fnf-btn ghost" onclick="fnfBackToList()">やっぱり料理の候補から選ぶ</button>
         </div>
         <input type="text" id="fpSearch" placeholder="さがす（例：うどん、納豆、おにぎり）" oninput="renderFoodPickList()">
+        <div id="foodSearchNote" style="display:none;font-size:11px;color:var(--notice-dk);margin:4px 2px 0;"></div>
         <div class="fp-cats" id="fpCats"></div>
         <div class="fp-list" id="fpList"></div>
         <div class="fp-links" id="fpLinks">
@@ -3780,7 +3843,7 @@ input{font-family:inherit;}
         <div class="sheet-desc">スマイル24の運営スタッフとの個別メッセージです。お支払いのご連絡などが届きます</div>
         <div class="dm-thread" id="dmThread"></div>
         <div class="dm-inputrow">
-          <input type="text" id="dmInput" placeholder="返信を入力" onkeydown="if(event.key==='Enter')dmSendFromMember()">
+          <input type="text" id="dmInput" placeholder="返信を入力" onkeydown="if(event.key==='Enter'&&!event.isComposing&&event.keyCode!==229)dmSendFromMember()">
           <button onclick="dmSendFromMember()">送信</button>
         </div>
         <button class="sheet-cancel" onclick="hideSheet('dmSheet')">閉じる</button>
@@ -3986,6 +4049,8 @@ input{font-family:inherit;}
         <div class="sos-btn-row">
           <a class="sos-btn" id="fcSosTel" href="tel:0120368098" style="background:#EAF1FE;border-color:var(--gold);color:var(--gold-dk);"><div class="n" id="fcSosNum" style="font-size:15px;">0120-368-098</div><div class="t" id="fcSosLabel">スマイル24 緊急窓口（24時間）</div></a>
         </div>
+        <!-- 表示店舗を切り替えている場合、入会店舗の窓口も見えるように併記（2026-08-12監査 M-09） -->
+        <div id="sosHomeNote" style="display:none;font-size:11px;color:var(--text-mid);margin:-4px 0 10px;text-align:center;"></div>
         <!-- 救急・警察に電話したとき、まず聞かれるのは住所。すぐ読める位置に置く -->
         <div class="sos-note" style="background:#EAF1FE;margin-bottom:10px;">
           <b>いまいる場所（通報時に伝えてください）</b><br>
@@ -4014,6 +4079,7 @@ input{font-family:inherit;}
             <button type="button" class="mi-chip" style="min-height:38px;padding:8px 14px;" onclick="fcApplyInput()">適用</button>
           </div>
         </div>
+        <div id="fcServices"></div>
         <div class="notif-caution">デモ店舗2つはダミーです。実運用では店舗マスタ（店名・料金・連絡先・色）を追加するだけで新店舗を出せます（ロゴ・機材リストは画像とデータの差し替えが別途必要）</div>
         <button class="sheet-cancel" onclick="hideSheet('fcStoreSheet')">閉じる</button>
       </div>
@@ -4140,13 +4206,60 @@ input{font-family:inherit;}
           <button class="sheet-btn" onclick="submitWithdraw()">この内容で申請する</button>
           <button class="sheet-cancel" onclick="wdGoStep1()">戻る</button>
         </div>
+        <!-- 受付番号・「確認メールを送りました」の演出は廃止：申請は店舗にまだ届かないため、
+             受け付けた体裁は退会トラブルに直結する（2026-08-12監査 C-02） -->
         <div id="wdStep3" style="display:none;text-align:center;">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--positive)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:44px;height:44px;margin:0 auto 10px;display:block;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          <h3 id="wdDoneTitle">お手続きを受け付けました</h3>
+          <h3 id="wdDoneTitle">ご希望内容を保存しました</h3>
           <div class="sheet-desc" id="wdDoneBody"></div>
-          <div class="wd-receipt" id="wdReceiptNo"></div>
+          <a class="sheet-btn" id="wdCallBtn" href="tel:0120-368-098" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">店舗に電話して手続きする</a>
           <button class="sheet-cancel" onclick="hideSheet('withdrawSheet')" style="margin-top:16px;">閉じる</button>
         </div>
+      </div>
+    </div>
+
+    <!-- よくある質問（スタッフゼロ時間帯の受け皿・2026-08-12監査 M-10） -->
+    <div class="sheet" id="faqSheet">
+      <div class="sheet-card">
+        <h3>よくある質問</h3>
+        <div class="ob-terms-box" style="max-height:52vh;">
+          <h4>入退館</h4>
+          <b>Q. 入館QRが表示されない</b><br>いったんアプリを閉じて開き直してください。直らないときは下の窓口へお電話を。<br>
+          <b>Q. 入館・退館の記録を忘れた</b><br>そのまま次回から通常どおりでOK。連続記録が気になるときはお電話ください。<br>
+          <b>Q. 友人・家族と一緒に入れる？</b><br>入館は1会員1名です。ご友人は見学・無料体験をご利用ください。<br>
+          <b>Q. 深夜も使える？</b><br>24時間ご利用いただけます（16〜18歳未満の方は条例により朝5時〜夜21時）。
+          <h4>料金・お支払い</h4>
+          <b>Q. 会費の引き落としはいつ？</b><br>毎月、ご登録のお支払い方法で自動決済です。<br>
+          <b>Q. 月の途中で退会したら日割りになる？</b><br>日割り返金はありません（毎月9日締め）。<br>
+          <b>Q. 支払い方法を変えたい</b><br>店頭で承ります（アプリからの変更は正式版で対応予定）。<br>
+          <b>Q. 領収書がほしい</b><br>店頭スタッフ在店時間にお申し付けください。
+          <h4>退会・休会</h4>
+          <b>Q. 退会したい</b><br>マイページ「退会・休会のお手続き」から内容を保存し、お電話で確定してください（毎月9日締め）。<br>
+          <b>Q. 休会と退会の違いは？</b><br>休会は会費を止めてデータを残せます。再開はいつでも可能です。<br>
+          <b>Q. 未納があると退会できない？</b><br>未納分の精算がお手続きの前提になります。
+          <h4>マシン・館内</h4>
+          <b>Q. マシンが故障している</b><br>使用を中止し、緊急窓口へお電話ください。二次事故防止のため貼り紙などはスタッフが行います。<br>
+          <b>Q. マシンの使い方が分からない</b><br>運動タブの「スマート機材ガイド」で動画つきの説明が見られます。<br>
+          <b>Q. 忘れ物をした</b><br>下の窓口へお電話ください。お預かり期間は1ヶ月です。<br>
+          <b>Q. シャワーは使える？</b><br>シャワーオプション（月額）にご加入の方がご利用いただけます。
+          <h4>アプリ・記録</h4>
+          <b>Q. 機種変更でデータを引き継ぎたい</b><br>旧端末のマイページ「データの書き出し」→新端末で「読み込み」の順です。<br>
+          <b>Q. 写真AIの準備に失敗する</b><br>Wi-Fi環境で再試行してください（初回のみ約100MBの取得が必要です）。<br>
+          <b>Q. 歩数が増えない</b><br>いまは「アプリを開いている間」だけ自動計測です。スマホの歩数計の数字を「歩数を入力」から写せます。<br>
+          <b>Q. パスワードを忘れた</b><br>下の窓口へお電話ください。ご本人確認のうえ再設定します。
+        </div>
+        <a class="sheet-btn" id="faqTelBtn" href="tel:0120-368-098" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">解決しないときは店舗に電話する</a>
+        <button class="sheet-cancel" onclick="hideSheet('faqSheet')">閉じる</button>
+      </div>
+    </div>
+
+    <!-- AIデータ取得の事前確認（約100MB・無警告DLをやめる。2026-08-12監査 D-07） -->
+    <div class="sheet" id="aiDlSheet">
+      <div class="sheet-card">
+        <h3>写真AIの準備</h3>
+        <div class="sheet-desc">写真から食事を読み取るAIを使うには、初回だけAIデータの取得が必要です（<b>約100MB</b>）。Wi-Fi環境でのご利用をおすすめします。取得後は端末に保存され、次回からはすぐ使えます。</div>
+        <button class="sheet-btn" onclick="aiDlConsent()">今すぐ準備する（Wi-Fi推奨）</button>
+        <button class="sheet-cancel" onclick="hideSheet('aiDlSheet')">あとで（タップ選択で記録する）</button>
       </div>
     </div>
 
@@ -4317,10 +4430,9 @@ input{font-family:inherit;}
         <div class="ob-welcome" style="justify-content:flex-start;padding-top:20px;">
           <img src="images/logo-transparent-sm.png" alt="スマイル24" style="width:150px;margin-bottom:12px;">
           <img class="ob-hero-img" src="images/hero-sm.jpg" alt="明るく清潔な店内">
-          <div class="ob-campaign">
-            <div class="cp-main">7月限定｜入会金 <s>¥11,000</s> → <b>¥0</b></div>
-            <div class="cp-sub">7月31日まで・Webからの入会限定</div>
-          </div>
+          <!-- 中身は起動時に renderStorePricing が STORE.campaign（期限つき）から描き直す。
+               期限切れの文言を一瞬でも見せないよう、既定は非表示（2026-08-12監査 D-06） -->
+          <div class="ob-campaign" style="display:none;"></div>
           <div class="ob-proof">
             <div class="pf"><div class="pv"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>4.8</div><div class="pl">Google口コミ</div></div>
             <div class="pf"><div class="pv">52%</div><div class="pl">女性会員の割合</div></div>
@@ -4362,14 +4474,21 @@ input{font-family:inherit;}
         <div class="ob-footer"><button class="ob-btn" onclick="submitTrial()">この内容で予約する</button></div>
       </div>
 
-      <!-- 体験予約完了・予約内容の確認 -->
+      <!-- 体験予約完了・予約内容の確認
+           「確認のご連絡をお電話でお送りします」という誰も履行しない約束をやめ、
+           店舗へ自動送信されない事実の明示＋ワンタップ発信で確定へ誘導する（2026-08-12監査 D-01/C-02） -->
       <div class="ob-step" data-step="trial-done">
         <div class="ob-complete">
           <div class="oc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <h2 id="trialDoneTitle">ご予約ありがとうございます！</h2>
+          <h2 id="trialDoneTitle">ご予約内容を保存しました</h2>
           <div class="trial-summary" id="trialSummary"></div>
-          <p>確認のご連絡をお電話でお送りします。<br>当日の入館用QRはこのアプリでお渡しします。</p>
-          <button class="ob-btn" onclick="startGuestMode()">当日までアプリを体験してみる</button>
+          <div class="ob-info-box" style="text-align:left;">
+            <b>大切なご案内</b><br>
+            このご予約はまだ<b>店舗へ自動送信されません</b>（店舗システムとの接続は準備中です）。
+            お手数ですが下のボタンからお電話いただき、「アプリで体験予約した」とお伝えください。受付で日時を確定します。
+          </div>
+          <a class="ob-btn" id="trialCallBtn" href="tel:0120-368-098" style="display:flex;align-items:center;justify-content:center;text-decoration:none;">店舗に電話して予約を確定する</a>
+          <button class="ob-btn-outline" style="margin-top:10px;" onclick="startGuestMode()">当日までアプリを体験してみる</button>
           <button class="ob-btn-outline" style="margin-top:10px;" onclick="editTrialBooking()">予約を変更する</button>
           <a class="ob-link sub" href="javascript:void(0)" onclick="cancelTrialBooking()" style="color:var(--notice-dk);">予約をキャンセルする</a>
           <a class="ob-link sub" href="javascript:void(0)" onclick="obGoTo('welcome')">最初の画面に戻る</a>
@@ -4384,6 +4503,11 @@ input{font-family:inherit;}
           <div class="ob-field"><label>ログインID（メールアドレス）</label><input type="text" id="loginId" placeholder="example@smile24.jp"></div>
           <div class="ob-field"><label>パスワード</label><input type="password" id="loginPw" placeholder="●●●●●●●●"></div>
           <a class="ob-link sub" href="javascript:void(0)" onclick="showToast('パスワード再設定はお問い合わせください：0120-368-098')">パスワードをお忘れの方</a>
+          <!-- 本物の認証と誤認させないための明示（サーバー認証の導入まで・2026-08-12監査 D-02） -->
+          <div class="ob-info-box" style="margin-top:10px;">
+            <b>ご注意</b>：現在は準備版のため、ログインは<b>この端末に保存された登録情報</b>との照合です。
+            機種変更後は「マイページ → データの書き出し/読み込み」で記録を引き継げます。
+          </div>
         </div>
         <div class="ob-footer">
           <button class="ob-btn" onclick="doLogin()">ログイン</button>
@@ -4473,6 +4597,12 @@ input{font-family:inherit;}
         <div class="ob-body">
           <div class="ob-title">どんな自分になりたいですか？</div>
           <div class="ob-desc">選んだ目標に合わせて、AIの診断・今日のメニュー・マシンの推奨値をあなた専用にパーソナライズします（あとから変更もできます）</div>
+          <!-- 対象外の明示（2026-08-12監査 栄D-03） -->
+          <div class="ob-info-box">
+            <b>ご利用にあたって</b>：本アプリの食事・減量サポートは<b>一般の健康な成人向け</b>の目安です。
+            妊娠中・授乳中の方、治療中のご病気（糖尿病・腎疾患など）やアレルギーのある方、18歳未満の方は、
+            医師・管理栄養士の指導を優先してください（18歳未満の方は減量目標の機能をご利用いただけません）。
+          </div>
           <button type="button" class="ob-goal-card" data-goal="diet" onclick="selectGoal('diet',this)">
             <span class="gc-emoji" style="color:#F26D4F;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
             <span><span class="gc-t">ダイエットしたい</span><span class="gc-d">体重を落として、軽やかな毎日を送りたい</span></span>
@@ -4519,7 +4649,7 @@ input{font-family:inherit;}
             <div class="ob-switch" id="showerSwitch" onclick="toggleShower()"></div>
           </div>
           <div class="ob-total-card">
-            <div class="ob-total-row"><span>入会金（初回のみ）</span><span><s style="color:var(--text-lt)">¥11,000</s> <b style="color:var(--gold-dk)">¥0</b><span style="font-size:9.5px;color:var(--gold-dk);font-weight:700;">　7月キャンペーン適用</span></span></div>
+            <div class="ob-total-row"><span>入会金（初回のみ）</span><span id="obJoinFeeRow">—</span></div><!-- 中身は renderPriceTotals がSTORE（期限つきキャンペーン）から描き直す -->
             <div class="ob-total-row"><span>月会費</span><span>¥<span id="obMonthlyTotal">4,378</span></span></div>
             <div class="ob-total-row sum"><span>初回お支払い合計</span><span>¥<b id="obFirstTotal">4,378</b></span></div>
           </div>
@@ -4534,37 +4664,36 @@ input{font-family:inherit;}
         <div class="ob-body">
           <div class="ob-title">お支払い方法</div>
           <div class="ob-desc">クレジットカードまたは口座振替からお選びください</div>
-          <!-- デモを触った人が本物のカードを入力する事故を防ぐ。決済処理は未接続 -->
-          <div class="ob-warn-box">
-            <b>これはデモ画面です。実在するカード番号・口座番号は入力しないでください。</b><br>
-            決済システムには接続されておらず、入力内容はどこにも送信・保存されません。動作確認には <b>4242 4242 4242 4242</b> のようなテスト用の数字をお使いください。
-          </div>
+          <!-- カード番号・口座番号の生入力欄は撤去（2026-08-12監査 D-05/D-13）。
+               決済未接続のアプリに実番号の入力動線を残さない（PCI DSS的にも説明不能）。
+               決済登録はホスト型フォーム（Stripe等）を導入する正式版まで店頭で行う -->
           <div class="ob-chip-group" style="margin-bottom:16px;">
-            <button type="button" class="ob-chip active" data-pay="card" onclick="selectPayMethod('card',this)">クレジットカード</button>
+            <button type="button" class="ob-chip active" data-pay="store" onclick="selectPayMethod('store',this)">店頭で手続き</button>
+            <button type="button" class="ob-chip" data-pay="card" onclick="selectPayMethod('card',this)">クレジットカード</button>
             <button type="button" class="ob-chip" data-pay="bank" onclick="selectPayMethod('bank',this)">口座振替</button>
           </div>
-          <div id="payCardFields">
-            <div class="ob-field"><label>カード番号<span class="req">必須</span></label><input type="text" id="obCardNo" placeholder="1234 5678 9012 3456"></div>
-            <div class="ob-row2">
-              <div class="ob-field"><label>有効期限<span class="req">必須</span></label><input type="text" id="obCardExpiry" placeholder="MM/YY"></div>
-              <div class="ob-field"><label>セキュリティコード<span class="req">必須</span></label><input type="text" id="obCardCvc" placeholder="123"></div>
+          <div id="payStoreFields">
+            <div class="ob-info-box">
+              <b>お支払い方法は店頭で登録します</b><br>
+              初回ご来店時（見学・体験のときでもOK）に、スタッフ在店時間内でクレジットカードまたは口座振替の登録を承ります。
+              アプリからの登録は、安全な決済システムを備えた正式版で対応予定です。
             </div>
-            <div class="ob-field"><label>カード名義（ローマ字）<span class="req">必須</span></label><input type="text" id="obCardName" placeholder="TARO YAMADA"></div>
+          </div>
+          <div id="payCardFields" style="display:none;">
+            <div class="ob-info-box">
+              <b>クレジットカードのアプリ登録は正式版で対応予定です</b><br>
+              このアプリは決済システムに未接続のため、カード番号はお預かりできません（入力欄も設けていません）。
+              お手数ですが「店頭で手続き」をお選びください。
+            </div>
           </div>
           <div id="payBankFields" style="display:none;">
-            <div class="ob-field"><label>金融機関名<span class="req">必須</span></label><input type="text" id="obBankName" placeholder="〇〇銀行"></div>
-            <div class="ob-field"><label>支店名<span class="req">必須</span></label><input type="text" id="obBranchName" placeholder="〇〇支店"></div>
-            <div class="ob-field">
-              <label>口座種別<span class="req">必須</span></label>
-              <div class="ob-chip-group">
-                <button type="button" class="ob-chip active" data-acct="ordinary" onclick="selectAcctType('ordinary',this)">普通</button>
-                <button type="button" class="ob-chip" data-acct="checking" onclick="selectAcctType('checking',this)">当座</button>
-              </div>
+            <div class="ob-info-box">
+              <b>口座振替のアプリ登録は正式版で対応予定です</b><br>
+              口座情報はお預かりできません。店頭にて通帳・お届け印（またはキャッシュカード）でお手続きいただけます。
+              お手数ですが「店頭で手続き」をお選びください。
             </div>
-            <div class="ob-field"><label>口座番号<span class="req">必須</span></label><input type="text" id="obAccountNo" placeholder="1234567"></div>
-            <div class="ob-field"><label>口座名義（カナ）<span class="req">必須</span></label><input type="text" id="obAccountName" placeholder="ヤマダ タロウ"></div>
           </div>
-          <div class="ob-hint">毎月の会費は登録されたお支払い方法により自動的に決済されます。月途中のご退会でも日割り返金は行われません。</div>
+          <div class="ob-hint">毎月の会費は、登録完了後にお支払い方法から自動的に決済されます。月途中のご退会でも日割り返金は行われません。</div>
         </div>
         <div class="ob-footer"><button class="ob-btn" onclick="obNextFromPayment()">次へ</button></div>
       </div>
@@ -4710,12 +4839,20 @@ const state = {
 function refreshMacroTargets(){
   /* ガチ勢モード中はマクロをアスリート設定が決める（体重更新等で上書きしない。2026-08-07） */
   if(state.athleteOn) return;
+  /* マクロ3目標の合計はカロリー予算（減量−12%等を織り込んだ値）に一致させる。
+     従来は維持カロリー100%で配分していたため、3ゲージ達成＝予算12%超過の矛盾があった（2026-08-12監査 栄D-06）。
+     P=体重×g基準は維持し、FとCを予算基準で配り直す */
+  var macroAdj = { diet:-0.12, metabolism:-0.05 }[state.goalType] || 0;
+  var macroBase = Math.round(state.baseConsumption * (1 + macroAdj));
   state.proteinTarget = Math.round(state.weight * proteinCoef());
-  state.fatTarget = Math.round(state.baseConsumption * 0.25 / 9);
-  state.carbsTarget = Math.round((state.baseConsumption - state.proteinTarget * 4 - state.fatTarget * 9) / 4);
+  state.fatTarget = Math.round(macroBase * 0.25 / 9);
+  state.carbsTarget = Math.max(0, Math.round((macroBase - state.proteinTarget * 4 - state.fatTarget * 9) / 4));
 }
 refreshMacroTargets();
-const TODAY = new Date(2026,6,2); // 2026年7月2日（デモ基準日）
+const TODAY = new Date(2026,6,2); // 2026年7月2日（デモ基準日・未登録の体験専用）
+/* 今日の基準日を一本化：登録会員は実時刻、未登録のデモ体験だけ固定日を返す。
+   固定TODAYのまま実会員の残り日数・年齢・曜日が約6週ズレていた（2026-08-12監査 栄D-05） */
+function appToday(){ return isRegisteredMember() ? new Date() : new Date(TODAY.getTime()); }
 
 // 時間帯別の混雑目安（0=空いている〜1=混雑・過去傾向のデモ値。実店舗の実測データに差し替え可能）
 const CONGESTION_BY_HOUR = [0.15,0.1,0.08,0.05,0.05,0.1,0.35,0.55,0.4,0.25,0.2,0.3,0.35,0.25,0.2,0.25,0.35,0.6,0.85,0.9,0.75,0.55,0.35,0.2];
@@ -4795,8 +4932,20 @@ function walkLoad(){
     if(j && j.k === waterKey()){ walkDay.manual = j.m || 0; walkDay.auto = j.a || 0; walkDay.sessions = j.s || []; }
   }catch(e){}
 }
+/* 「あと食べられる」へ足す歩数ぶんの補正。
+   baseConsumption（bmr×1.4）は通常の生活活動（日常の歩行NEAT）込みなので、
+   歩数の総消費を丸ごと足すと二重計上になり最大300kcal過大だった（2026-08-12監査 栄D-08）。
+   基準線4,500歩＝係数1.4に織り込み済みとみなす日常分。それを超えた歩数だけ、
+   安静時代謝を除いた純増分（MET3.5−1）で加算する */
+var WALK_NEAT_BASELINE = 4500;
+function walkExtraKcal(){
+  var a = walkAgg();
+  var extraSteps = Math.max(0, a.steps - WALK_NEAT_BASELINE);
+  if(extraSteps <= 0) return 0;
+  return Math.round((3.5 - 1) * state.weight * (extraSteps / 100 / 60) * 1.05);
+}
 function activityKcal(){
-  return state.exerciseKcal + walkAgg().kcal;
+  return state.exerciseKcal + walkExtraKcal();
 }
 function renderWalkCard(){
   var a = walkAgg();
@@ -5156,6 +5305,7 @@ function saveBmr(){
   if(!h || !w){ showToast('身長と体重を入力してください'); return; }
   state.height = h; state.weight = w; state.muscleLevel = selectedMuscle;
   logDaily({ w: w });   // 基礎代謝シートでの体重更新も実測の1回として記録する
+  rebuildChartsFromLog();   // 登録会員はグラフも実測から追随（未登録では何もしない）
   /* ガチ勢モード中は目標を上書きしない（applyBodyProfileと同じ理由）。
      体格だけ更新し、目標はガチ勢設定が優先される旨を伝える */
   if(state.athleteOn){
@@ -5190,7 +5340,7 @@ function saveBmr(){
 
 /* ============ 体重の記録・週間推移グラフ ============ */
 function openWeightSheet(){
-  var last = state.weightHistory[state.weightHistory.length-1];
+  var last = state.weightHistory[state.weightHistory.length-1] || { w: state.weight };
   var lastFat = state.bodyFatHistory[state.bodyFatHistory.length-1];
   document.getElementById('weightInput').value = last.w;
   document.getElementById('bodyFatInput').value = lastFat ? lastFat.f : '';
@@ -5199,13 +5349,16 @@ function openWeightSheet(){
 function saveWeight(){
   var w = parseFloat(document.getElementById('weightInput').value);
   if(!w){ showToast('体重を入力してください'); return; }
-  var arr = state.weightHistory;
-  arr[arr.length-1].w = w;
   state.weight = w;
-  logDaily({ w: w });   // 適応型TDEEのトレンド体重の材料（日付つきで蓄積）
   var fatInput = document.getElementById('bodyFatInput').value;
-  if(fatInput){
-    var f = parseFloat(fatInput);
+  var f = fatInput ? parseFloat(fatInput) : null;
+  logDaily({ w: w, bf: f || null });   // 適応型TDEEのトレンド体重の材料（日付つきで蓄積）
+  if(isRegisteredMember()){
+    // 実測だけでグラフを組み直す（デモ配列の末尾1点を上書きする方式は廃止・2026-08-12監査 D-02）
+    rebuildChartsFromLog();
+  } else {
+    var arr = state.weightHistory;
+    arr[arr.length-1].w = w;
     if(f){ state.bodyFatHistory[state.bodyFatHistory.length-1].f = f; }
   }
   renderWeightChart();
@@ -5214,12 +5367,17 @@ function saveWeight(){
   renderBadges();
   renderGoalForecast();
   hideSheet('weightSheet');
-  showToast('記録したよ！記録できるだけでえらい ✨');
+  showToast('記録したよ！記録できるだけでえらい');
 }
 function renderBodyFatChart(){
   var svgEl = document.getElementById('bodyFatSvg');
   if(!svgEl) return;
   var days = state.bodyFatHistory;
+  if(!days || days.length < 2){
+    svgEl.innerHTML = '<text x="160" y="58" text-anchor="middle" font-size="12" fill="#5A6778">体重と一緒に体脂肪率を記録すると、ここに推移が出るよ</text>';
+    var fsub0 = document.getElementById('bodyFatTrendSub'); if(fsub0) fsub0.textContent = '—';
+    return;
+  }
   var w=320, h=110, padL=26, padR=10, padT=16, padB=20;
   var vals = days.map(function(d){ return d.f; });
   var maxV = Math.max.apply(null, vals), minV = Math.min.apply(null, vals);
@@ -5242,10 +5400,19 @@ function renderBodyFatChart(){
     '<polyline points="'+pts+'" fill="none" stroke="#8B72F0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
     dots + lastLabel + labels;
   var delta = Math.round((days[lastIdx].f - days[0].f)*10)/10;
-  document.getElementById('bodyFatTrendSub').innerHTML = '先週比 <b style="color:#8B72F0">' + (delta>0 ? '+' : '') + delta + '%</b>';
+  document.getElementById('bodyFatTrendSub').innerHTML = 'この期間 <b style="color:#8B72F0">' + (delta>0 ? '+' : '') + delta + '%</b>';
 }
 function renderWeightChart(){
   var days = state.weightHistory;
+  /* 登録会員で実測が少ないうちは、グラフを作らず正直に空状態を出す（2026-08-12監査 D-02） */
+  if(!days || days.length < 2){
+    var svgW0 = document.getElementById('weightSvg');
+    if(svgW0) svgW0.innerHTML = '<text x="160" y="58" text-anchor="middle" font-size="12" fill="#5A6778">体重を2回記録すると、ここに推移グラフが育つよ</text>';
+    var sub0 = document.getElementById('weightTrendSub'); if(sub0) sub0.textContent = '—';
+    var enc0 = document.getElementById('weightEncourage');
+    if(enc0) enc0.textContent = (days && days.length === 1) ? '1回目の記録OK！次の記録からグラフになるよ' : '今日の体重を記録してみよう！';
+    return;
+  }
   var w=320, h=110, padL=26, padR=10, padT=16, padB=20;
   var vals = days.map(function(d){ return d.w; });
   var maxV = Math.max.apply(null, vals), minV = Math.min.apply(null, vals);
@@ -5273,15 +5440,15 @@ function renderWeightChart(){
   var msg, encourage;
   if(delta < -0.05){
     msg = delta+'kg';
-    encourage = ['その調子！確実に前に進んでるよ ✨','積み重ねがちゃんと結果になってるね 🌸','この調子で無理なく続けていこうね！'][Math.floor(Math.random()*3)];
+    encourage = ['その調子！確実に前に進んでるよ','積み重ねがちゃんと結果になってるね','この調子で無理なく続けていこうね！'][Math.floor(Math.random()*3)];
   } else if(delta > 0.05){
     msg = '+'+delta+'kg';
-    encourage = ['数字は毎日揺れるもの、焦らなくて大丈夫だよ 🌷','記録を続けているだけで十分えらいよ！','体調に合わせて、また整えていこうね'][Math.floor(Math.random()*3)];
+    encourage = ['数字は毎日揺れるもの、焦らなくて大丈夫だよ','記録を続けているだけで十分えらいよ！','体調に合わせて、また整えていこうね'][Math.floor(Math.random()*3)];
   } else {
     msg = '±0kg';
-    encourage = ['キープできているのも立派な成果だよ ☺️','安定していて素晴らしい！この調子で🌿'][Math.floor(Math.random()*2)];
+    encourage = ['キープできているのも立派な成果だよ','安定していて素晴らしい！この調子で'][Math.floor(Math.random()*2)];
   }
-  document.getElementById('weightTrendSub').innerHTML = '先週比 <b style="color:var(--gold-dk)">'+msg+'</b>';
+  document.getElementById('weightTrendSub').innerHTML = 'この期間 <b style="color:var(--gold-dk)">'+msg+'</b>';
   document.getElementById('weightEncourage').textContent = encourage;
 }
 
@@ -5290,36 +5457,36 @@ var menuDetails = {
   shape: {
     title:'下半身シェイプ', meta:'15回×3セット・初級', img:'images/machine-leg-sm.jpg',
     targets:['太もも','ヒップ','ふくらはぎ'],
-    benefit:'脚とお尻を中心に引き締める種目を組み合わせたメニューです。むくみの軽減や下半身の安定感アップにもつながり、続けるほど脚のラインに自信が持てるようになります。',
-    future:'✨ 3ヶ月後には、好きなスカートやパンツをもっと楽しめる自分に近づけそう。',
+    benefit:'脚とお尻を中心に引き締める種目を組み合わせたメニューです。下半身の筋力づくりを通じて、安定感のある体を目指せます。',
+    future:'3ヶ月後には、好きなスカートやパンツをもっと楽しめる自分に近づけそう。',
     act:'strength', minutes:20
   },
   posture: {
     title:'姿勢改善ストレッチ', meta:'10回×2セット・初級', img:'images/machine-torso-sm.jpg',
     targets:['背中','肩まわり','体幹'],
     benefit:'デスクワークで縮こまった背中と肩をゆっくりほぐすストレッチです。姿勢が整うことで、写真に写る印象や着こなしまで変わってきます。',
-    future:'✨ 猫背が気にならなくなり、鏡に映る後ろ姿にも自信が持てるようになるはず。',
+    future:'猫背が気にならなくなり、鏡に映る後ろ姿にも自信が持てるようになるはず。',
     act:'strength', minutes:12
   },
   fatburn: {
     title:'脂肪燃焼サーキット', meta:'25分・中級', img:'images/machine-row-sm.jpg',
     targets:['全身','心肺機能','体幹'],
     benefit:'有酸素と筋トレを組み合わせた燃焼効率の高いサーキットです。短時間でもしっかり汗をかけるので、忙しい日でも効率よく取り組めます。',
-    future:'✨ 続けるほど代謝が上がり、「痩せやすい体」に近づいていく実感が持てるはず。',
+    future:'短時間でも達成感のある習慣がつくれて、忙しい毎日でも運動を続けやすくなるはず。',
     act:'cardio', minutes:25
   },
   abs: {
     title:'お腹引き締めクランチ', meta:'15回×3セット・中級', img:'images/machine-crunch-sm.jpg',
     targets:['腹筋','体幹'],
     benefit:'お腹まわりにしっかり効かせるクランチメニューです。体幹が安定することで姿勢も良くなり、普段の動作がぐっとラクになっていきます。',
-    future:'✨ お腹まわりがすっきりして、体のラインに変化を感じられるようになるはず。',
+    future:'お腹まわりがすっきりして、体のラインに変化を感じられるようになるはず。',
     act:'strength', minutes:15
   },
   back: {
     title:'背中すっきりラットプル', meta:'12回×3セット・初級', img:'images/machine-lat-sm.jpg',
     targets:['背中','二の腕'],
     benefit:'背中と二の腕をバランスよく鍛えるメニューです。後ろ姿の印象がすっきりし、二の腕の引き締めにもつながります。',
-    future:'✨ ノースリーブや薄着の季節も、後ろ姿に自信を持てるようになりそう。',
+    future:'ノースリーブや薄着の季節も、後ろ姿に自信を持てるようになりそう。',
     act:'strength', minutes:18
   }
 };
@@ -5502,7 +5669,7 @@ function completeCourse(){
   setFlagToday('smile24_ex_day');
   recordMuscles(currentCourse.items);
   hideSheet('courseSheet');
-  showToast('「'+currentCourse.def.name+'」完了！ +'+currentCourse.totalKcal+'kcal 🔥'+(state.jewelEnabled?' ＋15ジュエル':''));
+  showToast('「'+currentCourse.def.name+'」完了！ +'+currentCourse.totalKcal+'kcal'+(state.jewelEnabled?' ＋15ジュエル':''));
   setTimeout(function(){
     document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', currentCourse.totalMin);
     showSheet('beautySheet');
@@ -5571,7 +5738,7 @@ function buildOmakase(){
   var g = currentGoal();
   var keys = g.menus.slice();
   // 日替わりローテーション＋「組み直す」でさらにずらす
-  var rot = (TODAY.getDate() + okSeedOffset) % keys.length;
+  var rot = (appToday().getDate() + okSeedOffset) % keys.length;
   keys = keys.slice(rot).concat(keys.slice(0, rot));
   var items = [], totalMin = 0, totalKcal = 0;
   // 15分クイック版：マシン1種目＋短い有酸素だけに絞る（忙しい日用）
@@ -5602,7 +5769,8 @@ function buildOmakase(){
 }
 function renderOmakase(){
   var g = currentGoal();
-  document.getElementById('okDate').textContent = (TODAY.getMonth()+1)+'月'+TODAY.getDate()+'日・「'+g.label+'」のあなた専用'+(okQuickMode?'クイック':'')+'メニュー';
+  var okD = appToday();
+  document.getElementById('okDate').textContent = (okD.getMonth()+1)+'月'+okD.getDate()+'日・「'+g.label+'」のあなた専用'+(okQuickMode?'クイック':'')+'メニュー';
   document.getElementById('okItems').innerHTML = okPlan.items.map(function(it, i){
     var click = it.machineKey ? ' onclick="hideSheet(\'omakaseSheet\');openEquipDetail(\''+it.machineKey+'\')"' : '';
     var thumb = it.photo ? '<img class="oi-thumb" src="'+it.photo+'" alt="" decoding="async" width="42" height="42">' : '';
@@ -5651,7 +5819,7 @@ function completeOmakase(){
   setFlagToday('smile24_ex_day');
   recordMuscles(okPlan.items);
   hideSheet('omakaseSheet');
-  showToast('今日のワークアウト完了！ +'+okPlan.totalKcal+'kcal 消費 🔥'+(state.jewelEnabled?' ＋15ジュエル':''));
+  showToast('今日のワークアウト完了！ +'+okPlan.totalKcal+'kcal 消費'+(state.jewelEnabled?' ＋15ジュエル':''));
   setTimeout(function(){
     document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', okPlan.totalMin);
     showSheet('beautySheet');
@@ -5715,12 +5883,13 @@ function openJewelSheet(){
     : '先月まであと少し。今日の記録ですぐ追いつけるよ！';
   showSheet('jewelSheet');
 }
+/* 効果の断定（「倍増」「〜しますよ」の言い切り）はしない（2026-08-12監査 栄D-10） */
 function beautyAdviceFor(actKey, minutes){
   if(actKey==='strength' && minutes>=15)
-    return '筋トレお疲れさま！いま成長ホルモンがしっかり分泌されています✨ 今夜はビタミンC（キウイ・パプリカなど）を摂ると、コラーゲン生成が進んで美肌効果が倍増しますよ。';
+    return '筋トレお疲れさま！今夜はたんぱく質と一緒に、ビタミンC（キウイ・パプリカなど）を摂るのがおすすめ。ビタミンCはコラーゲンの材料づくりに関わる栄養素です。';
   if(minutes>=20)
-    return '有酸素20分達成！血行が良くなって、くすみ対策にはいちばんのタイミングです。今夜の保湿はいつもより浸透しやすくなっていますよ🌙';
-  return '今日も動けたこと自体が、未来の自分への最高のプレゼントです🎁 小さな積み重ねが、肌も心も整えてくれますよ。';
+    return '有酸素20分達成！体を動かした日は水分補給と保湿をていねいに。心地よい疲れは睡眠の質にもつながります。';
+  return '今日も動けたこと自体が、未来の自分への最高のプレゼントです。小さな積み重ねが、体も心も整えてくれますよ。';
 }
 
 /* ============ AI姿勢・骨格診断（MediaPipe Pose・端末内解析） ============
@@ -6254,8 +6423,8 @@ function renderMealRecent(){
 function renderMealDate(){
   var el = document.getElementById('mealDateText');
   if(!el) return;
-  /* TODAY はデモ基準日（2026/7/2）。他の画面（おまかせメニュー等）と同じ日付を出す */
-  var d = (typeof TODAY !== 'undefined') ? TODAY : new Date();
+  /* 登録会員は実日付・デモ体験は固定日（appTodayで一本化・2026-08-12監査 栄D-05） */
+  var d = (typeof appToday === 'function') ? appToday() : new Date();
   var W = ['日', '月', '火', '水', '木', '金', '土'];
   el.textContent = (d.getMonth() + 1) + '月' + d.getDate() + '日（' + W[d.getDay()] + '）';
 }
@@ -6290,7 +6459,8 @@ function startMealCamera(){
       document.getElementById('mealGuideText').textContent = 'お皿全体を枠内に入れてね';
     })
     .catch(function(){
-      document.getElementById('mealGuideText').textContent = 'カメラ未許可のためデモ診断になります（左下のボタンで写真アップも可）';
+      /* 旧実装の化石コピー「デモ診断になります」を実際の挙動（手動選択への切替）に合わせた（2026-08-12監査 D-15） */
+      document.getElementById('mealGuideText').textContent = 'カメラが使えないため、左下のボタンで写真を選ぶか、リストから品目を選んでね';
     });
 }
 function stopMealCamera(){
@@ -6378,7 +6548,14 @@ function loadFoodExt(){
       (j.items || []).forEach(function(x){ x.noClip = true; FOOD_DB.push(x); });
       foodExtState = 'done';
     })
-    .catch(function(){ foodExtState = 'idle'; });   // オフライン等。次の検索フォーカスで再試行
+    .catch(function(e){
+      /* silent failureにしない（2026-08-12監査 N-02）：握りつぶすと「3,758品」のはずが
+         基本DB約1,200品のまま動き、検証も気づけない。コンソールと検索欄の注記で可視化する */
+      foodExtState = 'idle';   // 次の検索フォーカスで再試行
+      console.warn('拡張食品DB(smile24-food-ext.json)の読み込みに失敗。基本DBのみで動作中:', e && e.message);
+      var fsNote = document.getElementById('foodSearchNote');
+      if(fsNote){ fsNote.textContent = '※いまは基本の食品データで検索しています（拡張データは通信環境の良いところで自動再取得します）'; fsNote.style.display = 'block'; }
+    });
 }
 /* 起動直後の混雑（CLIPモデルDL等）を避けて少し遅らせて読む。失敗しても検索が基本DBで動くだけ */
 setTimeout(loadFoodExt, 2500);
@@ -6391,6 +6568,11 @@ var MEAL_AI = { status:'idle', T:null, tokenizer:null, textModel:null, processor
 var MEAL_AI_MODEL = 'Xenova/clip-vit-base-patch32';
 function preloadMealAI(){
   if(MEAL_AI.status !== 'idle' || !navigator.onLine || !FOOD_DB.length) return;
+  /* 初回は無断で大容量DL（100MB級）を始めない（2026-08-12監査 D-07）。
+     同意済みフラグがあるときだけ読み込む。未同意なら品目ピッカー内の案内から準備できる */
+  var dlOk = false;
+  try{ dlOk = localStorage.getItem('smile24_ai_dl_ok') === '1'; }catch(e){}
+  if(!dlOk) return;
   MEAL_AI.status = 'loading';
   import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2')
     .then(function(T){
@@ -6438,6 +6620,21 @@ function preloadMealAI(){
       MEAL_AI.status = 'error';
       MEAL_AI.note = String((e && e.message) || e);
     });
+}
+/* 同意してAIデータ取得を開始（確認シートから） */
+function aiDlConsent(){
+  try{ localStorage.setItem('smile24_ai_dl_ok', '1'); }catch(e){}
+  hideSheet('aiDlSheet');
+  preloadMealAI();
+  showToast('AIの準備を始めたよ（バックグラウンドで進みます。その間もタップ選択で記録できます）');
+}
+/* 取得失敗からの再試行（エラーを黙って握りつぶさない・2026-08-12監査 D-07） */
+function retryMealAI(){
+  MEAL_AI.status = 'idle';
+  MEAL_AI.note = '';
+  try{ localStorage.setItem('smile24_ai_dl_ok', '1'); }catch(e){}
+  preloadMealAI();
+  showToast('AIの準備をやり直しています…');
 }
 var MEAL_AI_TEMPLATES = [
   'a photo of {}',
@@ -7438,16 +7635,29 @@ function mealTotals(list){
   }
   return t;
 }
-/* 1日の目安（日本人の食事摂取基準2020年版・成人）。1食ぶんはこれを3で割って使う */
+/* 1日の目安（日本人の食事摂取基準2025年版・成人）。1食ぶんはこれを3で割って使う。
+   2025年版への更新（2026-08-12・厚労省策定検討会報告書と照合）：
+   ・食塩の目標量は男性7.5g/女性6.5g未満で据え置き（高血圧・CKD重症化予防はさらに6.0g未満）
+   ・食物繊維は男性が年齢帯で20〜22g以上へ引き上げ（18-29歳=20・30-64歳=22・65-74歳=21・75歳以上=20）、女性は18g以上
+   ・エネルギー産生栄養素バランス（P13-20/F20-30/C50-65%）は変更なし */
 var DAILY_TARGET = {
   saltMax: 7.0,   // 性別不明時のフォールバック（男性7.5g未満・女性6.5g未満）
-  fibMin: 20,     // 同上（男性21g以上・女性18g以上）
+  fibMin: 20,     // 同上
   pPct:[13,20], fPct:[20,30], cPct:[50,65]   // エネルギー産生栄養素バランス
 };
-/* 食塩・食物繊維の目安は性別で1g前後違う。会員登録の性別が分かる時はそちらを使う */
+/* 食塩・食物繊維の目安は性別・年齢で違う。会員登録の性別・年齢が分かる時はそちらを使う */
 function dailyTarget(){
   var g = (typeof regData !== 'undefined' && regData.gender) ? regData.gender : null;
-  if(g === 'male')   return { saltMax:7.5, fibMin:21 };
+  var age = null;
+  try{
+    var accDT = JSON.parse(localStorage.getItem('smile24_account') || 'null');
+    if(accDT){ g = g || accDT.gender; if(accDT.age) age = accDT.age; }
+  }catch(e){}
+  if(g === 'male'){
+    var fm = 22;   // 30-64歳の目標量（2025年版）
+    if(age != null){ fm = age < 30 ? 20 : age < 65 ? 22 : age < 75 ? 21 : 20; }
+    return { saltMax:7.5, fibMin:fm };
+  }
   if(g === 'female') return { saltMax:6.5, fibMin:18 };
   return { saltMax: DAILY_TARGET.saltMax, fibMin: DAILY_TARGET.fibMin };
 }
@@ -7508,6 +7718,10 @@ function capture(){
   Promise.all([recog, minWait]).then(function(rs){
     an.classList.remove('active');
     var r = rs[0];
+    /* タイムアウト時に結果を黙って捨てない（2026-08-12監査 D-07）。手動選択への切替を伝える */
+    if(!r && pendingMealPhoto && MEAL_AI.status === 'ready'){
+      showToast('AIの読み取りに時間がかかったので、手動選択に切り替えたよ');
+    }
     fpFamImg = r ? r.famImg : null;
     fpSubScores = r ? r.subScores : null;
     fpTableWide = r ? !!r.table : false;
@@ -7628,7 +7842,11 @@ function openFoodPicker(photo, aiRank, nonfood){
   } else if(fpAiRank){
     note.textContent = '写真に近い候補を上に5つ出したよ。当てはまるものをタップしてね（複数OK）';
   } else if(photo && MEAL_AI.status === 'loading'){
-    note.textContent = 'AI読み取りは準備中（初回だけモデルを取得します）。先にタップで選べるよ';
+    note.textContent = 'AI読み取りは準備中（初回だけAIデータ約100MBを取得します）。先にタップで選べるよ';
+  } else if(photo && MEAL_AI.status === 'idle'){
+    note.innerHTML = '写真のAI読み取りは、初回だけAIデータの取得が必要（約100MB・Wi-Fi推奨）。<a href="javascript:void(0)" onclick="showSheet(\'aiDlSheet\')" style="font-weight:700;color:var(--gold-dk);">準備する</a>／このままタップで選んでもOK';
+  } else if(photo && MEAL_AI.status === 'error'){
+    note.innerHTML = 'AIの準備に失敗したみたい（通信環境をご確認ください）。<a href="javascript:void(0)" onclick="retryMealAI()" style="font-weight:700;color:var(--gold-dk);">再試行する</a>／タップで選べばそのまま記録できるよ';
   } else {
     note.textContent = '複数えらべるよ。1品ずつ栄養を出して合算します';
   }
@@ -7726,6 +7944,18 @@ function renderFpCats(){
 function fpSelIdxOf(idx){
   for(var i=0;i<fpTemp.length;i++){ if(fpTemp[i].kind==='db' && fpTemp[i].idx===idx) return i; }
   return -1;
+}
+/* 拡張品目（八訂・100gあたり）の調理状態バッジ。八訂の正式名称は一般会員に読み解けず、
+   「乾」「穀粒」を選び間違えると2.2倍の誤記録になる（2026-08-12監査 栄D-09） */
+function extStateBadge(it){
+  if(!it.noClip) return '';
+  var n = it.name, st = '';
+  if(n.indexOf('穀粒') >= 0) st = '炊く前';
+  else if(n.indexOf('乾') >= 0) st = '乾・調理前';
+  else if(n.indexOf('ゆで') >= 0) st = 'ゆで';
+  else if(n.indexOf('めし') >= 0) st = 'ごはん';
+  else if(/(^|[^当].)生$| 生 /.test(n)) st = '生';
+  return ' <em class="sg-ext">成分表' + (st ? '・' + st : '・100g') + '</em>';
 }
 function renderFoodPickList(){
   var q = document.getElementById('fpSearch').value.trim();
@@ -7843,7 +8073,7 @@ function renderFoodPickList(){
     var po = e.it.portions[e.it.def||0] || e.it.portions[0];
     rows.push('<div class="fp-item'+(sel?' sel':'')+'" onclick="toggleFood('+e.idx+')">'+
       '<div class="fi-check"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+
-      '<div class="fi-name">'+escHtml(e.it.name)+'</div>'+
+      '<div class="fi-name">'+escHtml(e.it.name)+extStateBadge(e.it)+'</div>'+
       '<div class="fi-kcal">'+escHtml(po.label)+'・'+po.kcal+'kcal</div></div>');
   });
   // 検索語がADDON品（マヨネーズ・バター等）に当たる時は、リスト末尾にちょい足しとして出す
@@ -7901,7 +8131,14 @@ function pickFamilyChoice(i){
 function toggleFood(idx){
   var at = fpSelIdxOf(idx);
   if(at >= 0) fpTemp.splice(at, 1);
-  else fpTemp.push(newMealItem(idx));
+  else {
+    fpTemp.push(newMealItem(idx));
+    /* 「乾」「穀粒」（調理前100g）の選び間違いは2倍超の誤記録になるため、選んだ瞬間に伝える（2026-08-12監査 栄D-09） */
+    var itTF = FOOD_DB[idx];
+    if(itTF && itTF.noClip && (itTF.name.indexOf('乾') >= 0 || itTF.name.indexOf('穀粒') >= 0)){
+      showToast('これは「調理前（乾・炊く前）」100gあたりの数値だよ。ゆで・炊き上がりは重さが2倍以上に変わるので、食べた実際のグラムに直すか「ゆで」「めし」の品目を選んでね');
+    }
+  }
   renderFoodPickList();
 }
 function confirmFoodPick(){
@@ -8725,7 +8962,7 @@ function renderNutriCard(tot){
   var dt = dailyTarget();
   var saltTarget = dt.saltMax / 3, fibTarget = dt.fibMin / 3;
   function cell(v, unit, label, judge, color, sub){
-    return '<div class="nc-cell"><div class="v">'+v+'<span style="font-size:10px;">'+unit+'</span></div>'+
+    return '<div class="nc-cell"><div class="v">'+v+'<span style="font-size:11px;">'+unit+'</span></div>'+
       '<div class="l">'+label+'</div>'+
       '<div class="j" style="color:'+color+';">'+judge+'</div>'+
       (sub ? '<div class="l" style="font-weight:600;">'+sub+'</div>' : '')+'</div>';
@@ -8758,7 +8995,8 @@ function renderMealBadgeAndAdvice(tot){
   /* 予算を先に計算してバッジ判定に使う（以前は850kcal固定で時間帯予算と二重基準だった）。
      1日予算は目的（減量−12%・代謝アップ−5%）を反映する */
   var daily = dailyKcalBudget();
-  var SLOT_SHARE = { breakfast:0.25, lunch:0.35, dinner:0.35, snack:0.10 };
+  /* 配分の合計は100%にする（旧: 朝25+昼35+夕35+間食10=105%で、毎食「ちょうどいい」でも1日予算を超えた・2026-08-12監査 栄D-13） */
+  var SLOT_SHARE = { breakfast:0.25, lunch:0.35, dinner:0.30, snack:0.10 };
   var SLOT_NAME = { breakfast:'朝食', lunch:'昼食', dinner:'夕食', snack:'間食' };
   /* 15〜18時は一律「間食」になるが、400kcalを超えていたら実態は遅い昼食。
      間食予算(10%)と比べて「508kcal多め」のような誤判定をしない */
@@ -8800,7 +9038,11 @@ function renderMealBadgeAndAdvice(tot){
   if(hasAlc && tot.p < pMeal * 0.5 && mealSel.length){
     lines.push('お酒のカロリーはたんぱく質・脂質・炭水化物のどれでもない「アルコール由来」だよ。おつまみに焼き鳥・冷奴・枝豆を足すと、筋肉の材料も摂れて理想的。');
   } else if(tot.p >= pMeal){
-    lines.push('たんぱく質<b>' + tot.p + 'g</b>は1食の目安' + pMeal + 'g（体重×0.35g）をクリア。筋肉の材料はばっちり！');
+    /* 「ばっちり」と言い切らない：0.35g/kg×3食では1日目標（1.4〜1.6g/kg）の約7割にしかならない。
+       最低ラインの合格と、1日目標への残りを分けて伝える（2026-08-12監査 栄D-07） */
+    var pDayRemain = Math.max(0, Math.round(state.proteinTarget - state.proteinIntake - tot.p));
+    lines.push('たんぱく質<b>' + tot.p + 'g</b>で1食の最低ライン（' + pMeal + 'g）はクリア。' +
+      (pDayRemain > 0 ? '1日の目標' + state.proteinTarget + 'gまではあと約' + pDayRemain + 'g。残りは間食（プロテイン・ヨーグルト等）でも補えるよ（ホームの残り表示が目安）。' : '1日の目標にもしっかり近づいてるよ。'));
   } else if(mealSel.length){
     lines.push('この食事のたんぱく質は' + tot.p + 'g。あと' + Math.max(1, Math.round(pMeal - tot.p)) + 'gほど足すと理想的（ゆで卵1個＋6g・サラダチキン＋23g・納豆1パック＋8g）。');
   }
@@ -8888,19 +9130,23 @@ function renderMealBadgeAndAdvice(tot){
     lines.push('遅い時間のしっかりごはんは消化に負担がかかりやすいので、明日の朝は軽めスタートがおすすめ。');
   }
   if(!lines.length) lines.push('いい食事だね！記録を続けるほどアドバイスが具体的になるよ。');
-  document.getElementById('mealResAdvice').innerHTML = lines.slice(0,5).join('<br>');
+  /* 対象外の明示（2026-08-12監査 栄D-03）：健康な成人向けの一般的な目安であることを常設で伝える */
+  document.getElementById('mealResAdvice').innerHTML = lines.slice(0,5).join('<br>') +
+    '<br><span style="font-size:11px;color:var(--text-lt);">※一般の健康な成人向けの目安です。妊娠中・授乳中・治療中のご病気がある方・18歳未満の方は、医師や管理栄養士の指導を優先してください。</span>';
   // ビューティーメモ（品目名のキーワードで選択）
   var beauty = pickBeautyMemo();
   document.getElementById('mealResBeauty').innerHTML = '<b>ビューティーメモ</b>：' + beauty;
 }
+/* 美容系の文言は効果の断定（「効果が高まる」「〜に効く」等）をしない（2026-08-12監査 栄D-10・景表法/健康増進法配慮）。
+   栄養素の役割という事実ベースの言い方に統一する */
 var BEAUTY_MEMOS = [
-  { keys:['鮭','サーモン'], t:'鮭のアスタキサンチンは抗酸化作用◎。ビタミンE（アーモンドなど）と合わせると美肌効果がさらに高まりますよ。' },
-  { keys:['卵'], t:'卵はビオチンと良質たんぱくの宝庫。髪・爪・肌の材料をまとめて補給できます。' },
-  { keys:['納豆','豆腐','豆乳','大豆'], t:'大豆イソフラボンは肌のハリの味方。発酵食品の納豆は腸内環境にも◎です。' },
-  { keys:['もずく','めかぶ','わかめ','海藻','海苔'], t:'海藻の水溶性食物繊維とミネラルは、むくみ対策と腸活のダブルで効きます。' },
-  { keys:['サラダ','野菜','トマト','ほうれん草'], t:'野菜のビタミンCはコラーゲン生成に必須。たんぱく質と一緒に摂ると効果的です。' },
-  { keys:['ヨーグルト'], t:'乳酸菌は腸から肌を整えます。夜より朝に食べると吸収バランス◎。' },
-  { keys:['うどん','ごはん','ご飯','パン'], t:'主食はよく噛むと満足感アップ。血糖の急上昇を抑えることが肌荒れ予防にもつながります。' }
+  { keys:['鮭','サーモン'], t:'鮭のアスタキサンチンは抗酸化作用が知られる成分。ビタミンE（アーモンドなど）と組み合わせる食べ方も人気です。' },
+  { keys:['卵'], t:'卵はビオチンと良質たんぱくの宝庫。髪・爪・肌の材料になる栄養素をまとめて補給できます。' },
+  { keys:['納豆','豆腐','豆乳','大豆'], t:'大豆は良質たんぱくとイソフラボンの供給源。発酵食品の納豆は腸内環境づくりにも人気です。' },
+  { keys:['もずく','めかぶ','わかめ','海藻','海苔'], t:'海藻は水溶性食物繊維とミネラルの供給源。汁物や小鉢で手軽に足せるのが魅力です。' },
+  { keys:['サラダ','野菜','トマト','ほうれん草'], t:'野菜のビタミンCはコラーゲンの材料づくりに関わる栄養素。たんぱく質と一緒に摂るのが定番の組み合わせです。' },
+  { keys:['ヨーグルト'], t:'ヨーグルトの乳酸菌は腸内環境を整える味方。続けやすいタイミングで毎日少しずつがおすすめです。' },
+  { keys:['うどん','ごはん','ご飯','パン'], t:'主食はよく噛むと満足感アップ。ゆっくり食べることは血糖の急上昇を抑えるのにも役立ちます。' }
 ];
 function pickBeautyMemo(){
   for(var i=0;i<BEAUTY_MEMOS.length;i++){
@@ -10115,11 +10361,15 @@ function renderMealHistory(){
 
 /* ============ ホーム表示の再計算 ============ */
 function recalc(){
-  var totalConsumption = state.baseConsumption + activityKcal();
+  var totalConsumption = state.baseConsumption + activityKcal();   // 推定消費（カロリー推移グラフの消費線用）
+  /* リング・「あと食べられる」は目的込みの予算（dailyKcalBudget）で統一。
+     維持カロリー基準のままだと、食事バッジ・マクロ目標（−12%予算）と画面ごとに数字が食い違っていた
+     （2026-08-12再監査指摘・二重基準の解消） */
+  var budgetToday = dailyKcalBudget();
   var totalIntake = state.intakeKcal;
-  var remaining = totalConsumption - totalIntake;
+  var remaining = budgetToday - totalIntake;
   var scale = 2400;
-  var outerPct = Math.min(totalConsumption/scale, 1);
+  var outerPct = Math.min(budgetToday/scale, 1);
   var innerPct = Math.min(totalIntake/scale, 1);
   var cOuter = 2*Math.PI*64, cInner = 2*Math.PI*46;
 
@@ -10132,6 +10382,12 @@ function recalc(){
 
   document.getElementById('remainKcal').textContent = remaining;
   document.getElementById('remainLabel').textContent = remaining>=0 ? 'あと摂れます' : '目安をオーバー';
+  /* 食事タブの日付（化石の固定表示をやめる・2026-08-12監査 D-06）。appToday基準でホームと統一 */
+  var bcD = document.getElementById('bcDate');
+  if(bcD){
+    var bn = appToday(), bdws = ['日','月','火','水','木','金','土'];
+    bcD.textContent = (bn.getMonth()+1) + '月' + bn.getDate() + '日（' + bdws[bn.getDay()] + '）';
+  }
   /* 式1行。単位は式の右端に1つだけ出すので数値のみ入れる。
      ⚠️ 最初の項は「運動を足す前」の目標にする。従来は totalConsumption
      （運動込み）を入れていたため、運動した日は「目標−食事＋運動」の式が
@@ -10170,7 +10426,8 @@ function recalc(){
   }
   if(!goalTermShown){
     if(fLabel) fLabel.textContent = '今日の目標';
-    document.getElementById('consumeVal').textContent = state.baseConsumption.toLocaleString();
+    /* 式が右辺（あと＝予算−食べた）と厳密に合うよう、目標項＝予算−運動 で表示する */
+    document.getElementById('consumeVal').textContent = (budgetToday - activityKcal()).toLocaleString();
     if(fGoalOp){ fGoalOp.style.display = 'none'; fGoalItem.style.display = 'none'; }
   }
   document.getElementById('intakeVal').textContent = totalIntake.toLocaleString();
@@ -10184,7 +10441,7 @@ function recalc(){
   var remainP = Math.max(Math.round(state.proteinTarget-state.proteinIntake), 0);
   document.getElementById('proteinNote').innerHTML = remainP>0
     ? 'あと目安 <b style="color:var(--gold-dk)">'+remainP+'g</b> でこの日の目標を達成できるよ'
-    : '今日のたんぱく質目標はもう達成済み！さすがです ✨';
+    : '今日のたんぱく質目標はもう達成済み！さすがです';
   renderFoodExamples(remainP);
   renderTrendChart(totalIntake, totalConsumption);
   renderDashboardExtras();
@@ -10212,22 +10469,104 @@ function renderFoodExamples(remainP){
   wrap.innerHTML = html;
 }
 
-/* ============ 日々のカロリー推移チャート ============ */
+/* ============ 日々のカロリー推移チャート ============
+   登録会員は実記録（rebuildChartsFromLogが用意した直近の記録日）＋今日だけで描く。
+   デモの固定6日ぶん・曜日「金」固定は未登録の体験専用（2026-08-12監査 D-02）。
+   消費の折れ線は日別の実測が無いため、登録会員には「1日の目安」の点線に置き換える */
 function renderTrendChart(todayIntake, todayBurn){
-  var days = state.weekCalorieHistory.concat([{d:'金', intake:todayIntake, burn:todayBurn}]);
+  var svgT = document.getElementById('trendSvg');
+  if(!svgT) return;
+  var real = isRegisteredMember();
+  var days = state.weekCalorieHistory.concat([{d:'今日', intake:todayIntake, burn:todayBurn}]);
+  if(real && days.filter(function(d){ return (d.intake||0) > 0; }).length < 2){
+    svgT.innerHTML = '<text x="160" y="62" text-anchor="middle" font-size="12" fill="#5A6778">食事の記録が2日ぶんたまると、ここに推移が出るよ</text>';
+    var lg0 = document.getElementById('trendLegend'); if(lg0) lg0.style.display = 'none';
+    return;
+  }
   var w=320, h=120, padL=24, padR=10, padT=12, padB=20;
-  var maxV = Math.max.apply(null, days.map(function(d){ return Math.max(d.intake, d.burn); })) * 1.08;
-  var stepX = (w-padL-padR)/(days.length-1);
+  var budget = null;
+  if(real){ try{ budget = dailyKcalBudget(); }catch(e){} }
+  var vals = days.map(function(d){ return Math.max(d.intake||0, d.burn||0); });
+  if(budget) vals.push(budget);
+  var maxV = Math.max.apply(null, vals) * 1.08;
+  var stepX = days.length > 1 ? (w-padL-padR)/(days.length-1) : 0;
   function y(v){ return h-padB - (v/maxV)*(h-padT-padB); }
-  var ptsIntake = days.map(function(d,i){ return (padL+i*stepX)+','+y(d.intake); }).join(' ');
-  var ptsBurn = days.map(function(d,i){ return (padL+i*stepX)+','+y(d.burn); }).join(' ');
-  var dotsIntake = days.map(function(d,i){ return '<circle cx="'+(padL+i*stepX)+'" cy="'+y(d.intake)+'" r="3" fill="#4A85F6"/>'; }).join('');
-  var dotsBurn = days.map(function(d,i){ return '<circle cx="'+(padL+i*stepX)+'" cy="'+y(d.burn)+'" r="3" fill="#6FD6AC"/>'; }).join('');
+  var ptsIntake = days.map(function(d,i){ return (padL+i*stepX)+','+y(d.intake||0); }).join(' ');
+  var dotsIntake = days.map(function(d,i){ return '<circle cx="'+(padL+i*stepX)+'" cy="'+y(d.intake||0)+'" r="3" fill="#4A85F6"/>'; }).join('');
+  var burnParts = '';
+  if(!real){
+    var ptsBurn = days.map(function(d,i){ return (padL+i*stepX)+','+y(d.burn||0); }).join(' ');
+    burnParts = '<polyline points="'+ptsBurn+'" fill="none" stroke="#6FD6AC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+      days.map(function(d,i){ return '<circle cx="'+(padL+i*stepX)+'" cy="'+y(d.burn||0)+'" r="3" fill="#6FD6AC"/>'; }).join('');
+  } else if(budget){
+    burnParts = '<line x1="'+padL+'" y1="'+y(budget)+'" x2="'+(w-padR)+'" y2="'+y(budget)+'" stroke="#6FD6AC" stroke-width="1.5" stroke-dasharray="4 4"/>' +
+      '<text x="'+(w-padR)+'" y="'+(y(budget)-4)+'" font-size="11" fill="#3E9E75" text-anchor="end">1日の目安 '+Math.round(budget).toLocaleString()+'kcal</text>';
+  }
   var labels = days.map(function(d,i){ return '<text x="'+(padL+i*stepX-4)+'" y="'+(h-4)+'" font-size="10" fill="#5A6778">'+d.d+'</text>'; }).join('');
-  document.getElementById('trendSvg').innerHTML =
-    '<polyline points="'+ptsBurn+'" fill="none" stroke="#6FD6AC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+  svgT.innerHTML = burnParts +
     '<polyline points="'+ptsIntake+'" fill="none" stroke="#4A85F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-    dotsBurn + dotsIntake + labels;
+    dotsIntake + labels;
+  var lg = document.getElementById('trendLegend');
+  if(lg){
+    lg.style.display = '';
+    lg.innerHTML = real
+      ? '<span><i style="background:#4A85F6"></i>摂取カロリー</span><span><i style="background:#6FD6AC"></i>1日の目安（点線）</span>'
+      : '<span><i style="background:#4A85F6"></i>摂取カロリー</span><span><i style="background:#6FD6AC"></i>消費カロリー</span>';
+  }
+}
+
+/* ============ 週間 栄養バランス（実データ版・2026-08-12監査 D-03） ============
+   もとは座標ハードコードの静的SVG＋固定の分析文（「たんぱく質はやや不足気味」）を全会員に見せていた。
+   登録会員は直近7日の実記録（logDailyのp/fg/c）から積み上げ棒を描き、未登録はサンプルと明示する */
+function renderWeekPfc(){
+  var svgEl = document.getElementById('weekPfcSvg');
+  var sub = document.getElementById('weekPfcSub');
+  if(!svgEl) return;
+  if(!isRegisteredMember()){
+    if(sub) sub.textContent = 'サンプル表示です（会員登録すると、あなたの記録から作られます）';
+    return;   // HTMLに書いてある静的サンプルをそのまま使う
+  }
+  var dows = ['日','月','火','水','木','金','土'];
+  var log = loadDailyLog();
+  var days = [];
+  for(var i = 6; i >= 0; i--){
+    var d = new Date(); d.setDate(d.getDate() - i);
+    var row = log[dayKey(d)] || {};
+    days.push({ lbl: dows[d.getDay()], p: row.p || 0, f: row.fg || 0, c: row.c || 0 });
+  }
+  var recDays = days.filter(function(x){ return x.p + x.f + x.c > 0; }).length;
+  if(recDays === 0){
+    svgEl.innerHTML = '<text x="160" y="52" text-anchor="middle" font-size="12" fill="#5A6778">食事を記録すると、ここに1週間の栄養バランスが育つよ</text>';
+    if(sub) sub.textContent = 'まだ記録がありません';
+    return;
+  }
+  var maxT = Math.max.apply(null, days.map(function(x){ return x.p + x.f + x.c; }));
+  var parts = ['<g font-family="Poppins">'];
+  days.forEach(function(x, i){
+    var xPos = 8 + i * 42;
+    var tot = x.p + x.f + x.c;
+    if(tot > 0){
+      var hAll = Math.max(6, Math.round(tot / maxT * 62));
+      var hp = Math.round(hAll * x.p / tot), hf = Math.round(hAll * x.f / tot);
+      var hc = Math.max(0, hAll - hp - hf);
+      var yy = 84 - hAll;
+      parts.push('<rect x="' + xPos + '" y="' + yy + '" width="24" height="' + hp + '" fill="#7FAFFA"/>');
+      parts.push('<rect x="' + xPos + '" y="' + (yy + hp) + '" width="24" height="' + hf + '" fill="#C3B5FD"/>');
+      parts.push('<rect x="' + xPos + '" y="' + (yy + hp + hf) + '" width="24" height="' + hc + '" fill="#8EC6FB"/>');
+    }
+    parts.push('<text x="' + (xPos + 6) + '" y="97" font-size="10" fill="#5A6778">' + x.lbl + '</text>');
+  });
+  parts.push('</g>');
+  svgEl.innerHTML = parts.join('');
+  if(sub){
+    var pSum = 0, pd = 0;
+    days.forEach(function(x){ if(x.p > 0){ pSum += x.p; pd++; } });
+    if(pd > 0 && state.proteinTarget > 0){
+      sub.textContent = 'たんぱく質は直近' + pd + '日平均で目標の約' + Math.round(pSum / pd / state.proteinTarget * 100) + '%です';
+    } else {
+      sub.textContent = '直近7日のうち' + recDays + '日ぶんの記録から表示しています';
+    }
+  }
 }
 
 /* ============ 運動記録 ============ */
@@ -10263,7 +10602,9 @@ function weightKcalPerKg(dir, w, bf){
    1日1行 {kcal:その日の合計摂取, w:その日の体重}。適応型TDEEが見るのは直近21日だが、
    トレンドの補間に余裕を持たせて60日ぶん保持する（それより古い日は捨てる） */
 var DAILY_LOG_KEY = 'smile24_daily_log';
-var DAILY_LOG_KEEP_DAYS = 60;
+/* 保持3年（1日1行≒60バイト・3年でも70KB程度）。以前の60日は「1年前の自分と比べる」という
+   ジムアプリの核心価値を自分で捨てていた（2026-08-12監査 M-04）。適応型TDEEは直近28日窓のまま */
+var DAILY_LOG_KEEP_DAYS = 1100;
 function dayKey(dt){
   var d = dt || new Date();
   return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
@@ -10283,7 +10624,12 @@ function logDaily(patch){
   if(patch.kcal != null && patch.kcal > 0) row.kcal = Math.round(patch.kcal);
   /* 桁の打ち間違い（6.21kg・621kg）でトレンドが壊れないよう、ありえない値は捨てる */
   if(patch.w != null && patch.w >= 25 && patch.w <= 250) row.w = Math.round(patch.w * 10) / 10;
-  if(row.kcal == null && row.w == null) return;
+  /* 体脂肪率(%)・マクロ実績(g)も日付つきで残す：週間診断・週間栄養バランスを実データで描くため（2026-08-12監査 M-01/D-02） */
+  if(patch.bf != null && patch.bf >= 3 && patch.bf <= 75) row.bf = Math.round(patch.bf * 10) / 10;
+  if(patch.p != null && patch.p >= 0) row.p = Math.round(patch.p);
+  if(patch.fg != null && patch.fg >= 0) row.fg = Math.round(patch.fg);
+  if(patch.c != null && patch.c >= 0) row.c = Math.round(patch.c);
+  if(row.kcal == null && row.w == null && row.bf == null && row.p == null) return;
   log[k] = row;
   var keys = Object.keys(log).sort();
   while(keys.length > DAILY_LOG_KEEP_DAYS){ delete log[keys.shift()]; }
@@ -10305,6 +10651,15 @@ var DEMO_KCAL_LOG = [    // ago=何日前, kcal=その日の摂取（2日欠測�
 function isRegisteredMember(){
   try{ return !!JSON.parse(localStorage.getItem('smile24_account') || 'null'); }catch(e){ return false; }
 }
+/* 18歳未満の判定（登録時年齢ベース）。成長期の熱量制限は食事摂取基準でも別体系のため、
+   減量目標系の機能をまるごと対象外にする（2026-08-12監査 栄D-03） */
+function isMinorMember(){
+  try{
+    var accM = JSON.parse(localStorage.getItem('smile24_account') || 'null');
+    if(accM && accM.age != null) return accM.age < 18;
+  }catch(e){}
+  return false;
+}
 /* 適応型TDEEが使う {ago,...} 形式へ変換して返す。返り値の real で「実記録かデモか」を伝える。
    ⚠️ 実記録とデモ値は絶対に混ぜない：混ぜると他人の体重変化から自分の消費を逆算することになる。
    登録会員＝実記録だけ（少なければ素直に「記録が足りない」と出す方が正しい）。
@@ -10324,6 +10679,38 @@ function loadDayLogs(){
     if(row.kcal != null && row.kcal > 0) kcal.push({ ago: ago, kcal: row.kcal });
   });
   return { weigh: weigh, kcal: kcal, real: true };
+}
+/* 登録会員のグラフ（体重・体脂肪・週間カロリー）は実測だけから組み立てる（2026-08-12監査 D-03/D-02/M-01）。
+   state.weightHistory 等の初期デモ配列は未登録の体験専用。実測1点を末尾に混ぜて
+   「架空6点＋実測1点」で先週比を出していた事故をここで根絶する */
+function rebuildChartsFromLog(){
+  if(!isRegisteredMember()) return;
+  var log = loadDailyLog();
+  var keys = Object.keys(log).sort();
+  var wArr = [], fArr = [], kArr = [];
+  var todayK = dayKey();
+  keys.forEach(function(k){
+    var p = k.split('-');
+    var d = new Date(+p[0], (+p[1]) - 1, +p[2]);
+    if(isNaN(d)) return;
+    var lbl = (d.getMonth() + 1) + '/' + d.getDate();
+    var row = log[k] || {};
+    if(row.w != null) wArr.push({ d: lbl, w: row.w });
+    if(row.bf != null) fArr.push({ d: lbl, f: row.bf });
+    if(row.kcal != null && row.kcal > 0 && k !== todayK) kArr.push({ d: lbl, intake: row.kcal, burn: null });
+  });
+  state.weightHistory = wArr.slice(-7);
+  state.bodyFatHistory = fArr.slice(-7);
+  state.weekCalorieHistory = kArr.slice(-6);   // renderTrendChart が今日ぶんを末尾に足す
+}
+/* 登録会員にデモの作り置き数値（ジュエル340・先月780等）を見せない（2026-08-12監査 D-03）。
+   ジュエルは現状セッション内カウンタなので、登録会員は0から誠実に数える */
+function sanitizeMemberState(){
+  if(!isRegisteredMember()) return;
+  state.jewels = 0;
+  state.jewelWeek = [0, 0, 0, 0, 0, 0];
+  state.jewelPrevMonth = 0;
+  state.jewelMonthBase = 0;
 }
 /* トレンド体重: 計測日の間を線形補間 → 指数移動平均（α=0.25）で平滑化。
    入浴・食事タイミング等の日々のノイズ（水分・グリコーゲン）を除くのが目的 */
@@ -10400,6 +10787,11 @@ function adaptiveTDEE(formulaTdee){
    BMR下限はエビデンスではなくこのアプリの安全設計）。 */
 var athSel = { sex:'F', goal:'cut', macro:'balance', style:'coached' };
 function athPick(key, v, el){
+  /* 18歳未満は減量ゴールを選ばせない（2026-08-12監査 栄D-03） */
+  if(key === 'goal' && v === 'cut' && isMinorMember()){
+    showToast('18歳未満の方は成長期のため、減量の目標設定はご利用いただけません');
+    return;
+  }
   athSel[key] = v;
   el.parentElement.querySelectorAll('.chip-select').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
@@ -10578,18 +10970,30 @@ function applyAthlete(quiet){
    自由入力も残し、入力値が選択肢と一致していればボタン側も光らせる */
 var DG_KG_OPTS = [2, 3, 5, 8];
 var DG_WEEK_OPTS = [{ w: 4, s: '約1か月' }, { w: 8, s: '約2か月' }, { w: 12, s: '約3か月' }, { w: 24, s: '約半年' }];
+/* 週に体重の1%を超える減量ペースは推奨外（2026-08-12監査 栄D-17）。
+   「8kg×4週」のような極端な組合せを普通の選択肢に見せない */
+function dgPaceNg(kg, wk){
+  if(!(kg > 0 && wk > 0)) return false;
+  return (kg / wk) > (state.weight || 60) * 0.01;
+}
 function renderDgChips(){
   var kgWrap = document.getElementById('dgKgChips'), wkWrap = document.getElementById('dgWeekChips');
   if(!kgWrap || !wkWrap) return;
   var kg = parseFloat(document.getElementById('dgKg').value);
   var wk = parseFloat(document.getElementById('dgWeeks').value);
   kgWrap.innerHTML = DG_KG_OPTS.map(function(v){
-    return '<button type="button" class="dg-chip' + (kg === v ? ' on' : '') + '" onclick="pickDg(\'kg\',' + v + ')"><b>' + v + '</b><span>kg</span></button>';
+    var ng = dgPaceNg(v, wk);
+    return '<button type="button" class="dg-chip' + (kg === v ? ' on' : '') + (ng ? ' ng' : '') + '"' +
+      (ng ? ' disabled title="週に体重の1%を超えるペースになるため選べません"' : '') +
+      ' onclick="pickDg(\'kg\',' + v + ')"><b>' + v + '</b><span>' + (ng ? '推奨外' : 'kg') + '</span></button>';
   }).join('');
   wkWrap.innerHTML = DG_WEEK_OPTS.map(function(o){
     /* 補足は「約1か月」だけにする（「週間・約1か月」は375pxで2行に折り返して読みにくかった）。
        単位は数字側に付ける */
-    return '<button type="button" class="dg-chip' + (wk === o.w ? ' on' : '') + '" onclick="pickDg(\'wk\',' + o.w + ')"><b>' + o.w + '<em>週</em></b><span>' + o.s + '</span></button>';
+    var ng = dgPaceNg(kg, o.w);
+    return '<button type="button" class="dg-chip' + (wk === o.w ? ' on' : '') + (ng ? ' ng' : '') + '"' +
+      (ng ? ' disabled title="週に体重の1%を超えるペースになるため選べません"' : '') +
+      ' onclick="pickDg(\'wk\',' + o.w + ')"><b>' + o.w + '<em>週</em></b><span>' + (ng ? '推奨外' : o.s) + '</span></button>';
   }).join('');
 }
 function pickDg(kind, v){
@@ -10598,6 +11002,13 @@ function pickDg(kind, v){
   dietGoalInput();
 }
 function dietGoalToggle(){
+  var chk0 = document.getElementById('dietGoalChk');
+  /* 18歳未満は減量目標を使わせない（成長期の熱量制限は対象外・2026-08-12監査 栄D-03） */
+  if(chk0.checked && isMinorMember()){
+    chk0.checked = false;
+    showToast('18歳未満の方は成長期のため、減量目標はご利用いただけません。まずはバランスよく食べて記録する習慣から始めよう');
+    return;
+  }
   var on = document.getElementById('dietGoalChk').checked;
   document.getElementById('dietGoalBody').style.display = on ? 'block' : 'none';
   if(on) renderDgChips();
@@ -10646,7 +11057,8 @@ function dietGoalNoteUpdate(){
   }
   var r = athCompute();
   el.innerHTML = 'あと' + kg + 'kgを' + wk + '週間で。きょうの目安 <b>' + r.target.toLocaleString() + '</b>kcal（消費より1日 <b>−' + r.deficit.toLocaleString() + '</b>kcal）。週1回、実際の記録から自動で見直します' +
-    (r.paceWarn ? '。' + r.paceWarn : '') + (r.floorNote ? '。' + r.floorNote : '');
+    (r.paceWarn ? '。' + r.paceWarn : '') + (r.floorNote ? '。' + r.floorNote : '') +
+    '<br><span style="font-size:11px;color:var(--text-lt);">※一般の健康な成人向けの機能です。妊娠中・治療中のご病気がある方・18歳未満の方は対象外です（医師・管理栄養士にご相談ください）</span>';
 }
 /* 保存済み設定をチェック欄へ反映（起動時と食事タブを開いたとき。
    recalcから毎回呼ぶと、ユーザーがチェックを入れた直後に書き戻して喧嘩になる） */
@@ -11172,7 +11584,9 @@ function saveStrengthLog(){
   try{ localStorage.setItem('smile24_strength_log', JSON.stringify(strengthLog.slice(-200))); }catch(e){}
 }
 var strengthLog = loadStrengthLog();
-if(!strengthLog.length){
+/* デモ履歴は未登録の体験専用。登録会員は実記録が貯まるまで空のまま＝「記録がありません」表示が正直
+   （2026-08-12 demo-verifier指摘：登録会員にベンチ57kg等の架空1RM履歴が出ていたモード分離漏れ） */
+if(!strengthLog.length && !isRegisteredMember()){
   /* デモ用の履歴（TODAY=7/2基準の過去4週。ベンチが少しずつ伸びている形） */
   strengthLog = [
     { d:'6/11', name:'ベンチプレス', kg:40,   reps:10, sets:3 },
@@ -11295,7 +11709,7 @@ function saveExercise(){
                               : s.setsDetail.map(function(x){ return x.reps; }).join('・') + '回';
     label = s.name + '（' + s.kg + 'kg×' + repsLabel + '）';
     var rg = strRangeFor(s.name);
-    var entry = { d: (TODAY.getMonth()+1) + '/' + TODAY.getDate(), name: s.name, kg: s.kg,
+    var entry = { d: (appToday().getMonth()+1) + '/' + appToday().getDate(), name: s.name, kg: s.kg,
                   /* reps/rir＝1セット目（進歩判定の基準）。setsDetail＝全セットの生値。
                      vol＝総挙上（kg×全セット回数合計）・rm＝ベストセットから */
                   reps: s.reps, sets: s.sets, setsDetail: s.setsDetail,
@@ -11323,7 +11737,7 @@ function saveExercise(){
   setFlagToday('smile24_ex_day');
   recordMuscles([{name: selectedActivity === 'strength' ? '筋トレ' : '有酸素マシン', machineKey:null}]);
   hideSheet('exerciseSheet');
-  showToast(MET[selectedActivity].label+'を記録したよ！ +'+kcal+'kcal 消費 🔥'+(state.jewelEnabled?' ＋10ジュエル':''));
+  showToast(MET[selectedActivity].label+'を記録したよ！ +'+kcal+'kcal 消費'+(state.jewelEnabled?' ＋10ジュエル':''));
   var act = selectedActivity, mins = minutes;
   setTimeout(function(){
     document.getElementById('beautyMsg').textContent = beautyAdviceFor(act, mins);
@@ -11375,7 +11789,7 @@ function saveRename(){
 /* ============ 目標編集・AI運動プラン ============ */
 function daysUntil(dateStr){
   var target = new Date(dateStr+'T00:00:00');
-  return Math.max(1, Math.round((target-TODAY)/86400000));
+  return Math.max(1, Math.round((target-appToday())/86400000));
 }
 function formatDateJP(dateStr){
   var d = new Date(dateStr+'T00:00:00');
@@ -11395,14 +11809,31 @@ function saveGoal(){
   document.getElementById('goalDeadlineText').textContent = formatDateJP(date);
   renderPlan();
   hideSheet('goalSheet');
-  showToast('目標を更新して、おすすめプランを再計算したよ！');
+  var paceSG = diff / Math.max(1, Math.round(daysUntil(date)/7));
+  showToast(paceSG > (state.weight || 60) * 0.01
+    ? '目標を更新したよ。※このペースは速すぎるかも。プランの注意書きを確認してね'
+    : '目標を更新して、おすすめプランを再計算したよ！');
 }
 function renderPlan(){
   var daysLeft = daysUntil(state.goalDeadline);
   var weeksLeft = Math.max(1, Math.round(daysLeft/7));
-  var totalDeficit = Math.round(state.goalDiffKg*7200);
+  /* 7200kcal/kg固定をやめ、目標コーチと同じ可変エネルギー密度（Forbes/Hall近似）に統一。
+     3系統あった目標計算の食い違いを解消（2026-08-12監査 栄D-04） */
+  var bfPlan = (state.bodyFatHistory && state.bodyFatHistory.length) ? state.bodyFatHistory[state.bodyFatHistory.length-1].f : null;
+  var totalDeficit = Math.round(state.goalDiffKg * weightKcalPerKg('loss', state.weight, bfPlan));
   var weeklyNeed = Math.round(totalDeficit/weeksLeft);
   var dailyNeed = Math.round(weeklyNeed/7);
+  /* 速すぎるペースの警告（週に体重の1%超）。saveGoalが無検証で受けるため表示側で必ず出す */
+  var paceKgW = state.goalDiffKg / weeksLeft;
+  var warnEl = document.getElementById('planPaceWarn');
+  if(warnEl){
+    if(paceKgW > (state.weight || 60) * 0.01){
+      warnEl.style.display = '';
+      warnEl.textContent = '注意：この目標は週あたり約' + r1(paceKgW) + 'kg減（体重の1%超）と速すぎるペースです。期間を延ばすか目標の幅を小さくするのがおすすめ。急な減量は筋肉の減少やリバウンドにつながりやすく、健康を損なうおそれがあります。';
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
 
   var runKcal = calcKcal(MET.run.v, 30);
   var walkKcal = calcKcal(MET.walk.v, 45);
@@ -11431,32 +11862,61 @@ function hideSheet(id){
 function openChat(){ document.getElementById('chatOverlay').classList.add('active'); }
 function closeChat(){ document.getElementById('chatOverlay').classList.remove('active'); }
 var cocoReplies = [
-  'いいね、その調子！小さな積み重ねが必ず未来につながるよ ✨',
-  'なるほど〜、それなら間食にナッツ少量もおすすめだよ🌰',
+  'いいね、その調子！小さな積み重ねが必ず未来につながるよ',
+  'なるほど〜、それなら間食にナッツ少量もおすすめだよ',
   '無理しすぎないでね。今日はゆっくり休むのも立派な選択だよ。',
   '一緒にがんばろうね！今週もあと少し、応援してる！'
 ];
 
 /* ── キーワード応答エンジン（アプリの実データを参照して答える） ── */
+/* 週間診断は実データだけで作る（2026-08-12監査 M-01/D-02。「週4回・68%・総合4.5」の固定成績表を廃止）。
+   登録会員＝実記録から集計・足りなければ正直に「まだ足りない」。未登録＝サンプルと明示 */
 function weeklyDiagnosis(){
-  var wh = state.weightHistory;
-  var delta = Math.round((wh[wh.length-1].w - wh[0].w) * 10) / 10;
-  var weightLine = delta < 0 ? delta + 'kg（いいペース！）' : delta > 0 ? '+' + delta + 'kg（数字は揺れるもの、大丈夫）' : '±0kg（キープ上手！）';
   var g = currentGoal();
-  return '📋 今週のAI診断レポート\n' +
-    '・目標：' + g.label + '\n' +
-    '・体重：' + weightLine + '\n' +
-    '・来館：週4回（理想的な頻度だよ）\n' +
-    '・たんぱく質：目標の平均68%とれた（あと少し！）\n' +
-    '・連続記録：' + 5 + '日 🔥\n' +
-    '総合評価：4.5／5\n' +
-    '「' + g.label + '」には' + g.focus + 'が近道。この調子なら' + formatDateJP(state.goalDeadline) + 'の達成が見えてるよ✨';
+  if(!isRegisteredMember()){
+    return '【今週のAI診断レポート（サンプル）】\n' +
+      'これは体験用のサンプル表示だよ。会員登録すると、あなたの実際の記録（食事・体重・来館）からここで毎週の診断を作るよ。\n' +
+      '・目標：' + g.label + '\n' +
+      '「' + g.label + '」には' + g.focus + 'が近道だよ。';
+  }
+  var log = loadDailyLog();
+  var vs = computeVisitStreak();
+  var mealDays = 0, pDays = 0, pRateSum = 0;
+  for(var i = 0; i < 7; i++){
+    var d = new Date(); d.setDate(d.getDate() - i);
+    var row = log[dayKey(d)];
+    if(!row) continue;
+    if(row.kcal){ mealDays++; }
+    if(row.p != null && state.proteinTarget > 0){ pRateSum += Math.min(row.p / state.proteinTarget, 1.2); pDays++; }
+  }
+  var weigh = loadDayLogs().weigh.filter(function(r){ return r.ago <= 7; });
+  var lines = ['【今週のAI診断レポート】', '・目標：' + g.label];
+  var enough = false;
+  if(weigh.length >= 2){
+    var delta = Math.round((weigh[weigh.length - 1].w - weigh[0].w) * 10) / 10;
+    lines.push('・体重：' + (delta < 0 ? delta + 'kg（いいペース！）' : delta > 0 ? '+' + delta + 'kg（数字は揺れるもの、大丈夫）' : '±0kg（キープ上手！）'));
+    enough = true;
+  }
+  if(vs.weekCount > 0){
+    lines.push('・来館：週' + vs.weekCount + '回' + (vs.weekCount >= 3 ? '（とても良い頻度だよ）' : ''));
+    enough = true;
+  }
+  if(pDays >= 3){
+    lines.push('・たんぱく質：目標の平均' + Math.round(pRateSum / pDays * 100) + '%（記録' + pDays + '日ぶん）');
+    enough = true;
+  }
+  if(mealDays > 0){ lines.push('・食事の記録：7日のうち' + mealDays + '日'); }
+  if(!enough && mealDays === 0){
+    return '【今週のAI診断レポート】\nまだ今週の記録が足りないみたい。食事・体重・来館の記録が貯まると、ここで毎週の診断を作れるよ（目安：食事3日ぶん）。まずは今日の食事から記録してみよう！';
+  }
+  lines.push('「' + g.label + '」には' + g.focus + 'が近道。この調子でいこう！');
+  return lines.join('\n');
 }
 var chatTopics = [
   { keys:['タンパク','たんぱく','プロテイン'], gen:function(){
       var remain = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
-      if(remain <= 0) return '今日のたんぱく質はもう目標達成してるよ！完璧✨ 明日もこの調子でいこうね。';
-      return '今日はあと' + remain + 'gで目標達成だよ！サラダチキンなら約' + Math.round(remain/23*100) + 'g、ゆで卵なら約' + Math.ceil(remain/6.2) + '個が目安🥚 夜の間食で補うのがおすすめ。';
+      if(remain <= 0) return '今日のたんぱく質はもう目標達成してるよ！完璧！明日もこの調子でいこうね。';
+      return '今日はあと' + remain + 'gで目標達成だよ！サラダチキンなら約' + Math.round(remain/23*100) + 'g、ゆで卵なら約' + Math.ceil(remain/6.2) + '個が目安。夜の間食で補うのがおすすめ。';
   }},
   { keys:['レシピ','献立','こんだて','料理','ごはん','ご飯','食事のアドバイス','何食べ','なに食べ','何にしよう','なににしよう','朝食','昼食','夕食','夕飯','ランチ','お昼','晩ごはん','夜ごはん'], gen:function(text){
       return proposeMenu(text);
@@ -11470,59 +11930,94 @@ var chatTopics = [
         '　「' + g.label + '」のあなた向け。運動タブの【今日のおすすめコース】から1タップで始められるよ\n' +
         '②時間がない日 → ホームの【今日のメニュー】ボタンで短時間コース\n' +
         '③疲れ気味の日 → ストレッチ＋ウォーキング20分（約60kcal）で回復優先もアリ\n' +
-        '迷ったら①がおすすめ！マシンの使い方は【スマート機材ガイド】で動画つきで見られるよ💪';
+        '迷ったら①がおすすめ！マシンの使い方は【スマート機材ガイド】で動画つきで見られるよ';
   }},
   { keys:['おはよう','おはよー'], gen:function(){
-      return 'おはよう！☀️ 朝ごはんは1日の代謝のスイッチだよ。「献立を提案して」と言ってくれたら、今の時間に合わせて組むよ！';
+      return 'おはよう！朝ごはんは1日の代謝のスイッチだよ。「献立を提案して」と言ってくれたら、今の時間に合わせて組むよ！';
   }},
   { keys:['こんにちは','こんにちわ'], gen:function(){
-      return 'こんにちは！今日も来てくれてうれしいな。食事のこと、トレーニングのこと、なんでも聞いてね😊';
+      return 'こんにちは！今日も来てくれてうれしいな。食事のこと、トレーニングのこと、なんでも聞いてね';
   }},
   { keys:['こんばんは','こんばんわ'], gen:function(){
-      return 'こんばんは🌙 今日もおつかれさま。「今日のバランスは？」と聞いてくれたら、1日の栄養を振り返るよ！';
+      return 'こんばんは！今日もおつかれさま。「今日のバランスは？」と聞いてくれたら、1日の栄養を振り返るよ！';
   }},
   { keys:['おやすみ','寝る','ねます'], gen:function(){
-      return 'おやすみなさい🌙 睡眠は最高の回復トレーニング。筋肉は寝ている間に育つから、今日の頑張りはちゃんと実になるよ。また明日ね！';
+      return 'おやすみなさい。睡眠は最高の回復トレーニング。筋肉は寝ている間に育つから、今日の頑張りはちゃんと実になるよ。また明日ね！';
   }},
   { keys:['お腹すいた','おなかすいた','腹減った','はらへった','小腹'], gen:function(){
-      var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
+      var remainK = Math.max(dailyKcalBudget() - state.intakeKcal, 0);
       return 'お腹すいたんだね！今日はあと約' + remainK + 'kcal食べられるよ。' +
         (remainK >= 400 ? '「献立を提案して」でしっかりごはんを組もうか！' : '残りが少なめだから、ゆで卵・ギリシャヨーグルト・ミックスナッツ少量あたりの「質のいい間食」がおすすめだよ。');
   }},
+  /* ── 運用系の質問（24h無人ジムの受け皿・2026-08-12監査 M-10）。栄養・運動より先に判定する ── */
+  { keys:['故障','こわれ','壊れ','マシンが動かない','動きません','エラーが出'], gen:function(){
+      return 'マシンの不具合を教えてくれてありがとう。安全のため、そのマシンの使用は中止してね。お手数だけど緊急窓口（' + STORE.tel + '）へ電話で場所とマシン名を伝えてもらえると、すぐ対応につなげられるよ。マイページの「緊急連絡先・SOS」からもかけられます。';
+  }},
+  { keys:['引き落とし','引落','支払い','請求','領収書','会費が'], gen:function(){
+      return '会費まわりはこうなってるよ：毎月ご登録のお支払い方法で自動決済・月途中の退会でも日割り返金なし・締め日は毎月9日。領収書やお支払い方法の変更は店頭で承ります。細かい確認は店舗（' + STORE.tel + '）へどうぞ。マイページの「よくある質問」にもまとめてあるよ。';
+  }},
+  { keys:['忘れ物','わすれもの','落とし物'], gen:function(){
+      return '忘れ物・落とし物は店舗でお預かりしている場合があるよ（お預かり1ヶ月）。店舗（' + STORE.tel + '）に電話で「いつ・どのあたりで・何を」を伝えてもらえるとスムーズです。';
+  }},
+  { keys:['退館を忘れ','退館記録','入館できない','QRが出ない','QRが表示'], gen:function(){
+      return '入退館まわりで困ったら：①アプリを閉じて開き直す ②それでもダメなら店舗（' + STORE.tel + '）へ電話、の順で試してね。退館記録を忘れただけなら、次回から普通に使えば大丈夫だよ。';
+  }},
   { keys:['混','空い','人数','こんで'], gen:function(){
-      return 'いまの入館者は' + state.occupancy + '名だよ。' + (state.occupancy <= 7 ? 'かなり空いてるから、人気マシンも使い放題！行くなら今がチャンス🌿' : '少し人がいるけど、空いてるマシンから案内できるから安心してね。');
+      /* 端末ローカルの自己申告カウンタを「いまの入館者数」と断定して返すのをやめた（2026-08-12監査 C-04） */
+      var hour = new Date().getHours();
+      var t = CONGESTION_BY_HOUR[hour];
+      var lbl = t < 0.3 ? '空いていることが多い時間帯' : t < 0.6 ? 'ほどほどの時間帯' : '混みやすい時間帯';
+      return 'いまは過去の傾向だと「' + lbl + '」だよ（人数のリアルタイム計測は準備中）。夜19〜21時ごろが混みやすくて、深夜〜朝はゆったり使えることが多いよ。';
   }},
   { keys:['診断','レポート','週間'], gen:weeklyDiagnosis },
   { keys:['何をすれば','なにをすれば','メニュー','おすすめ','コース'], gen:function(){
       var g = currentGoal();
       var ck = Object.keys(COURSES).filter(function(k){ return COURSES[k].forGoals.indexOf(state.goalType) >= 0; })[0] || 'full';
       var b = buildCourse(ck);
-      return '「'+g.label+'」が目標のあなたには「'+COURSES[ck].name+'」がおすすめ！'+b.items.length+'種目・約'+b.totalMin+'分で約'+b.totalKcal+'kcal消費できるよ。運動タブの【今日のおすすめコース】から1タップで始められるよ💪';
+      return '「'+g.label+'」が目標のあなたには「'+COURSES[ck].name+'」がおすすめ！'+b.items.length+'種目・約'+b.totalMin+'分で約'+b.totalKcal+'kcal消費できるよ。運動タブの【今日のおすすめコース】から1タップで始められるよ';
   }},
   { keys:['おまかせ','決めて','考えたくない','迷う','迷って'], gen:function(){
-      return '決めるのはわたしに任せて！ホームの「今日のメニュー」ボタンを押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を3秒で組むよ⚡「今日何やろう」は、もう考えなくてOK！';
+      return '決めるのはわたしに任せて！ホームの「今日のメニュー」ボタンを押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を3秒で組むよ。「今日何やろう」は、もう考えなくてOK！';
   }},
   { keys:['マシン','機材','使い方','器具'], gen:function(){
-      return 'マシンの使い方は【スマート機材ガイド】におまかせ！マシンのQRを読み取るか、運動タブから選ぶと、その型番の使い方動画とあなた専用の推奨値（シート位置・重量）が見られるよ📱';
+      return 'マシンの使い方は【スマート機材ガイド】におまかせ！マシンのQRを読み取るか、運動タブから選ぶと、その型番の使い方動画とあなた専用の推奨値（シート位置・重量）が見られるよ';
   }},
   { keys:['やる気','モチベ','疲れ','つらい','辛い','サボ','行きたくない'], gen:function(){
-      return 'そういう日もあるよ、大丈夫🌷 いま5日連続で記録できてて、それってすごいことなんだよ。今日は「5分だけストレッチ」でもOK。ゼロじゃなければ、ちゃんと前進だからね。';
+      /* 「5日連続」の固定文をやめ、実際の記録日数で励ます（無ければ無いなりに・2026-08-12監査 D-03） */
+      var days = 0;
+      try{
+        var log = loadDailyLog();
+        for(var i = 0; i < 7; i++){ var d = new Date(); d.setDate(d.getDate() - i); if(log[dayKey(d)]) days++; }
+      }catch(e){}
+      var head = days >= 2 ? 'この7日で' + days + '日も記録できてて、それってすごいことなんだよ。' : '記録は今日からで大丈夫。';
+      return 'そういう日もあるよ、大丈夫。' + head + '今日は「5分だけストレッチ」でもOK。ゼロじゃなければ、ちゃんと前進だからね。';
   }},
   { keys:['体重','痩せ','停滞','減らない','太っ'], gen:function(){
-      return '目標まであと' + state.goalDiffKg + 'kg、いいところまで来てるよ！体重が動かない時期は、筋肉が育って代謝が上がる準備期間。焦らず記録を続けよう。数字より「先週の自分より動けてるか」が大事だよ😊';
+      /* 「筋肉が育って代謝が上がる準備期間」という根拠のない慰めをやめ、実測データで答える（2026-08-12監査 栄D-15）。
+         停滞系の言い回しはLIFESTYLE_GUIDE側（科学的にまともな応答）が先に拾う */
+      try{
+        var tw = trendWeightSeries(loadDayLogs().weigh);
+        if(tw && tw.length >= 8){
+          var d14 = Math.round((tw[tw.length-1].w - tw[Math.max(0, tw.length-15)].w) * 10) / 10;
+          var dir = d14 < -0.1 ? 'ゆるやかに下がってる' : d14 > 0.1 ? '少し上がってる' : 'ほぼ横ばい';
+          return 'トレンド体重（平滑化した実測）はこの2週間で' + (d14 > 0 ? '+' : '') + d14 + 'kg・' + dir + 'よ。日々の上下のほとんどは水分やグリコーゲンの揺れだから、1日単位の数字で一喜一憂しなくて大丈夫。判断はトレンドで、行動は記録の継続でいこう。';
+        }
+      }catch(e){}
+      return '体重は日々1kg前後、水分だけでも揺れるもの。だから1回の数字より「トレンド（数週間の流れ）」で見るのが正解だよ。体重の記録が貯まると、ここで実測のトレンドを見ながら答えられるようになるよ。';
   }},
   { keys:['美容','肌','きれい','キレイ','綺麗'], gen:function(){
-      return '運動は最高の美容液だよ✨ 筋トレ後は成長ホルモンで肌の再生力アップ、有酸素後は血行促進でくすみ対策に。今夜はビタミンCを摂ると効果倍増！';
+      /* 「美容液」「効果倍増」等の断定はしない（2026-08-12監査 栄D-10） */
+      return '運動の習慣は、睡眠や食事のリズムと一緒に、きれいでいたい人の土台づくりになるよ。たんぱく質・ビタミンC・良い睡眠の3点セットを意識してみてね。詳しいことは管理栄養士さんや皮膚科の先生に聞くのが確実だよ。';
   }},
   { keys:['退会','休会','やめたい','辞め'], gen:function(){
       return '正直に話してくれてありがとう。無理に引き止めないよ。ただ「休会」なら月額を止めてデータも残せるから、疲れてるだけなら休会がおすすめ。手続きはマイページ→退会・休会からできるよ（毎月9日締め）。';
   }},
   { keys:['ジュエル','ポイント','特典'], gen:function(){
-      if(!state.jewelEnabled) return 'ジュエルはいまオフになってるよ。マイページの「ジュエル」をオンにすると、来館・食事・運動の記録が+10ずつ貯まって、毎日・毎月の頑張りが見える化されるよ。交換や景品はない、純粋な「続けた証」なんだ😊';
-      return 'いま' + state.jewels + 'ジュエル。今日は+' + state.jewelToday + '、今月は' + (state.jewelMonthBase + state.jewelToday) + '貯まったよ✨ 先月（' + state.jewelPrevMonth + '）の自分を超えるのが今月の目標！交換や景品はないけど、これはあなたが続けてきた頑張りの証だよ。';
+      if(!state.jewelEnabled) return 'ジュエルはいまオフになってるよ。マイページの「ジュエル」をオンにすると、来館・食事・運動の記録が+10ずつ貯まって、毎日・毎月の頑張りが見える化されるよ。交換や景品はない、純粋な「続けた証」なんだ';
+      return 'いま' + state.jewels + 'ジュエル。今日は+' + state.jewelToday + '、今月は' + (state.jewelMonthBase + state.jewelToday) + '貯まったよ 先月（' + state.jewelPrevMonth + '）の自分を超えるのが今月の目標！交換や景品はないけど、これはあなたが続けてきた頑張りの証だよ。';
   }},
   { keys:['ありがとう','嬉しい','うれしい'], gen:function(){
-      return 'こちらこそ、いつも頑張ってるあなたを見られてうれしいよ☺️ 何かあったらいつでも話しかけてね。';
+      return 'こちらこそ、いつも頑張ってるあなたを見られてうれしいよ。何かあったらいつでも話しかけてね。';
   }}
 ];
 /* ── 品目理解エンジン ──
@@ -11625,7 +12120,7 @@ function chatUnitWord(it){
 }
 function chatProteinGoalLine(it, perP){
   var remain = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
-  if(remain <= 0) return '今日のたんぱく質目標はもう達成済み！すごいよ✨';
+  if(remain <= 0) return '今日のたんぱく質目標はもう達成済み！すごいよ';
   if(perP >= 3){
     var n = Math.ceil(remain / perP);
     return '今日はたんぱく質あと' + remain + 'gだから、' + it.name + 'ならあと' + n + chatUnitWord(it) + 'で目標達成だね';
@@ -11636,14 +12131,14 @@ function foodAnswer(idx, intent, qty){
   var it = FOOD_DB[idx];
   var m = chatFoodMacros(it, qty);
   var openers = ['', 'いい質問！', 'まかせて。', 'チェックしたよ。'];
-  var tails = ['この調子でいこう✨', '記録は食事タブからできるよ📝', '他の食べ物のことも聞いてね😊', '迷ったらまた聞いて！'];
+  var tails = ['この調子でいこう', '記録は食事タブからできるよ', '他の食べ物のことも聞いてね', '迷ったらまた聞いて！'];
   var op = openers[chatVarSeq % openers.length];
   var tail = tails[chatVarSeq % tails.length];
   chatVarSeq++;
   var note = m.approx ? '（グラム換算のデータがない食品だから標準量で答えるね）' : '';
   var body;
   if(intent === 'kcal'){
-    var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
+    var remainK = Math.max(dailyKcalBudget() - state.intakeKcal, 0);
     body = it.name + 'は' + m.label + 'で約' + m.kcal + 'kcalだよ' + note + '。今日はあと約' + remainK + 'kcal食べられる計算だから、' +
       (m.kcal <= remainK ? 'ちょうど収まるね。' : '少しオーバー気味。量を調整してもいいかも。');
   } else if(intent === 'p'){
@@ -11704,13 +12199,13 @@ var NUTRIENT_GUIDE = {
     note:'食べた糖質・脂質をエネルギーに変える代謝のカギ。運動量が多い日ほど必要量が増えるよ。' },
   potassium: { re:/カリウム|むくみ/, label:'カリウム',
     foods:['バナナ','アボカド','ほうれん草','さつまいも','トマト'],
-    note:'余分な塩分を出す方向に働くよ。むくみが気になる日は塩分ひかえめ＋カリウム食材の組み合わせが効く。' },
+    note:'ナトリウムの排出に関わるミネラルだよ。塩分をひかえつつカリウム食材を摂るのが定番の組み合わせ。腎臓の治療中の方は摂取制限があるため医師の指示を優先してね。' },
   vita: { re:/びたみんa|目にいい|目の疲れ/, label:'ビタミンA',
     foods:['レバニラ炒め','にんじん','ほうれん草','うなぎの蒲焼','ゆで卵'],
     note:'目や皮膚・粘膜の健康に関わるよ。にんじん等のβカロテンは油と一緒に調理すると吸収が数倍になる。' },
   vite: { re:/びたみんe|抗酸化/, label:'ビタミンE',
     foods:['アボカド','ミックスナッツ','かぼちゃの煮物','パプリカ','うなぎの蒲焼'],
-    note:'「若返りのビタミン」と呼ばれる抗酸化系。脂溶性だから、ナッツやオイルと摂ると効率的だよ。' },
+    note:'抗酸化作用が知られる脂溶性ビタミン。ナッツやオイルと一緒に摂ると吸収されやすいよ。' },
   vitk: { re:/びたみんk|骨.*納豆/, label:'ビタミンK',
     foods:['納豆','ほうれん草','小松菜','ブロッコリー'],
     note:'骨づくりと血液の正常な働きに関わるよ。納豆1パックで1日分をほぼカバーできる優秀選手。' },
@@ -11744,7 +12239,7 @@ var LIFESTYLE_GUIDE = [
     t:'体調がすぐれない時は「消化にやさしく・水分こまめに」が基本だよ。おかゆ・卵雑炊・うどん・茶碗蒸しあたりが定番。食欲があるならたんぱく質（卵・豆腐）とビタミンC（みかん・いちご）も少しずつ。つらい状態が続くときは無理せずお医者さんに相談してね。' },
   { re:/夏バテ|食欲(が)?ない|食欲不振|暑くて食べ/,
     t:'食欲がない時は「冷たい・さっぱり・少量高栄養」で乗り切ろう。冷奴・そうめん＋薬味・冷しゃぶサラダ・もずく酢・スイカが食べやすいよ。そうめんだけだとたんぱく質が足りないから、卵・ささみ・ツナをちょい足しするのがポイント。水分と塩分もこまめにね。' },
-  { re:/停滞|痩せない|体重が減らない|減らなくなった/,
+  { re:/停滞|痩せない|痩せたい|体重が減らない|減らなくなった|なかなか減らない|体重が増え/,
     t:'体重が動かない時期は、体が省エネモードに慣れてきたサイン。①たんぱく質を毎食20gキープ ②睡眠7時間 ③週1回はしっかり食べる日を作る ④有酸素だけでなく筋トレも、の4つを見直してみて。数週間の停滞は普通のことだから、焦って極端に減らすのが一番の遠回りだよ。' },
   { re:/筋肥大|ばるくあっぷ|筋肉つけたい|増量したい|体を大きく/,
     t:'筋肉を増やす基本は「体重×1.6〜2.0gのたんぱく質＋少し多めのカロリー」。1食にまとめず、3食＋間食で20〜30gずつ分けるのが吸収効率◎。トレ後は糖質も一緒に。おすすめ間食はギリシャヨーグルト・プロテインバー・ゆで卵・おにぎり＋サラダチキン。体重が週0.2〜0.4kg増ペースなら理想的だよ。' },
@@ -11870,7 +12365,7 @@ function proposeMenu(text){
   var style = /コンビニ|こんびに/.test(nt) ? 'conbini'
             : /軽め|かるめ|あっさり|少なめ/.test(nt) ? 'light'
             : /がっつり|しっかり|たくさん/.test(nt) ? 'gatsuri' : null;
-  var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
+  var remainK = Math.max(dailyKcalBudget() - state.intakeKcal, 0);
   var remainP = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
   // 「昼食何にしよう」のように食事の指定があればそちらを優先（今の時刻より発話が正）
   var slot = /朝食|朝ごはん|朝ご飯|朝めし/.test(text||'') ? 'breakfast'
@@ -11878,7 +12373,7 @@ function proposeMenu(text){
            : /夕食|夕飯|夜ごはん|夜ご飯|晩ごはん|晩ご飯|晩御飯|ディナー/.test(text||'') ? 'dinner'
            : mealSlotByHour();
   var SLOT_NAME = { breakfast:'朝食', lunch:'昼食', dinner:'夕食', snack:'間食' };
-  var budget = Math.min(remainK, Math.round((state.baseConsumption + activityKcal()) * (slot==='breakfast'?0.25:slot==='snack'?0.15:0.35)));
+  var budget = Math.min(remainK, Math.round(dailyKcalBudget() * (slot==='breakfast'?0.25:slot==='snack'?0.15:0.35)));
   if(!style) style = budget < 450 ? 'light' : 'washoku';
   var set = MENU_SETS[style];
   // 予算に一番近い組み合わせを選ぶ（同点はローテーションで変化をつける）
@@ -11938,7 +12433,7 @@ function compareFoods(a, b){
 function canEatAnswer(idx){
   var it = FOOD_DB[idx];
   var po = it.portions[it.def||0] || it.portions[0];
-  var remainK = Math.max((state.baseConsumption + activityKcal()) - state.intakeKcal, 0);
+  var remainK = Math.max(dailyKcalBudget() - state.intakeKcal, 0);
   var h = new Date().getHours();
   var late = (h >= 21 || h <= 3);
   chatLastFood = idx;
@@ -11951,7 +12446,7 @@ function canEatAnswer(idx){
   return it.name + 'は' + po.label + 'で約' + po.kcal + 'kcal。今日の残り約' + remainK + 'kcalだとちょっと窮屈かな…。半分にする・シェアする・明日のお楽しみにする、のどれかで調整しよう。我慢しすぎもストレスだから「量で調整」が合言葉だよ！';
 }
 function balanceAnswer(){
-  var target = state.baseConsumption + activityKcal();
+  var target = dailyKcalBudget();
   var kPct = target ? Math.round(state.intakeKcal / target * 100) : 0;
   var pGap = Math.round(state.proteinTarget - state.proteinIntake);
   var fOver = state.fatIntake - state.fatTarget;
@@ -12069,7 +12564,8 @@ function sendChat(){
   }, 700);
 }
 document.getElementById('chatInput').addEventListener('keydown', function(e){
-  if(e.key==='Enter') sendChat();
+  /* 日本語IMEの変換確定Enterで未確定文が誤送信されないように（2026-08-12監査 N-01） */
+  if(e.key==='Enter' && !e.isComposing && e.keyCode !== 229) sendChat();
 });
 
 /* ============ QR会員証（ワンタイム発行・有効期限10分） ============
@@ -12363,10 +12859,18 @@ function logEntry(type){
       name: acc ? acc.lastName + ' ' + acc.firstName : '田中 みのり',
       memberNo: acc ? acc.memberNo : '0192-4471'
     });
-    // 過去1ヶ月（31日）分を保持
-    var cutoff = Date.now() - 31 * 86400000;
+    /* 明細は13ヶ月（400日）保持し、月別の来館回数は smile24_visit_months に無期限で残す
+       （31日で切り捨てて長期の頑張りを消していた・2026-08-12監査 M-04） */
+    var cutoff = Date.now() - 400 * 86400000;
     log = log.filter(function(e){ return new Date(e.at).getTime() >= cutoff; });
-    localStorage.setItem('smile24_entry_log', JSON.stringify(log.slice(0, 500)));
+    localStorage.setItem('smile24_entry_log', JSON.stringify(log.slice(0, 5000)));
+    if(type === '入館'){
+      var vm = {};
+      try{ vm = JSON.parse(localStorage.getItem('smile24_visit_months') || '{}'); }catch(e2){}
+      var mk = new Date().toISOString().slice(0, 7);
+      vm[mk] = (vm[mk] || 0) + 1;
+      localStorage.setItem('smile24_visit_months', JSON.stringify(vm));
+    }
   }catch(e){}
 }
 function simulateScan(){
@@ -12377,7 +12881,7 @@ function simulateScan(){
     logEntry('入館');
     addJewels(10);
     addXp(50);
-    showToast('ようこそ！入館を記録しました（現在 ' + state.occupancy + '名）'+(state.jewelEnabled?' ＋10ジュエル':''));
+    showToast('ようこそ！入館を記録しました'+(state.jewelEnabled?' ＋10ジュエル':''));
   } else {
     state.occupancy = Math.max(0, state.occupancy - 1);
     state.checkedIn = false;
@@ -12410,22 +12914,24 @@ function updateScanBtn(){
   }
 }
 function renderOccupancy(){
-  var n = state.occupancy;
-  var lv = n <= 7 ? 0 : n <= 14 ? 1 : 2;
-  var labels = ['空いています','やや混雑','混雑しています'];
-  var nowLabels = ['今なら空いてます','ふつう','混雑中'];
-  var notes = ['ジム内は落ち着いています。今がチャンス！','ほどよい賑わいです。人気マシンは譲り合いで♪','混み合っています。ストレッチエリアが狙い目です'];
+  /* 「現在の入館者数：n名」の断定表示はやめた（2026-08-12監査 C-04/D-10）。
+     state.occupancy は自端末の自己申告カウンタで実測ではなく、会員ごとに別々の嘘の数字になる。
+     実センサー／サーバー接続までは「時間帯の傾向（目安）」だけを見せる。偽の数字より無い方がまし */
+  var hour = new Date().getHours();
+  var t = CONGESTION_BY_HOUR[hour];
+  var lv = t < 0.3 ? 0 : t < 0.6 ? 1 : 2;
+  var labels = ['空いていることが多い時間帯','ほどほどの時間帯','混みやすい時間帯'];
+  var notes = ['この時間帯は落ち着いていることが多いよ。今がチャンス！','ほどよい賑わいになりやすい時間。人気マシンは譲り合いで','混みやすい時間帯。ストレッチエリアが狙い目です'];
   var home = document.getElementById('occHomeText');
-  if(home) home.innerHTML = '現在の入館者数：<b>' + n + '名</b>（' + labels[lv] + '）';
-  var now = document.getElementById('occNow'); if(now) now.textContent = nowLabels[lv];
-  var note = document.getElementById('occNote'); if(note) note.innerHTML = '<b>入館者 ' + n + '名</b>／' + notes[lv];
-  var p = document.getElementById('occPointer'); if(p) p.style.left = Math.min(6 + n * 4.5, 92) + '%';
+  if(home) home.innerHTML = '混雑の目安：<b>' + labels[lv] + '</b>';
+  var now = document.getElementById('occNow'); if(now) now.textContent = labels[lv];
+  var note = document.getElementById('occNote'); if(note) note.innerHTML = '<b>' + labels[lv] + '</b>／' + notes[lv] + '<span style="display:block;font-size:11px;color:var(--text-mid);margin-top:3px;">※過去の傾向にもとづく目安です（人数のリアルタイム計測は準備中）</span>';
+  var p = document.getElementById('occPointer'); if(p) p.style.left = Math.min(6 + t * 86, 92) + '%';
   var st = document.getElementById('mcStatus'); if(st) st.style.display = state.checkedIn ? 'inline-block' : 'none';
-  // いま空いてる度スコア（現在人数＋時間帯傾向から算出）
+  // ねらい目度スコア（時間帯傾向のみから算出・目安）
   var sc = document.getElementById('occScore');
   if(sc){
-    var hour = new Date().getHours();
-    sc.textContent = Math.max(5, Math.min(99, Math.round(100 - n*4 - CONGESTION_BY_HOUR[hour]*25)));
+    sc.textContent = Math.max(5, Math.min(99, Math.round(100 - t*85)));
   }
 }
 function renderCongestionHourly(){
@@ -12448,8 +12954,9 @@ function getVisitDatesSet(){
   try{ log = JSON.parse(localStorage.getItem('smile24_entry_log') || '[]'); }catch(e){}
   var visitDates = {};
   log.forEach(function(e){ if(e.type === '入館') visitDates[e.at.slice(0, 10)] = true; });
-  // 実際の入退館記録がまだ無いデモ初回は、参考値として直近5日分の来館を仮定して表示する
-  if(Object.keys(visitDates).length === 0){
+  // 未登録のデモ体験でだけ、参考値として直近5日分の来館を仮定して表示する（体験モードのバナーで「サンプル」と明示）。
+  // 登録会員には絶対に出さない：記録ゼロなら0日スタートが正直（2026-08-12監査 D-03）
+  if(Object.keys(visitDates).length === 0 && !isRegisteredMember()){
     for(var i = 1; i <= 5; i++){ visitDates[isoDaysAgo(i)] = true; }
   }
   if(state.checkedIn) visitDates[isoDaysAgo(0)] = true;
@@ -12505,8 +13012,8 @@ function renderBadges(){
   var MONTHLY_GOAL = 20;
   setBadge('monthly', monthlyVisits >= MONTHLY_GOAL, monthlyVisits >= MONTHLY_GOAL ? '達成中！' : (monthlyVisits + '/' + MONTHLY_GOAL + '日'));
 
-  // 目標達成（開始時体重から目標差分に到達）
-  var startW = state.weightHistory[0].w;
+  // 目標達成（開始時体重から目標差分に到達）。実測が無いうちは現在体重を起点にする（空配列ガード）
+  var startW = (state.weightHistory.length ? state.weightHistory[0].w : state.weight);
   var targetW = Math.round((startW - state.goalDiffKg) * 10) / 10;
   var reached = state.weight <= targetW;
   setBadge('goal', reached, reached ? '目標到達！' : ('あと' + Math.max(0, Math.round((state.weight - targetW) * 10) / 10) + 'kg'));
@@ -12554,7 +13061,7 @@ var regData = {
   dob:'', age:null, isMinor:false, gender:'',
   zip:'', address:'', phone:'', goalType:'',
   loginId:'', password:'',
-  shower:false, payMethod:'card', acctType:'ordinary',
+  shower:false, payMethod:'store', acctType:'ordinary',   // 既定は店頭手続き（カード生入力の撤去・2026-08-12監査 D-05）
   memberNo:''
 };
 var obRegSteps = ['reg-basic','reg-body','reg-contact','reg-goal','reg-account','reg-plan','reg-payment','reg-terms'];
@@ -12644,11 +13151,28 @@ var STORE = {
           desc:'24時間いつでもご利用いただけるスタンダードプランです' },
   option: { key:'shower', label:'シャワーオプション', monthly:1100 },
   joinFee: 11000,
-  // 実施中のキャンペーン。終わったら campaign を null にするだけでよい
-  campaign: { label:'7月キャンペーン適用', joinFee:0, note:'7月31日まで・Webからの入会限定' }
+  /* 実施中のキャンペーン。until（YYYY-MM-DD）を過ぎると自動で失効する。
+     以前は「7月31日まで」が表示用の文字列でしかなく、8月になっても出続けていた（2026-08-12監査 D-06） */
+  campaign: { label:'7月キャンペーン適用', joinFee:0, note:'7月31日まで・Webからの入会限定', until:'2026-07-31' },
+  /* オプション・サービス（店頭受付）。月会費に上積みできる導線を持つ（2026-08-12監査 M-08） */
+  services: [
+    { label:'パーソナルトレーニング体験（30分）', price:'¥3,300' },
+    { label:'プロテイン（店頭販売・1回分）', price:'¥350〜' },
+    { label:'ウォーターサーバー利用（月額）', price:'¥1,100' },
+    { label:'プライベートロッカー（月額）', price:'¥1,100' }
+  ]
 };
 function yen(n){ return '¥' + Number(n).toLocaleString(); }
-function currentJoinFee(){ return STORE.campaign ? STORE.campaign.joinFee : STORE.joinFee; }
+/* 期限つきキャンペーンの自動失効判定（直営店・FC店共通で通す） */
+function activeCampaign(c){
+  if(!c) return null;
+  if(c.until){
+    var lim = new Date(c.until + 'T23:59:59');
+    if(!isNaN(lim.getTime()) && new Date() > lim) return null;
+  }
+  return c;
+}
+function currentJoinFee(){ var c = activeCampaign(STORE.campaign); return c ? c.joinFee : STORE.joinFee; }
 function currentMonthly(){ return STORE.plan.monthly + (regData.shower ? STORE.option.monthly : 0); }
 /* プラン画面・ようこそ画面の金額表示をSTOREから描き直す */
 function renderStorePricing(){
@@ -12660,11 +13184,12 @@ function renderStorePricing(){
   setText('.ob-option-row .oo-name', STORE.option.label);
   setText('.ob-option-row .oo-price', '+' + yen(STORE.option.monthly) + ' / 月');
   var cp = document.querySelector('.ob-campaign');
-  if(cp && STORE.campaign){
+  var camp = activeCampaign(STORE.campaign);   // 期限切れは自動で非表示（2026-08-12監査 D-06）
+  if(cp && camp){
     cp.style.display = '';   // 一度隠したあとにキャンペーンを再開しても戻るようにする
-    cp.innerHTML = '<div class="cp-main">' + escHtml(STORE.campaign.label.replace('適用','')) +
-      '｜入会金 <s>' + escHtml(yen(STORE.joinFee)) + '</s> → <b>' + escHtml(yen(STORE.campaign.joinFee)) + '</b></div>' +
-      '<div class="cp-sub">' + escHtml(STORE.campaign.note) + '</div>';
+    cp.innerHTML = '<div class="cp-main">' + escHtml(camp.label.replace('適用','')) +
+      '｜入会金 <s>' + escHtml(yen(STORE.joinFee)) + '</s> → <b>' + escHtml(yen(camp.joinFee)) + '</b></div>' +
+      '<div class="cp-sub">' + escHtml(camp.note) + '</div>';
   } else if(cp){
     cp.style.display = 'none';
   }
@@ -12676,11 +13201,12 @@ function renderStorePricing(){
 /* 合計欄（入会金・月会費・初回合計）はオプションの切替でも呼ばれる */
 function renderPriceTotals(){
   var m = currentMonthly(), join = currentJoinFee();
+  var campT = activeCampaign(STORE.campaign);
   var joinRow = document.querySelector('.ob-total-row span:last-child');
   if(joinRow){
-    joinRow.innerHTML = STORE.campaign
+    joinRow.innerHTML = campT
       ? '<s style="color:var(--text-lt)">' + escHtml(yen(STORE.joinFee)) + '</s> <b style="color:var(--gold-dk)">' + escHtml(yen(join)) + '</b>' +
-        '<span style="font-size:11px;color:var(--gold-dk);font-weight:700;">　' + escHtml(STORE.campaign.label) + '</span>'
+        '<span style="font-size:11px;color:var(--gold-dk);font-weight:700;">　' + escHtml(campT.label) + '</span>'
       : escHtml(yen(join));
   }
   var mt = document.getElementById('obMonthlyTotal');
@@ -12946,8 +13472,29 @@ var FC_STORES = {
     name: 'フォレストジム松山（FCデモ）', tel: '0120-000-002', address: '愛媛県松山市（デモ用の仮住所）',
     plan: { label: 'ベーシック会員', monthly: 3980, desc: '落ち着いた空間でマイペースに通えるプランです' },
     option: { key: 'shower', label: 'シャワーオプション', monthly: 1100 },
-    joinFee: 9900, campaign: { label: '秋の入会キャンペーン適用', joinFee: 0, note: '9月30日まで・Webからの入会限定' } } },
+    joinFee: 9900, campaign: { label: '秋の入会キャンペーン適用', joinFee: 0, note: '9月30日まで・Webからの入会限定', until: '2026-09-30' } } },
 };
+/* 店舗マスタの外部JSON化（2026-08-12監査 C-05）。店舗追加＝smile24-stores.json への追記だけで
+   全端末に反映される（アプリ本体の再配布が不要になる第一歩）。
+   file://直開き・オフライン・取得失敗時は同梱3店舗のままで動く */
+function loadStoresExt(){
+  fetch('smile24-stores.json?v=20260812')
+    .then(function(r){ if(!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function(j){
+      Object.keys(j.stores || {}).forEach(function(k){
+        var s = j.stores[k];
+        if(!s || !s.store || !s.store.name || !s.store.plan) return;   // 形式が壊れた行は取り込まない
+        FC_STORES[String(k).toUpperCase()] = s;
+      });
+      // 表示中の店舗の定義が更新されていれば反映し直す
+      try{
+        var cur = localStorage.getItem('smile24_store_code');
+        if(cur && cur !== 'SMILE24' && FC_STORES[cur]) applyStoreCode(cur, true);
+      }catch(e){}
+    })
+    .catch(function(e){ console.warn('店舗マスタ(smile24-stores.json)は取得できず、同梱データで動作中:', e && e.message); });
+}
+setTimeout(loadStoresExt, 3000);
 function applyStoreCode(code, silent){
   code = String(code || '').trim().toUpperCase();
   var fc = FC_STORES[code];
@@ -12965,6 +13512,24 @@ function applyStoreCode(code, silent){
   var lv = document.getElementById('fcLval');
   if(lv) lv.textContent = STORE.name.replace('（FCデモ）', '');
   try{ localStorage.setItem('smile24_store_code', code); }catch(e){}
+  /* 表示店舗が入会店舗と違うときは、SOSシートに入会店舗の窓口を併記する（2026-08-12監査 M-09） */
+  try{
+    var homeCd = localStorage.getItem('smile24_home_store');
+    var hn = document.getElementById('sosHomeNote');
+    if(hn){
+      if(homeCd && homeCd !== code && FC_STORES[homeCd]){
+        var hs = FC_STORES[homeCd].store;
+        hn.style.display = '';
+        hn.innerHTML = '※いま表示中は「' + escHtml(STORE.name.replace('（FCデモ）', '')) + '」の窓口です。ご入会店舗（' +
+          escHtml(hs.name.replace('（FCデモ）', '')) + '）の窓口：<a href="tel:' + hs.tel.replace(/-/g, '') + '" style="font-weight:700;color:var(--gold-dk);">' + hs.tel + '</a>';
+      } else {
+        hn.style.display = 'none';
+      }
+    }
+  }catch(e){}
+  if(typeof renderFcServices === 'function') renderFcServices();
+  var fBtn = document.getElementById('faqTelBtn');
+  if(fBtn){ fBtn.href = 'tel:' + STORE.tel; fBtn.textContent = '解決しないときは店舗（' + STORE.tel + '）に電話する'; }
   if(!silent) showToast(STORE.name.replace('（FCデモ）', '') + ' の設定に切り替えたよ');
   return true;
 }
@@ -12973,16 +13538,45 @@ function openFcSheet(){
   try{ cur = localStorage.getItem('smile24_store_code') || 'SMILE24'; }catch(e){}
   document.getElementById('fcStoreRow').innerHTML = Object.keys(FC_STORES).map(function(k){
     var fc = FC_STORES[k], t = THEMES[fc.theme];
-    return '<div class="theme-opt' + (k === cur ? ' active' : '') + '" onclick="applyStoreCode(\'' + k + '\');openFcSheet()">' +
+    return '<div class="theme-opt' + (k === cur ? ' active' : '') + '" onclick="fcConfirmSwitch(\'' + k + '\')">' +
       '<div class="tp-swatch" style="background:linear-gradient(135deg,' + t.g1 + ',' + t.g2 + ')"></div>' +
-      '<div class="tp-name">' + escHtml(fc.store.name.replace('（FCデモ）', '')) + '<br><span style="font-size:9.5px;color:var(--text-lt);">コード: ' + k + '</span></div></div>';
+      '<div class="tp-name">' + escHtml(fc.store.name.replace('（FCデモ）', '')) + '<br><span style="font-size:11px;color:var(--text-lt);">コード: ' + k + '</span></div></div>';
   }).join('');
   var inp = document.getElementById('fcCodeInput');
   if(inp) inp.value = '';
+  renderFcServices();
   showSheet('fcStoreSheet');
 }
+/* タップ即切替をやめ、確認をはさむ（誤操作で緊急SOSの発信先まで他店に化けるのを防ぐ・2026-08-12監査 M-09） */
+function fcConfirmSwitch(code){
+  var cur = 'SMILE24';
+  try{ cur = localStorage.getItem('smile24_store_code') || 'SMILE24'; }catch(e){}
+  if(code === cur) return;
+  var fc = FC_STORES[code];
+  if(!fc) return;
+  var nm = fc.store.name.replace('（FCデモ）', '');
+  if(!confirm('表示する店舗を「' + nm + '」に切り替えますか？\n料金・連絡先・緊急SOSの発信先もこの店舗のものに変わります。\n※所属店舗（ご契約）の変更は店頭でのお手続きが必要です')) return;
+  applyStoreCode(code);
+  openFcSheet();
+}
 function fcApplyInput(){
-  if(applyStoreCode(document.getElementById('fcCodeInput').value)) openFcSheet();
+  var codeIn = String(document.getElementById('fcCodeInput').value || '').trim().toUpperCase();
+  if(!codeIn) return;
+  if(!FC_STORES[codeIn]){ showToast('その店舗コードは見つかりません（例: SMILE24 / SUNRISE1 / FOREST1）'); return; }
+  fcConfirmSwitch(codeIn);
+}
+/* 店舗のオプション・サービス（申込は店頭・電話。決済連携は正式版で）2026-08-12監査 M-08 */
+function renderFcServices(){
+  var box = document.getElementById('fcServices');
+  if(!box) return;
+  var list = STORE.services || [];
+  if(!list.length){ box.innerHTML = ''; return; }
+  box.innerHTML = '<div style="font-size:12px;font-weight:700;margin:14px 0 6px;">この店舗のオプション・サービス（店頭受付）</div>' +
+    list.map(function(s){
+      return '<div style="display:flex;justify-content:space-between;gap:8px;padding:7px 2px;border-bottom:1px solid var(--line);font-size:12px;">' +
+        '<span>' + escHtml(s.label) + '</span><b style="flex:0 0 auto;color:var(--gold-dk);">' + escHtml(s.price) + '</b></div>';
+    }).join('') +
+    '<a href="tel:' + STORE.tel + '" style="display:block;text-align:center;margin-top:10px;font-size:12px;font-weight:700;color:var(--gold-dk);text-decoration:none;">電話で問い合わせる（' + STORE.tel + '）</a>';
 }
 
 function obGoTo(step){
@@ -13008,7 +13602,8 @@ function obGoTo(step){
 }
 function calcAge(dobStr){
   var dob = new Date(dobStr+'T00:00:00');
-  return Math.floor((TODAY - dob) / (365.25*86400000));
+  /* 年齢は実日付で計算する（固定日だと未成年判定・条例の時間制限までズレる・2026-08-12監査） */
+  return Math.floor((appToday() - dob) / (365.25*86400000));
 }
 function selectGender(g, el){
   regData.gender = g;
@@ -13019,6 +13614,8 @@ function selectPayMethod(m, el){
   regData.payMethod = m;
   el.parentElement.querySelectorAll('.ob-chip').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
+  var sf = document.getElementById('payStoreFields');
+  if(sf) sf.style.display = m==='store' ? 'block' : 'none';
   document.getElementById('payCardFields').style.display = m==='card' ? 'block' : 'none';
   document.getElementById('payBankFields').style.display = m==='bank' ? 'block' : 'none';
 }
@@ -13083,7 +13680,12 @@ function submitTrial(){
 }
 function renderTrialDone(isChange){
   var b = getTrialBooking();
-  document.getElementById('trialDoneTitle').textContent = isChange ? '予約を変更しました' : 'ご予約ありがとうございます！';
+  document.getElementById('trialDoneTitle').textContent = isChange ? '予約内容を変更しました' : 'ご予約内容を保存しました';
+  var callBtn = document.getElementById('trialCallBtn');
+  if(callBtn){
+    callBtn.href = 'tel:' + STORE.tel;   // FC店舗コードで切り替わった店舗の電話に追随
+    callBtn.textContent = '店舗（' + STORE.tel + '）に電話して予約を確定する';
+  }
   document.getElementById('trialSummary').innerHTML = b
     ? '<div class="ts-row"><span>お名前</span><b>' + escHtml(b.name) + ' 様</b></div>' +
       '<div class="ts-row"><span>ご希望日</span><b>' + escHtml(b.date) + '（' + escHtml(b.time) + '）</b></div>' +
@@ -13122,7 +13724,21 @@ function renderTrialBanner(){
 function startGuestMode(){
   document.getElementById('onboarding').classList.remove('active');
   goTab('home');
-  showToast('ゲストモードで体験中です。気に入ったらいつでも入会できます ☺️');
+  renderGuestBanner();   // トースト1回では消える。常設バナーで「サンプル」を明示し続ける（2026-08-12監査 D-11）
+  showToast('体験モードです。画面の数字はサンプルだよ。気に入ったらいつでも入会できます');
+}
+/* 体験モードの常設バナー：未登録＋オンボーディング非表示のときだけ出す */
+function renderGuestBanner(){
+  var b = document.getElementById('guestBanner');
+  if(!b) return;
+  var ob = document.getElementById('onboarding');
+  var obActive = ob && ob.classList.contains('active');
+  b.style.display = (!isRegisteredMember() && !obActive) ? 'flex' : 'none';
+}
+function openTrialFromGuest(){
+  document.getElementById('onboarding').classList.add('active');
+  renderGuestBanner();
+  obGoTo('trial');
 }
 
 /* ============ お友達紹介 ============ */
@@ -13260,10 +13876,11 @@ function obNextFromAccount(){
   obGoTo('reg-plan');
 }
 function obNextFromPayment(){
-  if(regData.payMethod==='card'){
-    if(!val('obCardNo') || !val('obCardExpiry') || !val('obCardCvc') || !val('obCardName')){ showToast('カード情報をすべて入力してください'); return; }
-  } else {
-    if(!val('obBankName') || !val('obBranchName') || !val('obAccountNo') || !val('obAccountName')){ showToast('口座情報をすべて入力してください'); return; }
+  /* カード・口座の生入力欄は撤去済み（2026-08-12監査 D-05）。登録は店頭で行うため必須入力なし。
+     カード/口座を選んだままの場合は店頭手続きとして進める */
+  if(regData.payMethod !== 'store'){
+    regData.payMethod = 'store';
+    showToast('お支払い登録は店頭で承ります（アプリ登録は正式版で対応予定）');
   }
   document.getElementById('guardianBlock').style.display = regData.isMinor ? 'block' : 'none';
   obGoTo('reg-terms');
@@ -13277,7 +13894,15 @@ function completeRegistration(){
     var gAgree = document.getElementById('obGuardianAgree').checked;
     if(!gName || !gAgree){ showToast('保護者の同意情報を入力してください'); return; }
   }
-  regData.memberNo = '0192-' + Math.floor(1000+Math.random()*9000);
+  /* 会員番号：乱数4桁（9,000通り・約110人で衝突50%）をやめ、店舗コード＋入会年月＋crypto8桁に
+     （2026-08-12監査 M-05。端末を跨ぐ真の一意性保証はサーバー採番の導入後） */
+  var mnStore = 'SMILE24';
+  try{ mnStore = localStorage.getItem('smile24_store_code') || 'SMILE24'; }catch(e){}
+  var mnNow = new Date();
+  var mnYm = String(mnNow.getFullYear()).slice(-2) + ('0' + (mnNow.getMonth() + 1)).slice(-2);
+  var mnRnd = new Uint32Array(1);
+  if(window.crypto && crypto.getRandomValues){ crypto.getRandomValues(mnRnd); } else { mnRnd[0] = Math.floor(Math.random() * 4294967296); }
+  regData.memberNo = mnStore + '-' + mnYm + '-' + ('00000000' + (mnRnd[0] % 100000000)).slice(-8);
   document.getElementById('obMemberNo').textContent = 'MEMBER No. '+regData.memberNo;
   // 登録時に計算した基礎代謝を完了画面でも見せる（ホームに反映済みであることを伝える）
   var bmrDone = document.getElementById('obBmrDone');
@@ -13288,7 +13913,8 @@ function completeRegistration(){
       Math.round(bmr0 * 1.4).toLocaleString() + 'kcal）。ホーム画面のカロリー計算に反映済みです';
   }
   try{
-    // パスワードは保存しない（照合に使っておらず、平文で残すリスクだけが残るため）
+    /* パスワードは平文で保存しない。ログイン照合用にSHA-256ハッシュだけを後追いで保存する
+       （2026-08-12監査 C-03。以前は照合ゼロ＝何を入れても通った） */
     localStorage.setItem('smile24_account', JSON.stringify({
       loginId:regData.loginId,
       lastName:regData.lastName, firstName:regData.firstName, memberNo:regData.memberNo,
@@ -13296,6 +13922,22 @@ function completeRegistration(){
       height:regData.height, weight:regData.weight, muscle:regData.muscle || 'normal',
       age:regData.age, gender:regData.gender
     }));
+    // 入会店舗を記録（表示店舗の切替と区別する・2026-08-12監査 M-09）
+    localStorage.setItem('smile24_home_store', localStorage.getItem('smile24_store_code') || 'SMILE24');
+    /* 体験モードの作り置き実績（XP2450=LV.7・自己申告の入退館ログ・混雑カウンタ）を持ち越さない。
+       体験→入会は最普通の導線で、ここを消さないと実会員が初日から偽実績を持つ（2026-08-12再監査指摘）。
+       食事・体重の記録（smile24_daily_log等）は本人の実データなので消さない */
+    ['smile24_xp', 'smile24_entry_log', 'smile24_occupancy', 'smile24_checked_in'].forEach(function(k){
+      localStorage.removeItem(k);
+    });
+    if(regData.password && window.crypto && crypto.subtle){
+      sha256HexApp(regData.password).then(function(h){
+        try{
+          var accH = JSON.parse(localStorage.getItem('smile24_account') || 'null');
+          if(accH){ accH.pwHash = h; localStorage.setItem('smile24_account', JSON.stringify(accH)); }
+        }catch(e){}
+      });
+    }
     // 運営管理画面用の会員台帳（パスワードは含めない）
     var members = JSON.parse(localStorage.getItem('smile24_members') || '[]');
     members.unshift({
@@ -13306,7 +13948,7 @@ function completeRegistration(){
       zip: regData.zip, address: regData.address, phone: regData.phone,
       loginId: regData.loginId,
       plan: 'レギュラー会員' + (regData.shower ? '＋シャワー' : ''),
-      payMethod: regData.payMethod === 'card' ? 'クレジットカード' : '口座振替',
+      payMethod: regData.payMethod === 'card' ? 'クレジットカード' : (regData.payMethod === 'bank' ? '口座振替' : '店頭で手続き（未登録）'),
       goal: (GOALS[regData.goalType] ? GOALS[regData.goalType].label : '—'),
       guardian: regData.isMinor ? val('obGuardianName') : '',
       joinedAt: new Date().toISOString()
@@ -13327,7 +13969,7 @@ function updateMemberIdentity(){
   var mcN = document.getElementById('memberCardName'); if(mcN) mcN.textContent = fullName;
   var mcNo = document.getElementById('memberCardNo'); if(mcNo) mcNo.textContent = 'MEMBER No. '+memberNo;
   document.getElementById('qrCardName').textContent = fullName;
-  document.getElementById('qrCardNo').textContent = 'MEMBER No. '+memberNo+' ／ GOLD';
+  document.getElementById('qrCardNo').textContent = 'MEMBER No. ' + memberNo;
   document.getElementById('profileName').textContent = fullName+'さん';
   document.getElementById('greetName').textContent = (account.firstName||'みのり')+'さん';
 }
@@ -13381,7 +14023,8 @@ function saveNutritionToday(){
   }catch(e){}
   /* 適応型TDEEの材料として日付つきの履歴にも残す（当日ぶんは記録のたびに上書き）。
      smile24_nutrition_today は日が変わると捨てられるので、履歴はこちらが持つ */
-  logDaily({ kcal: state.intakeKcal });
+  logDaily({ kcal: state.intakeKcal, p: state.proteinIntake, fg: state.fatIntake, c: state.carbsIntake });
+  renderWeekPfc();   // 週間 栄養バランスを実記録で即追随させる
 }
 function restoreNutritionToday(){
   var saved = null;
@@ -13398,6 +14041,7 @@ function restoreNutritionToday(){
 }
 function finishOnboarding(){
   document.getElementById('onboarding').classList.remove('active');
+  renderGuestBanner();
   try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
   if(regData.goalType) state.goalType = regData.goalType;
   // 登録で入力した年齢・身長・体重・筋肉量の基礎代謝をホームへ即反映
@@ -13416,24 +14060,49 @@ function finishOnboarding(){
   updateMemberIdentity();
   goTab('home');
 }
+/* パスワードのSHA-256（保存するのはハッシュのみ。平文は保存しない。管理画面と同じ方式） */
+function sha256HexApp(s){
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(function(buf){
+    return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ('0' + b.toString(16)).slice(-2); }).join('');
+  });
+}
 function doLogin(){
   var id = val('loginId'), pw = val('loginPw');
   if(!id || !pw){ showToast('IDとパスワードを入力してください'); return; }
-  try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
-  document.getElementById('onboarding').classList.remove('active');
-  // ログイン会員も登録会員と同じ：保存済みの体格を反映し、食事の数字は記録が無ければ0
+  /* 「何を入れても通る」形骸ログインを廃止（2026-08-12監査 C-03）。
+     この端末の登録情報（ID＋パスワードのハッシュ）と照合する。サーバー認証は正式版で置換 */
   var account0 = null;
   try{ account0 = JSON.parse(localStorage.getItem('smile24_account')||'null'); }catch(e){}
-  if(account0){
+  if(!account0){
+    showToast('この端末に会員登録が見つかりません。新規登録するか、機種変更の方はマイページの「データの読み込み」で引き継いでください');
+    return;
+  }
+  if(account0.loginId && id !== account0.loginId){
+    showToast('ログインIDが登録内容と一致しません');
+    return;
+  }
+  function proceedLogin(){
+    try{ localStorage.setItem('smile24_logged_in','1'); }catch(e){}
+    document.getElementById('onboarding').classList.remove('active');
+    // ログイン会員も登録会員と同じ：保存済みの体格を反映し、食事の数字は記録が無ければ0
     applyBodyProfile(account0);
     resetNutritionToday();
     restoreNutritionToday();
     refreshMacroTargets();
     recalc();
     renderPlan();
+    updateMemberIdentity();
+    renderGuestBanner();
+    goTab('home');
   }
-  updateMemberIdentity();
-  goTab('home');
+  if(account0.pwHash && window.crypto && crypto.subtle){
+    sha256HexApp(pw).then(function(h){
+      if(h !== account0.pwHash){ showToast('パスワードが一致しません'); return; }
+      proceedLogin();
+    });
+  } else {
+    proceedLogin();   // ハッシュ未保存の旧アカウントは従来どおり（次回登録時から照合される）
+  }
 }
 function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
@@ -13597,13 +14266,25 @@ function togglePrivacyPref(key){
   savePrivacyPrefs(p);
   document.getElementById('privacySwitch-'+key).classList.toggle('on', p[key]);
 }
-/* ============ 記録データの書き出し・読み込み（端末変更・データ消失への備え） ============ */
-var APP_DATA_KEYS = ['smile24_account','smile24_members','smile24_entry_log','smile24_occupancy','smile24_checked_in',
-  'smile24_water','smile24_walk','smile24_jewel_on','smile24_goal','smile24_partner_name','smile24_notif_prefs','smile24_privacy_prefs',
-  'smile24_logged_in','smile24_font_scale','smile24_withdraw_request','smile24_trial','smile24_news_read'];
+/* ============ 記録データの書き出し・読み込み(端末変更・データ消失への備え) ============
+   固定リスト方式をやめ、confirmClearDataと同じ「smile24_全キー走査＋除外リスト」方式へ統一
+   （2026-08-12監査 M-03/栄D-01）。旧リストは食事履歴・体重・筋トレ・レッスン・姿勢・目標コーチを
+   1バイトも書き出しておらず、「備え」を名乗りながら一番価値あるデータを落としていた。
+   除外＝実運用の入館トークン（扉の鍵。ファイルに混ぜない方針は従来どおり）と再取得可能な大容量キャッシュ */
+var EXPORT_EXCLUDE_KEYS = ['smile24_entry_token', 'smile24_meal_textemb_v1'];
+function exportTargetKeys(){
+  var keys = [];
+  try{
+    for(var i = 0; i < localStorage.length; i++){
+      var k = localStorage.key(i);
+      if(k && k.indexOf('smile24_') === 0 && EXPORT_EXCLUDE_KEYS.indexOf(k) < 0) keys.push(k);
+    }
+  }catch(e){}
+  return keys;
+}
 function exportAppData(){
   var data = { app:'smile24', exportedAt:new Date().toISOString(), values:{} };
-  APP_DATA_KEYS.forEach(function(k){
+  exportTargetKeys().forEach(function(k){
     try{ var v = localStorage.getItem(k); if(v !== null) data.values[k] = v; }catch(e){}
   });
   var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
@@ -13623,7 +14304,8 @@ function importAppData(input){
       var data = JSON.parse(reader.result);
       if(!data || data.app !== 'smile24' || !data.values){ showToast('スマイル24のバックアップファイルではないようです'); return; }
       Object.keys(data.values).forEach(function(k){
-        if(APP_DATA_KEYS.indexOf(k) >= 0){ try{ localStorage.setItem(k, data.values[k]); }catch(e){} }
+        /* smile24_のキーだけ受け入れる（書き出しと同じ全キー方式）。鍵は移さない */
+        if(k.indexOf('smile24_') === 0 && EXPORT_EXCLUDE_KEYS.indexOf(k) < 0){ try{ localStorage.setItem(k, data.values[k]); }catch(e){} }
       });
       showToast('データを読み込みました。画面を更新します');
       setTimeout(function(){ location.reload(); }, 900);
@@ -13657,7 +14339,19 @@ function confirmClearData(){
 /* ============ 文字サイズ（アクセシビリティ） ============ */
 function applyFontScale(scale){
   var device = document.getElementById('device');
-  if(device) device.style.zoom = scale;
+  if(device){
+    device.style.zoom = scale;
+    /* 実機（フレームなし全画面）では、zoomで広がったぶん幅・高さを割り戻して
+       横あふれ・縦あふれを防ぐ（2026-08-12監査 D-12） */
+    var mobile = window.matchMedia && window.matchMedia('(max-width: 480px)').matches;
+    if(mobile && scale !== 1){
+      device.style.width = 'calc(100% / ' + scale + ')';
+      device.style.height = 'calc(100dvh / ' + scale + ')';
+    } else {
+      device.style.width = '';
+      device.style.height = '';
+    }
+  }
   var lval = document.getElementById('fontSizeLval');
   if(lval) lval.textContent = scale===1 ? '標準' : (scale===1.12 ? '大' : '特大');
 }
@@ -13720,17 +14414,26 @@ function wdCutoffInfo(){
   return { isBeforeCutoff: isBeforeCutoff, label: (endMonth.getMonth()+1) + '月末' };
 }
 function submitWithdraw(){
-  var receiptNo = 'WD-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000+Math.random()*9000);
+  /* 受付番号の発行と「確認メールをお送りしました」をやめた：この申請は店舗にまだ届かないため、
+     受け付けた体裁を返すと「退会したつもりの会員に課金が続く」消費者トラブルに直結する（2026-08-12監査 C-02）。
+     内容は端末に保存し、電話での手続き完了へ必ず誘導する */
   var cutoff = wdCutoffInfo();
   var isQuit = wdSelected.type === 'quit';
   try{
     localStorage.setItem('smile24_withdraw_request', JSON.stringify({
-      type: wdSelected.type, reason: wdSelected.reason, receiptNo: receiptNo, requestedAt: new Date().toISOString(), effectiveMonth: cutoff.label
+      type: wdSelected.type, reason: wdSelected.reason, requestedAt: new Date().toISOString(), effectiveMonth: cutoff.label, submitted: false
     }));
   }catch(e){}
-  document.getElementById('wdDoneTitle').textContent = (isQuit ? '退会' : '休会') + 'のお申請を受け付けました';
-  document.getElementById('wdDoneBody').textContent = cutoff.label + '解約予定です。内容の確認メールをご登録のメールアドレスへお送りしました（デモ）。';
-  document.getElementById('wdReceiptNo').textContent = '受付番号：' + receiptNo;
+  document.getElementById('wdDoneTitle').textContent = (isQuit ? '退会' : '休会') + 'のご希望内容を保存しました';
+  document.getElementById('wdDoneBody').innerHTML =
+    'このアプリはまだ店舗システムと接続していないため、<b>お手続きはこれで完了ではありません</b>。' +
+    'お手数ですが、下のボタンからお電話で「アプリから' + (isQuit ? '退会' : '休会') + 'を希望」とお伝えください。店舗で正式にお手続きします。' +
+    '<br><span style="font-size:11px;color:var(--text-mid);">締め日は毎月9日・' + cutoff.label + '解約のご希望として承ります</span>';
+  var callBtn = document.getElementById('wdCallBtn');
+  if(callBtn){
+    callBtn.href = 'tel:' + STORE.tel;
+    callBtn.textContent = '店舗（' + STORE.tel + '）に電話して手続きする';
+  }
   document.getElementById('wdStep2').style.display = 'none';
   document.getElementById('wdStep3').style.display = '';
 }
@@ -13748,7 +14451,7 @@ function renderWeekStrip(){
   if(!wrap) return;
   var html = '';
   for(var i=-3; i<=3; i++){
-    var d = new Date(TODAY);
+    var d = appToday();
     d.setDate(d.getDate() + i);
     var cls = 'ws-day' + (i===0 ? ' active' : '') + (i>0 ? ' future nodata' : '');
     html += '<div class="'+cls+'" onclick="selectDay(this,'+i+')">'+
@@ -13903,7 +14606,9 @@ function renderWeightQuick(){
   var cEl = document.getElementById('wqCurrent');
   if(!cEl) return;
   var hist = state.weightHistory;
-  var cur = hist[hist.length-1].w, start = hist[0].w;
+  // 実測が無いうちは現在体重で表示（空配列で初期化が死んでいた事故のガード・2026-08-12）
+  var cur = hist.length ? hist[hist.length-1].w : state.weight;
+  var start = hist.length ? hist[0].w : state.weight;
   cEl.innerHTML = cur.toFixed(1) + '<span> kg</span>';
   var pct = Math.min(Math.max((start-cur)/(start-WQ_TARGET), 0), 1) * 100;
   document.getElementById('wqFill').style.width = pct + '%';
@@ -14101,6 +14806,11 @@ function bodyGoalInput(){
   var until = document.getElementById('bgUntil').value;
   var note = document.getElementById('bgNote');
   if(!(tw > 0) || !until) return;   // 両方そろってから
+  /* 18歳未満は減量目標を設定させない（2026-08-12監査 栄D-03） */
+  if(isMinorMember()){
+    if(note) note.textContent = '18歳未満の方は成長期のため、減量目標はご利用いただけません（バランスのよい食事と記録の習慣づくりを応援します）';
+    return;
+  }
   var cur = currentTrendW();
   if(tw >= cur){ if(note) note.textContent = '目標体重は、いまの体重（' + cur.toFixed(1) + 'kg）より軽い値を入れてね'; return; }
   var p = until.split('-');
@@ -14212,7 +14922,7 @@ function refreshStrTrend(){
 function trendDayLabels(){
   var out = [];
   for(var i=-6; i<=0; i++){
-    var d = new Date(TODAY);
+    var d = appToday();
     d.setDate(d.getDate()+i);
     out.push(i===0 ? '今日' : DOW_JP[d.getDay()]);
   }
@@ -14253,7 +14963,7 @@ function trendBarsSVG(vals, opts){
 /* 1. BMI */
 function trendBMI(){
   var hm = state.height/100;
-  var cur = state.weightHistory[state.weightHistory.length-1].w;
+  var cur = state.weightHistory.length ? state.weightHistory[state.weightHistory.length-1].w : state.weight;
   var bmi = Math.round(cur/(hm*hm)*10)/10;
   var zone = bmi<18.5 ? 0 : bmi<25 ? 1 : 2;
   var zoneName = ['低体重','健康','肥満'][zone];
@@ -14280,9 +14990,52 @@ function trendBMI(){
     '</div>';
 }
 
-/* 2. 体重推移（過去30日・折れ線） */
+/* 2. 体重推移（過去30日・折れ線）
+   登録会員はsin波で作った架空の30日曲線ではなく、実測（loadDayLogs）だけを描く（2026-08-12監査 D-02）。
+   サンプル曲線は未登録の体験専用 */
 function trendWeight(){
-  var cur = state.weightHistory[state.weightHistory.length-1].w;
+  if(isRegisteredMember()){
+    var wl = loadDayLogs().weigh.filter(function(r){ return r.ago <= 30; });
+    if(wl.length < 2){
+      return '<div class="trend-card">'+
+        '<div class="tc-title">体重の推移（過去30日）</div>'+
+        '<div class="tc-sub">体重を2回以上記録すると、ここに実測の推移グラフが出るよ（からだタブの＋から記録できます）</div>'+
+        '</div>';
+    }
+    var w2=320, h2=190, padL2=34, padR2=14, padT2=20, padB2=22;
+    var vals2 = wl.map(function(r){ return r.w; });
+    var lo2 = Math.min.apply(null, vals2) - 0.25, hi2 = Math.max.apply(null, vals2) + 0.25;
+    function y2(v){ return h2-padB2 - (v-lo2)/(hi2-lo2)*(h2-padT2-padB2); }
+    function x2(ago){ return padL2 + (30 - ago) / 30 * (w2-padL2-padR2); }
+    var svg2 = '<defs><linearGradient id="warea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(74,133,246,.30)"/><stop offset="100%" stop-color="rgba(74,133,246,0)"/></linearGradient></defs>';
+    [hi2-0.05, (hi2+lo2)/2, lo2+0.05].forEach(function(gv){
+      var gy = y2(gv);
+      svg2 += '<line x1="'+padL2+'" y1="'+gy+'" x2="'+(w2-padR2)+'" y2="'+gy+'" stroke="#EDF1F7" stroke-width="1" stroke-dasharray="3 4"/>';
+      svg2 += '<text x="'+(padL2-5)+'" y="'+(gy+3)+'" font-size="10" fill="#5A6778" font-family="Poppins" text-anchor="end">'+gv.toFixed(1)+'</text>';
+    });
+    var pts2 = wl.map(function(r){ return x2(r.ago).toFixed(1)+','+y2(r.w).toFixed(1); }).join(' ');
+    svg2 += '<polyline points="'+pts2+'" fill="none" stroke="#4A85F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    wl.forEach(function(r){ svg2 += '<circle cx="'+x2(r.ago).toFixed(1)+'" cy="'+y2(r.w).toFixed(1)+'" r="3.5" fill="#4A85F6" stroke="#fff" stroke-width="1.5"/>'; });
+    var curR = wl[wl.length-1].w;
+    svg2 += '<text x="'+(x2(wl[wl.length-1].ago)-4)+'" y="'+(y2(curR)-12)+'" font-size="10" font-weight="700" fill="#4A85F6" font-family="Poppins" text-anchor="end">'+curR.toFixed(1)+'kg</text>';
+    [[30,'30日前'],[20,'20日前'],[10,'10日前'],[0,'今日']].forEach(function(m){
+      svg2 += '<text x="'+x2(m[0])+'" y="'+(h2-6)+'" font-size="10" fill="'+(m[0]===0?'#2A59C4':'#5A6778')+'" font-weight="'+(m[0]===0?'700':'400')+'" text-anchor="middle">'+m[1]+'</text>';
+    });
+    var delta2 = Math.round((curR - wl[0].w)*10)/10;
+    var avg2 = Math.round(vals2.reduce(function(a,b){ return a+b; },0)/vals2.length*10)/10;
+    var toGoal2 = Math.max(Math.round(state.goalDiffKg*10)/10, 0);
+    return '<div class="trend-card">'+
+      '<div class="tc-title">体重の推移（過去30日・実測）</div>'+
+      '<div class="tc-sub">記録した日だけを結んでいます。毎日の小さな変化も30日で見ると大きな前進</div>'+
+      '<div class="tc-chart"><svg viewBox="0 0 '+w2+' '+h2+'" xmlns="http://www.w3.org/2000/svg">'+svg2+'</svg></div>'+
+      '<div class="tc-stats">'+
+        '<div class="tc-stat"><div class="v good">'+(delta2<=0?'':'+')+delta2.toFixed(1)+'<span> kg</span></div><div class="l">期間の変化</div></div>'+
+        '<div class="tc-stat"><div class="v">'+avg2.toFixed(1)+'<span> kg</span></div><div class="l">平均体重</div></div>'+
+        '<div class="tc-stat"><div class="v">'+toGoal2.toFixed(1)+'<span> kg</span></div><div class="l">目標まで</div></div>'+
+      '</div>'+
+      '</div>';
+  }
+  var cur = state.weightHistory.length ? state.weightHistory[state.weightHistory.length-1].w : state.weight;
   var start = cur + 1.8;
   var arr = [];
   for(var i=0; i<30; i++){
@@ -14325,17 +15078,49 @@ function trendWeight(){
     '</div>';
 }
 
-/* 3. カロリー摂取／消費（7日間・縦棒） */
+/* 3. カロリー摂取／消費（7日間・縦棒）
+   登録会員：摂取は実記録（loadDailyLog）から。消費は日別の実測が無いため、
+   架空の棒グラフではなく「今日の推定」だけを正直に出す（2026-08-12監査 D-02） */
 function trendKcal(kind){
   var isIn = kind==='in';
-  var vals = state.weekCalorieHistory.map(function(d){ return isIn ? d.intake : d.burn; });
-  vals.push(isIn ? state.intakeKcal : state.baseConsumption + activityKcal());
+  var real = isRegisteredMember();
+  if(real && !isIn){
+    var burnToday = state.baseConsumption + activityKcal();
+    return '<div class="trend-card">'+
+      '<div class="tc-title">カロリー消費（推定）</div>'+
+      '<div class="tc-sub">消費は基礎代謝＋生活活動＋運動記録からの推定です。日別の履歴グラフは実測の仕組みができたら追加します</div>'+
+      '<div class="tc-stats">'+
+        '<div class="tc-stat"><div class="v">'+burnToday.toLocaleString()+'<span> kcal</span></div><div class="l">今日の推定消費</div></div>'+
+      '</div>'+
+      '</div>';
+  }
+  var vals;
+  if(real){
+    var log7 = loadDailyLog();
+    vals = [];
+    for(var i7 = 6; i7 >= 1; i7--){
+      var d7 = new Date(); d7.setDate(d7.getDate() - i7);
+      var row7 = log7[dayKey(d7)];
+      vals.push(row7 && row7.kcal ? row7.kcal : null);
+    }
+    vals.push(state.intakeKcal);
+    if(vals.filter(function(v){ return v != null && v > 0; }).length < 2){
+      return '<div class="trend-card">'+
+        '<div class="tc-title">カロリー摂取（7日間）</div>'+
+        '<div class="tc-sub">食事の記録が2日ぶんたまると、ここに1日ごとの摂取グラフが出るよ</div>'+
+        '</div>';
+    }
+  } else {
+    vals = state.weekCalorieHistory.map(function(d){ return isIn ? d.intake : d.burn; });
+    vals.push(isIn ? state.intakeKcal : state.baseConsumption + activityKcal());
+  }
   var opts = isIn
     ? {grad:['#7FAFFA','#4A85F6'], base:'#DBE9FE', avg:true}
     : {grad:['#6FD6AC','#0E6E4D'], base:'#CFF2E4', avg:true};
   var nums = vals.filter(function(v){ return v!=null; });
   var avg = Math.round(nums.reduce(function(a,b){ return a+b; },0)/nums.length);
   var max = Math.max.apply(null, nums);
+  var todayV = vals[vals.length-1] || 0;
   return '<div class="trend-card">'+
     '<div class="tc-title">'+(isIn?'カロリー摂取':'カロリー消費')+'（7日間）</div>'+
     '<div class="tc-sub">'+(isIn?'食事記録から集計した1日ごとの摂取カロリー':'基礎代謝＋生活活動＋運動記録の合計')+'</div>'+
@@ -14343,17 +15128,36 @@ function trendKcal(kind){
     '<div class="tc-stats">'+
       '<div class="tc-stat"><div class="v">'+avg.toLocaleString()+'<span> kcal</span></div><div class="l">7日平均</div></div>'+
       '<div class="tc-stat"><div class="v">'+max.toLocaleString()+'<span> kcal</span></div><div class="l">最高</div></div>'+
-      '<div class="tc-stat"><div class="v good">'+vals[6].toLocaleString()+'<span> kcal</span></div><div class="l">今日</div></div>'+
+      '<div class="tc-stat"><div class="v good">'+todayV.toLocaleString()+'<span> kcal</span></div><div class="l">今日</div></div>'+
     '</div>'+
     '</div>';
 }
 
 /* 4. 栄養素（7日間・PFC積み上げ棒） */
 function trendPFC(){
-  var series = state.weekCalorieHistory.map(function(d){
-    return {p:Math.round(d.intake*0.18/4), f:Math.round(d.intake*0.25/9), c:Math.round(d.intake*0.5/4)};
-  });
-  series.push({p:Math.round(state.proteinIntake), f:Math.round(state.fatIntake), c:Math.round(state.carbsIntake)});
+  var series;
+  if(isRegisteredMember()){
+    /* 実記録のマクロ（logDailyのp/fg/c）だけで描く。比率で捏ち上げた過去6日は使わない（2026-08-12監査 D-02） */
+    var logP = loadDailyLog();
+    series = [];
+    for(var ip = 6; ip >= 1; ip--){
+      var dp = new Date(); dp.setDate(dp.getDate() - ip);
+      var rowP = logP[dayKey(dp)] || {};
+      series.push({ p: rowP.p || 0, f: rowP.fg || 0, c: rowP.c || 0 });
+    }
+    series.push({p:Math.round(state.proteinIntake), f:Math.round(state.fatIntake), c:Math.round(state.carbsIntake)});
+    if(series.filter(function(s){ return s.p + s.f + s.c > 0; }).length < 2){
+      return '<div class="trend-card">'+
+        '<div class="tc-title">栄養素バランス（7日間）</div>'+
+        '<div class="tc-sub">食事の記録が2日ぶんたまると、ここにたんぱく質・脂質・炭水化物の積み上げグラフが出るよ</div>'+
+        '</div>';
+    }
+  } else {
+    series = state.weekCalorieHistory.map(function(d){
+      return {p:Math.round(d.intake*0.18/4), f:Math.round(d.intake*0.25/9), c:Math.round(d.intake*0.5/4)};
+    });
+    series.push({p:Math.round(state.proteinIntake), f:Math.round(state.fatIntake), c:Math.round(state.carbsIntake)});
+  }
   var w=320, h=185, padL=10, padR=10, padT=24, padB=22;
   var labels = trendDayLabels();
   var maxV = Math.max.apply(null, series.map(function(s){ return s.p+s.f+s.c; })) * 1.12;
@@ -14440,7 +15244,11 @@ function fireConfetti(n){
 /* ---------- ジムレベル（XP） ---------- */
 function getXp(){
   var v = parseInt(localStorage.getItem('smile24_xp'));
-  if(isNaN(v)){ v = 2450; try{ localStorage.setItem('smile24_xp', String(v)); }catch(e){} }
+  if(isNaN(v)){
+    // 登録会員は0から（いきなりLV.7の捏造をやめる・2026-08-12監査 D-03）。未登録の体験だけLV.7のサンプルを見せる
+    v = isRegisteredMember() ? 0 : 2450;
+    try{ localStorage.setItem('smile24_xp', String(v)); }catch(e){}
+  }
   return v;
 }
 function levelFromXp(xp){ return Math.max(1, Math.floor(Math.sqrt(xp/50))); }
@@ -14451,7 +15259,7 @@ function addXp(n){
   var after = levelFromXp(xp);
   if(after > before){
     fireConfetti(60);
-    showToast('🎉 レベルアップ！ LV.' + after + ' になったよ！');
+    showToast('レベルアップ！ LV.' + after + ' になったよ！');
   }
   renderLevel();
 }
@@ -14505,7 +15313,7 @@ function renderMissions(){
     setFlagToday('smile24_mission_day');
     fireConfetti(50);
     addXp(30);
-    showToast('今日のミッション全達成！＋30XP 🎯');
+    showToast('今日のミッション全達成！＋30XP');
   }
 }
 
@@ -14514,17 +15322,25 @@ function renderGreeting(){
   var h = new Date().getHours();
   var prefix = h < 4 ? '深夜もおつかれさま' : h < 10 ? 'おはようございます' : h < 17 ? 'こんにちは' : h < 22 ? 'おかえりなさい' : '今日もおつかれさま';
   var pEl = document.getElementById('greetPrefix'); if(pEl) pEl.textContent = prefix;
+  /* ホームの日付（化石の固定表示をやめる・2026-08-12監査 D-06）。
+     appToday基準＝登録会員は当日・体験モードはサンプル世界の基準日で全画面統一
+     （ホームだけ実日付だと食事記録の「7月2日」と6週ズレて見える・demo-verifier指摘） */
+  var dEl = document.getElementById('greetDate');
+  if(dEl){
+    var nd = appToday(), dws = ['日','月','火','水','木','金','土'];
+    dEl.textContent = nd.getFullYear() + '年' + (nd.getMonth()+1) + '月' + nd.getDate() + '日（' + dws[nd.getDay()] + '）';
+  }
   var say = document.getElementById('aiSayText');
   if(!say) return;
   var s = computeVisitStreak();
   var remainP = Math.max(0, Math.round(state.proteinTarget - state.proteinIntake));
   var msg;
   if(s.streak >= 2){
-    msg = '「' + s.streak + '日連続」来館中！この積み重ねが体を変えていくよ 🔥';
+    msg = '「' + s.streak + '日連続」来館中！この積み重ねが体を変えていくよ';
   } else if(remainP > 10){
     msg = '今日はたんぱく質があと' + remainP + 'g。サラダチキン1つでクリアできるよ！';
   } else {
-    msg = 'いいペース！今日も自分のベストをちょっとだけ更新しよう ✨';
+    msg = 'いいペース！今日も自分のベストをちょっとだけ更新しよう';
   }
   say.textContent = msg;
 }
@@ -14537,13 +15353,21 @@ function openWeeklyReport(){
   document.getElementById('wrLv').textContent = 'LV.' + lv;
   document.getElementById('wrLvBar').style.width = Math.round((xp-cur)/(next-cur)*100) + '%';
   document.getElementById('wrLvNext').textContent = '次のレベルまで ' + (next-xp) + 'XP';
-  var wDelta = Math.round((state.weightHistory[state.weightHistory.length-1].w - state.weightHistory[0].w)*10)/10;
-  var avgBurn = Math.round(state.weekCalorieHistory.reduce(function(a,d){ return a+d.burn; },0) / state.weekCalorieHistory.length);
+  /* 実測が足りない項目は「—」で正直に（架空履歴からの集計を出さない・2026-08-12監査 D-02） */
+  var wh2 = state.weightHistory;
+  var wDeltaTxt = (wh2 && wh2.length >= 2)
+    ? (function(){ var d0 = Math.round((wh2[wh2.length-1].w - wh2[0].w)*10)/10; return (d0>0?'+':'') + d0; })()
+    : '—';
+  var burnRows = (state.weekCalorieHistory || []).filter(function(d){ return d.burn != null; });
+  var avgBurnTxt = burnRows.length
+    ? Math.round(burnRows.reduce(function(a,d){ return a+d.burn; },0) / burnRows.length).toLocaleString()
+    : '—';
   document.getElementById('wrStats').innerHTML =
     '<div class="wr-stat"><div class="v">' + s.weekCount + '<span>回</span></div><div class="l">今週の来館</div></div>' +
     '<div class="wr-stat"><div class="v">' + s.streak + '<span>日</span></div><div class="l">連続来館</div></div>' +
-    '<div class="wr-stat"><div class="v">' + (wDelta>0?'+':'') + wDelta + '<span>kg</span></div><div class="l">体重の変化</div></div>' +
-    '<div class="wr-stat"><div class="v">' + avgBurn.toLocaleString() + '<span>kcal</span></div><div class="l">平均消費/日</div></div>';
+    '<div class="wr-stat"><div class="v">' + wDeltaTxt + '<span>kg</span></div><div class="l">体重の変化</div></div>' +
+    '<div class="wr-stat"><div class="v">' + avgBurnTxt + '<span>kcal</span></div><div class="l">平均消費/日</div></div>';
+  var wDelta = (wh2 && wh2.length >= 2) ? Math.round((wh2[wh2.length-1].w - wh2[0].w)*10)/10 : 0;
   var comment;
   if(s.weekCount >= 4) comment = '週' + s.weekCount + '回ペースは本当にすごい！この習慣はもう「あなたの一部」だね。来週も無理なく続けよう';
   else if(s.weekCount >= 2) comment = '週' + s.weekCount + '回、いいリズムができてるよ。' + (wDelta < 0 ? '体重も' + Math.abs(wDelta) + 'kg減って、努力がちゃんと形になってる！' : '数字は後からついてくるから、このペースを守ろう！');
@@ -14605,7 +15429,7 @@ function generateAwardCard(){
   a.download = 'smile24-award-' + monthKey + '.png';
   a.click();
   fireConfetti(40);
-  showToast('アワードカードを保存したよ！SNSでシェアしてね 📸');
+  showToast('アワードカードを保存したよ！SNSでシェアしてね');
 }
 
 /* ---------- 月間来館カレンダー ---------- */
@@ -14631,16 +15455,16 @@ function openCalendarSheet(){
   showSheet('calendarSheet');
 }
 
-/* ---------- 館内ウィークリーランキング（匿名） ---------- */
+/* ---------- 今週の来館ペース ----------
+   「館内 上位n%」は他会員のデータを一切見ていない固定換算表の創作だったため廃止（2026-08-12監査 M-02）。
+   事実（自分の回数）と応援だけを言う。実ランキングはサーバー導入後に匿名集計で検討 */
 function renderRank(){
   var el = document.getElementById('rankVal');
   if(!el) return;
   var w = computeVisitStreak().weekCount;
-  var pctMap = {0:null,1:68,2:52,3:34,4:21,5:12,6:7,7:3};
-  var pct = pctMap[Math.min(w,7)];
-  el.innerHTML = pct === null
+  el.innerHTML = w === 0
     ? 'まずは今週1回目の来館から！'
-    : '今週 <b>' + w + '回</b> 来館・館内 上位 <b>' + pct + '%</b>';
+    : '今週 <b>' + w + '回</b> 来館・' + (w >= 5 ? 'すばらしいペース！' : w >= 3 ? 'とても良いペース！' : 'いい調子！');
 }
 
 /* ---------- 今週鍛えた部位マップ ---------- */
@@ -14799,7 +15623,7 @@ function saveEquipWeight(){
   if(!currentEquipKey) return;
   try{ localStorage.setItem('smile24_lastw_' + currentEquipKey, String(currentEquipSuggestedW)); }catch(e){}
   addXp(10);
-  showToast(currentEquipSuggestedW + 'kg を記録したよ！次回は +2.5kg で提案するね 💪');
+  showToast(currentEquipSuggestedW + 'kg を記録したよ！次回は +2.5kg で提案するね');
 }
 
 /* ---------- 機材手順の音声読み上げ ---------- */
@@ -14861,6 +15685,11 @@ function renderGoalForecast(){
   var el = document.getElementById('goalForecast');
   if(!el) return;
   var hist = state.weightHistory;
+  /* 実測が2点未満のうちは予測しない（架空履歴からの到達予測を出さない・2026-08-12監査 D-02） */
+  if(!hist || hist.length < 2){
+    el.textContent = '体重の記録が貯まると、ここに目標達成の見込みが出るよ';
+    return;
+  }
   var delta = hist[hist.length-1].w - hist[0].w;
   var perWeek = delta / (hist.length-1) * 7;
   if(perWeek < -0.05){
@@ -14904,6 +15733,7 @@ function registerSW(){
 }
 
 /* ============ 初期化 ============ */
+sanitizeMemberState();   // 登録会員はデモの作り置き数値を0に（描画より先に・2026-08-12監査 D-03）
 document.querySelectorAll('.partner-name').forEach(function(el){ el.textContent = state.partnerName; });
 document.getElementById('chatInput').placeholder = state.partnerName+'にメッセージを送る…';
 document.getElementById('bmrHeight').addEventListener('input', updateBmrPreview);
@@ -14931,8 +15761,10 @@ walkAutoArm();     // 自動計測（Androidは即時・iOSは最初のタップ
 renderWalkCard();
 recalc();
 renderPlan();
+rebuildChartsFromLog();   // 登録会員はグラフ配列を実測だけで組み直す（デモ配列を混ぜない・2026-08-12監査 D-02）
 renderWeightChart();
 renderBodyFatChart();
+renderWeekPfc();
 issueQR();
 initDobSelects();
 updateDmBadges();
@@ -14963,6 +15795,7 @@ checkStreakReminder();
   applyHomePrefs();
   restoreBodyAcc();
   registerSW();
+  renderGuestBanner();   // 体験モードの常設バナー（initAuthでの表示切替後にも正しく追随する）
 })();
 
 (function initAuth(){
@@ -15017,6 +15850,7 @@ checkStreakReminder();
     }
   }
   renderTrialBanner();
+  renderGuestBanner();   // ログイン/オンボーディングの表示が確定した後に、体験モードバナーを最終判定
 })();
 
 /* ガチ勢設定の復元は必ず最後（initAuth の applyBodyProfile が baseConsumption を

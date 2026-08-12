@@ -1,0 +1,37 @@
+{
+  "note": "スマイル24 店舗マスタ（配信用の正本・2026-08-12監査 C-05対応）。ここに店舗を追記するとアプリ再配布なしで全端末へ反映される。until を過ぎたキャンペーンはアプリ側で自動失効。公開時は smile24-app リポジトリへ index.html と一緒に同期すること",
+  "version": "2026-08-12",
+  "stores": {
+    "SUNRISE1": {
+      "theme": "sunset",
+      "store": {
+        "name": "サンライズフィット岡山（FCデモ）",
+        "tel": "0120-000-001",
+        "address": "岡山県岡山市（デモ用の仮住所）",
+        "plan": { "label": "スタンダード会員", "monthly": 5280, "desc": "駅前立地・24時間利用のスタンダードプランです" },
+        "option": { "key": "shower", "label": "ロッカーオプション", "monthly": 880 },
+        "joinFee": 5500,
+        "campaign": null,
+        "services": [
+          { "label": "パーソナルトレーニング体験（30分）", "price": "¥3,300" },
+          { "label": "プロテイン（店頭販売・1回分）", "price": "¥380〜" }
+        ]
+      }
+    },
+    "FOREST1": {
+      "theme": "forest",
+      "store": {
+        "name": "フォレストジム松山（FCデモ）",
+        "tel": "0120-000-002",
+        "address": "愛媛県松山市（デモ用の仮住所）",
+        "plan": { "label": "ベーシック会員", "monthly": 3980, "desc": "落ち着いた空間でマイペースに通えるプランです" },
+        "option": { "key": "shower", "label": "シャワーオプション", "monthly": 1100 },
+        "joinFee": 9900,
+        "campaign": { "label": "秋の入会キャンペーン適用", "joinFee": 0, "note": "9月30日まで・Webからの入会限定", "until": "2026-09-30" },
+        "services": [
+          { "label": "パーソナルトレーニング体験（30分）", "price": "¥2,980" }
+        ]
+      }
+    }
+  }
+}
