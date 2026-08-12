@@ -3142,7 +3142,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="openMemberInfoSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>会員情報</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openPrivacySheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg><span>プライバシー設定</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openFontSizeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span>文字サイズ</span><span class="lval" id="fontSizeLval">標準</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="list-item" onclick="openThemeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗テーマ（FCカスタマイズ・デモ）</span><span class="lval" id="themeLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <div class="list-item" onclick="openFcSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗（FC・店舗コードで切替）</span><span class="lval" id="fcLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="showSheet('sosSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>緊急連絡先・SOS</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
         <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>目標コーチ（食べる量を計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
@@ -3151,7 +3151,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12b</b>（食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12c</b>（FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3844,7 +3844,7 @@ input{font-family:inherit;}
           <a class="sos-btn" href="tel:110"><div class="n">110</div><div class="t">警察</div></a>
         </div>
         <div class="sos-btn-row">
-          <a class="sos-btn" href="tel:0120368098" style="background:#EAF1FE;border-color:var(--gold);color:var(--gold-dk);"><div class="n" style="font-size:15px;">0120-368-098</div><div class="t">スマイル24 緊急窓口（24時間）</div></a>
+          <a class="sos-btn" id="fcSosTel" href="tel:0120368098" style="background:#EAF1FE;border-color:var(--gold);color:var(--gold-dk);"><div class="n" id="fcSosNum" style="font-size:15px;">0120-368-098</div><div class="t" id="fcSosLabel">スマイル24 緊急窓口（24時間）</div></a>
         </div>
         <!-- 救急・警察に電話したとき、まず聞かれるのは住所。すぐ読める位置に置く -->
         <div class="sos-note" style="background:#EAF1FE;margin-bottom:10px;">
@@ -3862,13 +3862,20 @@ input{font-family:inherit;}
     </div>
 
     <!-- 店舗テーマ（FC白ラベルデモ） -->
-    <div class="sheet" id="themeSheet">
+    <div class="sheet" id="fcStoreSheet">
       <div class="sheet-card">
-        <h3>店舗テーマ</h3>
-        <div class="sheet-desc">フランチャイズ店ごとにブランドカラーを切り替えられます（デモ）</div>
-        <div class="theme-row" id="themeRow"></div>
-        <div class="notif-caution">店名・料金・オプション・入会金・キャンペーン・電話番号・住所は、コード内の <b>STORE</b> 設定1箇所を差し替えるだけで全画面に反映されます（ロゴ・機材リストは画像とデータの差し替えが別途必要です）</div>
-        <button class="sheet-cancel" onclick="hideSheet('themeSheet')">閉じる</button>
+        <h3>店舗の切り替え（FC・デモ）</h3>
+        <div class="sheet-desc">FC展開は「店舗ごとに別アプリ」ではなく、この<b>1本のアプリの中で店舗を選ぶ</b>方式（Apple審査ガイドライン4.2.6が公認するピッカー型）。店舗コードを入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色がまるごとその店舗のものに切り替わります</div>
+        <div class="theme-row" id="fcStoreRow"></div>
+        <div class="field" style="margin-top:10px;">
+          <label>店舗コードで切り替える</label>
+          <div class="unit-wrap">
+            <input type="text" id="fcCodeInput" placeholder="例: SUNRISE1" autocapitalize="characters" autocomplete="off">
+            <button type="button" class="mi-chip" style="min-height:38px;padding:8px 14px;" onclick="fcApplyInput()">適用</button>
+          </div>
+        </div>
+        <div class="notif-caution">デモ店舗2つはダミーです。実運用では店舗マスタ（店名・料金・連絡先・色）を追加するだけで新店舗を出せます（ロゴ・機材リストは画像とデータの差し替えが別途必要）</div>
+        <button class="sheet-cancel" onclick="hideSheet('fcStoreSheet')">閉じる</button>
       </div>
     </div>
 
@@ -12526,6 +12533,62 @@ function renderPriceTotals(){
       '2回目以降は月会費のみ、毎月自動でお支払い方法から決済されます（日割り返金なし）。高校生以上が対象で、高校生の方は保護者の同意が必要です。';
   }
 }
+
+/* ============ FC店舗コード（2026-08-12・単一アプリ＋店舗切替） ============
+   調査（memory: smile24-store-fc-research）の結論: FC展開は店舗別アプリの量産ではなく、
+   Appleガイドライン4.2.6が公認する「1つのバイナリに全店舗を収めるピッカー方式」が唯一の現実解。
+   店舗コード → STORE（店名・料金・住所・連絡先）とブランド色をまるごと切り替える。
+   実運用では店舗マスタをサーバ配信にするが、デモは同梱3店舗（2店はダミー） */
+var FC_STORES = {
+  SMILE24: { theme: 'smile24', store: STORE },   // 既定＝スマイル24（上のSTOREそのもの）
+  SUNRISE1: { theme: 'sunset', store: {
+    name: 'サンライズフィット岡山（FCデモ）', tel: '0120-000-001', address: '岡山県岡山市（デモ用の仮住所）',
+    plan: { label: 'スタンダード会員', monthly: 5280, desc: '駅前立地・24時間利用のスタンダードプランです' },
+    option: { key: 'shower', label: 'ロッカーオプション', monthly: 880 },
+    joinFee: 5500, campaign: null } },
+  FOREST1: { theme: 'forest', store: {
+    name: 'フォレストジム松山（FCデモ）', tel: '0120-000-002', address: '愛媛県松山市（デモ用の仮住所）',
+    plan: { label: 'ベーシック会員', monthly: 3980, desc: '落ち着いた空間でマイペースに通えるプランです' },
+    option: { key: 'shower', label: 'シャワーオプション', monthly: 1100 },
+    joinFee: 9900, campaign: { label: '秋の入会キャンペーン適用', joinFee: 0, note: '9月30日まで・Webからの入会限定' } } },
+};
+function applyStoreCode(code, silent){
+  code = String(code || '').trim().toUpperCase();
+  var fc = FC_STORES[code];
+  if(!fc){ if(!silent) showToast('その店舗コードは見つかりません（例: SMILE24 / SUNRISE1 / FOREST1）'); return false; }
+  STORE = fc.store;
+  applyStoreTheme(fc.theme);
+  renderStorePricing();
+  /* SOS（緊急窓口）の電話・表示も店舗のものへ */
+  var a = document.getElementById('fcSosTel');
+  if(a){
+    a.href = 'tel:' + STORE.tel.replace(/-/g, '');
+    document.getElementById('fcSosNum').textContent = STORE.tel;
+    document.getElementById('fcSosLabel').textContent = STORE.name.replace('（FCデモ）', '') + ' 緊急窓口（24時間）';
+  }
+  var lv = document.getElementById('fcLval');
+  if(lv) lv.textContent = STORE.name.replace('（FCデモ）', '');
+  try{ localStorage.setItem('smile24_store_code', code); }catch(e){}
+  if(!silent) showToast(STORE.name.replace('（FCデモ）', '') + ' の設定に切り替えたよ');
+  return true;
+}
+function openFcSheet(){
+  var cur = 'SMILE24';
+  try{ cur = localStorage.getItem('smile24_store_code') || 'SMILE24'; }catch(e){}
+  document.getElementById('fcStoreRow').innerHTML = Object.keys(FC_STORES).map(function(k){
+    var fc = FC_STORES[k], t = THEMES[fc.theme];
+    return '<div class="theme-opt' + (k === cur ? ' active' : '') + '" onclick="applyStoreCode(\'' + k + '\');openFcSheet()">' +
+      '<div class="tp-swatch" style="background:linear-gradient(135deg,' + t.g1 + ',' + t.g2 + ')"></div>' +
+      '<div class="tp-name">' + escHtml(fc.store.name.replace('（FCデモ）', '')) + '<br><span style="font-size:9.5px;color:var(--text-lt);">コード: ' + k + '</span></div></div>';
+  }).join('');
+  var inp = document.getElementById('fcCodeInput');
+  if(inp) inp.value = '';
+  showSheet('fcStoreSheet');
+}
+function fcApplyInput(){
+  if(applyStoreCode(document.getElementById('fcCodeInput').value)) openFcSheet();
+}
+
 function obGoTo(step){
   document.querySelectorAll('.ob-step').forEach(function(s){ s.classList.toggle('active', s.dataset.step===step); });
   var topbar = document.getElementById('obTopbar');
@@ -14408,21 +14471,8 @@ function applyStoreTheme(key){
   try{ localStorage.setItem('smile24_theme', key); }catch(e){}
   var lval = document.getElementById('themeLval'); if(lval) lval.textContent = t.name;
 }
-function openThemeSheet(){
-  var cur = localStorage.getItem('smile24_theme') || 'smile24';
-  document.getElementById('themeRow').innerHTML = Object.keys(THEMES).map(function(k){
-    var t = THEMES[k];
-    return '<div class="theme-opt' + (k===cur?' active':'') + '" onclick="selectTheme(\'' + k + '\')">' +
-      '<div class="tp-swatch" style="background:linear-gradient(135deg,' + t.g1 + ',' + t.g2 + ')"></div>' +
-      '<div class="tp-name">' + t.name + '</div></div>';
-  }).join('');
-  showSheet('themeSheet');
-}
-function selectTheme(key){
-  applyStoreTheme(key);
-  openThemeSheet();
-  showToast('テーマを「' + THEMES[key].name + '」に変更したよ');
-}
+/* （旧・店舗テーマの単独ピッカーは 2026-08-12 に FC店舗コード（openFcSheet）へ統合。
+   色はapplyStoreThemeがエンジンとして残り、店舗コードから呼ばれる） */
 
 /* ---------- 水分目標の体重連動 ---------- */
 function waterGoalMl(){ return Math.round(state.weight * 35 / 100) * 100; }
@@ -14553,6 +14603,11 @@ checkStreakReminder();
 /* ガチ勢設定の復元は必ず最後（initAuth の applyBodyProfile が baseConsumption を
    bmr×1.4 に戻した後に、ガチ勢の目標で上書きし直す順序。2026-08-07 検証役指摘の修正） */
 try{ restoreAthleteFromStorage(); }catch(e){ console.error('ガチ勢設定の復元に失敗:', e); }
+/* FC店舗コードの復元（店名・料金・連絡先・ブランド色）。既定のSMILE24なら何もしない */
+try{
+  var fcBoot = localStorage.getItem('smile24_store_code');
+  if(fcBoot && fcBoot !== 'SMILE24') applyStoreCode(fcBoot, true);
+}catch(e){ console.error('店舗コードの復元に失敗:', e); }
 </script>
 </body>
 </html>
