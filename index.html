@@ -1488,6 +1488,77 @@ input{font-family:inherit;}
 .unit-wrap{display:flex;align-items:center;gap:7px;}
 .unit-wrap input{flex:1;min-width:0;width:auto;}
 .unit-wrap .uw-u{font-size:12.5px;font-weight:700;color:var(--text-mid);flex:0 0 auto;}
+/* おうちレッスン（2026-08-12・宅トレ動画アプリのオマージュ） */
+.lesson-home{margin:16px 22px 0;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:16px;}
+.lnh-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.lnh-title{font-size:15px;font-weight:800;color:var(--text);}
+.lnh-title .lnh-sub{display:block;font-size:10.5px;font-weight:600;color:var(--text-lt);margin-top:1px;}
+.lnh-streak{font-size:11.5px;font-weight:800;color:var(--gold-dk);background:var(--pastel-1);border-radius:999px;padding:4px 10px;}
+.lnh-streak.lnh-zero{color:var(--text-mid);background:#F1F4F9;font-weight:700;}
+.lnh-freeze{font-size:10px;font-weight:700;color:var(--text-lt);margin-left:5px;}
+.ln-rec{
+  display:flex;align-items:center;gap:11px;width:100%;margin-top:12px;padding:12px 13px;cursor:pointer;
+  border:1.5px solid var(--gold);border-radius:var(--radius-sm);background:#FDFAF3;font-family:inherit;text-align:left;
+}
+.ln-rec .ln-rec-tag{flex:0 0 auto;font-size:10px;font-weight:800;color:#fff;background:var(--gold);border-radius:7px;padding:3px 7px;}
+.ln-rec-body{display:flex;align-items:center;gap:9px;flex:1;min-width:0;}
+.ln-rec b{display:block;font-size:13.5px;color:var(--text);}
+.ln-rec span{display:block;font-size:10.5px;color:var(--text-mid);margin-top:1px;}
+.ln-rec .chev{width:16px;height:16px;color:var(--text-lt);flex:0 0 16px;}
+.ln-ic{width:34px;height:34px;border-radius:10px;background:#F4F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 34px;}
+.ln-ic svg{width:19px;height:19px;}
+.ch-box{margin-top:12px;padding:11px 13px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;}
+.ch-label{font-size:11.5px;font-weight:700;color:var(--text-mid);}
+.ch-label a{color:var(--gold-dk);font-weight:800;}
+.ch-days{display:flex;gap:6px;margin-top:8px;}
+.ch-day{
+  flex:1;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--white);
+  font-family:var(--font-en);font-size:10px;font-weight:800;color:var(--text-lt);cursor:default;padding:0 2px;
+}
+.ch-day.done{background:var(--grad-main);border-color:transparent;color:#fff;}
+.ch-day.done svg{width:15px;height:15px;}
+.ch-day.next{border-color:var(--gold);color:var(--gold-dk);cursor:pointer;box-shadow:0 2px 8px rgba(230,168,60,.18);}
+.ln-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px;}
+.ln-tile{
+  border:1px solid #E3EAF3;border-radius:var(--radius-sm);background:var(--white);padding:11px 12px;
+  font-family:inherit;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;
+}
+.ln-tile-head{display:flex;align-items:center;justify-content:space-between;gap:4px;min-height:18px;}
+.ln-genre{font-size:9.5px;font-weight:800;border:1px solid;border-radius:6px;padding:1px 6px;}
+.ln-done-mark{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:800;color:var(--green-dk,#1B8763);}
+.ln-done-mark svg{width:11px;height:11px;}
+.ln-tile b{font-size:12.5px;color:var(--text);line-height:1.4;}
+.ln-tile span{font-size:10px;color:var(--text-lt);font-weight:600;}
+/* プレイヤー */
+#lnVideo{width:100%;max-height:300px;border-radius:14px;background:#0B1420;display:block;}
+.ln-timer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:10px 14px;border-radius:var(--radius-sm);background:#F4F7FB;}
+.lt-time{font-family:var(--font-en);font-size:34px;font-weight:800;color:var(--text);letter-spacing:.02em;}
+.lt-btn{
+  min-height:46px;padding:10px 22px;border:none;border-radius:999px;background:var(--grad-main);
+  color:#fff;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(74,133,246,.25);
+}
+.ln-steps{margin-top:12px;}
+.ln-step{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid #F0F3F7;}
+.ln-step i{
+  font-style:normal;font-family:var(--font-en);font-weight:800;font-size:11px;color:var(--gold-dk);
+  background:var(--pastel-1);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 20px;
+}
+.ln-step span{font-size:13px;color:var(--text);line-height:1.6;}
+/* 修了証 */
+.cert-card{
+  border:2px solid var(--gold);border-radius:var(--radius);padding:26px 20px;text-align:center;
+  background:linear-gradient(180deg,#FFFDF7 0%,#FDF6E7 100%);
+}
+.cert-ribbon{width:52px;height:52px;margin:0 auto;border-radius:50%;background:var(--grad-main);color:#fff;display:flex;align-items:center;justify-content:center;}
+.cert-ribbon svg{width:26px;height:26px;}
+.cert-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:.35em;text-indent:.35em;margin-top:12px;}
+.cert-name{font-size:17px;font-weight:800;color:var(--gold-dk);margin-top:10px;}
+.cert-body{font-size:12.5px;color:var(--text-mid);line-height:1.9;margin-top:10px;text-align:left;}
+.cert-date{font-size:11px;color:var(--text-lt);margin-top:12px;}
+/* きょうの食事スコア（食事タブ） */
+.meal-score{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;font-weight:700;color:var(--text-mid);flex-wrap:wrap;}
+.meal-score .ms-stars{display:inline-flex;gap:2px;}
+.meal-score .ms-stars svg{width:17px;height:17px;}
 /* 食事タブの減量目標（チェックした人にだけ中身を見せる・くどくしない） */
 .diet-goal{margin:12px 22px 0;padding:14px 15px;border-radius:var(--radius-sm);background:var(--white);border:1px solid #E3EAF3;}
 .diet-goal .dg-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;line-height:1.5;}
@@ -2557,6 +2628,7 @@ input{font-family:inherit;}
           <span class="f-item remain"><span class="f-l">あと</span><b id="fRemain">845</b></span>
           <span class="f-unit">kcal</span>
         </div>
+        <div class="meal-score" id="mealScoreLine" style="display:none;"></div>
         <div class="note" id="proteinNote">あと目安 <b style="color:var(--gold-dk)">18g</b> でこの日の目標を達成できるよ</div>
         <div class="food-examples" id="foodExamples"></div>
       </div>
@@ -2867,6 +2939,9 @@ input{font-family:inherit;}
         </button>
         <div class="exlog-hint">ウォーキング・ランニング・水泳 など</div>
       </div>
+
+      <!-- おうちレッスン（2026-08-12・宅トレ動画アプリのオマージュ。中身はJSが描く） -->
+      <div id="lessonCard"></div>
 
       <!-- 会員カード（氏名・会員番号）は削除（2026-08-07・ユーザー指示）。
            入館QRは下バー中央に集約済みで、カードの役割が無くなったため -->
@@ -3192,7 +3267,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12d</b>（食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12e</b>（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3876,6 +3951,30 @@ input{font-family:inherit;}
     </div>
 
     <!-- 緊急SOS -->
+    <!-- おうちレッスンのプレイヤー。動画はお手本ループ＋タイマー＋手順ガイドの一体構成 -->
+    <div class="sheet" id="lessonSheet">
+      <div class="sheet-card">
+        <h3 id="lnTitle">レッスン</h3>
+        <div class="sheet-desc" id="lnMeta"></div>
+        <video id="lnVideo" muted loop playsinline preload="none"></video>
+        <div class="ln-timer">
+          <div class="lt-time" id="lnTime">5:00</div>
+          <button type="button" class="lt-btn" id="lnStartBtn" onclick="lnStartPause()">スタート</button>
+        </div>
+        <div class="ln-steps" id="lnSteps"></div>
+        <div class="ex-note">動画はお手本のくり返し再生です。タイマーに合わせて自分のペースでどうぞ（つらい時はすぐ休んでね）</div>
+        <button class="exlog-add" onclick="finishLesson()">レッスンおわり！（記録する）</button>
+        <button class="sheet-cancel" onclick="closeLesson()">とじる</button>
+      </div>
+    </div>
+    <!-- 7日間チャレンジの修了証 -->
+    <div class="sheet" id="certSheet">
+      <div class="sheet-card">
+        <div class="cert-card" id="certBody"></div>
+        <button class="sheet-cancel" onclick="hideSheet('certSheet')">とじる</button>
+      </div>
+    </div>
+
     <div class="sheet" id="sosSheet">
       <div class="sheet-card">
         <h3>緊急時の連絡先</h3>
@@ -4141,7 +4240,7 @@ input{font-family:inherit;}
       <span class="tab-qr-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg></span>
       <span>入館QR</span>
     </button>
-    <button class="tab-btn" data-tab="training" onclick="goTab('training')">
+    <button class="tab-btn" data-tab="training" onclick="goTab('training');renderLessonCard()">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg>
       <span>運動</span>
     </button>
@@ -12600,6 +12699,237 @@ function renderPriceTotals(){
   }
 }
 
+/* ============ おうちレッスン（2026-08-12・宅トレ動画アプリの徹底オマージュ） ============
+   deep-research（2026-08-12）で確定した仕様の移植:
+   ・目的×レベルのルールベース推薦／ジャンル絞り込み／7日間チャレンジ→修了証／
+     連続記録＋お休み保険（フリーズ）／「◯日連続達成！」の祝福——いずれも本家の公開仕様
+   ・動画はPixabay Content License素材（商用可・帰属不要）。ただし「素材集のままの
+     再配布」は規約違反になるため、必ず手順ガイド・タイマー・消費目安・チャレンジと
+     一体の「レッスン」として提示する（この一体化がライセンス順守の要件）
+   ・ジュエル/ポイント演出は使わない（ユーザー指示「親しみやすいゲーム感覚」）
+   ・「見放題/受け放題」の誇張はせず本数を正確に書く（景表法未検証のため安全側）
+   ・効能の断定（「痩せる」「治る」）は書かない。部位と動作の説明だけにする */
+var LESSONS = [
+  { id:'ln-yoga-am',  title:'朝の目覚めヨガ',        genre:'ヨガ',     min:5,  level:1, mets:2.5, video:'lessons/ln-yoga-am.mp4',
+    desc:'起きぬけのかたまった体を、深い呼吸と一緒にゆっくり起こします',
+    steps:['大きく伸びをして深呼吸を3回','体側（体の横）を左右30秒ずつのばす','最後に肩をゆっくり回して仕上げ'] },
+  { id:'ln-fullbody', title:'全身のばし体操',        genre:'ストレッチ', min:10, level:1, mets:2.3, video:'lessons/ln-fullbody.mp4',
+    desc:'首から腰まで順番にのばす、いちばん基本の体操です',
+    steps:['腕を上げて全身を上にのばす','首→肩→腰の順にゆっくり回す','反動をつけず、痛くない範囲で'] },
+  { id:'ln-seated',   title:'座って下半身ストレッチ', genre:'ストレッチ', min:5,  level:1, mets:2.3, video:'lessons/ln-seated.mp4',
+    desc:'イスや床に座ったままできる、ももの裏側のストレッチ',
+    steps:['座って片脚を前にのばす','つま先の方へ体を倒して20秒キープ','左右2セットずつ'] },
+  { id:'ln-split',    title:'じっくり開脚ストレッチ', genre:'ストレッチ', min:8,  level:2, mets:2.3, video:'lessons/ln-split.mp4',
+    desc:'股関節まわりを時間をかけてゆるめる中級ストレッチ',
+    steps:['無理のない幅で脚を開く','息を吐きながら前へ20秒×3回','左右にもゆっくり倒す'] },
+  { id:'ln-night',    title:'おやすみ前クールダウン', genre:'ストレッチ', min:5,  level:1, mets:2.0, video:'lessons/ln-night.mp4',
+    desc:'寝る前の5分で、首・肩まわりをゆるめて一日をリセット',
+    steps:['照明を少し落として楽に座る','首をゆっくり左右に倒す','呼吸を深く、ゆっくりに'] },
+  { id:'ln-squat',    title:'スクワット基礎',        genre:'筋トレ',   min:8,  level:2, mets:5.0, video:'lessons/ln-squat.mp4',
+    desc:'下半身の王様種目。フォームをおぼえる基礎編です',
+    steps:['足は肩幅・つま先は少し外向き','お尻を後ろに引きながら4秒かけて下げる','10回×3セット（セット間は60秒休憩）'] },
+  { id:'ln-pushup',   title:'腕立て伏せ（ひざつきOK）', genre:'筋トレ', min:5,  level:2, mets:3.8, video:'lessons/ln-pushup.mp4',
+    desc:'胸と腕の自重トレーニング。きつい人はひざをついてOK',
+    steps:['手は肩より少し広く','胸を床に近づけて、2秒かけて戻す','8回×3セット'] },
+  { id:'ln-plank',    title:'プランク30秒',          genre:'筋トレ',   min:5,  level:2, mets:3.3, video:'lessons/ln-plank.mp4',
+    desc:'おなかまわりの体幹を静かに固めるトレーニング',
+    steps:['ひじを肩の真下に置く','頭からかかとまで一直線をキープ','30秒×3回（間は30秒休憩）'] },
+  { id:'ln-core',     title:'体幹サーキット',        genre:'筋トレ',   min:8,  level:3, mets:4.3, video:'lessons/ln-core.mp4',
+    desc:'腕立てとプランクを組み合わせた少しハードな上級編',
+    steps:['腕立て8回→プランク30秒→休憩30秒','これを3周','回数よりフォームを優先して'] },
+  { id:'ln-dance',    title:'リズム有酸素',          genre:'有酸素',   min:10, level:2, mets:5.5, video:'lessons/ln-dance.mp4',
+    desc:'音楽に合わせてその場で動く、息が弾む10分',
+    steps:['その場で足踏みからスタート','腕も大きく振る','息が弾む程度の速さでOK'] },
+  { id:'ln-breath',   title:'深呼吸リセット',        genre:'瞑想',     min:3,  level:1, mets:1.3, video:'lessons/ln-breath.mp4',
+    desc:'3分の呼吸で気持ちを切り替えるミニレッスン',
+    steps:['楽な姿勢で座る','4秒で吸って、8秒かけて吐く','肩の力をすっと抜く'] },
+  { id:'ln-calm',     title:'海辺のリラックス瞑想',   genre:'瞑想',     min:5,  level:1, mets:1.3, video:'lessons/ln-calm.mp4',
+    desc:'波の景色と一緒に、呼吸だけに集中する5分',
+    steps:['目を閉じて呼吸に集中','考えごとが浮かんだら呼吸に戻る','最後に大きく伸びをして終了'] },
+];
+var LN_GENRES = ['すべて', 'ヨガ', 'ストレッチ', '筋トレ', '有酸素', '瞑想'];
+var LN_COLORS = { 'ヨガ':'#B48CF2', 'ストレッチ':'#6FD6AC', '筋トレ':'#4A85F6', '有酸素':'#F6B24A', '瞑想':'#7FC7E8' };
+/* 7日間チャレンジ「はじめての7日間」（本家のチャレンジプレイリスト→修了証の骨格を移植） */
+var LN_CH7 = ['ln-yoga-am', 'ln-fullbody', 'ln-squat', 'ln-seated', 'ln-pushup', 'ln-night', 'ln-dance'];
+var lnFilter = 'すべて';
+function loadLnState(){
+  try{ return JSON.parse(localStorage.getItem('smile24_lessons') || 'null') ||
+       { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 }, ch:{ done:[], certAt:null } }; }
+  catch(e){ return { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 }, ch:{ done:[], certAt:null } }; }
+}
+var lnState = loadLnState();
+function saveLnState(){ try{ localStorage.setItem('smile24_lessons', JSON.stringify(lnState)); }catch(e){} }
+function lessonKcal(l){ return Math.max(1, Math.round(l.mets * state.weight * (l.min / 60) * 1.05)); }
+function lnById(id){ for(var i = 0; i < LESSONS.length; i++){ if(LESSONS[i].id === id) return LESSONS[i]; } return null; }
+/* 目的×レベルのルールベース推薦（本家「AIがあなたに合うレッスンを提案」の決定的移植）。
+   目標コーチの目的→ジャンル優先度、その中で「一番ごぶさたの1本」を選ぶ */
+function recommendLesson(){
+  var goal = null;
+  try{ var sv = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); if(sv) goal = sv.goal; }catch(e){}
+  var pref = goal === 'cut' ? ['有酸素', '筋トレ', 'ストレッチ']
+           : goal === 'bulk' ? ['筋トレ', 'ヨガ']
+           : ['ヨガ', 'ストレッチ', '瞑想'];
+  var pool = [];
+  pref.forEach(function(g){ LESSONS.forEach(function(l){ if(l.genre === g) pool.push(l); }); });
+  if(!pool.length) pool = LESSONS.slice();
+  pool.sort(function(a, b){ return (lnState.last[a.id] || '0') < (lnState.last[b.id] || '0') ? -1 : 1; });
+  return pool[0];
+}
+/* ---- カード描画（運動タブ） ---- */
+function lnIcon(genre){
+  var c = LN_COLORS[genre] || '#4A85F6';
+  var path = genre === '筋トレ' ? '<line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/>'
+    : genre === '有酸素' ? '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'
+    : genre === '瞑想' ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    : '<circle cx="12" cy="5" r="2.6"/><path d="M12 8v6"/><path d="M7 21c1.5-4 3.5-6 5-6s3.5 2 5 6"/>';
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + path + '</svg>';
+}
+function renderLessonCard(){
+  var wrap = document.getElementById('lessonCard');
+  if(!wrap) return;
+  var today = dayKey();
+  var rec = recommendLesson();
+  var st = lnState.streak;
+  var streakLine = st.count > 0
+    ? '<span class="lnh-streak">' + st.count + '日連続</span>' + (st.freeze > 0 ? '<span class="lnh-freeze">お休み保険 ' + st.freeze + '</span>' : '')
+    : '<span class="lnh-streak lnh-zero">きょうの1本からスタート</span>';
+  /* 7日間チャレンジのDAYチップ */
+  var chDone = lnState.ch.done.length;
+  var chips = LN_CH7.map(function(id, i){
+    var l = lnById(id);
+    var cls = i < chDone ? ' done' : i === chDone ? ' next' : '';
+    var inner = i < chDone
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : 'DAY' + (i + 1);
+    return '<button type="button" class="ch-day' + cls + '" ' + (i === chDone ? 'onclick="openLesson(\'' + id + '\')"' : i < chDone ? '' : 'disabled') + '>' + inner + '</button>';
+  }).join('');
+  var chLabel = lnState.ch.certAt
+    ? '7日間チャレンジ 完走！ <a href="javascript:void(0)" onclick="showCert()">修了証を見る</a>'
+    : chDone === 0 ? 'はじめての7日間チャレンジ（1日1本・完走で修了証）'
+    : 'はじめての7日間チャレンジ　あと' + (7 - chDone) + '日で修了証';
+  /* ジャンル絞り込み＋一覧 */
+  var filters = LN_GENRES.map(function(g){
+    return '<button type="button" class="chip-select' + (g === lnFilter ? ' active' : '') + '" onclick="lnFilter=\'' + g + '\';renderLessonCard()">' + g + '</button>';
+  }).join('');
+  var list = LESSONS.filter(function(l){ return lnFilter === 'すべて' || l.genre === lnFilter; }).map(function(l){
+    var doneToday = lnState.last[l.id] === today;
+    return '<button type="button" class="ln-tile" onclick="openLesson(\'' + l.id + '\')">' +
+      '<div class="ln-tile-head"><span class="ln-genre" style="color:' + LN_COLORS[l.genre] + ';border-color:' + LN_COLORS[l.genre] + '55;">' + l.genre + '</span>' +
+      (doneToday ? '<span class="ln-done-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>きょうやった</span>' : '') + '</div>' +
+      '<div class="ln-ic">' + lnIcon(l.genre) + '</div>' +
+      '<b>' + escHtml(l.title) + '</b>' +
+      '<span>' + l.min + '分・レベル' + l.level + '・約' + lessonKcal(l) + 'kcal</span></button>';
+  }).join('');
+  wrap.innerHTML =
+    '<div class="lesson-home">' +
+      '<div class="lnh-row"><div class="lnh-title">おうちレッスン<span class="lnh-sub">動画つき・全' + LESSONS.length + '本（順次追加）</span></div>' + streakLine + '</div>' +
+      '<button type="button" class="ln-rec" onclick="openLesson(\'' + rec.id + '\')">' +
+        '<div class="ln-rec-tag">きょうのおすすめ</div>' +
+        '<div class="ln-rec-body"><div class="ln-ic">' + lnIcon(rec.genre) + '</div>' +
+        '<div><b>' + escHtml(rec.title) + '</b><span>' + rec.genre + '・' + rec.min + '分・約' + lessonKcal(rec) + 'kcal</span></div></div>' +
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>' +
+      '<div class="ch-box"><div class="ch-label">' + chLabel + '</div><div class="ch-days">' + chips + '</div></div>' +
+      '<div class="chip-row" style="margin-top:12px;">' + filters + '</div>' +
+      '<div class="ln-grid">' + list + '</div>' +
+      '<div class="ath-note">ジムに来られない日も、おうちで5分から。動画素材はPixabay（Content License）を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています</div>' +
+    '</div>';
+}
+/* ---- プレイヤー ---- */
+var lnCur = null, lnRemain = 0, lnTimer = null, lnRunning = false, lnElapsed = 0;
+function openLesson(id){
+  var l = lnById(id);
+  if(!l) return;
+  lnCur = l; lnElapsed = 0; lnRunning = false; lnRemain = l.min * 60;
+  clearInterval(lnTimer);
+  document.getElementById('lnTitle').textContent = l.title;
+  document.getElementById('lnMeta').textContent = l.genre + '・' + l.min + '分・レベル' + l.level + '・終えると約' + lessonKcal(l) + 'kcal（体重から計算）｜' + l.desc;
+  document.getElementById('lnSteps').innerHTML = l.steps.map(function(s, i){
+    return '<div class="ln-step"><i>' + (i + 1) + '</i><span>' + escHtml(s) + '</span></div>';
+  }).join('');
+  var v = document.getElementById('lnVideo');
+  v.src = l.video;
+  v.play().catch(function(){});
+  lnTimeDraw();
+  document.getElementById('lnStartBtn').textContent = 'スタート';
+  showSheet('lessonSheet');
+}
+function lnTimeDraw(){
+  var m = Math.floor(lnRemain / 60), s = lnRemain % 60;
+  document.getElementById('lnTime').textContent = m + ':' + ('0' + s).slice(-2);
+}
+function lnStartPause(){
+  var btn = document.getElementById('lnStartBtn');
+  if(lnRunning){
+    clearInterval(lnTimer); lnRunning = false; btn.textContent = 'つづきから';
+    return;
+  }
+  lnRunning = true; btn.textContent = 'ひとやすみ';
+  lnTimer = setInterval(function(){
+    lnRemain--; lnElapsed++;
+    if(lnRemain <= 0){ clearInterval(lnTimer); lnRunning = false; lnRemain = 0; lnTimeDraw(); finishLesson(); return; }
+    lnTimeDraw();
+  }, 1000);
+}
+function closeLesson(){
+  clearInterval(lnTimer); lnRunning = false;
+  var v = document.getElementById('lnVideo');
+  v.pause(); v.removeAttribute('src'); try{ v.load(); }catch(e){}
+  hideSheet('lessonSheet');
+}
+function finishLesson(){
+  if(!lnCur) return;
+  if(lnElapsed < 10){ showToast('タイマーをスタートして、少し動いてから記録してね'); return; }
+  var minutes = Math.max(1, Math.round(lnElapsed / 60));
+  var kcal = Math.max(1, Math.round(lnCur.mets * state.weight * (minutes / 60) * 1.05));
+  state.exerciseKcal += kcal;
+  state.exerciseLog.push({ label:'おうちレッスン・' + lnCur.title, minutes: minutes, kcal: kcal, ts: Date.now() });
+  renderExerciseLog(); recalc();
+  var today = dayKey();
+  var firstToday = !lnState.days[today];
+  lnState.days[today] = (lnState.days[today] || 0) + 1;
+  lnState.last[lnCur.id] = today;
+  var msg = '「' + lnCur.title + '」おつかれさま！ +' + kcal + 'kcal';
+  /* 連続記録（本家仕様: 祝福表示＋お休み保険。1日1回だけ進む） */
+  if(firstToday){
+    var st = lnState.streak;
+    var gap = st.last ? Math.round((new Date(today) - new Date(st.last)) / 86400000) : 99;
+    if(gap === 1){ st.count++; }
+    else if(gap === 2 && st.freeze > 0){ st.freeze--; st.count++; msg += '。お休み保険を1枚つかって連続をキープ！'; }
+    else if(gap === 0){ /* 同日 */ }
+    else { st.count = 1; }
+    st.last = today;
+    if(st.count > 0 && st.count % 7 === 0 && st.freeze < 1){ st.freeze = 1; msg += '。7日達成でお休み保険が1枚たまったよ'; }
+    if(st.count >= 2) msg = st.count + '日連続達成！ ' + msg;
+  }
+  /* 7日間チャレンジの進行 */
+  if(!lnState.ch.certAt && LN_CH7[lnState.ch.done.length] === lnCur.id){
+    lnState.ch.done.push(today);
+    if(lnState.ch.done.length >= 7){
+      lnState.ch.certAt = today;
+      setTimeout(showCert, 700);
+    } else {
+      msg += '。チャレンジDAY' + lnState.ch.done.length + 'クリア！';
+    }
+  }
+  saveLnState();
+  closeLesson();
+  showToast(msg);
+  renderLessonCard();
+}
+/* 修了証（本家: チャレンジプレイリスト完走→修了証、の移植） */
+function showCert(){
+  var name = (document.getElementById('greetName') || {}).textContent || 'あなた';
+  var d = lnState.ch.certAt || dayKey();
+  var p = String(d).split('-');
+  document.getElementById('certBody').innerHTML =
+    '<div class="cert-ribbon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg></div>' +
+    '<div class="cert-title">修了証</div>' +
+    '<div class="cert-name">' + escHtml(name) + '</div>' +
+    '<div class="cert-body">おうちレッスン「はじめての7日間チャレンジ」を完走されたことを、ここに証します。この7日間の積み重ねが、これからのあなたの味方になります。</div>' +
+    '<div class="cert-date">' + (+p[0]) + '年' + (+p[1]) + '月' + (+p[2]) + '日　スマイル24・AIパートナー Coco</div>';
+  showSheet('certSheet');
+}
+
 /* ============ FC店舗コード（2026-08-12・単一アプリ＋店舗切替） ============
    調査（memory: smile24-store-fc-research）の結論: FC展開は店舗別アプリの量産ではなく、
    Appleガイドライン4.2.6が公認する「1つのバイナリに全店舗を収めるピッカー方式」が唯一の現実解。
@@ -13531,6 +13861,29 @@ function renderDashboardExtras(){
     var el = document.getElementById(slots[k]);
     if(el) el.innerHTML = state.mealTypeKcal[k].toLocaleString() + '<span> kcal</span>';
   });
+  /* きょうの食事スコア（2026-08-12・本家の「3食入力で食事スコア」の移植）。
+     ★＝記録した食事の数（朝昼夕の3食で満点）。数字で叱らず星で褒める親しみ系 */
+  var msl = document.getElementById('mealScoreLine');
+  if(msl){
+    var mtk2 = state.mealTypeKcal;
+    var mealsN = ['breakfast', 'lunch', 'dinner'].filter(function(k){ return mtk2[k] > 0; }).length;
+    if(mealsN === 0 && !mtk2.snack){
+      msl.style.display = 'none';
+    } else {
+      var starSvg = function(fill){
+        return '<svg viewBox="0 0 24 24" fill="' + (fill ? 'var(--gold)' : 'none') + '" stroke="var(--gold)" stroke-width="1.6" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+      };
+      var stars = starSvg(mealsN >= 1) + starSvg(mealsN >= 2) + starSvg(mealsN >= 3);
+      var over = [];
+      if(state.fatIntake > state.fatTarget * 1.15) over.push('脂質');
+      if(state.carbsIntake > state.carbsTarget * 1.15) over.push('炭水化物');
+      var word = mealsN >= 3 ? (over.length ? '3食そろった！' + over.join('・') + 'はやや多めだから夕方は軽めが◎' : '3食そろってバランスもいい感じ！')
+               : mealsN === 2 ? 'あと1食記録すると★3つ'
+               : '記録スタート！3食そろうと★3つ';
+      msl.innerHTML = 'きょうの食事スコア <span class="ms-stars">' + stars + '</span> <span style="font-weight:600;color:var(--text-lt);">' + word + '</span>';
+      msl.style.display = 'flex';
+    }
+  }
   // 閉じたままでも今日の内訳が分かるように、開閉ヘッダーのサマリー行を更新する
   var ms = document.getElementById('accMealSummary');
   if(ms){
@@ -14669,6 +15022,7 @@ checkStreakReminder();
 /* ガチ勢設定の復元は必ず最後（initAuth の applyBodyProfile が baseConsumption を
    bmr×1.4 に戻した後に、ガチ勢の目標で上書きし直す順序。2026-08-07 検証役指摘の修正） */
 try{ restoreAthleteFromStorage(); }catch(e){ console.error('ガチ勢設定の復元に失敗:', e); }
+try{ renderLessonCard(); }catch(e){ console.error('おうちレッスンの初期化に失敗:', e); }
 /* FC店舗コードの復元（店名・料金・連絡先・ブランド色）。既定のSMILE24なら何もしない */
 try{
   var fcBoot = localStorage.getItem('smile24_store_code');
