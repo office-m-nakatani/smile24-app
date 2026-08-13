@@ -1346,9 +1346,12 @@ input{font-family:inherit;}
 .eq-video:not(.has-video){cursor:default;}
 .eq-video .ev-play{width:46px;height:46px;border-radius:50%;background:rgba(74,133,246,.92);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;padding-left:3px;}
 .eq-video .ev-label{position:absolute;left:12px;bottom:10px;font-size:10px;color:rgba(255,255,255,.85);font-weight:600;}
-.eq-video .ev-soon{display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.75);text-align:center;padding:0 20px;}
+/* 動画が無い機材はこの「準備中」表示になる。文が2〜3行あるので高さは固定しない */
+.eq-video:not(.has-video){height:auto;min-height:120px;padding:20px 0;}
+.eq-video .ev-soon{display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.78);text-align:center;padding:0 20px;}
 .eq-video .ev-soon svg{color:rgba(255,255,255,.55);}
-.eq-video .ev-soon span{font-size:10.5px;line-height:1.6;}
+.eq-video .ev-soon span{font-size:11px;line-height:1.7;}
+.eq-video .ev-soon b{display:block;margin-bottom:3px;font-size:12.5px;color:#fff;}
 .eq-rec{border:1.5px solid var(--gold-lt);border-radius:18px;padding:14px 12px;margin:12px 0;background:#fff;}
 .eq-rec .er-title{font-size:12px;font-weight:700;color:var(--gold-dk);margin-bottom:10px;text-align:center;}
 .eq-rec .er-row{display:flex;align-items:center;}
@@ -1567,6 +1570,48 @@ input{font-family:inherit;}
   background:var(--pastel-1);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 20px;
 }
 .ln-step span{font-size:13px;color:var(--text);line-height:1.6;}
+/* 30秒サーキット（2026-08-13・6ステーションを30秒ずつ回る全身1周） */
+.cir-card{margin:0 22px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:16px;}
+.cir-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.cir-title{font-size:15px;font-weight:800;color:var(--text);}
+.cir-title span{display:block;font-size:11px;font-weight:600;color:var(--text-lt);margin-top:2px;}
+.cir-badge{flex:0 0 auto;font-size:11px;font-weight:800;color:#fff;background:var(--grad-main);border-radius:8px;padding:4px 8px;white-space:nowrap;}
+.cir-meta{display:flex;gap:8px;margin-top:12px;}
+.cir-meta div{flex:1;background:#F4F7FB;border-radius:var(--radius-sm);padding:9px 6px;text-align:center;}
+.cir-meta b{display:block;font-family:var(--font-en);font-size:17px;font-weight:800;color:var(--text);}
+.cir-meta span{font-size:11px;color:var(--text-mid);font-weight:700;}
+.cir-laps{display:flex;align-items:center;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.cir-laps .cl-label{font-size:11.5px;font-weight:700;color:var(--text-mid);}
+.cir-laps button{min-height:44px;padding:8px 16px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;}
+.cir-laps button.on{border-color:var(--gold);background:var(--pastel-1);color:var(--gold-dk);}
+/* 実施順は折り返して全部見せる（横スクロールだと3番目以降に気づけない） */
+.cir-order{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+.cir-order i{font-style:normal;font-size:11px;font-weight:700;color:var(--text-mid);background:#F4F7FB;border-radius:100px;padding:5px 10px;}
+.cir-start{width:100%;min-height:50px;margin-top:13px;border:none;border-radius:100px;background:var(--grad-main);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(74,133,246,.25);}
+.cir-note{margin-top:11px;padding:10px 12px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;font-size:11px;color:var(--text-mid);line-height:1.7;}
+.cir-last{font-size:11px;color:var(--text-mid);margin-top:9px;text-align:center;line-height:1.6;}
+/* プレイヤー */
+.cir-stage{position:relative;height:172px;border-radius:16px;overflow:hidden;background:#0B1420;}
+.cir-stage img{width:100%;height:100%;object-fit:cover;opacity:.5;display:block;}
+.cir-stage.rest img{opacity:.28;}
+.cir-stage .cs-phase{position:absolute;left:0;right:0;top:14px;text-align:center;font-size:11.5px;font-weight:800;letter-spacing:.16em;color:rgba(255,255,255,.92);}
+.cir-stage .cs-count{position:absolute;left:0;right:0;top:40px;text-align:center;font-family:var(--font-en);font-size:62px;font-weight:800;color:#fff;line-height:1;}
+.cir-stage .cs-name{position:absolute;left:14px;right:14px;bottom:14px;text-align:center;font-size:13.5px;font-weight:800;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.45);}
+.cir-bar{height:6px;border-radius:100px;background:#E9EEF5;overflow:hidden;margin-top:10px;}
+.cir-bar i{display:block;height:100%;background:var(--grad-main);}
+.cir-dots{display:flex;gap:4px;justify-content:center;margin-top:9px;flex-wrap:wrap;}
+.cir-dots i{width:9px;height:9px;border-radius:50%;background:#E1E8F1;}
+.cir-dots i.done{background:var(--gold);}
+.cir-dots i.now{background:var(--gold);box-shadow:0 0 0 3px rgba(74,133,246,.22);}
+/* コツの行数が種目ごとに変わると下のボタン位置がずれて押し間違えるので、高さを固定する */
+.cir-cue{margin-top:12px;padding:11px 13px;min-height:92px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;font-size:13px;color:var(--text);line-height:1.65;}
+.cir-caution{display:block;margin-top:6px;padding-top:6px;border-top:1px dashed #D6E0EC;font-size:11.5px;color:var(--red-dk,#B03A2E);font-weight:700;}
+.cir-next{margin-top:8px;font-size:11.5px;color:var(--text-mid);font-weight:700;text-align:center;}
+.cir-ctrl{display:flex;gap:8px;margin-top:12px;}
+.cir-ctrl button{flex:1;min-height:46px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
+.cir-ctrl button.primary{border:none;background:var(--grad-main);color:#fff;}
+.cir-voice{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;min-height:44px;font-size:12.5px;color:var(--text-mid);font-weight:700;cursor:pointer;}
+.cir-voice input{width:22px;height:22px;}
 /* 修了証 */
 .cert-card{
   border:2px solid var(--gold);border-radius:var(--radius);padding:26px 20px;text-align:center;
@@ -3013,6 +3058,10 @@ input{font-family:inherit;}
         <div class="cc-hourly" id="occHourly"></div>
       </div>
 
+      <!-- 30秒サーキット（2026-08-13）。中身はJSが描く -->
+      <div class="section-label">30秒サーキット</div>
+      <div id="circuitCard"></div>
+
       <div class="section-label">スマート機材ガイド <a href="javascript:void(0)" onclick="demoQR()">QRで読み取る</a></div>
       <div class="menu-scroll" id="equipScroll"></div>
 
@@ -3330,7 +3379,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-12f</b>（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br><br>――以下は前版までの履歴――<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-13a</b>（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br><br>――以下は前版までの履歴――<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -3697,7 +3746,7 @@ input{font-family:inherit;}
       </div>
     </div>
 
-    <!-- AIおまかせワークアウト（BodyFlow式・判断ゼロ） -->
+    <!-- AIおまかせワークアウト（判断ゼロ＝選ばなくてもメニューが決まる） -->
     <div class="sheet" id="omakaseSheet">
       <div class="sheet-card">
         <h3>AIおまかせワークアウト</h3>
@@ -4030,6 +4079,31 @@ input{font-family:inherit;}
         <button class="sheet-cancel" onclick="closeLesson()">とじる</button>
       </div>
     </div>
+    <!-- 30秒サーキットのプレイヤー（30秒動く→30秒その場で足踏み） -->
+    <div class="sheet" id="circuitSheet">
+      <div class="sheet-card">
+        <h3 id="cirTitle">30秒サーキット</h3>
+        <div class="sheet-desc" id="cirMeta"></div>
+        <div class="cir-stage" id="cirStage">
+          <img id="cirPhoto" alt="" width="320" height="172">
+          <div class="cs-phase" id="cirPhase">じゅんび</div>
+          <div class="cs-count" id="cirCount">30</div>
+          <div class="cs-name" id="cirName"></div>
+        </div>
+        <div class="cir-bar"><i id="cirBar" style="width:0%"></i></div>
+        <div class="cir-dots" id="cirDots"></div>
+        <div class="cir-cue" id="cirCue"></div>
+        <div class="cir-next" id="cirNext"></div>
+        <div class="cir-ctrl">
+          <button type="button" class="primary" id="cirPlayBtn" onclick="cirPlayPause()">スタート</button>
+          <button type="button" id="cirSkipBtn" onclick="cirSkip()">この種目をとばす</button>
+        </div>
+        <label class="cir-voice"><input type="checkbox" id="cirVoiceChk" onchange="cirVoiceToggle()">次の種目を音声で読み上げる</label>
+        <div class="ex-note">重さは機材ガイドのAI推奨値より<b>軽めから</b>。力を入れるときは<b>息を止めずに吐きます</b>（息こらえは血圧が上がります）。マシンが使用中のときは「この種目をとばす」で先に進めます。<br><b>胸の痛み・強い息切れ・めまい・吐き気・関節の痛みが出たら、すぐ中止して休んでください。</b>持病のある方・服薬中の方・妊娠中の方は、はじめる前にかかりつけ医にご相談ください（本アプリは診断・治療を目的とするものではありません）。</div>
+        <button class="exlog-add" onclick="cirFinish()">おわり！（ここまでを記録する）</button>
+        <button class="sheet-cancel" onclick="cirClose()">とじる</button>
+      </div>
+    </div>
     <!-- 7日間チャレンジの修了証 -->
     <div class="sheet" id="certSheet">
       <div class="sheet-card">
@@ -4353,7 +4427,7 @@ input{font-family:inherit;}
       <span class="tab-qr-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg></span>
       <span>入館QR</span>
     </button>
-    <button class="tab-btn" data-tab="training" onclick="goTab('training');renderLessonCard()">
+    <button class="tab-btn" data-tab="training" onclick="goTab('training');renderLessonCard();renderCircuitCard()">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg>
       <span>運動</span>
     </button>
@@ -5518,14 +5592,16 @@ function startMenuAsExercise(){
 
 /* ============ スマート機材ガイド（型番連動・AI推奨値） ============ */
 var machines = {
+  /* videoUrl を外した理由（2026-08-13）：videos/smile24-howto-01.mp4 は機材の使い方ではなく
+     他社の食事管理アプリの宣伝映像だった（画面に他社アプリのUIとロゴが映る）。
+     使い方が写っている差し替え素材が用意できるまでは、動画なし＝「準備中」表示に戻す。 */
   'lf-leg': { brand:'LIFE FITNESS', model:'レッグプレス OSLP', img:'images/machine-leg-sm.jpg',
-    videoUrl:'videos/smile24-howto-01.mp4',
     category:'lower', targets:['太もも','ヒップ','ふくらはぎ'],
     seat:{min:1,max:8}, weight:{min:10,max:90,step:5}, videoSec:20,
     steps:['シートに深く腰かけ、足はプレートの肩幅に置く','膝がつま先と同じ向きになるよう調整する','息を吐きながら2秒で押し、3秒かけて戻す'],
     caution:'腰に痛みがある日はご使用をお控えください' },
+  /* 同上：videos/smile24-howto-02.mp4 も他社アプリの宣伝映像だったため外した（2026-08-13） */
   'tg-lat': { brand:'TECHNOGYM', model:'ラットプルダウン SEL', img:'images/machine-lat-sm.jpg',
-    videoUrl:'videos/smile24-howto-02.mp4',
     category:'upper', targets:['背中','二の腕'],
     seat:{min:1,max:6}, weight:{min:5,max:60,step:5}, videoSec:18,
     steps:['バーを肩幅より少し広めに握る','胸を張り、バーを鎖骨に向かって引く','肩がすくまないよう、ゆっくり戻す'],
@@ -5705,7 +5781,7 @@ function openEquipDetail(key){
   } else {
     vw.classList.remove('has-video');
     vw.onclick = null;
-    vw.innerHTML = '<div class="ev-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span>動画ガイドは準備中です。下のステップとAI推奨値をご確認ください</span></div>';
+    vw.innerHTML = '<div class="ev-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span><b>この機材の動画は準備中です</b><br>いまは下の「使い方のステップ」と、あなた専用のAI推奨値（シート位置・重量）でお使いいただけます。読み上げボタンで音声でも聞けます</span></div>';
   }
   document.getElementById('eqRecTitle').textContent = state.height+'cm・「'+currentGoal().label+'」が目標のあなたへ';
   document.getElementById('eqRecSeat').textContent = rec.seat;
@@ -5731,7 +5807,286 @@ function startEquipExercise(){
   updateExercisePreview();
 }
 
-/* ============ AIおまかせワークアウト（BodyFlow式・判断ゼロ） ============ */
+/* ============ 30秒サーキット（2026-08-13・全身1周） ============
+   6ステーションを「30秒動く → 30秒その場で足踏み（アクティブレスト）」で順に回る。
+   女性向けサーキットジムで広く使われている30秒交替方式を参考にした一般的な構成で、
+   特定ブランドの名称・商標は使わない。
+   並び順の考え方：大きい筋肉から先に／背中の種目が連続しないよう中盤に有酸素／体幹は最後。
+   機材の名前・写真・注意書きは machines を唯一の出所にする（同じ文言を二重に持たない）。 */
+var CIRCUIT = {
+  work: 30, rest: 30,
+  /* 消費エネルギーは Compendium of Physical Activities のコード02035
+     「circuit training, moderate effort＝5.0メッツ」を、休憩（足踏み）を含むセッション全体に当てる。
+     kcal ＝ (メッツ−1) × 体重kg × 時間h × 1.05。
+     ⚠️ −1 は必須：baseConsumption（bmr×1.4）に1日ぶんの安静時代謝が既に入っているので、
+     5.0をそのまま「今日あと食べられる量」に足すと1MET分（純消費比で約25%）の二重計上になる。
+     歩数側の walkExtraKcal が (3.5−1) としているのと同じ考え方（2026-08-12監査 栄D-08）。
+     推計であり個人差が大きいので、画面には必ず「目安・推計」と書く（断定しない）。 */
+  met: 5.0,
+  stations: [
+    { key:'lf-leg',    cue:'背中をシートにつけたまま、2秒で押して3秒かけて戻す' },
+    { key:'tg-lat',    cue:'胸を張って、バーは鎖骨へ。肩をすくめないように' },
+    { key:'cardio',    name:'有酸素マシン（バイク・トレッドミル）', targets:['全身','心肺'],
+      cue:'会話できる速さで。息が上がりすぎたらペースを落としてOK' },
+    { key:'lf-row',    cue:'肩甲骨を寄せるイメージで引く。反動は使わない' },
+    { key:'mx-crunch', cue:'おへそをのぞきこむように、息を吐きながら丸める' },
+    { key:'mx-torso',  cue:'骨盤は動かさず、上体だけをゆっくりひねる' }
+  ]
+};
+var CIR_KEY = 'smile24_circuit';
+var cirLaps = 2;
+var cirIdx = 0, cirLap = 1, cirPhase = 'work', cirLeft = CIRCUIT.work;
+var cirTimer = null, cirRunning = false, cirWorkSec = 0, cirRestSec = 0, cirSkipped = 0, cirVoiceOn = false;
+var cirRecorded = false;   // 1回のセッションで二重に記録しないための旗
+
+function cirStation(i){ return CIRCUIT.stations[i]; }
+function cirName(st){ return st.name || (machines[st.key] ? machines[st.key].model : st.key); }
+function cirPhotoOf(st){ return machines[st.key] ? machines[st.key].img : CARDIO_PHOTO; }
+function cirKcalRaw(sec){ return (CIRCUIT.met - 1) * state.weight * (sec / 3600) * 1.05; }
+function cirEstimate(laps){
+  var sec = (CIRCUIT.work + CIRCUIT.rest) * CIRCUIT.stations.length * laps;
+  return { min: Math.round(sec / 60), kcal: Math.round(cirKcalRaw(sec)) };
+}
+/* 記録は「実際にやった分」だけを持つ。壊れていても・空でも画面を止めない */
+function loadCirState(){
+  var v = null;
+  try{ v = JSON.parse(localStorage.getItem(CIR_KEY) || 'null'); }catch(e){}
+  /* 配列が入っているとJSON.stringifyでプロパティが落ちて保存が毎回消えるので弾く
+     （loadDailyLog と同じガード） */
+  if(!v || typeof v !== 'object' || Array.isArray(v)) v = {};
+  if(!v.days || typeof v.days !== 'object' || Array.isArray(v.days)) v.days = {};
+  if(typeof v.total !== 'number' || !isFinite(v.total)) v.total = 0;
+  return v;
+}
+function saveCirState(v){ try{ localStorage.setItem(CIR_KEY, JSON.stringify(v)); }catch(e){} }
+
+function renderCircuitCard(){
+  var wrap = document.getElementById('circuitCard');
+  if(!wrap) return;
+  var est = cirEstimate(cirLaps);
+  var cs = loadCirState();
+  var keys = Object.keys(cs.days).sort();
+  var last = keys.length ? keys[keys.length - 1] : null;   // 記録ゼロの人で落とさない
+  var lastLine = last
+    ? '前回 ' + (+String(last).split('-')[1]) + '月' + (+String(last).split('-')[2]) + '日・通算 ' + cs.total + '回'
+    : 'まだ記録がありません。まずは1周からで大丈夫です';
+  var laps = [1, 2, 3].map(function(n){
+    return '<button type="button" class="' + (n === cirLaps ? 'on' : '') + '" onclick="cirSetLaps(' + n + ')">' + n + '周</button>';
+  }).join('');
+  var order = CIRCUIT.stations.map(function(st, i){
+    return '<i>' + (i + 1) + '. ' + escHtml(cirName(st)) + '</i>';
+  }).join('');
+  wrap.innerHTML =
+    '<div class="cir-card">' +
+      '<div class="cir-head">' +
+        '<div class="cir-title">30秒動いて、30秒足踏み<span>6ステーションを順番に回って全身を1周します</span></div>' +
+        '<span class="cir-badge">全身</span>' +
+      '</div>' +
+      '<div class="cir-meta">' +
+        '<div><b>' + CIRCUIT.stations.length + '</b><span>ステーション</span></div>' +
+        '<div><b>' + est.min + '</b><span>分（' + cirLaps + '周）</span></div>' +
+        '<div><b>' + est.kcal + '</b><span>kcalの目安</span></div>' +
+      '</div>' +
+      '<div class="cir-laps"><span class="cl-label">何周する？</span>' + laps + '</div>' +
+      '<div class="cir-order">' + order + '</div>' +
+      '<div class="cir-note">大きい筋肉から先に・体幹は最後、という一般に推奨される並べ方です。' +
+        'はじめる前に3〜5分の歩行などで体を温め、終わったらストレッチで整えてください。<br>' +
+        'kcalはメッツ（サーキットトレーニング・中強度＝5.0）にもとづく<b>推計の目安</b>です' +
+        '（じっとしていても使う安静時の分を差し引いた、運動でふえたぶんの目安。個人差があります）。</div>' +
+      '<button type="button" class="cir-start" onclick="cirOpen()">サーキットをはじめる</button>' +
+      '<div class="cir-last">' + lastLine + '</div>' +
+    '</div>';
+}
+function cirSetLaps(n){ cirLaps = n; renderCircuitCard(); }
+
+function cirOpen(){
+  cirIdx = 0; cirLap = 1; cirPhase = 'work'; cirLeft = CIRCUIT.work;
+  cirWorkSec = 0; cirRestSec = 0; cirSkipped = 0; cirRunning = false; cirRecorded = false;
+  clearInterval(cirTimer); cirTimer = null;
+  document.getElementById('cirPlayBtn').textContent = 'スタート';
+  document.getElementById('cirVoiceChk').checked = cirVoiceOn;
+  document.getElementById('cirMeta').textContent =
+    cirLaps + '周・' + CIRCUIT.stations.length + 'ステーション／30秒動いて30秒足踏み（約' + cirEstimate(cirLaps).min + '分）';
+  cirPaint();
+  showSheet('circuitSheet');
+}
+function cirPlayPause(){
+  if(cirRunning){ cirPause(); return; }
+  cirRunning = true;
+  document.getElementById('cirPlayBtn').textContent = '一時停止';
+  cirAnnounce();
+  cirTimer = setInterval(cirTick, 1000);
+}
+function cirPause(){
+  cirRunning = false;
+  clearInterval(cirTimer); cirTimer = null;
+  var b = document.getElementById('cirPlayBtn');
+  if(b) b.textContent = '再開';
+  cirStopVoice();
+}
+/* 画面を消す・他アプリに移ると setInterval が間引かれて秒数が実時間からずれるので、
+   さんぽ（walkAutoPause）と同じように、裏に回ったら止めて戻ったら本人に再開してもらう */
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden && cirRunning) cirPause();
+});
+function cirTick(){
+  if(cirPhase === 'work') cirWorkSec++; else cirRestSec++;
+  cirLeft--;
+  if(cirLeft <= 0) cirAdvance(); else cirPaint();
+}
+function cirIsLastRest(){
+  return cirPhase === 'rest' && cirIdx === CIRCUIT.stations.length - 1 && cirLap >= cirLaps;
+}
+function cirAdvance(){
+  if(cirPhase === 'work'){
+    cirPhase = 'rest'; cirLeft = CIRCUIT.rest;
+  } else {
+    cirPhase = 'work'; cirLeft = CIRCUIT.work;
+    cirIdx++;
+    if(cirIdx >= CIRCUIT.stations.length){
+      cirIdx = 0; cirLap++;
+      if(cirLap > cirLaps){ cirEndAll(); return; }
+      /* 1周ごとに強度のセルフチェック（心拍計が無いので主観的強度で見てもらう） */
+      showToast(cirLap + '周目に入ります。息が上がりすぎていませんか？会話できる程度が目安です');
+    }
+  }
+  cirPaint();
+  if(cirRunning) cirAnnounce();   // 一時停止中に読み上げが走らないように
+}
+/* 最後まで回りきったときの後始末。記録できるだけ動いていなくても、
+   必ずシートを閉じて状態を戻す（閉じないと「3周目 / 2周」のような有り得ない表示が残る） */
+function cirEndAll(){
+  cirPause();
+  if(cirWorkSec + cirRestSec >= 30){ cirFinish(true); return; }
+  showToast('ほとんど動いていないので、記録せずに終わります');
+  cirStopVoice();
+  hideSheet('circuitSheet');
+}
+/* マシンが使用中のときに飛ばす。運動中に押したらその種目だけを飛ばし、
+   息をととのえる30秒（足踏み）は残す。休憩中に押したら休憩を切り上げて次の種目へ進む */
+function cirSkip(){
+  if(cirPhase === 'work'){
+    cirSkipped++;
+    cirPhase = 'rest'; cirLeft = CIRCUIT.rest;
+    cirPaint();
+    if(cirRunning) cirAnnounce();
+    return;
+  }
+  cirAdvance();
+}
+function cirPaint(){
+  var st = cirStation(cirIdx);
+  var isWork = cirPhase === 'work';
+  var stage = document.getElementById('cirStage');
+  if(!stage) return;
+  stage.classList.toggle('rest', !isWork);
+  var img = document.getElementById('cirPhoto');
+  var want = isWork ? cirPhotoOf(st) : STRETCH_PHOTO;
+  if(img.getAttribute('src') !== want) img.setAttribute('src', want);
+  document.getElementById('cirPhase').textContent = isWork ? 'うごく' : 'その場で足踏み';
+  document.getElementById('cirCount').textContent = Math.max(0, cirLeft);
+  document.getElementById('cirName').textContent = isWork
+    ? (cirIdx + 1) + '／' + CIRCUIT.stations.length + '　' + cirName(st)
+    : 'リカバリー（かかとを軽く上げて足踏み）';
+  var total = isWork ? CIRCUIT.work : CIRCUIT.rest;
+  document.getElementById('cirBar').style.width = Math.round((total - Math.max(0, cirLeft)) / total * 100) + '%';
+  document.getElementById('cirDots').innerHTML = CIRCUIT.stations.map(function(_, i){
+    var cls = i < cirIdx ? 'done' : (i === cirIdx ? 'now' : '');
+    return '<i class="' + cls + '"></i>';
+  }).join('');
+  /* 機材ごとの注意書きも出す（machines[].caution が唯一の出所）。
+     30秒で自動的に次へ進む画面なので、腰や肩に不安がある人が判断する材料を毎回見せる */
+  var cueEl = document.getElementById('cirCue');
+  if(isWork){
+    var caution = machines[st.key] ? machines[st.key].caution : '';
+    cueEl.innerHTML = escHtml(st.cue) +
+      (caution ? '<span class="cir-caution">ご注意：' + escHtml(caution) + '</span>' : '');
+  } else {
+    cueEl.textContent = '止まらずに足踏みして、呼吸をととのえます。つらいときは座って休んでも大丈夫です';
+  }
+  var skipBtn = document.getElementById('cirSkipBtn');
+  if(skipBtn) skipBtn.textContent = isWork ? 'この種目をとばす' : '休憩をとばして次へ';
+  var nextEl = document.getElementById('cirNext');
+  if(isWork){
+    nextEl.textContent = cirLap + '周目 / ' + cirLaps + '周';
+  } else if(cirIsLastRest()){
+    nextEl.textContent = 'このあと終了です。おつかれさま！';
+  } else {
+    nextEl.textContent = '次は ' + cirName(cirStation((cirIdx + 1) % CIRCUIT.stations.length)) +
+      '（' + cirLap + '周目 / ' + cirLaps + '周）';
+  }
+}
+function cirAnnounce(){
+  if(!cirVoiceOn || !window.speechSynthesis) return;
+  var st = cirStation(cirIdx);
+  var text;
+  if(cirPhase === 'work'){
+    text = cirName(st) + '、30秒。' + st.cue;
+  } else if(cirIsLastRest()){
+    text = '足踏みで休憩。このあと終了です';
+  } else {
+    text = '足踏みで休憩。次は' + cirName(cirStation((cirIdx + 1) % CIRCUIT.stations.length));
+  }
+  try{
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ja-JP'; u.rate = 1.05;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function cirVoiceToggle(){
+  var chk = document.getElementById('cirVoiceChk');
+  if(chk.checked && !window.speechSynthesis){
+    chk.checked = false; cirVoiceOn = false;
+    showToast('このブラウザは音声読み上げに対応していません');
+    return;
+  }
+  cirVoiceOn = chk.checked;
+  if(!cirVoiceOn) cirStopVoice();
+}
+function cirStopVoice(){ if(window.speechSynthesis) try{ speechSynthesis.cancel(); }catch(e){} }
+function cirFinish(auto){
+  if(cirRecorded) return;                       // 二重記録の防止
+  var doneSec = cirWorkSec + cirRestSec;
+  if(doneSec < 30){ showToast('スタートして少し動いてから記録してね'); return; }
+  cirPause();
+  cirRecorded = true;
+  /* 分はレッスンと同じく四捨五入し、kcalもその分数から出す（表示と数字を食い違わせない） */
+  var minutes = Math.max(1, Math.round(doneSec / 60));
+  var kcal = Math.max(1, Math.round(cirKcalRaw(minutes * 60)));
+  /* ラベルは実際にやったことに合わせる。とばした種目があるのに「2周」とは書かない */
+  var label = (auto && cirSkipped === 0)
+    ? '30秒サーキット・' + cirLaps + '周'
+    : '30秒サーキット（' + minutes + '分' + (cirSkipped > 0 ? '・' + cirSkipped + '種目とばした' : '') + '）';
+  state.exerciseKcal += kcal;
+  state.exerciseLog.push({ label: label, minutes: minutes, kcal: kcal, ts: Date.now() });
+  setFlagToday('smile24_ex_day');   // 他の記録経路と同じく、開き直してもミッション達成が残るように
+  renderExerciseLog(); recalc();
+  var cs = loadCirState();
+  var today = dayKey(appToday());
+  cs.days[today] = (cs.days[today] || 0) + 1;
+  cs.total++;
+  saveCirState(cs);
+  cirWorkSec = 0; cirRestSec = 0;
+  cirStopVoice();
+  hideSheet('circuitSheet');
+  renderCircuitCard();
+  var msg = 'おつかれさま！ ' + minutes + '分・+' + kcal + 'kcal（推計）を記録したよ';
+  if(cirSkipped > 0) msg += '（とばした種目 ' + cirSkipped + '件）';
+  msg += '。最後にストレッチで整えてね';
+  showToast(msg);
+}
+function cirClose(){
+  /* 記録できる量（cirFinishと同じ30秒以上）動いていたら、黙って捨てずに必ず一度たずねる */
+  if(!cirRecorded && cirWorkSec + cirRestSec >= 30){
+    if(confirm('ここまでの運動を記録して終わりますか？\n「キャンセル」を選ぶと、記録せずに閉じます')){ cirFinish(false); return; }
+  }
+  cirPause();
+  cirStopVoice();
+  hideSheet('circuitSheet');
+}
+
+/* ============ AIおまかせワークアウト（判断ゼロ＝選ばなくてもメニューが決まる） ============ */
 var MENU_TO_MACHINE = { shape:'lf-leg', back:'tg-lat', abs:'mx-crunch', posture:'lf-row' };
 var okPlan = null, okSeedOffset = 0, okQuickMode = false;
 function buildOmakase(){
@@ -10711,6 +11066,11 @@ function sanitizeMemberState(){
   state.jewelWeek = [0, 0, 0, 0, 0, 0];
   state.jewelPrevMonth = 0;
   state.jewelMonthBase = 0;
+  /* 目標体重の初期デモ値（あと2.4kg・2026-09-30）も落とす。
+     本人が決めていない目標を本人のものとして見せないため（2026-08-13） */
+  state.goalDiffKg = 0;
+  state.goalDeadline = '';
+  try{ renderProfileGoal(); }catch(e){}
 }
 /* トレンド体重: 計測日の間を線形補間 → 指数移動平均（α=0.25）で平滑化。
    入浴・食事タイミング等の日々のノイズ（水分・グリコーゲン）を除くのが目的 */
@@ -11795,9 +12155,34 @@ function formatDateJP(dateStr){
   var d = new Date(dateStr+'T00:00:00');
   return (d.getMonth()+1)+'月'+d.getDate()+'日';
 }
+/* マイページの「目標体重まで あと◯kg／◯まで」。本人が決めていないのに
+   初期デモ値（あと2.4kg・9月末）が本人の目標として出ていたのを是正（2026-08-13）。
+   目標コーチ・食事タブで設定した目標（smile24_athlete）があればそれを優先して映す */
+function renderProfileGoal(){
+  /* 中身をまるごと描き直す。textContentで消すだけにすると goalDiffText/goalDeadlineText の
+     spanごと無くなり、あとから目標を決めても二度と表示できなくなる */
+  var row = document.querySelector('.pgoal');
+  if(!row) return;
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  var kg = null, deadline = null;
+  if(saved && saved.goal === 'cut' && saved.goalKg > 0 && saved.goalWeeks > 0 && saved.goalStart){
+    var p = String(saved.goalStart).split('-');
+    var de = new Date(+p[0], (+p[1]) - 1, +p[2]);
+    de.setDate(de.getDate() + Math.round(saved.goalWeeks * 7));
+    kg = saved.goalKg;
+    deadline = (de.getMonth() + 1) + '月' + de.getDate() + '日';
+  } else if(state.goalDiffKg > 0 && state.goalDeadline){
+    kg = state.goalDiffKg;
+    deadline = formatDateJP(state.goalDeadline);
+  }
+  row.innerHTML = (kg === null)
+    ? '目標体重は未設定（タップして決められます）'
+    : '目標体重まで あと <b id="goalDiffText">' + escHtml(String(kg)) + 'kg</b>／<span id="goalDeadlineText">' + escHtml(String(deadline)) + '</span>まで';
+}
 function openGoalSheet(){
-  document.getElementById('goalDiffInput').value = state.goalDiffKg;
-  document.getElementById('goalDateInput').value = state.goalDeadline;
+  document.getElementById('goalDiffInput').value = state.goalDiffKg || '';
+  document.getElementById('goalDateInput').value = state.goalDeadline || '';
   showSheet('goalSheet');
 }
 function saveGoal(){
@@ -11805,8 +12190,7 @@ function saveGoal(){
   var date = document.getElementById('goalDateInput').value || state.goalDeadline;
   state.goalDiffKg = diff;
   state.goalDeadline = date;
-  document.getElementById('goalDiffText').textContent = diff+'kg';
-  document.getElementById('goalDeadlineText').textContent = formatDateJP(date);
+  renderProfileGoal();   // 未設定表示から戻すため、要素を直接書き換えず描き直す
   renderPlan();
   hideSheet('goalSheet');
   var paceSG = diff / Math.max(1, Math.round(daysUntil(date)/7));
@@ -13414,7 +13798,7 @@ function finishLesson(){
   var firstToday = !lnState.days[today];
   lnState.days[today] = (lnState.days[today] || 0) + 1;
   lnState.last[lnCur.id] = today;
-  var msg = '「' + lnCur.title + '」おつかれさま！ +' + kcal + 'kcal';
+  var msg = '「' + lnCur.title + '」おつかれさま！ +' + kcal + 'kcal（推計）';
   /* 連続記録（本家仕様: 祝福表示＋お休み保険。1日1回だけ進む） */
   if(firstToday){
     var st = lnState.streak;
@@ -14514,7 +14898,7 @@ function toggleMealAcc(){
 /* ＋記録シート（旧チャットFABの置き換え） */
 function openRecordSheet(){ showSheet('recordSheet'); }
 
-/* ホームの表示ON/OFF（chocoZAP・Fitbitのタイル編集式の簡易版） */
+/* ホームの表示ON/OFF（タイル編集式の簡易版） */
 /* mission は 2026-08-07 にホームから削除したので入れない（要素が無くgetElementByIdがnullになる） */
 var HOME_SECTIONS = { meal:'homeSecMeal', body:'homeSecBody' };
 function loadHomePrefs(){
@@ -14601,7 +14985,20 @@ function renderDashboardExtras(){
 }
 
 /* 体重クイックカード（スタート→目標のスライダー表示） */
-var WQ_TARGET = 59.8;
+/* 目標体重は「本人が設定したもの」だけを本人の目標として出す（2026-08-13修正）。
+   これまでは全ユーザー共通の定数59.8kgを登録会員の目標として表示し、
+   下回っていれば「目標達成！本当にすごい！」と、設定してもいない目標の達成を祝っていた。
+   版表記で「登録会員の画面には実際の記録だけを出す」と約束している以上、これは看板に偽りだった。
+   体験モード（未登録）は画面上部にサンプルの常設バナーが出るので、これまでどおりサンプル値でよい。 */
+var WQ_DEMO_TARGET = 59.8;
+function memberTargetWeight(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(saved && saved.goal === 'cut' && saved.goalKg > 0 && saved.goalStartW > 0){
+    return Math.round((saved.goalStartW - saved.goalKg) * 10) / 10;
+  }
+  return isRegisteredMember() ? null : WQ_DEMO_TARGET;
+}
 function renderWeightQuick(){
   var cEl = document.getElementById('wqCurrent');
   if(!cEl) return;
@@ -14610,15 +15007,26 @@ function renderWeightQuick(){
   var cur = hist.length ? hist[hist.length-1].w : state.weight;
   var start = hist.length ? hist[0].w : state.weight;
   cEl.innerHTML = cur.toFixed(1) + '<span> kg</span>';
-  var pct = Math.min(Math.max((start-cur)/(start-WQ_TARGET), 0), 1) * 100;
-  document.getElementById('wqFill').style.width = pct + '%';
-  document.getElementById('wqThumb').style.left = pct + '%';
+  var target = memberTargetWeight();
+  var fill = document.getElementById('wqFill'), thumb = document.getElementById('wqThumb');
+  if(target === null){
+    /* 目標未設定：進み具合を出しようがないので、作らずに決め方を案内する */
+    fill.style.width = '0%'; thumb.style.left = '0%';
+    document.getElementById('wqStart').textContent = hist.length ? 'スタート ' + start.toFixed(1) + 'kg' : '記録はこれから';
+    document.getElementById('wqGoal').textContent = '目標 未設定';
+    document.getElementById('wqNote').textContent = '「食事」タブの「減量の目標を決める」で目標を決めると、ここに進み具合が出ます';
+    return;
+  }
+  var span = start - target;
+  var pct = span > 0 ? Math.min(Math.max((start - cur) / span, 0), 1) * 100 : 0;
+  fill.style.width = pct + '%';
+  thumb.style.left = pct + '%';
   document.getElementById('wqStart').textContent = 'スタート ' + start.toFixed(1) + 'kg';
-  document.getElementById('wqGoal').textContent = '目標 ' + WQ_TARGET.toFixed(1) + 'kg';
-  var remain = Math.max(Math.round((cur-WQ_TARGET)*10)/10, 0);
+  document.getElementById('wqGoal').textContent = '目標 ' + target.toFixed(1) + 'kg';
+  var remain = Math.max(Math.round((cur - target) * 10) / 10, 0);
   document.getElementById('wqNote').textContent = remain > 0
-    ? '目標まであと' + remain + 'kg。いいペースだよ！'
-    : '目標達成！本当にすごい！';
+    ? '目標まであと' + remain + 'kg'
+    : '目標の体重に届いています';
 }
 
 /* 水分補給（+250mlずつ・日付が変わるとリセット） */
@@ -14682,14 +15090,15 @@ function openRecipe(){
 }
 
 /* ============ トレンド（分析）画面 ============ */
+/* 「目標体重」「消費(実測)」はマイページの目標コーチ（週次チェックイン）と内容が重複していたため
+   2026-08-13にからだタブから外した。目標の設定は食事タブの「減量の目標を決める」＋目標コーチが正 */
 var TREND_TABS = [
   {key:'bmi', label:'BMI'},
   {key:'weight', label:'体重'},
-  {key:'goalw', label:'目標体重'},
-  {key:'tdee', label:'消費(実測)'},
   {key:'kcalin', label:'カロリー摂取'},
   {key:'kcalout', label:'カロリー消費'},
   {key:'pfc', label:'栄養素'},
+  {key:'str', label:'筋トレ'},
   {key:'water', label:'水を飲む'}
 ];
 var trendTab = 'bmi';
@@ -14715,8 +15124,6 @@ function renderTrend(){
   wrap.innerHTML =
     '<div class="trend-sec" id="trendsec-bmi">' + trendBMI() + '</div>' +
     '<div class="trend-sec" id="trendsec-weight">' + trendWeight() + '</div>' +
-    '<div class="trend-sec" id="trendsec-goalw">' + trendGoalWeight() + '</div>' +
-    '<div class="trend-sec" id="trendsec-tdee">' + trendTDEE() + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalin">' + trendKcal('in') + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalout">' + trendKcal('out') + '</div>' +
     '<div class="trend-sec" id="trendsec-pfc">' + trendPFC() + '</div>' +
@@ -14724,117 +15131,10 @@ function renderTrend(){
     '<div class="trend-sec" id="trendsec-water">' + trendWater() + '</div>';
 }
 
-/* ============ 消費エネルギー（実測）カード（2026-08-09） ============
-   本家は消費（expenditure）を毎日更新してダッシュボードに常時出す。
-   うちも「開くたびに最新の記録から計算」なので、週次チェックインの中だけでなく
-   からだタブに常時表示する。ガチ勢モード設定済みのときだけ出す（式のTDEEに
-   活動量の設定が要るため） */
-function trendTDEE(){
-  var saved = null;
-  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
-  if(!saved) return '';
-  var bmr = (saved.bf > 0)
-    ? 370 + 21.6 * (saved.w * (1 - saved.bf / 100))
-    : (saved.sex === 'M' ? 10 * saved.w + 6.25 * saved.h - 5 * saved.age + 5
-                         : 10 * saved.w + 6.25 * saved.h - 5 * saved.age - 161);
-  var formulaTdee = Math.round(bmr * (saved.act || 1.375));
-  var a = adaptiveTDEE(formulaTdee);
-  var body;
-  if(a.status === 'ok'){
-    body = '<div class="sn-v" style="font-family:var(--font-en);font-size:24px;font-weight:800;">' + a.tdee.toLocaleString() + '<span style="font-size:12px;font-weight:700;color:var(--text-mid);"> kcal/日</span></div>' +
-      '<div class="ath-note">あなたの摂取と体重変化からの逆算（直近' + ADAPT_WINDOW_DAYS + '日・' + a.usedDays + '日ぶんの食事記録・開くたびに更新）。式の見積は ' + formulaTdee.toLocaleString() + ' kcal/日</div>';
-  } else {
-    body = '<div class="ath-note">' + (a.status === 'holding'
-      ? '直近の記録が足りないため計算を保留中（食事が週4日以上・体重が週1回以上で再開します）'
-      : '食事10日ぶん・体重4回以上の記録が貯まると、式ではなく実測で出せるようになるよ') + '</div>';
-  }
-  return '<div class="trend-card">' +
-    '<div class="cc-title-row"><div><div class="cc-title">消費エネルギー（実測）</div>' +
-    '<div class="cc-sub">食べた量と体重の動きから逆算した、あなたの実際の消費</div></div></div>' +
-    body + '</div>';
-}
-
-/* ============ 目標体重カード（からだタブ・2026-08-10ユーザー要望） ============
-   「いつまでに・目標体重」を体重の文脈（からだタブ）に置き、食事のカロリーへ反映する。
-   保存は目標コーチと同一（goalKg＝開始時体重−目標体重・goalWeeks＝日数÷7 に換算） */
-function currentTrendW(){
-  var tr = trendWeightSeries(loadDayLogs().weigh);
-  return tr.length ? Math.round(tr[tr.length - 1].w * 10) / 10 : state.weight;
-}
-function goalDeadlineStr(saved){
-  var p = String(saved.goalStart).split('-');
-  var d = new Date(+p[0], (+p[1]) - 1, +p[2]);
-  d.setDate(d.getDate() + Math.round(saved.goalWeeks * 7));
-  return (d.getMonth() + 1) + '月' + d.getDate() + '日';
-}
-function trendGoalWeight(){
-  var saved = null;
-  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
-  var hasGoal = !!(saved && saved.goal === 'cut' && saved.goalKg > 0 && saved.goalWeeks > 0 && saved.goalStart);
-  var cur = currentTrendW();
-  var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 7);
-  var minDate = tomorrow.getFullYear() + '-' + ('0' + (tomorrow.getMonth() + 1)).slice(-2) + '-' + ('0' + tomorrow.getDate()).slice(-2);
-  var status, bgW = '', bgUntilVal = '';
-  if(hasGoal){
-    var dd = String(saved.goalStart).split('-');
-    var de = new Date(+dd[0], (+dd[1]) - 1, +dd[2]);
-    de.setDate(de.getDate() + Math.round(saved.goalWeeks * 7));
-    bgUntilVal = de.getFullYear() + '-' + ('0' + (de.getMonth() + 1)).slice(-2) + '-' + ('0' + de.getDate()).slice(-2);
-    var targetW = Math.round(((saved.goalStartW || cur) - saved.goalKg) * 10) / 10;
-    var remain = Math.round((cur - targetW) * 10) / 10;
-    var done = Math.max(0, Math.round((saved.goalKg - Math.max(0, remain)) * 10) / 10);
-    var pct = Math.max(0, Math.min(100, Math.round(done / saved.goalKg * 100)));
-    bgW = targetW;
-    status =
-      '<div class="cc-sub" style="margin-top:2px;">目標 <b>' + targetW.toFixed(1) + 'kg</b>・' + goalDeadlineStr(saved) + 'まで（いま ' + cur.toFixed(1) + 'kg・あと ' + Math.max(0, remain).toFixed(1) + 'kg）</div>' +
-      '<div class="m-bar" style="margin-top:7px;"><i class="mp" style="width:' + pct + '%;"></i></div>' +
-      (remain <= 0 ? '<div class="ath-note">目標に到達しています！食事タブか目標コーチから、維持への切り替えを</div>' : '');
-  } else {
-    status = '<div class="cc-sub" style="margin-top:2px;">目標体重と期日を入れると、食事タブの「1日の食べる量」がその目標に合わせて切り替わります</div>';
-  }
-  return '<div class="trend-card">' +
-    '<div class="cc-title-row"><div><div class="cc-title">目標体重</div>' + status + '</div></div>' +
-    '<div class="field-row2" style="margin-top:10px;">' +
-      '<div class="field"><label>目標体重</label><div class="unit-wrap"><input type="number" id="bgW" min="30" max="180" step="0.1" placeholder="例: 59" value="' + bgW + '" onchange="bodyGoalInput()"><span class="uw-u">kg</span></div></div>' +
-      '<div class="field"><label>いつまでに</label><input type="date" id="bgUntil" min="' + minDate + '" value="' + bgUntilVal + '" onchange="bodyGoalInput()"></div>' +
-    '</div>' +
-    '<div class="ex-note" id="bgNote">' + (hasGoal ? '変えるとその場で食事の目標カロリーも計算し直します。<a href="javascript:void(0)" onclick="bodyGoalClear()">目標をやめる</a>' : '') + '</div>' +
-    '</div>';
-}
-function bodyGoalInput(){
-  var tw = parseFloat(document.getElementById('bgW').value);
-  var until = document.getElementById('bgUntil').value;
-  var note = document.getElementById('bgNote');
-  if(!(tw > 0) || !until) return;   // 両方そろってから
-  /* 18歳未満は減量目標を設定させない（2026-08-12監査 栄D-03） */
-  if(isMinorMember()){
-    if(note) note.textContent = '18歳未満の方は成長期のため、減量目標はご利用いただけません（バランスのよい食事と記録の習慣づくりを応援します）';
-    return;
-  }
-  var cur = currentTrendW();
-  if(tw >= cur){ if(note) note.textContent = '目標体重は、いまの体重（' + cur.toFixed(1) + 'kg）より軽い値を入れてね'; return; }
-  var p = until.split('-');
-  var d = new Date(+p[0], (+p[1]) - 1, +p[2]);
-  var today = new Date(); today.setHours(0, 0, 0, 0);
-  var days = Math.round((d - today) / 86400000);
-  if(days < 7){ if(note) note.textContent = '期日は1週間以上先にしてね（急ぎすぎる目標は続きません）'; return; }
-  ensureAthleteBase();
-  athSel.goal = 'cut';
-  document.getElementById('athGoalKg').value = Math.round((cur - tw) * 10) / 10;
-  document.getElementById('athGoalWeeks').value = Math.round(days / 7 * 10) / 10;   // 週は小数で持てる（8.1週=57日）
-  applyAthlete(true);
-  refreshGoalW();
-}
-function bodyGoalClear(){
-  var saved = null;
-  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
-  if(saved && saved.goal === 'cut' && saved.goalKg > 0) clearAthlete();
-  refreshGoalW();
-}
-function refreshGoalW(){
-  var sec = document.getElementById('trendsec-goalw');
-  if(sec) sec.innerHTML = trendGoalWeight();
-}
+/* 「目標体重」カード（2026-08-10追加）は2026-08-13に削除した。
+   目標体重・期日の設定は、食事タブの「減量の目標を決める」とマイページの目標コーチが担う
+   （同じ smile24_athlete に保存する二重の入口になっていて、片方だけ直す事故のもとだった）。
+   「消費エネルギー（実測）」カードも同じ理由で削除（週次チェックインの中で見られる）。 */
 
 /* ============ 筋トレの記録（からだタブ・2026-08-07 ガチ勢要望） ============
    種目ごとに 推定1RM（Epley・10回以下のみ）とトン数の推移を見る。
@@ -15065,7 +15365,7 @@ function trendWeight(){
   });
   var delta = Math.round((cur-arr[0])*10)/10;
   var avg = Math.round(arr.reduce(function(a,b){ return a+b; },0)/arr.length*10)/10;
-  var toGoal = Math.max(Math.round((cur-WQ_TARGET)*10)/10, 0);
+  var toGoal = Math.max(Math.round((cur-WQ_DEMO_TARGET)*10)/10, 0);   // ここは体験モード専用の分岐（上でisRegisteredMemberを弾いている）
   return '<div class="trend-card">'+
     '<div class="tc-title">体重の推移（過去30日）</div>'+
     '<div class="tc-sub">毎日の小さな変化も、30日で見ると大きな前進</div>'+
@@ -15857,6 +16157,7 @@ checkStreakReminder();
    bmr×1.4 に戻した後に、ガチ勢の目標で上書きし直す順序。2026-08-07 検証役指摘の修正） */
 try{ restoreAthleteFromStorage(); }catch(e){ console.error('ガチ勢設定の復元に失敗:', e); }
 try{ renderLessonCard(); }catch(e){ console.error('おうちレッスンの初期化に失敗:', e); }
+try{ renderCircuitCard(); }catch(e){ console.error('30秒サーキットの初期化に失敗:', e); }
 /* FC店舗コードの復元（店名・料金・連絡先・ブランド色）。既定のSMILE24なら何もしない */
 try{
   var fcBoot = localStorage.getItem('smile24_store_code');
