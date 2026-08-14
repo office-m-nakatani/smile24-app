@@ -918,7 +918,8 @@ input{font-family:inherit;}
 .badge.locked .bi svg{color:#C0CBD9;}
 .badge .bt{font-size:9.5px;color:var(--text-lt);font-weight:600;}
 .badge.unlocked .bt{color:var(--text-mid);}
-.badge .bp{font-size:8px;color:var(--text-lt);margin-top:2px;line-height:1.4;min-height:1.4em;}
+/* 8px は11px下限（原則5）を割っていた。獲得条件の文が入るので折り返し前提の高さにする（2026-08-14b） */
+.badge .bp{font-size:11px;color:var(--text-lt);margin-top:3px;line-height:1.35;min-height:2.7em;}
 .badge.unlocked .bp{color:var(--gold-dk);font-weight:700;}
 
 .list-card{margin:16px 22px 0;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--card-shadow);overflow:hidden;}
@@ -1813,14 +1814,12 @@ input{font-family:inherit;}
 /* 何月何日の記録かを示す見出し */
 .meal-datehead{margin:14px 22px 0;font-size:12.5px;color:var(--text-mid);font-weight:600;}
 .meal-datehead span{font-size:15px;font-weight:700;color:var(--text);margin-right:2px;}
-/* 最近の食事（タップで履歴の全体へ） */
+/* 最近の食事（表示専用。履歴の入口は「すべて見る」だけ・2026-08-14b） */
 .recent-row{
   width:calc(100% - 44px);margin:0 22px 8px;padding:10px 12px;
   background:var(--white);border:none;border-radius:var(--radius-sm);box-shadow:var(--card-shadow);
-  display:flex;align-items:center;gap:11px;cursor:pointer;font-family:inherit;text-align:left;
-  transition:transform .15s ease;
+  display:flex;align-items:center;gap:11px;font-family:inherit;text-align:left;
 }
-.recent-row:active{transform:scale(.98);}
 .recent-row .rc-thumb{
   width:42px;height:42px;border-radius:11px;flex:0 0 auto;
   background:#EEF3FA;color:var(--brand);display:flex;align-items:center;justify-content:center;
@@ -1927,7 +1926,9 @@ input{font-family:inherit;}
    ======================================== */
 .trend-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 22px 14px;scrollbar-width:none;}
 .trend-tabs::-webkit-scrollbar{display:none;}
-.tt-chip{flex:0 0 auto;padding:9px 16px;border-radius:100px;background:var(--white);box-shadow:var(--card-shadow);font-size:11.5px;font-weight:700;color:var(--text-mid);cursor:pointer;transition:all .2s;}
+/* 実高さが約34pxで「タップ領域は最低44px」の自主ルールから漏れていた（2026-08-14b）。
+   横スクロールの挙動は変えない（sticky化・セグメント化はしない） */
+.tt-chip{flex:0 0 auto;padding:9px 16px;min-height:44px;display:flex;align-items:center;border-radius:100px;background:var(--white);box-shadow:var(--card-shadow);font-size:11.5px;font-weight:700;color:var(--text-mid);cursor:pointer;transition:all .2s;}
 .tt-chip.active{background:var(--grad-main);color:#fff;box-shadow:0 6px 16px rgba(74,133,246,.35);}
 .trend-card{margin:0 22px 14px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:18px;}
 .tc-title{font-size:13.5px;font-weight:700;}
@@ -2272,8 +2273,10 @@ input{font-family:inherit;}
 .cc-sub b, #bodyFatTrendSub b, .pfc-item.f .pv{ color:#5B3FC4; }
 /* SVGのラベルは 9〜10px のままだった。図中の文字も11pxを下限にする */
 /* グラフの軸ラベルもまとめて11pxを下限にする（個別指定だと新しいグラフを足すたびに漏れる） */
+/* viewBox幅320のグラフは375px端末で実幅約295pxに縮む（比0.92）ため、11px指定の実効値が
+   約10.1px になり原則5を割っていた。12px にして実効11px以上を確保する（2026-08-14b） */
 .tc-chart text, #trendSvg text, #weightSvg text, #bodyFatSvg text,
-svg text{ font-size:11px; }
+svg text{ font-size:12px; }
 /* カード上の小さな見出し・バッジ（元の定義が親付きなので同じ形で上書きする） */
 .omakase-card .ok-badge, .omakase-card .ok-kicker, .omakase-card .ok-quick,
 .posture-card .pc-badge, .posture-card .pc-kicker,
@@ -2592,7 +2595,7 @@ svg text{ font-size:11px; }
             <div class="ai-say-role">からだ・食事・運動の相談あいて</div>
           </div>
         </div>
-        <div class="bubble-text" id="aiSayText">おはよう！今日はたんぱく質をあと少し意識できると、理想的な1日になりそうだよ</div>
+        <div class="bubble-text" id="aiSayText">—</div>
         <button class="ai-say-btn" onclick="openChat()" aria-label="AIパートナーCocoに相談する">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           Cocoに相談する
@@ -2656,8 +2659,9 @@ svg text{ font-size:11px; }
           <div class="icon-btn" onclick="goTab('home')" title="ホームに戻る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"/></svg></div>
           <h1>AI食事診断</h1>
         </div>
+        <!-- 履歴の入口は「最近の食事＞すべて見る」の1つに統一した（2026-08-14b）。
+             同じ全件オーバーレイをこのヘッダーの時計・すべて見る・行タップの3か所から開いていた -->
         <div style="display:flex;gap:8px;">
-          <div class="icon-btn" onclick="openMealHistory()" title="過去の記録を見る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
           <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         </div>
       </div>
@@ -2668,7 +2672,8 @@ svg text{ font-size:11px; }
            の2点が不便だった。ここで選んでから camStage に進む -->
       <div id="mealSlotStage">
         <!-- いつの記録かを明示（2026-08-07・ユーザー指示） -->
-        <div class="meal-datehead"><span id="mealDateText">8月7日（金）</span>の食事の記録</div>
+        <!-- ベタ書きの日付は置かない（renderMealDate が実日付を入れる・2026-08-14b） -->
+        <div class="meal-datehead"><span id="mealDateText">—</span>の食事の記録</div>
         <div class="section-label" style="margin-top:14px;">どの食事を記録する？</div>
         <div class="slot-grid">
           <button class="slot-cell b" onclick="pickMealSlot('breakfast')">
@@ -2692,7 +2697,19 @@ svg text{ font-size:11px; }
             <div class="sc-kc" id="slotKcalDinner">－</div>
           </button>
         </div>
-        <div class="slot-hint">選ぶとカメラがひらきます。写真を撮らずに記録することもできます</div>
+        <div class="slot-hint">選ぶとカメラがひらきます。写真を使わずに記録するときは、下の「撮らずにサッと記録」「リストから選ぶ」「名前とカロリー」からどうぞ</div>
+
+        <!-- 写真を使わない記録の3導線を撮影画面から移設（2026-08-14b）。
+             以前はライブビューの下＝camStage の中にあり、pickMealSlot が無条件に
+             startMealCamera を呼ぶため、カメラ許可を出さないと写真以外の記録に
+             1つも到達できなかった。ここに置くことで、4マスを押さずに・カメラ許可を
+             一度も出さずに記録が完結する。新しいステージは作らず既存要素を移すだけ -->
+        <div class="quick-log">
+          <div class="ql-title">撮らずにサッと記録（よくある食事）</div>
+          <div class="ql-row" id="mealPresetRow"></div>
+        </div>
+        <button class="manual-meal-link" onclick="openFoodPicker(null)">写真を使わずリストから選んで記録する</button>
+        <button class="manual-meal-link" onclick="openManualMealSheet()">名前とカロリーだけをサッと入力する</button>
 
         <!-- 「今日あと食べられる量」をホームから移設（2026-08-07・ユーザー指示） -->
       <div class="budget-card">
@@ -2715,41 +2732,50 @@ svg text{ font-size:11px; }
                 </linearGradient>
               </defs>
             </svg>
+            <!-- ⚠️ ベタ書きの初期値は全部「—」にした（2026-08-14b）。初期化順が
+                 recalc（stateはまだデモ値）→initAuth→resetNutritionToday→recalc なので、
+                 登録会員にも他人の数字が一瞬見える窓が実在した（原則1）。
+                 id は1つも消さない。recalc / renderDashboardExtras が必ず実値で上書きする -->
             <div class="ring-center">
-              <div class="num" id="remainKcal">845</div>
+              <div class="num" id="remainKcal">—</div>
               <div class="unit">kcal</div>
               <div class="label" id="remainLabel">あと摂れます</div>
             </div>
           </div>
           <div class="macro-col">
             <div class="macro">
-              <div class="m-head"><span>炭水化物</span><b id="macroCarbVal">118 / 250g</b></div>
-              <div class="m-bar"><i class="mc" id="macroCarbFill" style="width:47%;"></i></div>
+              <div class="m-head"><span>炭水化物</span><b id="macroCarbVal">—</b></div>
+              <div class="m-bar"><i class="mc" id="macroCarbFill" style="width:0%;"></i></div>
             </div>
             <div class="macro">
-              <div class="m-head"><span>たんぱく質<span class="m-pct" id="proteinPct">68%</span></span><b id="macroProtVal">44 / 65g</b></div>
-              <div class="m-bar"><i class="mp" id="proteinGaugeFill" style="width:68%;"></i></div>
+              <!-- 達成率(%)は画面から消すが、recalc が無ガードで代入するので要素は必ず残す。
+                   要素ごと消すと recalc の後半（renderFoodExamples 以降の10関数）が全部止まる。
+                   ringInner と同じ「要素は残して display:none」の扱い（原則2＝達成率を書かない） -->
+              <div class="m-head"><span>たんぱく質<span class="m-pct" id="proteinPct" style="display:none;">—</span></span><b id="macroProtVal">—</b></div>
+              <div class="m-bar"><i class="mp" id="proteinGaugeFill" style="width:0%;"></i></div>
             </div>
             <div class="macro">
-              <div class="m-head"><span>脂質</span><b id="macroFatVal">34 / 60g</b></div>
-              <div class="m-bar"><i class="mf" id="macroFatFill" style="width:57%;"></i></div>
+              <div class="m-head"><span>脂質</span><b id="macroFatVal">—</b></div>
+              <div class="m-bar"><i class="mf" id="macroFatFill" style="width:0%;"></i></div>
             </div>
           </div>
         </div>
         <div class="bc-formula" aria-label="消費の見込みから目標のためのぶんと食事を引き、運動を足した残りの計算">
-          <span class="f-item"><span class="f-l" id="fConsumeLabel">今日の目標</span><b id="consumeVal">1,920</b></span>
+          <span class="f-item"><span class="f-l" id="fConsumeLabel">今日の目標</span><b id="consumeVal">—</b></span>
           <span class="f-op" id="fGoalOp" style="display:none;">−</span>
-          <span class="f-item" id="fGoalItem" style="display:none;"><span class="f-l">目標のため</span><b id="fGoalVal" style="color:var(--brand);">413</b></span>
+          <span class="f-item" id="fGoalItem" style="display:none;"><span class="f-l">目標のため</span><b id="fGoalVal" style="color:var(--brand);">—</b></span>
           <span class="f-op">−</span>
-          <span class="f-item"><span class="f-l">食べた分</span><b id="intakeVal">1,075</b></span>
+          <span class="f-item"><span class="f-l">食べた分</span><b id="intakeVal">—</b></span>
           <span class="f-op">＋</span>
-          <span class="f-item"><span class="f-l">運動した分</span><b id="exerciseAddedVal">+0</b></span>
+          <span class="f-item"><span class="f-l">運動した分</span><b id="exerciseAddedVal">—</b></span>
           <span class="f-op">＝</span>
-          <span class="f-item remain"><span class="f-l">あと</span><b id="fRemain">845</b></span>
+          <span class="f-item remain"><span class="f-l">あと</span><b id="fRemain">—</b></span>
           <span class="f-unit">kcal</span>
         </div>
         <div class="meal-score" id="mealScoreLine" style="display:none;"></div>
-        <div class="note" id="proteinNote">あと目安 <b style="color:var(--gold-dk)">18g</b> でこの日の目標を達成できるよ</div>
+        <!-- ⚠️ この要素は絶対に消さない。recalc が無ガードで参照しており、消すと
+             renderFoodExamples 以降の10関数が全部止まる（ホームの体重カードと今週の記録も死ぬ） -->
+        <div class="note" id="proteinNote">—</div>
         <div class="food-examples" id="foodExamples"></div>
       </div>
 
@@ -2815,13 +2841,9 @@ svg text{ font-size:11px; }
           <div class="cam-side-btn" onclick="flipMealCamera()" title="カメラ切替"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
         </div>
         <div class="cam-hint">撮影するだけで、写っている食べ物をAIが読み取って1品ずつ栄養計算するよ</div>
-        <div class="quick-log">
-          <div class="ql-title">撮らずにサッと記録（よくある食事）</div>
-          <div class="ql-row" id="mealPresetRow"></div>
-        </div>
-        <button class="manual-meal-link" onclick="openFoodPicker(null)">写真を使わずリストから選んで記録する</button>
-        <button class="manual-meal-link" onclick="openManualMealSheet()">名前とカロリーだけをサッと入力する</button>
-        <button class="manual-meal-link" onclick="openRecipe()">残りの栄養素からAIレシピを提案してもらう</button>
+        <!-- 写真を使わない記録の3導線は、この上のスロット選択画面へ移設した（2026-08-14b）。
+             「残りの栄養素からAIレシピを提案してもらう」は、記録リンクと同じ見た目なのに
+             押すとチャットへ飛ぶ＝記録ではなかったので削除（相談はCocoに一本化。openRecipe 本体は残す） -->
       </div>
 
       <div class="analyzing" id="analyzing">
@@ -3227,20 +3249,42 @@ svg text{ font-size:11px; }
       <div class="profile-card">
         <div class="pav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
         <div>
-          <div class="pname" id="profileName">田中 みのりさん</div>
-          <div class="pgoal">目標体重まで あと <b id="goalDiffText">2.4kg</b>／<span id="goalDeadlineText">9月末</span>まで</div>
+          <!-- ベタ書きの実名・目標をやめた（2026-08-14b）。updateMemberIdentity は account が
+               無いと即returnするため、未登録の体験では他人の実名が出続け、登録会員でも
+               上書き前の一瞬は見えていた（原則1）。renderProfileGoal が pgoal を描き直す -->
+          <div class="pname" id="profileName">ゲストさん</div>
+          <!-- renderProfileGoal が .pgoal の中身を丸ごと描き直し、必要なら
+               goalDiffText/goalDeadlineText の要素ごと作り直す（他に参照元は無い） -->
+          <div class="pgoal">目標体重は未設定（右の鉛筆から決められます）</div>
         </div>
-        <button class="edit-pencil" onclick="openGoalSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
+        <!-- 目標の編集は「目標コーチ」に一本化（2026-08-14b）。openGoalSheet 系は
+             state に書くだけで localStorage に保存されず、読み手の renderProfileGoal は
+             smile24_athlete を優先するため「押しても表示が変わらないボタン」だった。
+             goalSheet の DOM と関数本体は残してある（戻せるように） -->
+        <button class="edit-pencil" onclick="openAthleteSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
       </div>
 
       <!-- ホームの「今日のミッション」を消した分の受け皿（2026-08-07）。
            設定リストの中に置くと下の「ジュエル」トグルと紛らわしいので、
-           記録として読めるプロフィール直下に出す -->
-      <div class="streak-card" id="jewelRecordRow" onclick="openJewelSheet()" role="button" tabindex="0">
+           記録として読めるプロフィール直下に出す。
+           2026-08-14b：下にあった「レベルとがんばりの記録」と名前がほぼ同じで飛び先だけ違う
+           状態だったので、レベル表示をこのカードへ移して1枚に統合した。
+           飛び先は openWeeklyReport（今週の来館・連続来館・体重の変化・平均消費を実測で出す）。
+           ⚠️ openJewelSheet と jewelSheet はコードごと残してある。ジュエル総数が localStorage に
+              保存されず起動のたび0に戻る＝「記録」として成立していないため入口だけ外した。
+              永続化したら入口を戻してよい（そのとき addJewels の保存も必ず入れること） -->
+      <div class="streak-card" id="jewelRecordRow" onclick="openWeeklyReport()" role="button" tabindex="0">
         <span class="sk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
         <div>
-          <div class="sk-t">頑張りの記録</div>
-          <div class="sk-v" id="streakLval">5日連続 来館中</div>
+          <div class="sk-t">がんばりの記録</div>
+          <div class="sk-v" id="streakLval">—</div>
+          <!-- ⚠️ renderLevel は3行とも if(el) ガード付き。移設に失敗しても例外は出ず
+               「黙ってレベル表示が消える」形になるので、目視で必ず確認すること -->
+          <div class="level-chip" style="margin-top:6px;">
+            <span class="lv-num" id="lvNum">LV.—</span>
+            <span class="lv-bar"><i id="lvBarFill" style="width:0%"></i></span>
+            <span class="lv-next" id="lvNext">—</span>
+          </div>
         </div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
@@ -3259,18 +3303,8 @@ svg text{ font-size:11px; }
         <button class="edit-pencil" onclick="openBmrSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></button>
       </div>
 
-      <!-- レベル・ポイント（ホームから移設・2026-08-04b） -->
-      <div class="setting-card" onclick="openWeeklyReport()" style="cursor:pointer;">
-        <div>
-          <div class="sl">レベルとがんばりの記録</div>
-          <div class="level-chip" style="margin-top:6px;">
-            <span class="lv-num" id="lvNum">LV.7</span>
-            <span class="lv-bar"><i id="lvBarFill" style="width:40%"></i></span>
-            <span class="lv-next" id="lvNext">次まで 120ポイント</span>
-          </div>
-        </div>
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--text-lt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
-      </div>
+      <!-- 「レベルとがんばりの記録」はここにあったが、上の「がんばりの記録」と名前がほぼ同じで
+           飛び先だけが違う二重カードだったため、レベル表示を上へ移して削除した（2026-08-14b） -->
 
       <!-- ヘルスケア連携（ホームから移設・2026-08-04b。連携は設定の仕事） -->
       <div class="setting-card" onclick="showToast('ヘルスケア連携は、アプリストア版（正式リリース）で対応予定です。それまでは運動記録ボタンから手動で記録してね')" style="cursor:pointer;">
@@ -3281,63 +3315,35 @@ svg text{ font-size:11px; }
         <span class="ah-soon">準備中</span>
       </div>
 
-      <div class="chart-card">
-        <div class="cc-title">日々のカロリー推移</div>
-        <div class="cc-sub">運動や食事の記録がリアルタイムで反映されます</div>
-        <svg viewBox="0 0 320 120" width="100%" height="120" id="trendSvg"></svg>
-        <div class="chart-legend" id="trendLegend">
-          <span><i style="background:#4A85F6"></i>摂取カロリー</span>
-          <span><i style="background:#6FD6AC"></i>消費カロリー</span>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="cc-title-row">
-          <div>
-            <div class="cc-title">週間 体重推移</div>
-            <div class="cc-sub" id="weightTrendSub" style="margin-bottom:0;">—</div>
-          </div>
-          <button class="edit-pencil" onclick="openWeightSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-        </div>
-        <svg viewBox="0 0 320 110" width="100%" height="110" id="weightSvg" style="margin-top:10px;"></svg>
-        <div class="cc-encourage" id="weightEncourage">その調子！確実に前に進んでるよ</div>
-      </div>
-
-      <div class="chart-card" id="bodyFatCard">
+      <!-- 「日々のカロリー推移」「週間 体重推移」「週間 栄養バランス」の3枚は削除した（2026-08-14b）。
+           いずれも「からだ」タブが同じ実測をより詳しく描いており、別スケール・別配色の
+           二重表示になっていた。推移＝からだタブ、に一本化する。
+           ⚠️ 関数（renderTrendChart / renderWeightChart / renderWeekPfc）と呼び出しは残してある。
+              いずれも冒頭に要素ガードがあり、描画先が無ければ静かに return する。
+           体脂肪率だけはここに残す（からだタブへ移すには renderTrend が #trendContent を
+           毎回作り直す構造に合わせた呼び出し規約を新しく作る必要があり、今回のスコープ外） -->
+      <div class="chart-card" id="bodyFatCard" role="button" tabindex="0" onclick="openWeightSheet()" style="cursor:pointer;">
         <div class="cc-title-row">
           <div>
             <div class="cc-title">体脂肪率の推移</div>
             <div class="cc-sub" id="bodyFatTrendSub" style="margin-bottom:0;">—</div>
           </div>
+          <!-- 空状態が「体重と一緒に体脂肪率を記録すると出る」と案内するのに、記録の入口が
+               削除した体重カード側にしか無かった。カード自体をタップで記録シートに繋ぐ -->
+          <button class="edit-pencil" onclick="event.stopPropagation();openWeightSheet()" aria-label="体重・体脂肪率を記録する"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
         <svg viewBox="0 0 320 110" width="100%" height="110" id="bodyFatSvg" style="margin-top:10px;"></svg>
       </div>
 
-      <div class="chart-card">
-        <div class="cc-title">週間 栄養バランス</div>
-        <div class="cc-sub" id="weekPfcSub">サンプル表示です</div>
-        <svg viewBox="0 0 320 100" width="100%" height="100" id="weekPfcSvg">
-          <g font-family="Poppins">
-          <rect x="8"  y="40" width="24" height="22" fill="#7FAFFA"/><rect x="8"  y="62" width="24" height="14" fill="#C3B5FD"/><rect x="8"  y="76" width="24" height="18" fill="#8EC6FB"/>
-          <rect x="50" y="34" width="24" height="28" fill="#7FAFFA"/><rect x="50" y="62" width="24" height="12" fill="#C3B5FD"/><rect x="50" y="74" width="24" height="20" fill="#8EC6FB"/>
-          <rect x="92" y="46" width="24" height="16" fill="#7FAFFA"/><rect x="92" y="62" width="24" height="16" fill="#C3B5FD"/><rect x="92" y="78" width="24" height="16" fill="#8EC6FB"/>
-          <rect x="134" y="38" width="24" height="24" fill="#7FAFFA"/><rect x="134" y="62" width="24" height="14" fill="#C3B5FD"/><rect x="134" y="76" width="24" height="18" fill="#8EC6FB"/>
-          <rect x="176" y="30" width="24" height="32" fill="#7FAFFA"/><rect x="176" y="62" width="24" height="12" fill="#C3B5FD"/><rect x="176" y="74" width="24" height="20" fill="#8EC6FB"/>
-          <rect x="218" y="50" width="24" height="12" fill="#7FAFFA"/><rect x="218" y="62" width="24" height="18" fill="#C3B5FD"/><rect x="218" y="80" width="24" height="14" fill="#8EC6FB"/>
-          <rect x="260" y="42" width="24" height="20" fill="#7FAFFA"/><rect x="260" y="62" width="24" height="15" fill="#C3B5FD"/><rect x="260" y="77" width="24" height="17" fill="#8EC6FB"/>
-          <text x="14" y="108" font-size="10" fill="#5A6778">月</text><text x="56" y="108" font-size="10" fill="#5A6778">火</text>
-          <text x="98" y="108" font-size="10" fill="#5A6778">水</text><text x="140" y="108" font-size="10" fill="#5A6778">木</text>
-          <text x="182" y="108" font-size="10" fill="#5A6778">金</text><text x="224" y="108" font-size="10" fill="#5A6778">土</text>
-          <text x="266" y="108" font-size="10" fill="#5A6778">日</text>
-          </g>
-        </svg>
-        <div class="chart-legend">
-          <span><i style="background:#7FAFFA"></i>たんぱく質</span>
-          <span><i style="background:#C3B5FD"></i>脂質</span>
-          <span><i style="background:#8EC6FB"></i>炭水化物</span>
-        </div>
-        <div class="pfc-explain">縦の棒の高さは、その日食べた栄養素の「量（グラム）」を表しています。3色を積み上げて1本の棒にすることで、1日の栄養バランスがひと目でわかるようになっています。棒が高い日ほどしっかり食べられた日、色の偏りが大きい日は栄養バランスを見直すサインです。</div>
-      </div>
+      <!-- 消した3枚の行き先を1本だけ用意する（新しい部品は作らず既存クラスを流用） -->
+      <button class="plan-edit-link" onclick="goTab('trend');renderTrend()">からだタブで推移を見る</button>
+
+      <!-- 「週間 栄養バランス」を削除した（2026-08-14b）。からだタブの栄養素バランスと重複する上に、
+           棒グラフの座標が固定のベタ書き＝実データではないサンプルだった（サブに「サンプル表示です」）。
+           renderWeekPfc がこれを未登録会員に実データの顔で見せており、原則1・3の違反だった。
+           カードごと消したので、サンプルSVGも renderWeekPfc の未登録分岐も同時に到達不能になる
+           （renderWeekPfc 本体は saveNutritionToday と初期化から呼ばれるので残す。冒頭の
+            要素ガードで静かに return する） -->
 
       <div class="plan-card">
         <div class="pc-head">
@@ -3361,6 +3367,11 @@ svg text{ font-size:11px; }
         </div>
         <!-- 速すぎるペースの警告（saveGoalは任意のkg・日付を受けるため・2026-08-12監査 栄D-04） -->
         <div id="planPaceWarn" style="display:none;background:#FDF0EC;border:1.5px solid #E8A08B;border-radius:10px;padding:9px 12px;margin-top:10px;font-size:11.5px;font-weight:600;color:#A6482E;"></div>
+        <!-- 目標が未設定のときはこれだけを出す（2026-08-14b）。以前はここに NaN週間・NaN月NaN日が
+             出ていた。カードと9つのidは消さずに、中身の3ブロックを隠して差し替える -->
+        <div id="planNoGoal" style="display:none;font-size:12.5px;color:var(--text-mid);line-height:1.7;padding:4px 2px;">
+          目標を決めると、ここに運動プランの目安が出ます。下の「目標体重・期日を編集する」から設定できます。
+        </div>
 
         <div class="plan-list">
           <div class="plan-item">
@@ -3387,7 +3398,8 @@ svg text{ font-size:11px; }
           <div class="ps-note" id="goalForecast" style="margin-top:6px;color:var(--gold-dk);font-weight:700;"></div>
         </div>
 
-        <button class="plan-edit-link" onclick="openGoalSheet()">目標体重・期日を編集する</button>
+        <!-- 目標の編集UIは「目標コーチ」1つに統一（2026-08-14b）。ここはそこへのリンク -->
+        <button class="plan-edit-link" onclick="openAthleteSheet()">目標体重・期日を編集する</button>
       </div>
 
       <div class="section-label">獲得バッジ</div>
@@ -3401,12 +3413,15 @@ svg text{ font-size:11px; }
       <div class="section-label">お友達紹介プログラム</div>
       <div class="referral-card">
         <div class="rf-title" style="display:flex;align-items:center;gap:7px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;flex:0 0 auto;"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>紹介で、ふたりともお得に</div>
-        <div class="rf-desc">お友達：入会金¥0＋初月半額 ／ あなた：<b>月会費1ヶ月半額</b>。下のコードを送るだけ！</div>
-        <div class="rf-code"><span class="code" id="refCode">MINORI-24</span><button onclick="copyRefCode()">コピー</button></div>
-        <button class="rf-line-btn" onclick="shareRefLine()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.2 0-2.4-.3-3.4-.8L3 21l1.8-4.9A8.5 8.5 0 1 1 21 11.5z"/></svg>
-          LINEで友達に送る
-        </button>
+        <div class="rf-desc">お友達：入会金¥0＋初月半額 ／ あなた：<b>月会費1ヶ月半額</b></div>
+        <!-- 紹介コードの概念そのものをやめた（2026-08-14b・ユーザー確認済み）。
+             #refCode は JS から一度も代入されない固定値で、全会員に同じ他人のコード
+             「MINORI-24」が出ており（原則1）、コピーして送っても特典が成立しなかった。
+             会員番号からの自動生成も、店舗が発行も把握もしていない文字列を実在の顔で
+             出すことになるので採らない。
+             ⚠️ copyRefCode は #refCode を無ガードで読むため、コード表示とコピーボタンは
+                必ず同時に消すこと（片方だけ残すとタップで例外）。関数本体は残してある -->
+        <div class="rf-desc" style="margin-top:8px;font-weight:700;">ご利用のときは、ご来店時に受付でお申し出ください。</div>
       </div>
 
       <div class="section-label">設定</div>
@@ -3417,7 +3432,8 @@ svg text{ font-size:11px; }
         <div class="list-item" onclick="openPrivacySheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg><span>プライバシー設定</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openFontSizeSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span>文字サイズ</span><span class="lval" id="fontSizeLval">標準</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="openFcSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="13" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="10" cy="19" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg><span>店舗（FC・店舗コードで切替）</span><span class="lval" id="fcLval">スマイル24</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="list-item" onclick="showSheet('sosSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>緊急連絡先・SOS</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <!-- 「緊急連絡先・SOS」はここにもあったが、同じ画面のヘッダー右上と同じ showSheet('sosSheet')。
+             緊急導線は1画面につきヘッダーの1つに統一した（食事タブ・からだタブと同じ形・2026-08-14b） -->
         <!-- スタッフゼロ時間帯の受け皿（2026-08-12監査 M-10） -->
         <div class="list-item" onclick="showSheet('faqSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .3c0 1.7-2.5 2.2-2.5 3.7"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>よくある質問（FAQ）</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
@@ -3427,7 +3443,15 @@ svg text{ font-size:11px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-14a</b>（<b>画面の並びを大きく作り直しました</b>。「どこに何があるか分からない」「同じものが2か所にある」を無くすための刷新です。①<b>ホームに「きょうの記録」を常に表示</b>：歩数・水分・体重の3行が、開かなくても最初から見えるようになりました。水は<b>「＋1杯」を押すだけ</b>、体重と歩数はその場でシートが開きます。これまでは折りたたまれていて、開いても水分はさらに下の方にあり、実質たどり着けませんでした。②<b>ホームの「今日の食事」を削除</b>：下の「食事」タブに同じ4マス（朝・昼・おやつ・夕）があり、まったく同じことが2か所からできていました。食事の記録・履歴・きょうの量は、すべて食事タブにまとまります。③<b>運動タブを「ジムで」と「おうちで」の2つに分けました</b>：上の切り替えボタンで、いま必要な方だけが出ます。ジム側＝30秒サーキット・機材ガイド・今日のおすすめコース・AIおまかせ・姿勢診断・来館の記録。おうち側＝おうちレッスン（動画12本）・さんぽの計測・Cocoへの相談。<b>どちらでやっても記録は同じ1か所にまとまります</b>（どちらが良い・悪いもありません）。いま来館中のときだけ自動で「ジムで」が開き、その理由も1行出します。<b>手で切り替えれば、そちらが優先されます</b>。④<b>混雑の目安をホームに移しました</b>：出かける前に見る情報なので、入館QRと同じ画面にあるべきでした（時間帯の傾向で、いまの人数を数えているものではありません）。⑤<b>「今週の記録」を追加</b>：なにか1つでも記録した日に色がつく、7つの点です。達成率や「あと◯回」は出しません。⑥ホームで条件によって出る案内（目標の内訳・今週の見直し）は下にまとめ、<b>記録の3行が毎日おなじ位置にある</b>ようにしました）<br><br>――以下は前版までの履歴――<br>版 2026-08-13a（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-14b</b>（<b>「同じものが2か所にある」の整理と、正直さの手直し</b>です。①<b>写真を使わない記録を、食事タブの最初の画面に移しました</b>：「撮らずにサッと記録」「リストから選ぶ」「名前とカロリー」の3つが、カメラを開かなくても押せる位置に来ました。これまでは撮影画面の下にあり、カメラの許可を出さないと1つもたどり着けませんでした。②<b>記録を保存したあと、ホームではなく食事の画面に戻ります</b>：4マスと「今日あと食べられる量」がその場で新しくなります。あわせて、<b>保存後もカメラが動き続けていた不具合を直しました</b>。③<b>記録の日付が、実際の日付と時刻になりました</b>（これまでは固定の日付が入っていました）。④<b>「あと◯g」「あと◯日」「達成率◯%」の表示をやめました</b>：足りない分を数字で言われるより、いまの実測と目安を並べて出すほうが続けやすいためです。バッジの説明も「どうすればもらえるか」に変えました。⑤<b>「からだ」タブ</b>：BMIは<b>いつの体重で計算したか</b>を出すようにし、「適正体重」という呼び方をやめて「BMI22のときの体重」＋「一般的な指標です（あなたの目標ではありません）」に。栄養素バランスは<b>記録の無い日を0の棒で描くのをやめ「—」</b>に（すぐ上のカロリーのグラフと揃えました）。水分は記録が今日ぶんしか残らないので<b>「7日間」をやめて「今日」</b>の表示にしました。消費のカードは<b>「今日の総消費（基礎代謝込み・推計）」</b>と名前を変え、内訳を出しています。グラフの文字も大きくしました。⑥<b>マイページを整理しました</b>：「日々のカロリー推移」「週間 体重推移」「週間 栄養バランス」の3枚は「からだ」タブと同じ内容だったので、<b>推移はからだタブに一本化</b>しました（1行のリンクを置いています）。なお週間 栄養バランスは<b>実際の記録ではないサンプルの絵</b>でした。名前がほとんど同じだった「頑張りの記録」と「レベルとがんばりの記録」も<b>1枚にまとめました</b>。⑦<b>目標を決めていない方の画面を直しました</b>：運動プランの週数と日付に数字でない文字が出ていたのをやめ、目標を決めるまでは「目標を決めるとプランが出ます」と表示します。<b>決めていないのに「目標達成」バッジが点いていた</b>のも直しました。目標の編集は「目標コーチ」1つに統一しています。⑧<b>お友達紹介のコード表示をやめました</b>：全員に同じ固定のコードが出ていて、送っても特典になりませんでした。ご利用のときは受付でお申し出ください（特典の内容は変わりません）。⑨小さすぎた文字（バッジの説明・グラフの軸）を11px以上にし、「からだ」タブの上部ボタンを押しやすい高さにしました）</p>
+
+      <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
+           1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
+           マイページのスクロールが終わらなかった。読めるようにするなら設定に「更新履歴」シートを
+           新設する（今回はユーザー判断でコメント退避を選択）。
+           ⚠️ この中にASCIIの -- を書かないこと（コメントが途中で閉じてHTMLが壊れる）
+――以下は前版までの履歴――<br>版 2026-08-13a（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）
+      -->
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -4955,11 +4979,13 @@ const state = {
     {d:'木', f:23.8},
     {d:'金', f:23.6}
   ],
+  /* ⚠️ date の書式は mealLogDate() と完全に一致させること（2026-08-14b）。
+     ずれると、同じ日の記録が「7月1日（水）」と「7/1（水）」の2グループに割れて履歴に並ぶ */
   mealLog: [
-    {date:'7/1（水）', time:'19:10', name:'鮭の塩焼き定食', icon:'bento', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Breakfast_of_grilled_salmon%2C_miso_soup_and_rice_by_jetalone.jpg/330px-Breakfast_of_grilled_salmon%2C_miso_soup_and_rice_by_jetalone.jpg', kcal:612, p:32, f:18, c:68},
-    {date:'7/1（水）', time:'12:30', name:'鶏むね肉のサラダ', icon:'salad', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Chicken_Cobb_Salad_-_PINSTACK_Plano_%282015-04-10_19.42.14_by_Nan_Palmero%29.jpg/330px-Chicken_Cobb_Salad_-_PINSTACK_Plano_%282015-04-10_19.42.14_by_Nan_Palmero%29.jpg', kcal:420, p:35, f:12, c:38},
-    {date:'6/30（火）', time:'19:20', name:'豆腐と野菜の鍋', icon:'soup', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Yud%C5%8Dfu_001.jpg/330px-Yud%C5%8Dfu_001.jpg', kcal:390, p:26, f:14, c:36},
-    {date:'6/30（火）', time:'08:15', name:'ヨーグルトとフルーツ', icon:'berry', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yogurt_fruit_bowl.jpg/330px-Yogurt_fruit_bowl.jpg', kcal:280, p:14, f:6, c:42}
+    {date:'7月1日（水）', time:'19:10', name:'鮭の塩焼き定食', icon:'bento', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Breakfast_of_grilled_salmon%2C_miso_soup_and_rice_by_jetalone.jpg/330px-Breakfast_of_grilled_salmon%2C_miso_soup_and_rice_by_jetalone.jpg', kcal:612, p:32, f:18, c:68},
+    {date:'7月1日（水）', time:'12:30', name:'鶏むね肉のサラダ', icon:'salad', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Chicken_Cobb_Salad_-_PINSTACK_Plano_%282015-04-10_19.42.14_by_Nan_Palmero%29.jpg/330px-Chicken_Cobb_Salad_-_PINSTACK_Plano_%282015-04-10_19.42.14_by_Nan_Palmero%29.jpg', kcal:420, p:35, f:12, c:38},
+    {date:'6月30日（火）', time:'19:20', name:'豆腐と野菜の鍋', icon:'soup', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Yud%C5%8Dfu_001.jpg/330px-Yud%C5%8Dfu_001.jpg', kcal:390, p:26, f:14, c:36},
+    {date:'6月30日（火）', time:'08:15', name:'ヨーグルトとフルーツ', icon:'berry', photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Yogurt_fruit_bowl.jpg/330px-Yogurt_fruit_bowl.jpg', kcal:280, p:14, f:6, c:42}
   ]
 };
 /* たんぱく質・脂質・炭水化物の1日目標を体重×目的から導出する（2026-08-04導入）。
@@ -4983,6 +5009,33 @@ const TODAY = new Date(2026,6,2); // 2026年7月2日（デモ基準日・未登�
 /* 今日の基準日を一本化：登録会員は実時刻、未登録のデモ体験だけ固定日を返す。
    固定TODAYのまま実会員の残り日数・年齢・曜日が約6週ズレていた（2026-08-12監査 栄D-05） */
 function appToday(){ return isRegisteredMember() ? new Date() : new Date(TODAY.getTime()); }
+/* 食事ログの日付・時刻（2026-08-14b）。以前は '7/2（木）・今日' / 'たった今' がベタ書きで、
+   今日記録しても実測ログに偽の日付が入り、同じ画面上部の日付見出し（mealDateText / bcDate）と
+   食い違っていた（原則1）。表示のグルーピングは renderMealHistory が m.date の文字列で行うので、
+   見出しと同じ書式に揃える。既存端末に残る古い '7/2（木）・今日' は1グループ残るだけで例外は出ない */
+/* ⚠️ 「・今日」を保存値に含めない（2026-08-14b検証・軽微1/2）。
+   含めると、昨日記録したぶんも翌日以降ずっと「・今日」のまま残り、履歴に「今日」が複数並ぶ。
+   「今日」かどうかは表示時に判定する（renderMealHistory）。
+   書式は食事タブ上部の見出し（renderMealDate）と完全に同じにする */
+function mealLogDate(){
+  var d = appToday();
+  var wd = ['日','月','火','水','木','金','土'][d.getDay()];
+  return (d.getMonth()+1) + '月' + d.getDate() + '日（' + wd + '）';
+}
+function mealLogTime(){
+  var d = appToday();
+  return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+/* 食事ログの日付を「◯月◯日（曜）」に寄せる（2026-08-14b・2巡目軽微1）。
+   版2026-08-14a以前の端末には '8/14（金）・今日' 形式のレコードが残っており、
+   そのまま束ねると同じ日が2グループに割れて、当日の合計まで分かれて見える。
+   ⚠️ 保存データは書き換えない（表示とグルーピングのときだけ寄せる）。
+      翌日には smile24_nutrition_today が破棄されて自然に消えるので、移行処理は持たない */
+function normalizeMealDateKey(s){
+  var v = String(s == null ? '' : s).replace('・今日', '');
+  var m = v.match(/^(\d{1,2})\/(\d{1,2})(（.）)?$/);
+  return m ? (m[1] + '月' + m[2] + '日' + (m[3] || '')) : v;
+}
 
 // 時間帯別の混雑目安（0=空いている〜1=混雑・過去傾向のデモ値。実店舗の実測データに差し替え可能）
 const CONGESTION_BY_HOUR = [0.15,0.1,0.08,0.05,0.05,0.1,0.35,0.55,0.4,0.25,0.2,0.3,0.35,0.25,0.2,0.25,0.35,0.6,0.85,0.9,0.75,0.55,0.35,0.2];
@@ -5503,6 +5556,9 @@ function saveWeight(){
   renderWeightQuick();
   renderBadges();
   renderGoalForecast();
+  /* からだタブを開いたまま体重を記録したとき、BMI・体重推移・体脂肪が古いままになるのを防ぐ
+     （2026-08-14b検証・致命1）。この関数は recalc を通らないので個別に呼ぶ必要がある */
+  if(typeof refreshTrendIfVisible === 'function') refreshTrendIfVisible();
   hideSheet('weightSheet');
   showToast('記録したよ！記録できるだけでえらい');
 }
@@ -5537,9 +5593,18 @@ function renderBodyFatChart(){
     '<polyline points="'+pts+'" fill="none" stroke="#8B72F0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
     dots + lastLabel + labels;
   var delta = Math.round((days[lastIdx].f - days[0].f)*10)/10;
-  document.getElementById('bodyFatTrendSub').innerHTML = 'この期間 <b style="color:#8B72F0">' + (delta>0 ? '+' : '') + delta + '%</b>';
+  /* 冒頭に svgEl ガードはあるが末尾だけ素通しだった。将来この要素だけ移設・削除しても落ちないようにする */
+  var fsub = document.getElementById('bodyFatTrendSub');
+  if(fsub) fsub.innerHTML = 'この期間 <b style="color:#8B72F0">' + (delta>0 ? '+' : '') + delta + '%</b>';
 }
 function renderWeightChart(){
+  /* ⚠️ 描画先が無いときは何もしない。この関数は saveWeight(5501) の途中から呼ばれ、
+     5570・5588・5589 が無ガードで weightSvg / weightTrendSub / weightEncourage を触るため、
+     カードを消した画面で例外を出すと以降の renderBodyFatChart・renderWeightQuick・renderBadges・
+     renderGoalForecast・hideSheet・showToast が全部飛ぶ（＝記録してもシートが閉じない）。
+     体重の実測が2件たまるまで再現しない＝新規端末のスモークテストをすり抜ける種類の事故 */
+  var svgW = document.getElementById('weightSvg');
+  if(!svgW) return;
   var days = state.weightHistory;
   /* 登録会員で実測が少ないうちは、グラフを作らず正直に空状態を出す（2026-08-12監査 D-02） */
   if(!days || days.length < 2){
@@ -6829,12 +6894,14 @@ function renderMealRecent(){
     var thumb = m.photo
       ? '<div class="rc-thumb photo" style="background-image:url(\'' + String(m.photo).replace(/'/g, '%27') + '\');"></div>'
       : '<div class="rc-thumb">' + (ICON[m.icon] || ICON.bento) + '</div>';
-    return '<button class="recent-row" onclick="openMealHistory()">' + thumb +
+    /* 表示専用の行にした（2026-08-14b）。以前は button で、押すと全件履歴が開いたが、
+       その行の詳細が出るわけではなく「すべて見る」と同じ着地先だった＝押す意味が無い。
+       山形（rc-chev）も外して、押せそうに見せない */
+    return '<div class="recent-row">' + thumb +
       '<div class="rc-info"><div class="rc-name">' + escHtml(m.name) + '</div>' +
       '<div class="rc-when">' + escHtml(String(m.date).replace('・今日', '')) + ' ' + escHtml(m.time) + '</div></div>' +
       '<div class="rc-kcal">' + m.kcal + '<span>kcal</span></div>' +
-      '<svg class="rc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
-      '</button>';
+      '</div>';
   }).join('');
 }
 /* 食事画面の日付見出し（何月何日の記録か） */
@@ -8148,12 +8215,15 @@ function capture(){
     openFoodPicker(pendingMealPhoto, r ? applySeasonBoost(r.rank) : null, r ? r.nonfood : null);
   });
 }
-function retake(){
-  document.getElementById('resultWrap').classList.remove('active');
-  /* 選択画面と撮影画面は排他。ここで選択画面を閉じないと2つ並ぶ（2026-08-07） */
-  var pick = document.getElementById('mealSlotStage');
-  if(pick) pick.style.display = 'none';
-  document.getElementById('camStage').style.display='block';
+/* 1食ぶんの下書きを白紙に戻す（2026-08-14b に retake から切り出し）。
+   ⚠️ 画面の出し分けはしない。呼び出し側が「次にどの画面を出すか」を決める。
+   保存後にホームへ飛ばさず食事タブへ戻す変更（saveMeal）と、プリセット記録の
+   手書きコピーを1本化するために独立させた。項目を足すときは必ずここに足すこと
+   （複製すると「半分残した」が次の食事へ持ち越される種類のバグが再発する。
+    実測: 和朝食529kcal→2回目265kcal） */
+function resetMealDraft(){
+  var rw = document.getElementById('resultWrap');
+  if(rw) rw.classList.remove('active');
   pendingMealPhoto = null;
   pendingMealPhotoRaw = null;
   mealSel = [];
@@ -8178,6 +8248,13 @@ function retake(){
   fpSideAsked = false;
   addonTab = null;
   applyResultPhoto(null);
+}
+function retake(){
+  resetMealDraft();
+  /* 選択画面と撮影画面は排他。ここで選択画面を閉じないと2つ並ぶ（2026-08-07） */
+  var pick = document.getElementById('mealSlotStage');
+  if(pick) pick.style.display = 'none';
+  document.getElementById('camStage').style.display='block';
   startMealCamera();
 }
 
@@ -8595,8 +8672,15 @@ function fpSidePick(n){
 function cancelFoodPick(){
   fpTemp = null;
   hideSheet('foodPickSheet');
-  // 結果画面が出ていなければ撮影ステージへ戻す
-  if(!document.getElementById('resultWrap').classList.contains('active')) retake();
+  // 結果画面が出ていれば何もしない（従来どおり）
+  if(document.getElementById('resultWrap').classList.contains('active')) return;
+  /* どこから開いたかで戻り先を変える（2026-08-14b）。
+     「リストから選んで記録する」をスロット選択画面へ移したので、そこから開いてキャンセルした人を
+     retake() に落とすと、写真を撮る気が無いのにカメラが起動する（今回潰した問題そのものの再発）。
+     新しい状態変数は増やさず、いま出ている画面を見て判断する */
+  var pick = document.getElementById('mealSlotStage');
+  if(pick && pick.style.display !== 'none'){ showMealSlotPick(); return; }
+  retake();
 }
 function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -9819,9 +9903,12 @@ function addAddonToPick(ai){
 }
 
 /* ── 朝食などのプリセット（1タップで内訳ごと記録画面へ） ── */
+/* ⚠️ 添字で参照される（renderMealPresets が map で index を埋め込む）。並びを変えるときは
+   MEAL_PRESETS の添字を直書きしている箇所が無いか grep してから触ること。
+   『プロテイン・水割り1杯』は削除（2026-08-14b）。＋記録FABの quickLogProtein と同一品目・
+   同一保存先なのに、こちらは確認画面ありの3タップ・FAB側は1タップで、入口が2つある意味が無かった。
+   正はFAB側（他に入口が無い）。 */
 var MEAL_PRESETS = [
-  /* 毎日飲む人向け（2026-08-07・ガチ勢要望）。先頭＝いちばん押しやすい位置 */
-  { name:'プロテイン', sub:'水割り1杯', foods:[['プロテインドリンク(水割り)',1]] },
   { name:'和朝食', sub:'ご飯・みそ汁・納豆・焼き鮭', foods:[['白ご飯',1],['味噌汁',1],['納豆',1],['焼き鮭',1]] },
   { name:'うどん（朝・昼）', sub:'かけうどん＋おにぎり', foods:[['かけうどん',1],['鮭おにぎり',1]] },
   { name:'パン朝食', sub:'トースト・ゆで卵・カフェオレ', foods:[['バタートースト',1],['ゆで卵',1],['カフェオレ',1]] },
@@ -9851,29 +9938,13 @@ function applyMealPreset(i){
   // 品目名を変えたときに黙って1品減るのを防ぐ（以前ここで別品目に化ける不具合があった）
   if(miss.length) showToast(miss.join('・') + 'が見つからなかったので外したよ');
   stopMealCamera();
-  pendingMealPhoto = null;
-  pendingMealPhotoRaw = null;
-  applyResultPhoto(null);
+  /* 下書きのリセットは resetMealDraft に一本化した（2026-08-14b）。
+     以前はここに retake の中身を手で写していて、項目が増えるたび片方だけ漏れる状態だった。
+     漏れると前の食事の「半分残した」が持ち越されてプリセットの数字が黙って半分になる
+     （実測: 和朝食529kcal → 265kcal・検証役C-4）。
+     ⚠️ mealSel への代入は必ず resetMealDraft() の後（逆にすると品目が消える） */
+  resetMealDraft();
   mealSel = sel;
-  fpAiRank = null;
-  fpNonFood = null;
-  fpNonFoodOpen = false;
-  fpVessel = null;        // プリセットは写真を使わないので器の推定は無い
-  vesselAsked = false;
-  toppingDismissed = false;
-  madeAheadDismissed = false;
-  splitRecs = [];
-  /* 1食ごとの補正状態も retake と同じだけ白紙に戻す。
-     戻さないと、前の食事の「半分残した」が持ち越されてプリセットの数字が黙って半分になる
-     （実測: 和朝食529kcal → 265kcal・検証役C-4） */
-  mealAteRatio = 1;
-  shimeAsked = false;
-  oilAsked = {};
-  breadAsked = false;
-  fpTableWide = false;
-  mealSizeHintShown = false;
-  mealLowKcalOk = false;
-  addonTab = null;
   showMealResult();
 }
 
@@ -10580,7 +10651,7 @@ function commitMeal(m){
   if(m.salt != null) state.saltIntake = r1(state.saltIntake + m.salt);
   if(m.fib  != null) state.fibIntake  = r1(state.fibIntake  + m.fib);
   state.mealTypeKcal[currentMealSlot()] += m.kcal;
-  state.mealLog.unshift({date:'7/2（木）・今日', time:'たった今', name:m.name, icon:m.icon||'bento', photo:m.photo||null, kcal:m.kcal, p:m.p, f:m.f, c:m.c, salt:m.salt, fib:m.fib});
+  state.mealLog.unshift({date:mealLogDate(), time:mealLogTime(), name:m.name, icon:m.icon||'bento', photo:m.photo||null, kcal:m.kcal, p:m.p, f:m.f, c:m.c, salt:m.salt, fib:m.fib});
   setFlagToday('smile24_meal_day');   // recalc内のミッション判定より先にフラグを立てる
   recalc();
   saveNutritionToday();   // 記録した日はリロードしても数字が残るように保存
@@ -10600,7 +10671,7 @@ function commitMealItems(items, photo){
     if(m.fib  != null) state.fibIntake  = r1(state.fibIntake  + m.fib);
     state.mealTypeKcal[slot] += m.kcal;
     state.mealLog.unshift({
-      date:'7/2（木）・今日', time:'たった今', name: mealItemName(s), icon:'bento',
+      date:mealLogDate(), time:mealLogTime(), name: mealItemName(s), icon:'bento',
       photo: (ri === items.length-1) ? (photo||null) : null,
       kcal:m.kcal, p:m.p, f:m.f, c:m.c, salt:m.salt, fib:m.fib
     });
@@ -10636,8 +10707,14 @@ function saveMeal(){
     return;
   }
   commitMealItems(mealSel, pendingMealPhoto);
-  showToast(mealSel.length + '品を記録しました！ホームに反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
-  setTimeout(function(){ goTab('home'); retake(); }, 900);
+  showToast(mealSel.length + '品を記録しました！この画面の残りの量に反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
+  /* ⚠️ 保存後にホームへ飛ばさず、同じ食事タブのスロット選択画面へ戻す（2026-08-14b）。
+     旧: goTab('home') が stopMealCamera した直後に retake() 末尾の startMealCamera() が走り、
+     ホームを表示している間もカメラのストリームが生き続けていた（プライバシー・電池の実害）。
+     showMealSlotPick は自身で stopMealCamera と recalc を呼ぶので、4マスのkcalと
+     「今日あと食べられる量」がその場で更新される。
+     ⚠️ resetMealDraft を先に呼ばないと「半分残した（mealAteRatio）」が次の食事へ持ち越される */
+  setTimeout(function(){ resetMealDraft(); showMealSlotPick(); }, 900);
 }
 
 /* 写真がない場合の手動入力（食べたもの＋カロリーの目安値を自分で編集） */
@@ -10732,8 +10809,10 @@ function saveManualMeal(){
   }
   commitMeal({name:name, kcal:kcal, p:p, f:f, c:c, photo:null, icon:'bento'});
   hideSheet('manualMealSheet');
-  showToast('記録したよ！ホームに反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
-  setTimeout(function(){ goTab('home'); }, 700);
+  showToast('記録したよ！この画面の残りの量に反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
+  /* 保存後は食事タブに留まる（2026-08-14b）。手入力経路は mealSel を使わずカメラも
+     起動していないので resetMealDraft は不要 */
+  setTimeout(function(){ showMealSlotPick(); }, 700);
 }
 
 /* ============ 食事記録の振り返り ============ */
@@ -10750,14 +10829,22 @@ function renderMealHistory(){
     wrap.innerHTML = '<div class="history-empty">まだ記録がありません。<br>お食事を撮影して記録してみよう！</div>';
     return;
   }
+  /* グルーピングのキーを正規化する（2026-08-14b・2巡目軽微1）。
+     生の保存値のまま束ねると、旧版で記録した '8/14（金）・今日' と新版の '8月14日（金）' が
+     別グループに割れ、同じ日の合計が2つに分かれる（旧側には「（今日）」も付かない）。
+     表示だけ正規化しても束ね方が直らないので、キーの側で寄せる。データは書き換えない */
   var groups = {}, order = [];
   state.mealLog.forEach(function(m){
-    if(!groups[m.date]){ groups[m.date] = []; order.push(m.date); }
-    groups[m.date].push(m);
+    var key = normalizeMealDateKey(m.date);
+    if(!groups[key]){ groups[key] = []; order.push(key); }
+    groups[key].push(m);
   });
+  /* 「今日」は保存値ではなく表示時に判定する（2026-08-14b検証・軽微1）。
+     以前は保存値に「・今日」が焼き込まれていたため、古い記録まで「今日」として並んでいた */
+  var todayLabel = (typeof mealLogDate === 'function') ? mealLogDate() : '';
   var html = '';
   order.forEach(function(date){
-    html += '<div class="history-date">'+date+'</div>';
+    html += '<div class="history-date">'+escHtml(date)+(date === todayLabel ? '（今日）' : '')+'</div>';
     var dayTotal = 0;
     groups[date].forEach(function(m){
       dayTotal += m.kcal;
@@ -10798,7 +10885,9 @@ function recalc(){
   ringInner.style.strokeDasharray = cInner;
   ringInner.style.strokeDashoffset = cInner*(1-innerPct);
 
-  document.getElementById('remainKcal').textContent = remaining;
+  /* 式側の fRemain だけ桁区切りがあり、1,000kcal以上残ると同じ数字が「1075」と「1,075」の
+     2表記で同一カード内に並んでいた（2026-08-14b） */
+  document.getElementById('remainKcal').textContent = remaining.toLocaleString();
   document.getElementById('remainLabel').textContent = remaining>=0 ? 'あと摂れます' : '目安をオーバー';
   /* 食事タブの日付（化石の固定表示をやめる・2026-08-12監査 D-06）。appToday基準でホームと統一 */
   var bcD = document.getElementById('bcDate');
@@ -10856,11 +10945,12 @@ function recalc(){
   var pPct = Math.min(Math.round(state.proteinIntake/state.proteinTarget*100), 100);
   document.getElementById('proteinPct').textContent = pPct+'%';
   document.getElementById('proteinGaugeFill').style.width = pPct+'%';
-  var remainP = Math.max(Math.round(state.proteinTarget-state.proteinIntake), 0);
-  document.getElementById('proteinNote').innerHTML = remainP>0
-    ? 'あと目安 <b style="color:var(--gold-dk)">'+remainP+'g</b> でこの日の目標を達成できるよ'
-    : '今日のたんぱく質目標はもう達成済み！さすがです';
-  renderFoodExamples(remainP);
+  /* 未達を数字で告げない（原則2）。「あと◯g」をやめて、いまの実測と1日の目安の併記にした
+     （2026-08-14b）。目安は日本人の食事摂取基準にもとづく推計 */
+  var nowP = Math.round(state.proteinIntake);
+  document.getElementById('proteinNote').innerHTML =
+    'たんぱく質 <b style="color:var(--gold-dk)">いま'+nowP+'g</b>（1日の目安 '+Math.round(state.proteinTarget)+'g・推計）';
+  renderFoodExamples();
   renderTrendChart(totalIntake, totalConsumption);
   renderDashboardExtras();
   renderBadges();
@@ -10868,23 +10958,46 @@ function recalc(){
   renderGreeting();
   renderHomeGoalLine();
   renderCheckinCallout();
+  /* からだタブを開いたまま記録しても、その場でグラフが追いつくようにする（2026-08-14b）。
+     renderTrend の呼び出しはこれまで onclick 直書きと水分カードのボタンにしか無く、
+     見ながら体重や水分を記録してもグラフが固まったままだった。
+     副次効果として、初期化順（renderTrend が applyBodyProfile より前に走り、登録会員の
+     からだタブが一瞬デモ体格で描かれる）も後続の recalc が上書きして解消される。 */
+  refreshTrendIfVisible();
+}
+/* からだタブを表示中なら、スクロール位置を保ったまま描き直す。
+   ⚠️ recalc だけに置いてはいけない（2026-08-14b検証・致命1）。
+      saveWeight と addWater は recalc を通らないため、からだタブを開いたまま
+      体重や水を記録すると「記録したのに画面が古いまま＝消えたように見える」状態になっていた。
+      記録を保存する経路を増やしたら、必ずここを呼ぶこと。
+   ⚠️ renderTrend は #trendContent を innerHTML で丸ごと作り直すので、スクロール位置を
+      必ず退避・復元する（スクロール容器は .screen 側） */
+function refreshTrendIfVisible(){
+  try{
+    var trendScr = document.querySelector('.screen[data-screen="trend"]');
+    if(trendScr && trendScr.classList.contains('active') && typeof renderTrend === 'function'){
+      var sy = trendScr.scrollTop;
+      renderTrend();
+      trendScr.scrollTop = sy;
+    }
+  }catch(e){}
 }
 
-function renderFoodExamples(remainP){
+/* たんぱく質が多い食べものの例（2026-08-14b）。
+   以前は「未達量 remainP から逆算して 鶏むね肉なら約283g・ゆで卵なら約10.5個」を出していたが、
+   これは単位をgから食品量に置き換えただけの未達提示で、原則2に反していた
+   （しかも達成すると消える＝未達のときだけ出る作りだった）。
+   いまは1食あたりの含有量を淡々と示す固定表示にして、常時出す */
+function renderFoodExamples(){
   var wrap = document.getElementById('foodExamples');
-  if(remainP<=0){ wrap.innerHTML=''; return; }
-  var per100 = [['鶏むね肉(皮なし)',23],['サラダチキン',23],['木綿豆腐',6.6],['ブロッコリー',4.3]];
-  var perServing = [['ゆで卵',6.2,'個'],['プロテイン1杯',18,'杯']];
-  var html = '';
-  per100.forEach(function(item){
-    var g = Math.max(1, Math.round(remainP/item[1]*100));
-    html += '<div class="food-chip">'+item[0]+' なら <b>約'+g+'g</b></div>';
-  });
-  perServing.forEach(function(item){
-    var n = Math.max(0.5, Math.round(remainP/item[1]*10)/10);
-    html += '<div class="food-chip">'+item[0]+' なら <b>約'+n+'</b>'+item[2]+'</div>';
-  });
-  wrap.innerHTML = html;
+  if(!wrap) return;
+  var examples = [
+    ['ゆで卵1個', '6.2g'], ['サラダチキン1袋', '23g'], ['木綿豆腐1/2丁', '10g'],
+    ['納豆1パック', '8.3g'], ['プロテイン1杯', '18g']
+  ];
+  wrap.innerHTML = examples.map(function(e){
+    return '<div class="food-chip">'+e[0]+' <b>'+e[1]+'</b></div>';
+  }).join('');
 }
 
 /* ============ 日々のカロリー推移チャート ============
@@ -11503,8 +11616,12 @@ function dietGoalSyncFromSaved(){
   }
 }
 function applyAthleteToState(r, cfg){
-  state.weight = cfg.w;
-  state.height = cfg.h;
+  /* ⚠️ 保存データに体格が欠けていても、いまの体格を undefined で上書きしない（2026-08-14b）。
+     applyAthlete は必ず w/h を書くので通常は起きないが、古い版の保存データや壊れた
+     localStorage が1つあるだけで state.height が undefined になり、BMI・適正体重・基礎代謝が
+     アプリ全域で NaN になる（からだタブの先頭が「NaN」になる）。復元側で必ず握りつぶす */
+  if(cfg.w > 0) state.weight = cfg.w;
+  if(cfg.h > 0) state.height = cfg.h;
   state.bmr = r.bmr;
   state.baseConsumption = r.target;      // 「今日の目標」＝目的込みの目標kcal
   state.athleteOn = true;
@@ -12262,16 +12379,47 @@ function saveGoal(){
     : '目標を更新して、おすすめプランを再計算したよ！');
 }
 function renderPlan(){
+  /* ⚠️ 目標が未設定のときは、9つのidへ代入する前に必ずここで抜ける（2026-08-14b）。
+     登録会員は sanitizeMemberState で goalDeadline='' になり、daysUntil('') が
+     new Date('T00:00:00')=Invalid Date から NaN を返すため、入会直後の会員のマイページに
+     「NaN週間／NaN月NaN日／NaNkcal」が必ず出ていた（致命）。
+     ⚠️ カードも9つのidも消さない。この関数は doLogin と initAuth の直後にも呼ばれ、
+        例外を出すと updateMemberIdentity・goTab('home') まで到達せずログインが完了しない。
+        だから throw ではなく「案内を出して return」にしてある */
+  var planGoalKg = memberGoalDiffKg();
+  var planWeeks = memberGoalWeeks();
+  var statsEl = document.querySelector('.plan-card .plan-stats');
+  var listEl  = document.querySelector('.plan-card .plan-list');
+  var sumEl   = document.querySelector('.plan-card .plan-summary');
+  var noteEl  = document.getElementById('planNoGoal');
+  if(planGoalKg == null || !(planGoalKg > 0)){
+    if(statsEl) statsEl.style.display = 'none';
+    if(listEl)  listEl.style.display = 'none';
+    if(sumEl)   sumEl.style.display = 'none';
+    var warn0 = document.getElementById('planPaceWarn');
+    if(warn0) warn0.style.display = 'none';
+    if(noteEl){ noteEl.style.display = ''; }
+    /* 到達予測はプラン枠の中にあるので、未設定時はこちらで文言を出す */
+    var gf0 = document.getElementById('goalForecast');
+    if(gf0) gf0.textContent = '';
+    return;
+  }
+  if(statsEl) statsEl.style.display = '';
+  if(listEl)  listEl.style.display = '';
+  if(sumEl)   sumEl.style.display = '';
+  if(noteEl)  noteEl.style.display = 'none';
+  /* 期間は目標コーチの goalWeeks を正とし、無ければ従来どおり期日から数える */
   var daysLeft = daysUntil(state.goalDeadline);
-  var weeksLeft = Math.max(1, Math.round(daysLeft/7));
+  var weeksLeft = planWeeks != null ? planWeeks : Math.max(1, Math.round(daysLeft/7));
+  if(!(weeksLeft > 0) || !isFinite(weeksLeft)) weeksLeft = 1;
   /* 7200kcal/kg固定をやめ、目標コーチと同じ可変エネルギー密度（Forbes/Hall近似）に統一。
      3系統あった目標計算の食い違いを解消（2026-08-12監査 栄D-04） */
   var bfPlan = (state.bodyFatHistory && state.bodyFatHistory.length) ? state.bodyFatHistory[state.bodyFatHistory.length-1].f : null;
-  var totalDeficit = Math.round(state.goalDiffKg * weightKcalPerKg('loss', state.weight, bfPlan));
+  var totalDeficit = Math.round(planGoalKg * weightKcalPerKg('loss', state.weight, bfPlan));
   var weeklyNeed = Math.round(totalDeficit/weeksLeft);
   var dailyNeed = Math.round(weeklyNeed/7);
   /* 速すぎるペースの警告（週に体重の1%超）。saveGoalが無検証で受けるため表示側で必ず出す */
-  var paceKgW = state.goalDiffKg / weeksLeft;
+  var paceKgW = planGoalKg / weeksLeft;
   var warnEl = document.getElementById('planPaceWarn');
   if(warnEl){
     if(paceKgW > (state.weight || 60) * 0.01){
@@ -12288,7 +12436,22 @@ function renderPlan(){
   var weeklyFromPlan = runKcal*runSessions + walkKcal*walkSessions;
 
   document.getElementById('planWeeksVal').innerHTML = weeksLeft+'<span>週間</span>';
-  document.getElementById('planDeadline').textContent = formatDateJP(state.goalDeadline);
+  /* 期日は goalDeadline が空でも「開始日＋週数」から出す（renderProfileGoal と同じ求め方）。
+     空のまま formatDateJP に渡すと不正な日付が出る */
+  var deadlineTxt = '—';
+  try{
+    if(state.goalDeadline){ deadlineTxt = formatDateJP(state.goalDeadline); }
+    else {
+      var sv = JSON.parse(localStorage.getItem('smile24_athlete') || 'null');
+      if(sv && sv.goalStart && sv.goalWeeks > 0){
+        var pp = String(sv.goalStart).split('-');
+        var dd = new Date(+pp[0], (+pp[1]) - 1, +pp[2]);
+        dd.setDate(dd.getDate() + Math.round(sv.goalWeeks * 7));
+        deadlineTxt = (dd.getMonth() + 1) + '月' + dd.getDate() + '日';
+      }
+    }
+  }catch(e){}
+  document.getElementById('planDeadline').textContent = deadlineTxt;
   document.getElementById('planWeeklyNeed').textContent = weeklyNeed.toLocaleString();
   document.getElementById('planDailyNeed').textContent = dailyNeed.toLocaleString();
   document.getElementById('planItem1Freq').textContent = '週'+runSessions+'回・1回30分（約'+runKcal+'kcal）';
@@ -12403,7 +12566,7 @@ var chatTopics = [
   }},
   /* ── 運用系の質問（24h無人ジムの受け皿・2026-08-12監査 M-10）。栄養・運動より先に判定する ── */
   { keys:['故障','こわれ','壊れ','マシンが動かない','動きません','エラーが出'], gen:function(){
-      return 'マシンの不具合を教えてくれてありがとう。安全のため、そのマシンの使用は中止してね。お手数だけど緊急窓口（' + STORE.tel + '）へ電話で場所とマシン名を伝えてもらえると、すぐ対応につなげられるよ。マイページの「緊急連絡先・SOS」からもかけられます。';
+      return 'マシンの不具合を教えてくれてありがとう。安全のため、そのマシンの使用は中止してね。お手数だけど緊急窓口（' + STORE.tel + '）へ電話で場所とマシン名を伝えてもらえると、すぐ対応につなげられるよ。各画面の右上にある三角のマーク（緊急連絡先）からもかけられます。';
   }},
   { keys:['引き落とし','引落','支払い','請求','領収書','会費が'], gen:function(){
       return '会費まわりはこうなってるよ：毎月ご登録のお支払い方法で自動決済・月途中の退会でも日割り返金なし・締め日は毎月9日。領収書やお支払い方法の変更は店頭で承ります。細かい確認は店舗（' + STORE.tel + '）へどうぞ。マイページの「よくある質問」にもまとめてあるよ。';
@@ -13449,26 +13612,34 @@ function setBadge(id, unlocked, note){
   el.classList.toggle('locked', !unlocked);
   document.getElementById('badge-' + id + '-note').textContent = note;
 }
+/* 未獲得の注記は「あと◯」ではなく獲得条件を書く（2026-08-14b・原則2＝未達を数字で告げない） */
 function renderBadges(){
   // 7日連続
   var s = computeVisitStreak();
-  setBadge('streak', s.streak >= 7, s.streak >= 7 ? '達成中！' : ('あと' + (7 - s.streak) + '日'));
+  setBadge('streak', s.streak >= 7, s.streak >= 7 ? '達成中！' : '7日連続で来館すると獲得');
 
   // たんぱく質達成（本日のたんぱく質目標達成）
   var pRatio = state.proteinTarget > 0 ? state.proteinIntake / state.proteinTarget : 0;
-  setBadge('protein', pRatio >= 1, pRatio >= 1 ? '本日達成！' : ('あと' + Math.max(0, Math.round(state.proteinTarget - state.proteinIntake)) + 'g'));
+  setBadge('protein', pRatio >= 1, pRatio >= 1 ? '本日達成！' : '1日のたんぱく質の目安に届くと獲得');
 
   // 月間皆勤（直近30日の来館日数）
   var visitDates = getVisitDatesSet();
   var monthlyVisits = Object.keys(visitDates).length;
   var MONTHLY_GOAL = 20;
-  setBadge('monthly', monthlyVisits >= MONTHLY_GOAL, monthlyVisits >= MONTHLY_GOAL ? '達成中！' : (monthlyVisits + '/' + MONTHLY_GOAL + '日'));
+  setBadge('monthly', monthlyVisits >= MONTHLY_GOAL, monthlyVisits >= MONTHLY_GOAL ? '達成中！' : '30日のうち20日来館すると獲得');
 
-  // 目標達成（開始時体重から目標差分に到達）。実測が無いうちは現在体重を起点にする（空配列ガード）
-  var startW = (state.weightHistory.length ? state.weightHistory[0].w : state.weight);
-  var targetW = Math.round((startW - state.goalDiffKg) * 10) / 10;
-  var reached = state.weight <= targetW;
-  setBadge('goal', reached, reached ? '目標到達！' : ('あと' + Math.max(0, Math.round((state.weight - targetW) * 10) / 10) + 'kg'));
+  /* 目標達成（開始時体重から目標差分に到達）。
+     ⚠️ 目標が未設定のときは必ず未獲得にする（2026-08-14b）。以前は state.goalDiffKg が
+     sanitizeMemberState で 0 になるため targetW = startW となり、入会直後・記録ゼロの会員の
+     マイページで「目標到達！」が最初から点灯していた（原則1） */
+  var goalKg = memberGoalDiffKg();
+  if(goalKg == null || !(goalKg > 0)){
+    setBadge('goal', false, '目標体重を決めて到達すると獲得');
+  } else {
+    var startW = (state.weightHistory.length ? state.weightHistory[0].w : state.weight);
+    var targetW = Math.round((startW - goalKg) * 10) / 10;
+    setBadge('goal', state.weight <= targetW, state.weight <= targetW ? '目標到達！' : '目標体重に届くと獲得');
+  }
 }
 
 /* ============ 館内の人気メニュー（過去の記録傾向に基づく参考ランキング・デモ） ============ */
@@ -15121,7 +15292,9 @@ function renderDashboardExtras(){
       if(state.fatIntake > state.fatTarget * 1.15) over.push('脂質');
       if(state.carbsIntake > state.carbsTarget * 1.15) over.push('炭水化物');
       var word = mealsN >= 3 ? (over.length ? '3食そろった！' + over.join('・') + 'はやや多めだから夕方は軽めが◎' : '3食そろってバランスもいい感じ！')
-               : mealsN === 2 ? 'あと1食記録すると★3つ'
+               /* 「あと1食記録すると★3つ」は未達を数える表現なので、記録できた数だけを
+                  述べる文にした（2026-08-14b・原則2）。1食目の文は達成条件の説明なので残す */
+               : mealsN === 2 ? '2食記録できたね'
                : '記録スタート！3食そろうと★3つ';
       msl.innerHTML = 'きょうの食事スコア <span class="ms-stars">' + stars + '</span> <span style="font-weight:600;color:var(--text-lt);">' + word + '</span>';
       msl.style.display = 'flex';
@@ -15150,6 +15323,27 @@ function memberTargetWeight(){
     return Math.round((saved.goalStartW - saved.goalKg) * 10) / 10;
   }
   return isRegisteredMember() ? null : WQ_DEMO_TARGET;
+}
+/* 「あと何kg減らす目標か」の唯一の読み口（2026-08-14b新設）。
+   これまで目標の読み手が5か所（renderProfileGoal のフォールバック・renderPlan・renderBadges・
+   trendWeight・renderGoalForecast）に散っていて、しかも sanitizeMemberState が登録会員の
+   state.goalDiffKg を 0 に落とすため、画面ごとに「NaN週間」「目標まで0.0kg」「目標到達バッジの
+   偽点灯」が別々に湧いていた。以後この関数だけを読むこと。
+   返り値: 数値=設定済みの減量kg / null=未設定（登録会員） / 体験モードはサンプル値
+   ⚠️ memberTargetWeight は goalStartW から「目標体重そのもの」を出す別用途。統合しない。
+   ⚠️ smile24_athlete のキー構造（goal/goalKg/goalWeeks/goalStart/goalStartW/curTarget）は変えない */
+function memberGoalDiffKg(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(saved && saved.goal === 'cut' && saved.goalKg > 0) return saved.goalKg;
+  return isRegisteredMember() ? null : state.goalDiffKg;
+}
+/* 目標の期間（週）。未設定なら null。renderPlan が NaN を出さないために使う */
+function memberGoalWeeks(){
+  var saved = null;
+  try{ saved = JSON.parse(localStorage.getItem('smile24_athlete') || 'null'); }catch(e){}
+  if(saved && saved.goal === 'cut' && saved.goalWeeks > 0) return saved.goalWeeks;
+  return null;
 }
 function renderWeightQuick(){
   var cEl = document.getElementById('wqCurrent');
@@ -15204,6 +15398,8 @@ function addWater(n){
   renderWater();
   renderMissions();
   try{ renderWeekDots(); }catch(e){}
+  /* からだタブを開いたまま記録したときに水分カードが古いままになるのを防ぐ（2026-08-14b検証・致命1） */
+  if(typeof refreshTrendIfVisible === 'function') refreshTrendIfVisible();
   if(n > 0 && before < goal && state.waterMl >= goal) showToast('今日の水分目標 ' + goal.toLocaleString() + 'ml を達成！');
 }
 /* 前回の水分補給からの経過を見えるようにする（あきすぎのセルフチェック用） */
@@ -15426,30 +15622,55 @@ function trendBarsSVG(vals, opts){
 
 /* 1. BMI */
 function trendBMI(){
-  var hm = state.height/100;
   var cur = state.weightHistory.length ? state.weightHistory[state.weightHistory.length-1].w : state.weight;
+  /* 身長・体重が無いときは NaN を出さず、入力へ案内する（2026-08-14b）。
+     計算不能を「NaN」と表示するのは、会員には故障にしか見えない */
+  if(!(state.height > 0) || !(cur > 0)){
+    return '<div class="trend-card">'+
+      '<div class="tc-title">BMI（体格指数）</div>'+
+      '<div class="tc-sub">身長と体重が登録されると、ここにBMIが出ます</div>'+
+      '<div class="ath-note">マイページの「基礎代謝（BMR）」から身長・体重を入力できます</div>'+
+      '</div>';
+  }
+  var hm = state.height/100;
   var bmi = Math.round(cur/(hm*hm)*10)/10;
   var zone = bmi<18.5 ? 0 : bmi<25 ? 1 : 2;
   var zoneName = ['低体重','健康','肥満'][zone];
   var pillCls = ['low','ok','high'][zone];
   var pct = Math.min(Math.max((bmi-15)/(35-15)*100, 3), 97);
   var proper = Math.round(22*hm*hm*10)/10;
+  /* 助言は中立に（2026-08-14b）。記録0〜1件・自己申告の体重で「週3回の有酸素で絞っていこう」と
+     断定していた。ゾーンの分類名（低体重/健康/肥満）は公的分類なので残す */
   var msgs = [
-    '少し軽めかも。栄養をしっかり摂って、<b>筋肉を育てる</b>ことから始めよう！',
-    'すばらしい！<b>「健康」ゾーン</b>にいるよ。体重を管理して健康維持、この調子！',
-    '焦らなくて大丈夫。<b>週3回の有酸素</b>と食事記録で、少しずつ絞っていこう！'
+    'BMIは目安のひとつです。体調や食事のことは、気になるときは医師や管理栄養士に相談してね。',
+    'BMIは目安のひとつです。記録を続けると、自分の変化が見えやすくなるよ。',
+    'BMIは目安のひとつで、筋肉量や体型は反映されません。気になるときは医師や管理栄養士に相談してね。'
   ];
+  /* 何の体重で計算したのかを1行出す（原則4＝自動判定の理由を示す）。
+     体重の記録が無い会員は登録時の申告値で計算していることを明示する */
+  var wl0 = state.weightHistory;
+  var basis;
+  if(wl0 && wl0.length){
+    var lastD = wl0[wl0.length-1].d;
+    basis = '体重(kg) ÷ 身長(m)² で算出。' + (lastD ? lastD + 'に記録した体重で計算' : '直近に記録した体重で計算');
+  } else {
+    basis = '体重(kg) ÷ 身長(m)² で算出。登録時の申告体重で計算しています（体重を記録すると実測に切り替わります）';
+  }
   return '<div class="trend-card">'+
     '<div class="tc-title">BMI（体格指数）</div>'+
-    '<div class="tc-sub">体重(kg) ÷ 身長(m)² で算出される肥満度の国際指標</div>'+
+    '<div class="tc-sub">'+basis+'</div>'+
     '<div class="bmi-row"><div class="bmi-big">'+bmi.toFixed(1)+'</div><div class="bmi-pill '+pillCls+'">'+zoneName+'</div></div>'+
     '<div class="bmi-bar"><div class="bmi-marker" data-v="'+bmi.toFixed(1)+'" style="left:'+pct+'%;"></div></div>'+
     '<div class="bmi-labels"><span>低体重 〜18.5</span><span>健康 18.5〜25</span><span>肥満 25〜</span></div>'+
     '<div class="tc-stats">'+
       '<div class="tc-stat"><div class="v">'+state.height+'<span> cm</span></div><div class="l">身長</div></div>'+
       '<div class="tc-stat"><div class="v">'+cur.toFixed(1)+'<span> kg</span></div><div class="l">体重</div></div>'+
-      '<div class="tc-stat"><div class="v good">'+proper.toFixed(1)+'<span> kg</span></div><div class="l">適正体重(BMI22)</div></div>'+
+      /* 緑（.good）をやめて中立色に（2026-08-14b）。版2026-08-13で入口を一本化したはずの
+         「目標体重」が、名前を変えて画面先頭に復活していた。これは一般的な指標であって
+         この人の目標ではない */
+      '<div class="tc-stat"><div class="v">'+proper.toFixed(1)+'<span> kg</span></div><div class="l">BMI22のときの体重</div></div>'+
     '</div>'+
+    '<div class="tc-sub" style="margin-top:6px;">「BMI22のときの体重」は一般的な指標です（あなたの目標ではありません）</div>'+
     '<div class="trend-ai"><div class="ai-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10.5c.3-1 1-1.5 1.7-1.5M15 10.5c-.3-1-1-1.5-1.7-1.5"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2"/></svg></div><div class="ta-txt">'+msgs[zone]+'</div></div>'+
     '</div>';
 }
@@ -15487,7 +15708,14 @@ function trendWeight(){
     });
     var delta2 = Math.round((curR - wl[0].w)*10)/10;
     var avg2 = Math.round(vals2.reduce(function(a,b){ return a+b; },0)/vals2.length*10)/10;
-    var toGoal2 = Math.max(Math.round(state.goalDiffKg*10)/10, 0);
+    /* 3枡目は目標が設定されているときだけ「目標まで」を出す（2026-08-14b）。
+       登録会員は sanitizeMemberState で state.goalDiffKg が 0 になるため、目標を決めていない人に
+       「目標まで 0.0kg」＝達成済みと読める表示が出ていた（2026-08-13にホーム・マイページで
+       直した事故の、からだタブ側の取り残し）。未設定なら記録した日数を出す */
+    var gd2 = memberGoalDiffKg();
+    var stat3 = (gd2 != null && gd2 > 0)
+      ? '<div class="tc-stat"><div class="v">'+(Math.round(gd2*10)/10).toFixed(1)+'<span> kg</span></div><div class="l">目標まで</div></div>'
+      : '<div class="tc-stat"><div class="v">'+wl.length+'<span> 日</span></div><div class="l">記録した日数</div></div>';
     return '<div class="trend-card">'+
       '<div class="tc-title">体重の推移（過去30日・実測）</div>'+
       '<div class="tc-sub">記録した日だけを結んでいます。毎日の小さな変化も30日で見ると大きな前進</div>'+
@@ -15495,7 +15723,7 @@ function trendWeight(){
       '<div class="tc-stats">'+
         '<div class="tc-stat"><div class="v good">'+(delta2<=0?'':'+')+delta2.toFixed(1)+'<span> kg</span></div><div class="l">期間の変化</div></div>'+
         '<div class="tc-stat"><div class="v">'+avg2.toFixed(1)+'<span> kg</span></div><div class="l">平均体重</div></div>'+
-        '<div class="tc-stat"><div class="v">'+toGoal2.toFixed(1)+'<span> kg</span></div><div class="l">目標まで</div></div>'+
+        stat3+
       '</div>'+
       '</div>';
   }
@@ -15549,12 +15777,20 @@ function trendKcal(kind){
   var isIn = kind==='in';
   var real = isRegisteredMember();
   if(real && !isIn){
-    var burnToday = state.baseConsumption + activityKcal();
+    /* 見出しを「今日の総消費（基礎代謝込み・推計）」に改め、内訳を1行出す（2026-08-14b）。
+       食事タブの「運動した分」＝運動ぶんだけ、運動タブの「本日の運動による消費」＝運動ぶんだけ、
+       ここ＝基礎代謝込みの総消費、と中身が違うのに全部「消費」と呼んでいて数字が合わなく見えた */
+    var burnAct = activityKcal();
+    var burnToday = state.baseConsumption + burnAct;
     return '<div class="trend-card">'+
-      '<div class="tc-title">カロリー消費（推定）</div>'+
-      '<div class="tc-sub">消費は基礎代謝＋生活活動＋運動記録からの推定です。日別の履歴グラフは実測の仕組みができたら追加します</div>'+
+      '<div class="tc-title">今日の総消費（基礎代謝込み・推計）</div>'+
+      '<div class="tc-sub">内訳は 基礎代謝＋生活活動 '+state.baseConsumption.toLocaleString()+' kcal ＋ 運動記録 '+burnAct.toLocaleString()+' kcal。'+
+        '食事タブの「運動した分」と運動タブの「本日の運動による消費」は、このうち運動記録のぶんだけを指します。'+
+        '日別の履歴グラフは実測の仕組みができたら追加します</div>'+
       '<div class="tc-stats">'+
-        '<div class="tc-stat"><div class="v">'+burnToday.toLocaleString()+'<span> kcal</span></div><div class="l">今日の推定消費</div></div>'+
+        '<div class="tc-stat"><div class="v">'+burnToday.toLocaleString()+'<span> kcal</span></div><div class="l">今日の総消費</div></div>'+
+        '<div class="tc-stat"><div class="v">'+state.baseConsumption.toLocaleString()+'<span> kcal</span></div><div class="l">基礎代謝＋生活活動</div></div>'+
+        '<div class="tc-stat"><div class="v">'+burnAct.toLocaleString()+'<span> kcal</span></div><div class="l">運動記録</div></div>'+
       '</div>'+
       '</div>';
   }
@@ -15567,7 +15803,10 @@ function trendKcal(kind){
       var row7 = log7[dayKey(d7)];
       vals.push(row7 && row7.kcal ? row7.kcal : null);
     }
-    vals.push(state.intakeKcal);
+    /* 今日まだ食べていない（=0）ときに 0 を積むと、過去の未記録日は「—」なのに今日だけ
+       0の棒が立ち、さらに7日平均の分母に 0 が入って実際より低い平均が出る
+       （2026-08-14b検証・軽微3）。未記録は過去日と同じ null に揃える */
+    vals.push(state.intakeKcal > 0 ? state.intakeKcal : null);
     if(vals.filter(function(v){ return v != null && v > 0; }).length < 2){
       return '<div class="trend-card">'+
         '<div class="tc-title">カロリー摂取（7日間）</div>'+
@@ -15584,15 +15823,17 @@ function trendKcal(kind){
   var nums = vals.filter(function(v){ return v!=null; });
   var avg = Math.round(nums.reduce(function(a,b){ return a+b; },0)/nums.length);
   var max = Math.max.apply(null, nums);
-  var todayV = vals[vals.length-1] || 0;
+  /* 今日が未記録（null）のとき「0」と書かない（2026-08-14b・2巡目重要1）。
+     グラフは「—」なのに直下の枡だけ「今日 0 kcal」になり、同じカードの中で矛盾していた */
+  var todayV = vals[vals.length-1];
   return '<div class="trend-card">'+
     '<div class="tc-title">'+(isIn?'カロリー摂取':'カロリー消費')+'（7日間）</div>'+
-    '<div class="tc-sub">'+(isIn?'食事記録から集計した1日ごとの摂取カロリー':'基礎代謝＋生活活動＋運動記録の合計')+'</div>'+
+    '<div class="tc-sub">'+(isIn?'食事記録から集計した1日ごとの摂取カロリー（推計の目安です）':'基礎代謝＋生活活動＋運動記録の合計（推計の目安です）')+'</div>'+
     '<div class="tc-chart">'+trendBarsSVG(vals, opts)+'</div>'+
     '<div class="tc-stats">'+
       '<div class="tc-stat"><div class="v">'+avg.toLocaleString()+'<span> kcal</span></div><div class="l">7日平均</div></div>'+
       '<div class="tc-stat"><div class="v">'+max.toLocaleString()+'<span> kcal</span></div><div class="l">最高</div></div>'+
-      '<div class="tc-stat"><div class="v good">'+todayV.toLocaleString()+'<span> kcal</span></div><div class="l">今日</div></div>'+
+      '<div class="tc-stat"><div class="v good">'+(todayV == null ? '—' : todayV.toLocaleString()+'<span> kcal</span>')+'</div><div class="l">今日</div></div>'+
     '</div>'+
     '</div>';
 }
@@ -15606,10 +15847,19 @@ function trendPFC(){
     series = [];
     for(var ip = 6; ip >= 1; ip--){
       var dp = new Date(); dp.setDate(dp.getDate() - ip);
-      var rowP = logP[dayKey(dp)] || {};
-      series.push({ p: rowP.p || 0, f: rowP.fg || 0, c: rowP.c || 0 });
+      var rowP = logP[dayKey(dp)];
+      /* 記録の無い日は「0の実績」ではないので none を立てる（2026-08-14b）。
+         すぐ上のカロリー棒は null を「—」と描くのに、ここだけ0で1pxの棒を引いていて、
+         同じ7日を並べているのに意味が食い違っていた（原則1） */
+      if(!rowP || (!rowP.p && !rowP.fg && !rowP.c)) series.push({ p:0, f:0, c:0, none:true });
+      else series.push({ p: rowP.p || 0, f: rowP.fg || 0, c: rowP.c || 0 });
     }
-    series.push({p:Math.round(state.proteinIntake), f:Math.round(state.fatIntake), c:Math.round(state.carbsIntake)});
+    /* 今日まだ食事を記録していないなら、過去の未記録日と同じ none 扱いにする（2026-08-14b・2巡目重要1）。
+       ここを素の 0 のままにすると、真上の「カロリー摂取」が今日を「—」と描くのに
+       こちらだけ「0g」の棒になり、同じ7日を並べた2枚のグラフで今日の意味が割れる
+       （「今日は0g食べた」と読めてしまう＝原則1違反） */
+    var tp = Math.round(state.proteinIntake), tf = Math.round(state.fatIntake), tc = Math.round(state.carbsIntake);
+    series.push((tp + tf + tc) > 0 ? {p:tp, f:tf, c:tc} : {p:0, f:0, c:0, none:true});
     if(series.filter(function(s){ return s.p + s.f + s.c > 0; }).length < 2){
       return '<div class="trend-card">'+
         '<div class="tc-title">栄養素バランス（7日間）</div>'+
@@ -15624,13 +15874,22 @@ function trendPFC(){
   }
   var w=320, h=185, padL=10, padR=10, padT=24, padB=22;
   var labels = trendDayLabels();
-  var maxV = Math.max.apply(null, series.map(function(s){ return s.p+s.f+s.c; })) * 1.12;
+  /* ⚠️ none の日を除くこと。全部 none だと maxV が -Infinity になり NaN 座標が出る */
+  var sums = series.filter(function(s){ return !s.none; }).map(function(s){ return s.p+s.f+s.c; });
+  var maxV = (sums.length ? Math.max.apply(null, sums) : 1) * 1.12;
   var slot = (w-padL-padR)/7, bw = 24;
   var COLORS = {c:'#E8A23D', p:'#4A85F6', f:'#8B72F0'};
   var svg = '';
   series.forEach(function(s, i){
     var cx = padL + slot*i + slot/2, x = cx - bw/2;
     var yCursor = h - padB;
+    if(s.none){
+      /* 記録なし＝カロリー棒と同じ「高さ5pxのグレー土台＋—」で描く */
+      svg += '<rect x="'+x+'" y="'+(h-padB-5)+'" width="'+bw+'" height="5" rx="2.5" fill="#E9EEF5"/>';
+      svg += '<text x="'+cx+'" y="'+(h-padB-10)+'" font-size="10" fill="#9AA6B6" text-anchor="middle">—</text>';
+      svg += '<text x="'+cx+'" y="'+(h-6)+'" font-size="10" fill="#5A6778" text-anchor="middle">'+labels[i]+'</text>';
+      return;
+    }
     ['c','p','f'].forEach(function(k){
       var bh = (s[k]/maxV)*(h-padT-padB);
       yCursor -= bh;
@@ -15669,18 +15928,23 @@ function trendWater(){
       '<button class="te-btn" onclick="addWater(250);showToast(\'お水を250ml記録したよ\');renderTrend();">水分を記録する</button>'+
       '</div></div>';
   }
-  var vals = [null, null, null, null, null, null, state.waterMl];
-  var pct = Math.min(Math.round(state.waterMl/2000*100), 100);
+  /* 「7日間」の棒グラフと「目標達成率%」をやめた（2026-08-14b）。
+     水分は smile24_water に当日1件しか残らず、過去6日は構造上いつも null。
+     つまり「7日間」は事実と違い、空の6本は無言の未達提示にもなっていた（原則1・2）。
+     達成率% も原則2違反で、分母2000はここだけのハードコードだった。
+     ⚠️ 日別ログ（logDaily）に水分が入るようになったら、ここを7日棒へ戻すこと
+        （そのときは vals を loadDailyLog から作る。trendBarsSVG はそのまま使える） */
   return '<div class="trend-card">'+
-    '<div class="tc-title">水分補給（7日間）</div>'+
-    '<div class="tc-sub">目標 2,000ml/日・記録は今日からスタート！</div>'+
-    '<div class="tc-chart">'+trendBarsSVG(vals, {grad:['#7FAFFA','#4A85F6'], base:'#DBE9FE', avg:false})+'</div>'+
+    '<div class="tc-title">水分補給（今日）</div>'+
+    '<div class="tc-sub">目安は1日 2,000ml（推計の目安です）。記録は今日のぶんが残ります</div>'+
     '<div class="tc-stats">'+
       '<div class="tc-stat"><div class="v">'+state.waterMl.toLocaleString()+'<span> ml</span></div><div class="l">今日の水分量</div></div>'+
-      '<div class="tc-stat"><div class="v good">'+pct+'<span> %</span></div><div class="l">目標達成率</div></div>'+
       '<div class="tc-stat"><div class="v">'+Math.round(state.waterMl/250)+'<span> 杯</span></div><div class="l">コップ換算</div></div>'+
+      '<div class="tc-stat"><div class="v">2,000<span> ml</span></div><div class="l">1日の目安</div></div>'+
     '</div>'+
-    '<div class="trend-ai"><div class="ai-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10.5c.3-1 1-1.5 1.7-1.5M15 10.5c-.3-1-1-1.5-1.7-1.5"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2"/></svg></div><div class="ta-txt">明日からは毎日の記録がここに積み上がるよ。<b>運動の30分前にコップ1杯</b>がパフォーマンスUPのコツ！</div></div>'+
+    /* 「明日からは毎日の記録がここに積み上がる」と書いていたが、水分は日別ログに入っておらず
+       翌日には積み上がらない（2026-08-14b検証・軽微4）。事実に合う一言にする */
+    '<div class="trend-ai"><div class="ai-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10.5c.3-1 1-1.5 1.7-1.5M15 10.5c-.3-1-1-1.5-1.7-1.5"/><path d="M8.5 14.5c1 1.3 2.2 2 3.5 2s2.5-.7 3.5-2"/></svg></div><div class="ta-txt"><b>運動の30分前にコップ1杯</b>が、体を動かしやすくするコツだよ。</div></div>'+
     '</div>';
 }
 
@@ -15797,12 +16061,15 @@ function renderGreeting(){
   var say = document.getElementById('aiSayText');
   if(!say) return;
   var s = computeVisitStreak();
-  var remainP = Math.max(0, Math.round(state.proteinTarget - state.proteinIntake));
+  /* ⚠️ ここに「あと◯g」を書かない（2026-08-14b検証・重要1）。
+     以前は「今日はたんぱく質があと77g」と、アプリで最も目に付く位置に未達の数字を出しており、
+     恒常原則2に反していた。実測を述べる／今できることを提案する、のどちらかにとどめる */
+  var nowP = Math.round(state.proteinIntake);
   var msg;
   if(s.streak >= 2){
     msg = '「' + s.streak + '日連続」来館中！この積み重ねが体を変えていくよ';
-  } else if(remainP > 10){
-    msg = '今日はたんぱく質があと' + remainP + 'g。サラダチキン1つでクリアできるよ！';
+  } else if(nowP > 0){
+    msg = '今日のたんぱく質は、いま' + nowP + 'g記録できているよ。食事の記録はいつでも足せるからね';
   } else {
     msg = 'いいペース！今日も自分のベストをちょっとだけ更新しよう';
   }
@@ -15847,7 +16114,9 @@ function generateAwardCard(){
   var now = new Date();
   var monthKey = now.toISOString().slice(0,7);
   var monthVisits = Object.keys(visitDates).filter(function(d){ return d.slice(0,7) === monthKey; }).length;
-  var name = (document.getElementById('profileName') || {}).textContent || '田中 みのりさん';
+  /* フォールバックも中立に（2026-08-14b）。プロフィールのベタ書きを「ゲストさん」にしたのに
+     ここだけ実名が残ると、賞状カードにだけ他人の名前が出る */
+  var name = (document.getElementById('profileName') || {}).textContent || 'ゲストさん';
   var c = document.createElement('canvas');
   c.width = 1080; c.height = 1080;
   var x = c.getContext('2d');
@@ -16148,6 +16417,14 @@ function fillManualMeal(name, kcal){
 function renderGoalForecast(){
   var el = document.getElementById('goalForecast');
   if(!el) return;
+  /* ⚠️ 目標が未設定なら予測そのものを出さない（2026-08-14b）。
+     以前は state.goalDiffKg が 0 のとき weeks=0 になり
+     「このペースなら約0週間後（今日）に目標達成の見込み！」が出うる状態だった */
+  var fcGoalKg = memberGoalDiffKg();
+  if(fcGoalKg == null || !(fcGoalKg > 0)){
+    el.textContent = '目標を決めると、ここに達成の見込みが出るよ';
+    return;
+  }
   var hist = state.weightHistory;
   /* 実測が2点未満のうちは予測しない（架空履歴からの到達予測を出さない・2026-08-12監査 D-02） */
   if(!hist || hist.length < 2){
@@ -16157,11 +16434,15 @@ function renderGoalForecast(){
   var delta = hist[hist.length-1].w - hist[0].w;
   var perWeek = delta / (hist.length-1) * 7;
   if(perWeek < -0.05){
-    var weeks = Math.ceil(state.goalDiffKg / Math.abs(perWeek));
+    /* 上の「◯週間／◯月◯日」は"自分で決めた期日"、こちらは"いまの記録のペースから計算した目安"。
+       同じカードに並ぶと数字が食い違って見えるので、何の数字なのかを文中で必ず区別する
+       （2026-08-14b検証・軽微5）。断定を避け「見込み！」もやめる */
+    var weeks = Math.ceil(fcGoalKg / Math.abs(perWeek));
     var d = new Date(); d.setDate(d.getDate() + weeks*7);
-    el.textContent = 'このペースなら約' + weeks + '週間後（' + (d.getMonth()+1) + '月' + d.getDate() + '日ごろ）に目標達成の見込み！';
+    el.textContent = '参考：これまでの記録のペースが続いた場合の目安は約' + weeks + '週間後（' +
+      (d.getMonth()+1) + '月' + d.getDate() + '日ごろ）です。上の期日はご自身で決めた目標なので、数字が違っていて大丈夫です。';
   } else {
-    el.textContent = '今週はキープペース。記録を続けるほど予測が正確になるよ';
+    el.textContent = '参考：今週は体重が横ばいです。記録が増えるほど、この目安は実態に近づきます';
   }
 }
 
