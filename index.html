@@ -12491,13 +12491,13 @@ function weeklyDiagnosis(){
   }
   var log = loadDailyLog();
   var vs = computeVisitStreak();
-  var mealDays = 0, pDays = 0, pRateSum = 0;
+  var mealDays = 0, pDays = 0, pGramSum = 0;
   for(var i = 0; i < 7; i++){
     var d = new Date(); d.setDate(d.getDate() - i);
     var row = log[dayKey(d)];
     if(!row) continue;
     if(row.kcal){ mealDays++; }
-    if(row.p != null && state.proteinTarget > 0){ pRateSum += Math.min(row.p / state.proteinTarget, 1.2); pDays++; }
+    if(row.p != null && state.proteinTarget > 0){ pGramSum += row.p; pDays++; }
   }
   var weigh = loadDayLogs().weigh.filter(function(r){ return r.ago <= 7; });
   var lines = ['【今週のAI診断レポート】', '・目標：' + g.label];
@@ -12512,7 +12512,10 @@ function weeklyDiagnosis(){
     enough = true;
   }
   if(pDays >= 3){
-    lines.push('・たんぱく質：目標の平均' + Math.round(pRateSum / pDays * 100) + '%（記録' + pDays + '日ぶん）');
+    /* 達成率(%)をやめ、実測の平均gと目安を並べる（原則2・2026-08-14b追補）。
+       版2026-08-14bで「達成率・あと◯gの表示をやめました」と会員に告知済みなのに、
+       チャットのこの経路だけ取り残されていた */
+    lines.push('・たんぱく質：直近' + pDays + '日の1日あたり平均 ' + Math.round(pGramSum / pDays) + 'g（1日の目安 ' + Math.round(state.proteinTarget) + 'g・推計）');
     enough = true;
   }
   if(mealDays > 0){ lines.push('・食事の記録：7日のうち' + mealDays + '日'); }
@@ -12524,9 +12527,11 @@ function weeklyDiagnosis(){
 }
 var chatTopics = [
   { keys:['タンパク','たんぱく','プロテイン'], gen:function(){
-      var remain = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
-      if(remain <= 0) return '今日のたんぱく質はもう目標達成してるよ！完璧！明日もこの調子でいこうね。';
-      return '今日はあと' + remain + 'gで目標達成だよ！サラダチキンなら約' + Math.round(remain/23*100) + 'g、ゆで卵なら約' + Math.ceil(remain/6.2) + '個が目安。夜の間食で補うのがおすすめ。';
+      /* 「あと◯gで目標達成」をやめ、実測と目安の併記に（原則2・2026-08-14b追補）。
+         renderGreeting・budget-card と同じ型に揃える */
+      var now = Math.round(state.proteinIntake);
+      if(now >= state.proteinTarget) return '今日のたんぱく質はいま' + now + 'g。目安の' + Math.round(state.proteinTarget) + 'gに届いてるよ！完璧！明日もこの調子でいこうね。';
+      return '今日のたんぱく質はいま' + now + 'g（1日の目安 ' + Math.round(state.proteinTarget) + 'g・推計）。サラダチキンやゆで卵は高たんぱくだから、夜の間食にもおすすめだよ。';
   }},
   { keys:['レシピ','献立','こんだて','料理','ごはん','ご飯','食事のアドバイス','何食べ','なに食べ','何にしよう','なににしよう','朝食','昼食','夕食','夕飯','ランチ','お昼','晩ごはん','夜ごはん'], gen:function(text){
       return proposeMenu(text);
@@ -12733,14 +12738,19 @@ function chatUnitWord(it){
   var m = l.match(/(個|枚|本|杯|切れ|袋|缶|串|玉|皿)/);
   return m ? m[1] : '人前';
 }
+/* 「あと◯g」をやめ、実測と目安の併記に（原則2・2026-08-14b追補）。
+   高たんぱく品目のときだけ「これ◯個でだいたい目安に届く」という換算を添える
+   （未達を告げる文ではなく、その食品の情報として出す） */
 function chatProteinGoalLine(it, perP){
-  var remain = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
-  if(remain <= 0) return '今日のたんぱく質目標はもう達成済み！すごいよ';
+  var now = Math.round(state.proteinIntake);
+  var target = Math.round(state.proteinTarget);
+  if(now >= state.proteinTarget) return '今日のたんぱく質目標はもう達成済み！すごいよ';
   if(perP >= 3){
+    var remain = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
     var n = Math.ceil(remain / perP);
-    return '今日はたんぱく質あと' + remain + 'gだから、' + it.name + 'ならあと' + n + chatUnitWord(it) + 'で目標達成だね';
+    return '今日のたんぱく質はいま' + now + 'g（1日の目安 ' + target + 'g）。' + it.name + 'ならあと' + n + chatUnitWord(it) + 'ぶんで目安に近づくよ';
   }
-  return '今日はたんぱく質あと' + remain + 'g。高たんぱくなおかずと組み合わせるのがおすすめ';
+  return '今日のたんぱく質はいま' + now + 'g（1日の目安 ' + target + 'g）。高たんぱくなおかずと組み合わせるのがおすすめ';
 }
 function foodAnswer(idx, intent, qty){
   var it = FOOD_DB[idx];
@@ -12981,7 +12991,6 @@ function proposeMenu(text){
             : /軽め|かるめ|あっさり|少なめ/.test(nt) ? 'light'
             : /がっつり|しっかり|たくさん/.test(nt) ? 'gatsuri' : null;
   var remainK = Math.max(dailyKcalBudget() - state.intakeKcal, 0);
-  var remainP = Math.max(Math.round(state.proteinTarget - state.proteinIntake), 0);
   // 「昼食何にしよう」のように食事の指定があればそちらを優先（今の時刻より発話が正）
   var slot = /朝食|朝ごはん|朝ご飯|朝めし/.test(text||'') ? 'breakfast'
            : /昼食|昼ごはん|昼ご飯|お昼|ランチ|らんち/.test(text||'') ? 'lunch'
@@ -13003,7 +13012,12 @@ function proposeMenu(text){
   if(!best) return 'ごめん、いま献立がうまく組めなかった…もう一度聞いてみて！';
   var fPct = best.kcal ? Math.round(best.f * 9 / best.kcal * 100) : 0;
   var aim = [];
-  aim.push(remainP > 0 ? 'たんぱく質はこの1食で' + best.p + 'g→今日の残り' + remainP + 'gを' + (best.p >= remainP ? 'ほぼ回収できるよ' : '大きく前進できるよ') : 'たんぱく質は今日すでに目標達成！この献立は維持にちょうどいいよ');
+  /* 「今日の残り◯gを回収できる」をやめ、この1食のぶんと、食べた後の合計見込みで語る
+     （原則2・2026-08-14b追補。未達量を出さない） */
+  var pAfter = Math.round(state.proteinIntake + best.p);
+  aim.push(state.proteinIntake < state.proteinTarget
+    ? 'たんぱく質はこの1食で' + best.p + 'g。食べると今日の合計は約' + pAfter + 'g（1日の目安 ' + Math.round(state.proteinTarget) + 'g）になるよ'
+    : 'たんぱく質は今日すでに目安に届いてる！この献立は維持にちょうどいいよ');
   aim.push('脂質はエネルギー比' + fPct + '%' + (fPct <= 30 ? 'で良好' : 'とやや高め。汁物か副菜を軽くしても◎'));
   var season = SEASONAL_FOODS[new Date().getMonth() + 1] || [];
   return SLOT_NAME[slot] + 'の献立提案（目安 約' + budget + 'kcal）\n【' + set.label + '】\n' + best.rows.join('\n') +
@@ -13061,23 +13075,28 @@ function canEatAnswer(idx){
   return it.name + 'は' + po.label + 'で約' + po.kcal + 'kcal。今日の残り約' + remainK + 'kcalだとちょっと窮屈かな…。半分にする・シェアする・明日のお楽しみにする、のどれかで調整しよう。我慢しすぎもストレスだから「量で調整」が合言葉だよ！';
 }
 function balanceAnswer(){
+  /* 記録がまだ無い登録会員には「0／目安」を実績の顔で並べない（原則1・2026-08-14b追補）。
+     weeklyDiagnosis と同じ考え方で、材料が無いときは診断を作らず記録を促す */
+  if(isRegisteredMember() && state.intakeKcal <= 0){
+    return '今日はまだ食事の記録が無いみたい。1食記録すると、ここでバランスをチェックできるよ！';
+  }
   var target = dailyKcalBudget();
-  var kPct = target ? Math.round(state.intakeKcal / target * 100) : 0;
-  var pGap = Math.round(state.proteinTarget - state.proteinIntake);
   var fOver = state.fatIntake - state.fatTarget;
-  var cGap = Math.round(state.carbsTarget - state.carbsIntake);
+  /* 達成率(%)と「あと◯g」の一覧をやめ、実測と目安（推計）の併記に統一（原則2・2026-08-14b追補）。
+     版2026-08-14bで「達成率・あと◯gの表示をやめました」と会員に告知済みなのに、
+     このチャット経路だけ取り残されていた */
   var lines = ['今日のここまでをチェックするね！',
-    '・カロリー：' + state.intakeKcal + '／' + target + 'kcal（' + kPct + '%）',
-    '・たんぱく質：' + Math.round(state.proteinIntake) + '／' + state.proteinTarget + 'g',
-    '・脂質：' + Math.round(state.fatIntake) + '／' + state.fatTarget + 'g',
-    '・炭水化物：' + Math.round(state.carbsIntake) + '／' + state.carbsTarget + 'g',
-    '・食塩相当量：' + r1(state.saltIntake) + '／' + dailyTarget().saltMax + 'g（少ないほど良い）',
-    '・食物繊維：' + r1(state.fibIntake) + '／' + dailyTarget().fibMin + 'g'];
-  if(pGap >= 15) lines.push('いちばんの改善ポイントはたんぱく質。あと' + pGap + 'gは、サラダチキン1枚＋ゆで卵1個でほぼ埋まるよ。');
+    '・カロリー：いま' + state.intakeKcal + 'kcal（1日の目安 ' + target + 'kcal・推計）',
+    '・たんぱく質：いま' + Math.round(state.proteinIntake) + 'g（1日の目安 ' + Math.round(state.proteinTarget) + 'g）',
+    '・脂質：いま' + Math.round(state.fatIntake) + 'g（1日の目安 ' + Math.round(state.fatTarget) + 'g）',
+    '・炭水化物：いま' + Math.round(state.carbsIntake) + 'g（1日の目安 ' + Math.round(state.carbsTarget) + 'g）',
+    '・食塩相当量：いま' + r1(state.saltIntake) + 'g（1日の目安 ' + dailyTarget().saltMax + 'g未満）',
+    '・食物繊維：いま' + r1(state.fibIntake) + 'g（1日の目安 ' + dailyTarget().fibMin + 'g以上）'];
+  if(state.proteinIntake < state.proteinTarget && (state.proteinTarget - state.proteinIntake) >= 15) lines.push('たんぱく質はサラダチキン1枚＋ゆで卵1個くらいで、目安にぐっと近づくよ。');
   else if(state.saltIntake > dailyTarget().saltMax) lines.push('食塩がもう1日の目安を超えてるね。夜は汁物を控えめにして、カリウム（トマト・バナナ）を添えると整うよ。');
-  else if(fOver > 5) lines.push('脂質が目標を' + Math.round(fOver) + 'g超えてるから、次の食事は焼き魚・蒸し料理系にすると整うよ。');
+  else if(fOver > 5) lines.push('脂質が目安を' + Math.round(fOver) + 'g超えてるから、次の食事は焼き魚・蒸し料理系にすると整うよ。');
   else if(state.fibIntake < dailyTarget().fibMin * 0.5) lines.push('食物繊維が足りていないよ。納豆・ブロッコリー・玄米のどれかを1品足すと一気に近づくよ。');
-  else if(cGap >= 60) lines.push('炭水化物に余裕あり。トレ前後ならおにぎりでエネルギー補給するとパフォーマンスが上がるよ。');
+  else if(state.carbsIntake < state.carbsTarget && (state.carbsTarget - state.carbsIntake) >= 60) lines.push('炭水化物に余裕あり。トレ前後ならおにぎりでエネルギー補給するとパフォーマンスが上がるよ。');
   else lines.push('全体的にいいバランス！この調子で夜まで走り切ろう。');
   return lines.join('\n');
 }
