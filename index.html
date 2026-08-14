@@ -189,19 +189,21 @@ input{font-family:inherit;}
    旧版はアバター・名前・本文・矢印を1行に詰めた横並びで、本文が3行に折れて読みにくく、
    「相談できる」ことが矢印だけの表現で伝わっていなかった。
    縦積みにして本文を広く取り、相談ボタンを言葉で置く */
+/* 2026-08-14：ホームの主役は「きょうの記録」なので、Cocoカードは高さを詰めて上に置く。
+   ここが大きいと記録の3行目（体重）が下のタブバーに潜り込んでタップできなくなる */
 .ai-say{
-  margin:16px 22px 0;
+  margin:10px 22px 0;
   background:var(--white);
   border-radius:var(--radius);
   box-shadow:var(--card-shadow);
-  padding:14px 16px 12px;
+  padding:11px 14px 11px;
 }
 .ai-say-head{display:flex;gap:10px;align-items:center;}
 .ai-say-who{min-width:0;}
-.ai-say-role{font-size:10.5px;color:var(--text-lt);font-weight:600;margin-top:1px;}
+.ai-say-role{font-size:11px;color:var(--text-lt);font-weight:600;margin-top:1px;}
 .ai-avatar{
   flex:0 0 auto;
-  width:42px;height:42px;border-radius:50%;
+  width:38px;height:38px;border-radius:50%;
   background:var(--grad-main);
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 3px 10px rgba(74,133,246,.4);
@@ -211,18 +213,20 @@ input{font-family:inherit;}
 /* ひとことは吹き出しにして「Cocoが言っている」ことを形で示す */
 .ai-say .bubble-text{
   position:relative;
-  margin-top:10px;padding:11px 13px;
+  margin-top:8px;padding:9px 12px;
   background:#F4F7FB;border-radius:12px;
-  font-size:14px;line-height:1.65;color:var(--text);
+  font-size:13.5px;line-height:1.6;color:var(--text);
+  /* 長文でホームが伸びないように3行で打ち切る（続きは相談画面で読める） */
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
 }
 .ai-say .bubble-text::before{
   content:'';position:absolute;top:-5px;left:16px;
   width:10px;height:10px;background:#F4F7FB;transform:rotate(45deg);
 }
 .ai-say-btn{
-  width:100%;margin-top:10px;
+  width:100%;margin-top:8px;min-height:44px;
   display:flex;align-items:center;justify-content:center;gap:6px;
-  padding:11px 0;border:none;border-radius:12px;
+  padding:9px 0;border:none;border-radius:12px;
   background:var(--grad-main);color:#fff;
   font-family:inherit;font-size:13px;font-weight:700;
   cursor:pointer;transition:transform .15s ease;
@@ -1294,7 +1298,7 @@ input{font-family:inherit;}
 .rf-line-btn{width:100%;padding:12px;border-radius:100px;background:#06C755;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(6,199,85,.3);}
 
 /* マイページ最下部の版表示：古いキャッシュを見ていないかを利用者自身が確かめられるようにする */
-.app-ver{margin:18px 22px 4px;text-align:center;font-size:10.5px;color:var(--text-lt);line-height:1.7;}
+.app-ver{margin:18px 22px 4px;text-align:center;font-size:11px;color:var(--text-mid);line-height:1.8;}
 .app-ver b{font-family:var(--font-en);font-weight:700;letter-spacing:.02em;}
 
 /* メニューカード：読みやすい行替え＋タップ可能に */
@@ -1570,6 +1574,68 @@ input{font-family:inherit;}
   background:var(--pastel-1);width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 20px;
 }
 .ln-step span{font-size:13px;color:var(--text);line-height:1.6;}
+/* ========= ホーム「きょうの記録」（2026-08-14刷新・常時表示の3行） =========
+   40代以降は小さい字・低コントラストが一気に読みにくくなるので、
+   値は22px・ラベル14px・補足12pxを下限にし、操作ボタンは高さ44px以上を確保する */
+.section-label .sl-note{font-size:11.5px;font-weight:700;color:var(--text-lt);}
+.rec-list{margin:0 22px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;}
+.rec-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #EEF2F7;}
+.rec-row:last-child{border-bottom:none;}
+.rr-ic{flex:0 0 38px;width:38px;height:38px;border-radius:11px;background:#F1F6FC;color:var(--gold-dk);display:flex;align-items:center;justify-content:center;}
+.rr-ic svg{width:20px;height:20px;}
+.rr-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border:none;background:none;padding:0;font-family:inherit;text-align:left;cursor:pointer;}
+.rr-main.as-div{cursor:default;}
+.rr-l{font-size:14px;font-weight:700;color:var(--text-mid);display:flex;align-items:baseline;gap:6px;}
+.rr-goal{font-size:11.5px;font-weight:600;color:var(--text-lt);}
+.rr-v{font-family:var(--font-en);font-size:22px;font-weight:800;color:var(--text);line-height:1.25;}
+.rr-v b{font-family:var(--font-en);font-weight:800;}
+.rr-v span{font-size:12.5px;font-weight:700;color:var(--text-mid);}
+/* 地の文とspanが混ざると flex の gap で1文が分断されるので、ここは通常の行にする */
+.rr-sub{font-size:12px;color:var(--text-lt);font-weight:600;line-height:1.6;}
+.rr-hidden{display:none;}
+/* 「そろそろ水分補給しよう」は移設先でも目立たせる（旧セレクタ .water-info .water-last が当たらなくなっていた） */
+.rr-sub .water-last.warn{color:#9C5410;font-weight:800;}
+.rr-bar{position:relative;display:block;height:5px;border-radius:100px;background:#E9EEF5;margin:5px 0 4px;overflow:visible;}
+.rr-bar i{display:block;height:100%;border-radius:100px;background:var(--grad-main);width:0;}
+.rr-bar i.wq-thumb{position:absolute;top:-3px;width:11px;height:11px;border-radius:50%;background:#fff;border:2.5px solid var(--gold);margin-left:-5px;}
+.rr-act{
+  flex:0 0 auto;min-height:44px;min-width:52px;padding:8px 12px;border-radius:100px;
+  border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);
+  font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;
+}
+.rr-act.primary{border:none;background:var(--grad-main);color:#fff;box-shadow:0 2px 8px rgba(74,133,246,.22);}
+.rr-act.sub{min-width:44px;padding:8px;font-size:16px;color:var(--text-lt);}
+/* 今週のかたち：記録できた日を7つの点で。達成率や「あと◯回」は書かない */
+.week-dots{display:flex;gap:6px;margin:0 22px;}
+.week-dots .wd{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.week-dots .wd i{width:100%;height:9px;border-radius:100px;background:#E4EAF2;}
+.week-dots .wd.on i{background:var(--grad-main);}
+.week-dots .wd span{font-size:11px;font-weight:700;color:var(--text-lt);}
+.week-dots .wd.today span{color:var(--gold-dk);}
+.week-dots-note{margin:8px 22px 0;font-size:11px;color:var(--text-lt);font-weight:600;line-height:1.6;}
+/* ========= 運動タブ：ジムで／おうちで の切替（2026-08-14） ========= */
+.seg-wrap{position:sticky;top:0;z-index:6;background:var(--bg);padding:10px 22px 12px;margin:0 0 4px;}
+.seg{display:flex;gap:8px;}
+.seg button{
+  flex:1;min-height:48px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);
+  color:var(--text-mid);font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.seg button svg{width:17px;height:17px;}
+.seg button.on{border-color:transparent;background:var(--grad-main);color:#fff;box-shadow:0 3px 10px rgba(74,133,246,.25);}
+.seg-why{margin:8px 2px 0;font-size:11.5px;color:var(--text-lt);font-weight:600;line-height:1.6;}
+.seg-why a{color:var(--gold-dk);font-weight:800;}
+.place-note{margin:12px 22px 0;padding:12px 14px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;font-size:12.5px;color:var(--text-mid);line-height:1.75;}
+.place-note b{color:var(--text);}
+.home-acts{margin:0 22px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);overflow:hidden;}
+.home-acts .ha{display:flex;align-items:center;gap:11px;width:100%;min-height:64px;padding:12px 14px;border:none;border-bottom:1px solid #EEF2F7;background:none;font-family:inherit;text-align:left;cursor:pointer;}
+.home-acts .ha:last-child{border-bottom:none;}
+.home-acts .ha-ic{flex:0 0 38px;width:38px;height:38px;border-radius:11px;background:#F1F6FC;color:var(--gold-dk);display:flex;align-items:center;justify-content:center;}
+.home-acts .ha-ic svg{width:19px;height:19px;}
+.home-acts .ha-tw{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.home-acts .ha-tw b{font-size:14px;color:var(--text);}
+.home-acts .ha-tw span{font-size:12px;color:var(--text-lt);font-weight:600;line-height:1.6;}
+.home-acts .ha-chev{width:16px;height:16px;color:var(--text-lt);flex:0 0 16px;}
 /* 30秒サーキット（2026-08-13・6ステーションを30秒ずつ回る全身1周） */
 .cir-card{margin:0 22px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:16px;}
 .cir-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
@@ -2205,7 +2271,9 @@ input{font-family:inherit;}
 /* 脂質の紫が白地で3.64:1しかなかった。グラフの面用はそのまま、文字だけ濃くする */
 .cc-sub b, #bodyFatTrendSub b, .pfc-item.f .pv{ color:#5B3FC4; }
 /* SVGのラベルは 9〜10px のままだった。図中の文字も11pxを下限にする */
-.tc-chart text, #trendSvg text, #weightSvg text, #bodyFatSvg text{ font-size:11px; }
+/* グラフの軸ラベルもまとめて11pxを下限にする（個別指定だと新しいグラフを足すたびに漏れる） */
+.tc-chart text, #trendSvg text, #weightSvg text, #bodyFatSvg text,
+svg text{ font-size:11px; }
 /* カード上の小さな見出し・バッジ（元の定義が親付きなので同じ形で上書きする） */
 .omakase-card .ok-badge, .omakase-card .ok-kicker, .omakase-card .ok-quick,
 .posture-card .pc-badge, .posture-card .pc-kicker,
@@ -2335,11 +2403,11 @@ input{font-family:inherit;}
 /* カロリーカード：凡例3箱をやめて「目標−食事＋運動＝あと」の式1行に */
 .bc-formula{display:flex;align-items:center;justify-content:space-between;margin-top:14px;background:#F4F7FB;border-radius:12px;padding:9px 12px;flex-wrap:wrap;row-gap:4px;}
 .bc-formula .f-item{text-align:center;min-width:0;}
-.bc-formula .f-item .f-l{display:block;font-size:9px;color:var(--text-lt);font-weight:600;}
+.bc-formula .f-item .f-l{display:block;font-size:11px;color:var(--text-mid);font-weight:600;}
 .bc-formula .f-item b{font-family:var(--font-en);font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap;}
 .bc-formula .f-op{font-size:12px;color:var(--text-lt);font-weight:700;flex:0 0 auto;padding:0 1px;}
 .bc-formula .f-item.remain b{color:var(--gold-dk);}
-.bc-formula .f-unit{font-size:9px;color:var(--text-lt);font-weight:600;flex:0 0 auto;}
+.bc-formula .f-unit{font-size:11px;color:var(--text-mid);font-weight:600;flex:0 0 auto;}
 
 /* からだの記録（歩数・水分・体重を1つの開閉にまとめ、初期は閉じる） */
 .acc-head{margin:16px 22px 0;background:#fff;border:none;width:calc(100% - 44px);border-radius:var(--radius-sm);box-shadow:var(--card-shadow);padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px;font-family:inherit;text-align:left;}
@@ -2452,6 +2520,65 @@ input{font-family:inherit;}
         </div>
       </div>
 
+      </div><!-- /home-hero（あいさつだけにして、記録を上へ引き上げた・2026-08-14） -->
+
+      <!-- 「今日の食事」パネルは削除（2026-08-14・ユーザー指示）。
+           下のバーの「食事」タブに同じ4マス（朝・昼・おやつ・夕）があり完全に重複していた。
+           食事の記録・履歴・きょうの量はすべて食事タブが担う -->
+
+      <!-- からだの記録（2026-08-14刷新）。
+           これまでは既定で閉じたアコーディオンの中にあり、開いても水分はさらに1,000px下＝
+           実質だれも見ていなかった。開閉をやめて常に見える3行にし、各行から1タップで記録できる。
+           行の高さ・順番は日によって変えない（毎日同じ位置にある、が続けるための条件）。
+           Cocoカードより上に置く：3行目（体重）が下のタブバーに潜り込むと押せなくなるため -->
+      <div id="homeSecBody">
+      <div class="section-label" style="margin-top:14px;">きょうの記録</div>
+      <div class="rec-list">
+        <!-- 歩数 -->
+        <div class="rec-row">
+          <span class="rr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg></span>
+          <button type="button" class="rr-main" onclick="openStepsSheet()" aria-label="歩数を入力する">
+            <span class="rr-l">歩数</span>
+            <span class="rr-v"><b id="walkStepsVal">—</b><span> 歩</span></span>
+            <span class="rr-sub"><span id="walkBurnVal">まだ記録がありません</span></span>
+            <span class="rr-hidden"><span id="walkGoalPct"></span></span>
+          </button>
+          <button type="button" class="rr-act" onclick="event.stopPropagation();openWalkSheet()">さんぽ</button>
+        </div>
+        <!-- 水分：＋1杯はその場で記録される（画面を切り替えない） -->
+        <div class="rec-row">
+          <span class="rr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></span>
+          <div class="rr-main as-div">
+            <span class="rr-l">水分</span>
+            <span class="rr-v" id="waterVal">0<span> / 2,000ml</span></span>
+            <span class="rr-bar"><i id="waterFill"></i></span>
+            <span class="rr-sub"><span class="water-last" id="waterLast"></span></span>
+            <span class="rr-hidden"><span id="waterGoalLabel"></span><span id="waterGlasses"></span></span>
+          </div>
+          <button type="button" class="rr-act sub" onclick="addWater(-250)" aria-label="250ml減らす">−</button>
+          <button type="button" class="rr-act primary" onclick="addWater(250)" aria-label="250ml追加">＋1杯</button>
+        </div>
+        <!-- 体重 -->
+        <div class="rec-row">
+          <span class="rr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17l-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg></span>
+          <button type="button" class="rr-main" onclick="openWeightSheet()" aria-label="体重を記録する">
+            <span class="rr-l">体重</span>
+            <span class="rr-v" id="wqCurrent">--<span> kg</span></span>
+            <span class="rr-bar"><i class="wq-fill" id="wqFill"></i><i class="wq-thumb" id="wqThumb"></i></span>
+            <span class="rr-sub"><span id="wqStart"></span><span id="wqGoal"></span></span>
+            <span class="rr-sub" id="wqNote"></span>
+          </button>
+          <button type="button" class="rr-act" onclick="openWeightSheet()">記録</button>
+        </div>
+      </div><!-- /rec-list -->
+
+      <!-- ホーム＝その場で記録／「からだ」タブ＝推移を見る、の役割分担を明示（2026-08-06） -->
+      <button class="acc-more" onclick="goTab('trend');renderTrend()">
+        グラフで推移を見る（からだタブ）
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      </div><!-- /homeSecBody -->
+
       <!-- AIパートナー（2026-08-07 作り直し）。旧版は名前と本文が詰まっていて、
            「タップすると相談できる」ことが矢印1つでしか示されず伝わっていなかった。
            ①ひとこと ②相談ボタン を縦に分け、相談できることを言葉で明示する -->
@@ -2471,7 +2598,6 @@ input{font-family:inherit;}
           Cocoに相談する
         </button>
       </div>
-      </div>
 
       <!-- 「今日のメニュー」「食事を記録」のボタン列は削除（2026-08-07・ユーザー指示）。
            食事は下バーの「食事」タブ、今日のメニューは「運動」タブにあり重複していた -->
@@ -2479,10 +2605,33 @@ input{font-family:inherit;}
       <!-- 「今日あと食べられる量」は食事タブへ移設（2026-08-07・ユーザー指示）。
            食べた量と残りは食事の画面で一緒に見るのが自然なため -->
 
-      <!-- 今日の食事（朝・昼・夕・軽食）。ホームのごちゃつき対策で開閉式（既定は閉じる）。
-           タイルをタップすると、その食事としてカメラがそのまま起動する -->
-      <!-- ガチ勢モードの目標の内訳（2026-08-10・「見えない位置では意味がない」指摘への対応）。
-           消費−少なく食べる＝目標 を毎日目に入る場所に。タップで設定シートへ -->
+
+      <!-- 今週のかたち（2026-08-14）。記録できた日を点で7つ並べるだけ。
+           達成率・「あと◯回」は書かない（未達を数字で告げると次に開かなくなる） -->
+      <div class="section-label" style="margin-top:20px;">今週の記録<a href="javascript:void(0)" onclick="goTab('trend');renderTrend()">推移を見る</a></div>
+      <div class="week-dots" id="weekDots"></div>
+      <div class="week-dots-note">なにか1つでも記録した日に色がつきます（食事・体重・水分・運動・来館）</div>
+
+      <!-- いま混んでる？（2026-08-14に運動タブから移設）。
+           「いまから行くか」を決める情報なので、入館QRと同じ画面にある必要がある -->
+      <div class="section-label" style="margin-top:20px;">混みやすい時間帯</div>
+      <div class="congestion-card">
+        <div class="ch-title">混雑の目安（時間帯の傾向） <span class="now" id="occNow">—</span></div>
+        <div class="congestion-bar"><div class="pointer" id="occPointer"></div></div>
+        <div class="cc-note" id="occNote">読み込み中…</div>
+        <div class="cc-hourly-label">混みやすい時間帯の目安（過去データ・デモ）</div>
+        <div class="cc-hourly" id="occHourly"></div>
+      </div>
+
+      <!-- 今日のミッション（がんばりの記録＝連続来館・ポイントもここに集約） -->
+      <!-- 「今日のミッション」カードは削除（2026-08-07・ユーザー指示）。
+           連続来館とジュエル（頑張りの記録）はマイページから見られるようにした。
+           食事の履歴は食事タブの時計アイコンから見られる -->
+
+      <!-- 条件付きで出る2枚は下にまとめる（2026-08-14）。
+           上に積むと、出る日だけ記録の3行が画面外へ押し出されて位置が毎日動いていた。
+           「毎日おなじ位置に記録がある」を優先する -->
+      <!-- 目標の内訳（消費−少なく食べる＝目標）。タップで設定シートへ -->
       <div class="goal-line" id="homeGoalLine" style="display:none;" onclick="openAthleteSheet()" role="button" tabindex="0" aria-label="目標カロリーの内訳を見る"></div>
       <!-- 週次チェックインの呼び出し（期限が来て提案が作れるときだけ出す） -->
       <div class="checkin-callout" id="homeCheckinCallout" style="display:none;" onclick="openCheckin()" role="button" tabindex="0" aria-label="今週の目標見直しをひらく">
@@ -2493,139 +2642,6 @@ input{font-family:inherit;}
         </div>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
-      <div id="homeSecMeal">
-      <button class="acc-head" id="accMealHead" onclick="toggleMealAcc()" aria-expanded="false" aria-controls="accMealPanel">
-        <svg class="acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
-        <div class="acc-tw">
-          <div class="acc-t">今日の食事</div>
-          <div class="acc-s" id="accMealSummary">タップすると朝・昼・夕・軽食の記録がひらくよ</div>
-        </div>
-        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="acc-body" id="accMealPanel">
-      <div class="section-label" style="margin-top:10px;">食事をえらんでカメラで記録<a href="javascript:void(0)" onclick="openMealHistory()">履歴を見る</a></div>
-      <div class="meal-grid">
-        <div class="meal-cell b" onclick="goTab('meal','breakfast')" role="button" tabindex="0" aria-label="朝食をカメラで記録">
-          <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg></div>
-          <div><div class="mc-name">朝食</div><div class="mc-kcal" id="mtBreakfast">320<span> kcal</span></div></div>
-          <button class="mc-add" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-        <div class="meal-cell l" onclick="goTab('meal','lunch')" role="button" tabindex="0" aria-label="昼食をカメラで記録">
-          <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></div>
-          <div><div class="mc-name">昼食</div><div class="mc-kcal" id="mtLunch">585<span> kcal</span></div></div>
-          <button class="mc-add" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-        <div class="meal-cell d" onclick="goTab('meal','dinner')" role="button" tabindex="0" aria-label="夕食をカメラで記録">
-          <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
-          <div><div class="mc-name">夕食</div><div class="mc-kcal" id="mtDinner">0<span> kcal</span></div></div>
-          <button class="mc-add" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-        <div class="meal-cell s" onclick="goTab('meal','snack')" role="button" tabindex="0" aria-label="軽食をカメラで記録">
-          <div class="mc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg></div>
-          <div><div class="mc-name">軽食</div><div class="mc-kcal" id="mtSnack">170<span> kcal</span></div></div>
-          <button class="mc-add" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-      </div>
-
-      </div><!-- /accMealPanel -->
-      </div><!-- /homeSecMeal -->
-
-      <!-- からだの記録：歩数・水分・体重は1つの開閉パネルに集約（初期は閉じる） -->
-      <div id="homeSecBody">
-      <button class="acc-head" id="accBodyHead" onclick="toggleBodyAcc()" aria-expanded="false" aria-controls="accBodyPanel">
-        <svg class="acc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <div class="acc-tw">
-          <div class="acc-t">からだの記録</div>
-          <div class="acc-s">歩数・水分・体重はここにまとめました</div>
-        </div>
-        <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="acc-body" id="accBodyPanel">
-
-      <!-- 歩数・さんぽ（位置情報＋加速度センサーで計測。数字は消費カロリーに反映） -->
-      <div class="dash-card">
-        <div class="dash-head">
-          <div class="dh-ic ex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/></svg></div>
-          <div><div class="dh-t">今日の歩数</div><div class="dh-s">歩いたぶんも「あと摂れる」に足されるよ</div></div>
-          <div class="dh-r" id="walkBurnVal">+0 kcal</div>
-        </div>
-        <div class="walk-main">
-          <div class="walk-steps">
-            <div class="wsv" id="walkStepsVal">0</div>
-            <div class="wsl">歩</div>
-          </div>
-          <div class="walk-info">
-            <div class="wir"><span>歩いた距離</span><b id="walkDistVal">0.0 km</b></div>
-            <div class="wir"><span>消費カロリー</span><b id="walkKcalVal">+0 kcal</b></div>
-            <div class="wir"><span>目標 8,000歩</span><b id="walkGoalPct">0%</b></div>
-          </div>
-        </div>
-        <div class="walk-btns">
-          <button class="wb-go" onclick="openWalkSheet()">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-            さんぽ計測
-          </button>
-          <button class="wb-manual" onclick="openStepsSheet()">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
-            歩数を入力
-          </button>
-        </div>
-        <div class="walk-auto" id="walkAutoRow" onclick="walkAutoToggle()">
-          <span class="wa-dot" id="walkAutoDot"></span>
-          <span class="wa-label" id="walkAutoLabel">自動計測（アプリを開いている間）</span>
-          <b id="walkAutoState">ON</b>
-        </div>
-        <div class="walk-note" id="walkNote">画面を消している間のぶんはスマホの歩数計に残っているから、「歩数を入力」で写せば重複なしで合算するよ</div>
-      </div>
-
-      <!-- 水分補給 -->
-      <div class="dash-card">
-        <div class="dash-head">
-          <div class="dh-ic wt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></div>
-          <div><div class="dh-t">水を飲む</div><div class="dh-s" id="waterGoalLabel">目標 2,200ml（体重×35ml で自動計算）</div></div>
-        </div>
-        <div class="water-main">
-          <div class="water-glass"><div class="water-fill" id="waterFill"></div></div>
-          <div class="water-info">
-            <div class="wv" id="waterVal">0<span> / 2,000ml</span></div>
-            <div class="wg" id="waterGlasses">コップ約0杯分</div>
-            <div class="wg water-last" id="waterLast"></div>
-          </div>
-          <div class="water-btns">
-            <button class="wbtn minus" onclick="addWater(-250)" aria-label="250ml減らす"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
-            <button class="wbtn plus" onclick="addWater(250)" aria-label="250ml追加"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 体重 -->
-      <div class="dash-card" onclick="openWeightSheet()" style="cursor:pointer;">
-        <div class="dash-head">
-          <div class="dh-ic kg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17l-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg></div>
-          <div><div class="dh-t">体重</div><div class="dh-s">タップして今日の体重を記録</div></div>
-          <div class="dh-r" id="wqCurrent">62.1<span> kg</span></div>
-        </div>
-        <div class="wq-track">
-          <div class="wq-fill" id="wqFill" style="width:36%;"></div>
-          <div class="wq-thumb" id="wqThumb" style="left:36%;"></div>
-        </div>
-        <div class="wq-labels"><span id="wqStart">スタート 63.4kg</span><span id="wqGoal">目標 59.8kg</span></div>
-        <div class="wq-note" id="wqNote">目標まであと2.3kg。いいペースだよ！</div>
-      </div>
-
-      <!-- ホーム＝その場で記録／「からだ」タブ＝推移を見る、の役割分担を明示（2026-08-06） -->
-      <button class="acc-more" onclick="goTab('trend');renderTrend()">
-        グラフで推移を見る（からだタブ）
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-
-      </div><!-- /accBodyPanel -->
-      </div><!-- /homeSecBody -->
-
-      <!-- 今日のミッション（がんばりの記録＝連続来館・ポイントもここに集約） -->
-      <!-- 「今日のミッション」カードは削除（2026-08-07・ユーザー指示）。
-           連続来館とジュエル（頑張りの記録）はマイページから見られるようにした。
-           食事の履歴は「今日の食事」パネルの『履歴を見る』と食事タブの時計アイコンに残っている -->
 
       <button class="hedit-link" onclick="openHomeEdit()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
@@ -3022,15 +3038,32 @@ input{font-family:inherit;}
 
     <!-- ============ TRAINING / ENTRY ============ -->
     <section class="screen" data-screen="training">
-      <div class="scr-header"><h1>運動・ジム</h1>
+      <div class="scr-header"><h1>運動</h1>
         <div style="display:flex;gap:8px;">
           <div class="icon-btn" id="newsBell" onclick="openNewsSheet()" title="お知らせ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="news-dot" id="newsDot" style="display:none;"></span></div>
           <div class="icon-btn sosq" role="button" tabindex="0" aria-label="緊急連絡先を開く" onclick="showSheet('sosSheet')" title="緊急時はこちら"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         </div>
       </div>
 
-      <!-- 運動タブの本題＝記録なので最上部に置く（2026-08-06。旧版は会員カード・混雑状況の下で
-           スクロールしないと見えなかった） -->
+      <!-- ジムで／おうちで の切替（2026-08-14・ユーザー指示）。
+           これまでは1タブに12セクションが縦積みで、ジム用と自宅用が混ざっていた。
+           位置は日によって変えない（「ジムで」が常に左）。既定は前回選んだ側を覚えて復元し、
+           自動で決めたときは理由を1行出して手で戻せるようにする -->
+      <div class="seg-wrap">
+        <div class="seg" role="tablist">
+          <button type="button" id="segGym" role="tab" aria-controls="trainGym" aria-selected="true" onclick="setTrainPlace('gym', true)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11"/></svg>
+            ジムで
+          </button>
+          <button type="button" id="segHome" role="tab" aria-controls="trainHome" aria-selected="false" onclick="setTrainPlace('home', true)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+            おうちで
+          </button>
+        </div>
+        <div class="seg-why" id="segWhy"></div>
+      </div>
+
+      <!-- 記録はジムでも家でも同じ1本に入れる（分けるのは選ぶときだけ） -->
       <div class="exlog-card">
         <div class="exlog-head">
           <div class="et">本日の運動による消費</div>
@@ -3041,22 +3074,34 @@ input{font-family:inherit;}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           運動を記録する
         </button>
-        <div class="exlog-hint">ウォーキング・ランニング・水泳 など</div>
+        <div class="exlog-hint">ジムでも、おうちでも、記録はここに1つにまとまります</div>
       </div>
 
-      <!-- おうちレッスン（2026-08-12・宅トレ動画アプリのオマージュ。中身はJSが描く） -->
-      <div id="lessonCard"></div>
+      <!-- ============ おうちで ============ -->
+      <div id="trainHome" role="tabpanel" aria-labelledby="segHome" style="display:none;">
+        <!-- おうちレッスン（中身はJSが描く） -->
+        <div id="lessonCard"></div>
 
-      <!-- 会員カード（氏名・会員番号）は削除（2026-08-07・ユーザー指示）。
-           入館QRは下バー中央に集約済みで、カードの役割が無くなったため -->
+        <!-- 家の外・道具なしでできることも、ここから始められるようにする -->
+        <div class="section-label" style="margin-top:18px;">道具がなくてもできること</div>
+        <div class="home-acts">
+          <button type="button" class="ha" onclick="openWalkSheet()">
+            <span class="ha-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></span>
+            <span class="ha-tw"><b>さんぽを計測する</b><span>歩いた距離と歩数から消費の目安を出します</span></span>
+            <svg class="ha-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button type="button" class="ha" onclick="openChat();setTimeout(function(){quickChat('家でできる運動を教えて')},300)">
+            <span class="ha-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+            <span class="ha-tw"><b>Cocoに聞いてみる</b><span>「今日は疲れている」でも大丈夫。できそうなものを一緒に探します</span></span>
+            <svg class="ha-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
 
-      <div class="congestion-card">
-        <div class="ch-title">混雑の目安（時間帯の傾向） <span class="now" id="occNow">—</span></div>
-        <div class="congestion-bar"><div class="pointer" id="occPointer"></div></div>
-        <div class="cc-note" id="occNote">読み込み中…</div>
-        <div class="cc-hourly-label">混みやすい時間帯の目安（過去データ・デモ）</div>
-        <div class="cc-hourly" id="occHourly"></div>
+        <div class="place-note"><b>おうちでやった運動も、ジムでの運動と同じところに記録されます。</b>上の「運動を記録する」からどうぞ。</div>
       </div>
+
+      <!-- ============ ジムで ============ -->
+      <div id="trainGym" role="tabpanel" aria-labelledby="segGym">
 
       <!-- 30秒サーキット（2026-08-13）。中身はJSが描く -->
       <div class="section-label">30秒サーキット</div>
@@ -3140,15 +3185,18 @@ input{font-family:inherit;}
         </div>
       </div>
 
-      <!-- 人気メニュー（ホームから移設・2026-08-04b） -->
+      <!-- 定番メニューの例（旧「今、みんなに選ばれているメニュー」）。
+           実データの集計ではないので、実績風の見出しをやめた（2026-08-14・検証指摘） -->
       <div class="pulse-card">
         <div class="pulse-hd">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>今、みんなに選ばれているメニュー</span>
+          <span>定番メニューの例</span>
         </div>
         <div id="pulseList"></div>
-        <div class="pulse-note">サンプル表示です（全店の実データ集計は準備中）。並び順はコースの一般的な人気傾向</div>
+        <div class="pulse-note">一般的な組み合わせの例です。実際の利用状況の集計ではありません（全店の集計は準備中）</div>
       </div>
+
+      </div><!-- /trainGym -->
 
       <div class="sos-link" onclick="showSheet('sosSheet')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -3379,7 +3427,7 @@ input{font-family:inherit;}
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-13a</b>（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br><br>――以下は前版までの履歴――<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-14a</b>（<b>画面の並びを大きく作り直しました</b>。「どこに何があるか分からない」「同じものが2か所にある」を無くすための刷新です。①<b>ホームに「きょうの記録」を常に表示</b>：歩数・水分・体重の3行が、開かなくても最初から見えるようになりました。水は<b>「＋1杯」を押すだけ</b>、体重と歩数はその場でシートが開きます。これまでは折りたたまれていて、開いても水分はさらに下の方にあり、実質たどり着けませんでした。②<b>ホームの「今日の食事」を削除</b>：下の「食事」タブに同じ4マス（朝・昼・おやつ・夕）があり、まったく同じことが2か所からできていました。食事の記録・履歴・きょうの量は、すべて食事タブにまとまります。③<b>運動タブを「ジムで」と「おうちで」の2つに分けました</b>：上の切り替えボタンで、いま必要な方だけが出ます。ジム側＝30秒サーキット・機材ガイド・今日のおすすめコース・AIおまかせ・姿勢診断・来館の記録。おうち側＝おうちレッスン（動画12本）・さんぽの計測・Cocoへの相談。<b>どちらでやっても記録は同じ1か所にまとまります</b>（どちらが良い・悪いもありません）。いま来館中のときだけ自動で「ジムで」が開き、その理由も1行出します。<b>手で切り替えれば、そちらが優先されます</b>。④<b>混雑の目安をホームに移しました</b>：出かける前に見る情報なので、入館QRと同じ画面にあるべきでした（時間帯の傾向で、いまの人数を数えているものではありません）。⑤<b>「今週の記録」を追加</b>：なにか1つでも記録した日に色がつく、7つの点です。達成率や「あと◯回」は出しません。⑥ホームで条件によって出る案内（目標の内訳・今週の見直し）は下にまとめ、<b>記録の3行が毎日おなじ位置にある</b>ようにしました）<br><br>――以下は前版までの履歴――<br>版 2026-08-13a（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）</p>
     </section>
 
     <!-- AI パートナー チャット オーバーレイ -->
@@ -4001,6 +4049,17 @@ input{font-family:inherit;}
         </div>
         <div class="wk-status" id="stepsPreview"></div>
         <button class="sheet-btn" onclick="saveManualSteps()">この歩数で記録する</button>
+        <!-- ホームの歩数カードを1行に縮めた際に、距離・消費・自動計測をここへ移した（2026-08-14） -->
+        <div class="walk-info" style="margin-top:14px;">
+          <div class="wir"><span>歩いた距離</span><b id="walkDistVal">0.0 km</b></div>
+          <div class="wir"><span>消費カロリー</span><b id="walkKcalVal">+0 kcal</b></div>
+        </div>
+        <div class="walk-auto" id="walkAutoRow" onclick="walkAutoToggle()">
+          <span class="wa-dot" id="walkAutoDot"></span>
+          <span class="wa-label" id="walkAutoLabel">自動計測（アプリを開いている間）</span>
+          <b id="walkAutoState">ON</b>
+        </div>
+        <div class="walk-note" id="walkNote">画面を消している間のぶんはスマホの歩数計に残っているから、ここに写せば重複なしで合算するよ</div>
         <button class="sheet-cancel" onclick="hideSheet('stepsSheet')">もどる</button>
         <div class="wk-privacy">さんぽ計測をした日は、その分の歩数を自動で差し引いてカロリーを計算するよ（二重に足さない）</div>
       </div>
@@ -4427,7 +4486,7 @@ input{font-family:inherit;}
       <span class="tab-qr-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M21 14v7h-7"/></svg></span>
       <span>入館QR</span>
     </button>
-    <button class="tab-btn" data-tab="training" onclick="goTab('training');renderLessonCard();renderCircuitCard()">
+    <button class="tab-btn" data-tab="training" onclick="goTab('training');initTrainPlace()">
       <svg class="tab-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg>
       <span>運動</span>
     </button>
@@ -4473,12 +4532,9 @@ input{font-family:inherit;}
     <div class="sheet-card">
       <h3>ホームの表示を編集</h3>
       <div class="sheet-desc">よく使うものだけ残せます。非表示にしても記録データは消えず、いつでも戻せます</div>
-      <div class="hedit-row">
-        <div><div class="ht">今日の食事</div><div class="hs">朝・昼・夕・軽食の4マス</div></div>
-        <div class="hedit-sw on" id="hsw-meal" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('meal')"></div>
-      </div>
+      <!-- 「今日の食事」の行は削除（2026-08-14）。カード自体をホームから外したため（食事タブと重複） -->
       <div class="hedit-row" style="border-bottom:none;">
-        <div><div class="ht">からだの記録</div><div class="hs">歩数・水分・体重のパネル</div></div>
+        <div><div class="ht">きょうの記録</div><div class="hs">歩数・水分・体重の3行</div></div>
         <div class="hedit-sw on" id="hsw-body" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('body')"></div>
       </div>
       <!-- 「今日のミッション」の行は削除（2026-08-07）。カード自体をホームから外したため -->
@@ -5025,13 +5081,20 @@ function renderWalkCard(){
   var a = walkAgg();
   var el = function(id){ return document.getElementById(id); };
   if(!el('walkStepsVal')) return;
-  el('walkStepsVal').textContent = a.steps.toLocaleString();
+  /* 未記録の日に「0歩・目標の0%」と出すと、やっていないことを実績の形で突きつけてしまう。
+     記録が無いうちは数字を出さず「まだ記録がありません」と正直に書く（2026-08-14検証） */
+  var has = a.steps > 0;
+  el('walkStepsVal').textContent = has ? a.steps.toLocaleString() : '—';
   el('walkDistVal').textContent = (a.dist / 1000).toFixed(1) + ' km';
-  el('walkKcalVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal';
-  el('walkBurnVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal';
+  el('walkKcalVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal（推計）';
+  el('walkBurnVal').textContent = has
+    ? '歩いたぶんの消費 +' + a.kcal.toLocaleString() + ' kcal（推計）'
+    : 'まだ記録がありません';
   el('walkGoalPct').textContent = Math.min(999, Math.round(a.steps / WALK_GOAL_STEPS * 100)) + '%';
   var note = el('walkNote');
-  if(a.steps >= WALK_GOAL_STEPS) note.textContent = '今日の目標 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩を達成！よく歩いたね';
+  /* 達成表示は歩数を訂正して下回ったら元に戻す（前は一度書き換わると戻らなかった） */
+  if(a.steps >= WALK_GOAL_STEPS) note.textContent = '今日の目安 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩に届きました';
+  else note.textContent = '画面を消している間のぶんはスマホの歩数計に残っています。ここに写せば重複なしで合算します';
   var row = el('walkAutoRow');
   if(row){
     var on = walkAutoOn();
@@ -11661,7 +11724,7 @@ function renderCheckinCallout(){
 
 /* 保存済みのガチ勢設定の復元。
    ⚠️ここで即時実行してはいけない：この位置での recalc は、後方で定義される
-   WQ_TARGET 等をまだ参照できず TypeError でスクリプト全体が途中死する
+   WQ_DEMO_TARGET 等をまだ参照できず TypeError でスクリプト全体が途中死する
    （検証役が実測で検出。目標数値だけ復元されて見えるため気づきにくい）。
    スクリプト末尾の initAuth の後に呼ぶ（applyBodyProfile の上書きより後にする必要もある） */
 function restoreAthleteFromStorage(){
@@ -12305,6 +12368,11 @@ var chatTopics = [
   { keys:['レシピ','献立','こんだて','料理','ごはん','ご飯','食事のアドバイス','何食べ','なに食べ','何にしよう','なににしよう','朝食','昼食','夕食','夕飯','ランチ','お昼','晩ごはん','夜ごはん'], gen:function(text){
       return proposeMenu(text);
   }},
+  /* 家でやりたい人には、ジムのマシンではなく おうちレッスン を案内する（2026-08-14検証） */
+  { keys:['家で','自宅','おうち','宅トレ','ジムに行けない','行けない'], gen:function(){
+      var n = (typeof LESSONS !== 'undefined' && LESSONS.length) ? LESSONS.length : 12;
+      return '家でやるなら【運動】タブの「おうちで」を開いてみて。動画つきのおうちレッスンが' + n + '本あって、ヨガ・ストレッチ・筋トレ・有酸素・瞑想から3〜10分で選べるよ。終わると消費の目安が運動の記録に入るから、ジムに行った日と同じところにたまっていくよ。疲れている日は「深呼吸リセット」（3分）だけでも大丈夫';
+  }},
   { keys:['運動','トレーニング','筋トレ','有酸素','ストレッチ','ワークアウト','鍛え','体を動か'], gen:function(){
       var g = currentGoal();
       var ck = Object.keys(COURSES).filter(function(k){ return COURSES[k].forGoals.indexOf(state.goalType) >= 0; })[0] || 'full';
@@ -12361,7 +12429,7 @@ var chatTopics = [
       return '「'+g.label+'」が目標のあなたには「'+COURSES[ck].name+'」がおすすめ！'+b.items.length+'種目・約'+b.totalMin+'分で約'+b.totalKcal+'kcal消費できるよ。運動タブの【今日のおすすめコース】から1タップで始められるよ';
   }},
   { keys:['おまかせ','決めて','考えたくない','迷う','迷って'], gen:function(){
-      return '決めるのはわたしに任せて！ホームの「今日のメニュー」ボタンを押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を3秒で組むよ。「今日何やろう」は、もう考えなくてOK！';
+      return '決めるのはわたしに任せて！運動タブの「ジムで」にある【AIおまかせワークアウト】を押せば、あなたの目標に合わせて今日のメニュー（マシン・重量・回数まで）を組むよ。「今日何やろう」は、もう考えなくてOK！';
   }},
   { keys:['マシン','機材','使い方','器具'], gen:function(){
       return 'マシンの使い方は【スマート機材ガイド】におまかせ！マシンのQRを読み取るか、運動タブから選ぶと、その型番の使い方動画とあなた専用の推奨値（シート位置・重量）が見られるよ';
@@ -13410,11 +13478,11 @@ var PULSE_RANK = [
 function renderCommunityPulse(){
   var wrap = document.getElementById('pulseList');
   if(!wrap) return;
-  wrap.innerHTML = PULSE_RANK.map(function(r, i){
+  /* 順位（1位/2位/3位）と長さの違う比率バーは、実データの集計でないのに集計結果の記法だった。
+     見出しを「定番メニューの例」に直しても記法が残っていれば同じことなので、記法ごとやめる（2026-08-14検証） */
+  wrap.innerHTML = PULSE_RANK.map(function(r){
     var c = COURSES[r.key];
-    return '<div class="pulse-row"><span class="pr-rank">' + (i+1) + '位</span>' +
-      '<span class="pr-name">' + c.name.replace('コース','') + '</span>' +
-      '<div class="pr-bar"><i style="width:' + r.pct + '%;"></i></div></div>';
+    return '<div class="pulse-row"><span class="pr-name">' + c.name + '</span></div>';
   }).join('');
 }
 function renderStreak(){
@@ -14864,43 +14932,134 @@ function mealSlotByHour(){
 var pendingMealSlot = null;
 function currentMealSlot(){ return pendingMealSlot || mealSlotByHour(); }
 
-/* ============ 2026-08-04b ホーム再設計の新設UI ============ */
-/* からだの記録（歩数・水分・体重）の開閉。開閉状態は端末に記憶する */
-function toggleBodyAcc(){
-  var head = document.getElementById('accBodyHead');
-  var panel = document.getElementById('accBodyPanel');
-  if(!head || !panel) return;
-  var open = !panel.classList.contains('open');
-  panel.classList.toggle('open', open);
-  head.classList.toggle('open', open);
-  head.setAttribute('aria-expanded', open ? 'true' : 'false');
-  try{ localStorage.setItem('smile24_acc_body', open ? '1' : '0'); }catch(e){}
+/* ============ ホームの「きょうの記録」（2026-08-14刷新） ============
+   開閉式（アコーディオン）はやめた。既定で閉じていたため、からだの記録が実質だれにも
+   見えていなかった。常時表示の3行にして、行ごとに1タップで記録できるようにしている。
+   restoreBodyAcc は開閉状態の復元係だったので、いまは何もしない（呼び出し元は残す） */
+function restoreBodyAcc(){ /* 開閉をやめたため復元するものが無い */ }
+
+/* ============ 運動タブ「ジムで／おうちで」の切替（2026-08-14） ============
+   分けるのは“選ぶとき”だけ。記録は1本のまま（どちらでやっても同じ運動ログに入る）。
+   位置は固定（ジムでが常に左）。自動で決めたときは必ず理由を1行出し、手で戻せるようにする */
+var TRAIN_PLACE_KEY = 'smile24_train_place';
+var trainPlace = 'gym';
+function trainPlaceAuto(){
+  /* いま館内にいるときだけ「ジムで」を自動で開く。退館した後は自動判定しない
+     （退館＝ジムを出たので、そのまま3時間ジム側に固定するのは事実と違った・2026-08-14検証）。
+     位置情報は使わない（会員の個人情報を新たに増やさない） */
+  if(state.checkedIn) return 'gym';
+  try{
+    var log = JSON.parse(localStorage.getItem('smile24_entry_log') || '[]');
+    if(Array.isArray(log) && log.length){
+      var newest = null;
+      log.forEach(function(l){
+        var t = new Date(l.at).getTime();
+        if(!isNaN(t) && (!newest || t > newest.t)) newest = { t: t, type: l.type };
+      });
+      /* 直近の記録が「入館」で、まだ2時間以内ならジムにいるとみなす */
+      if(newest && newest.type === '入館' && Date.now() - newest.t < 2 * 3600000) return 'gym';
+    }
+  }catch(e){}
+  return null;
 }
-function restoreBodyAcc(){
-  var saved = null;
-  try{ saved = localStorage.getItem('smile24_acc_body'); }catch(e){}
-  if(saved === '1') toggleBodyAcc();   /* 既定は閉じる。前回開けた人だけ開いた状態で戻す */
-  try{ saved = localStorage.getItem('smile24_acc_meal'); }catch(e){}
-  if(saved === '1') toggleMealAcc();
+function setTrainPlace(place, byUser){
+  var changed = trainPlace !== (place === 'home' ? 'home' : 'gym');
+  trainPlace = (place === 'home') ? 'home' : 'gym';
+  if(byUser){
+    /* 手で選んだら、その選択と「いつ選んだか」を残す。以後は自動判定より本人の選択を優先する
+       （前は自動が常に勝ち、タブに戻るたび「ジムで」に戻されて手動切替が無意味だった） */
+    try{
+      localStorage.setItem(TRAIN_PLACE_KEY, trainPlace);
+      localStorage.setItem(TRAIN_PLACE_KEY + '_at', String(Date.now()));
+    }catch(e){}
+  }
+  var g = document.getElementById('trainGym'), h = document.getElementById('trainHome');
+  if(g) g.style.display = trainPlace === 'gym' ? '' : 'none';
+  if(h) h.style.display = trainPlace === 'home' ? '' : 'none';
+  var bg = document.getElementById('segGym'), bh = document.getElementById('segHome');
+  if(bg){ bg.classList.toggle('on', trainPlace === 'gym'); bg.setAttribute('aria-selected', trainPlace === 'gym'); }
+  if(bh){ bh.classList.toggle('on', trainPlace === 'home'); bh.setAttribute('aria-selected', trainPlace === 'home'); }
+  var why = document.getElementById('segWhy');
+  if(why){
+    if(byUser){
+      why.textContent = trainPlace === 'gym' ? '「ジムで」を選んでいます' : '「おうちで」を選んでいます';
+    } else if(trainPlace === 'gym' && trainPlaceAuto() === 'gym'){
+      why.innerHTML = 'いま来館中なので「ジムで」を開いています。<a href="javascript:void(0)" onclick="setTrainPlace(\'home\', true)">おうちに切り替える</a>';
+    } else {
+      var hasSaved = false;
+      try{ hasSaved = !!localStorage.getItem(TRAIN_PLACE_KEY); }catch(e){}
+      why.textContent = hasSaved
+        ? (trainPlace === 'gym' ? '前回の続きから「ジムで」を開いています' : '前回の続きから「おうちで」を開いています')
+        : 'どちらでするか、上のボタンで切り替えられます';
+    }
+  }
+  /* 切り替えたら、その段の先頭から読めるように上へ戻す
+     （前は下まで読んだ位置のまま切り替わり、押した先の先頭が画面外だった） */
+  if(changed){
+    var scr = document.querySelector('[data-screen="training"]');
+    if(scr) scr.scrollTop = 0;
+  }
+  if(trainPlace === 'gym'){ try{ renderCircuitCard(); }catch(e){} }
+  else { try{ renderLessonCard(); }catch(e){} }
 }
-/* 今日の食事もからだの記録と同じ開閉式（ホームのごちゃつき対策・2026-08-05ユーザー指示） */
-function toggleMealAcc(){
-  var head = document.getElementById('accMealHead');
-  var panel = document.getElementById('accMealPanel');
-  if(!head || !panel) return;
-  var open = !panel.classList.contains('open');
-  panel.classList.toggle('open', open);
-  head.classList.toggle('open', open);
-  head.setAttribute('aria-expanded', open ? 'true' : 'false');
-  try{ localStorage.setItem('smile24_acc_meal', open ? '1' : '0'); }catch(e){}
+function initTrainPlace(){
+  var saved = null, savedAt = 0;
+  try{
+    saved = localStorage.getItem(TRAIN_PLACE_KEY);
+    savedAt = parseInt(localStorage.getItem(TRAIN_PLACE_KEY + '_at') || '0') || 0;
+  }catch(e){}
+  /* 本人が手で選んだ直後（12時間以内）は、その選択をいちばん強く尊重する。
+     それより古ければ、来館中かどうかで開く側を決め、なければ前回の選択に戻す */
+  var recentChoice = saved && savedAt && (Date.now() - savedAt < 12 * 3600000);
+  var auto = trainPlaceAuto();
+  setTrainPlace(recentChoice ? saved : (auto || saved || 'gym'), false);
+}
+
+/* 今週のかたち：記録できた日を7つの点で表す。
+   達成率・「あと◯回」は出さない（未達を数字で告げると次に開かなくなるため）。
+   点が濃くなる条件＝その日に何か1つでも記録がある：食事・体重（日次ログ）／来館（入退館ログ）／
+   水分・運動（今日ぶんだけはメモリ上のstateから拾う。この2つは日付つきで保存していないため、
+   過去日は判定できない＝過去日について「やっていない」とは断定せず、点は薄いままにする） */
+function renderWeekDots(){
+  var wrap = document.getElementById('weekDots');
+  if(!wrap) return;
+  /* loadDayLogs は登録会員なら実測、体験モードならデモを返す（作り値を実測に混ぜない仕分けは既存のまま） */
+  var dl = loadDayLogs();
+  var done = {};
+  (dl.weigh || []).forEach(function(r){ if(r.ago >= 0 && r.ago <= 6) done[r.ago] = 1; });
+  (dl.kcal || []).forEach(function(r){ if(r.ago >= 0 && r.ago <= 6) done[r.ago] = 1; });
+  /* 来館した日も「記録できた日」に数える（ジムに行った事実は本人の実績なので） */
+  var today0 = new Date(); today0.setHours(0, 0, 0, 0);
+  try{
+    var ent = JSON.parse(localStorage.getItem('smile24_entry_log') || '[]');
+    if(Array.isArray(ent)) ent.forEach(function(l){
+      var d = new Date(l.at); if(isNaN(d)) return;
+      d.setHours(0, 0, 0, 0);
+      var ago = Math.round((today0 - d) / 86400000);
+      if(ago >= 0 && ago <= 6) done[ago] = 1;
+    });
+  }catch(e){}
+  /* 今日ぶんの水分・運動・歩数。3行の値が入っているのに今日の点が消えている、を防ぐ */
+  if(state.waterMl > 0 || state.exerciseKcal > 0 || (state.exerciseLog && state.exerciseLog.length)) done[0] = 1;
+  try{ if(walkAgg && walkAgg().steps > 0) done[0] = 1; }catch(e){}
+  var names = ['日','月','火','水','木','金','土'];
+  var base = appToday();
+  var html = '';
+  for(var i = 6; i >= 0; i--){
+    var d2 = new Date(base.getTime()); d2.setDate(d2.getDate() - i);
+    html += '<div class="wd' + (done[i] ? ' on' : '') + (i === 0 ? ' today' : '') + '">' +
+      '<i></i><span>' + names[d2.getDay()] + '</span></div>';
+  }
+  wrap.innerHTML = html;
 }
 
 /* ＋記録シート（旧チャットFABの置き換え） */
 function openRecordSheet(){ showSheet('recordSheet'); }
 
 /* ホームの表示ON/OFF（タイル編集式の簡易版） */
-/* mission は 2026-08-07 にホームから削除したので入れない（要素が無くgetElementByIdがnullになる） */
-var HOME_SECTIONS = { meal:'homeSecMeal', body:'homeSecBody' };
+/* mission は 2026-08-07 にホームから削除したので入れない（要素が無くgetElementByIdがnullになる）。
+   meal は 2026-08-14 にホームから削除（食事タブと重複）したので外した */
+var HOME_SECTIONS = { body:'homeSecBody' };
 function loadHomePrefs(){
   try{ return JSON.parse(localStorage.getItem('smile24_home_prefs')||'{}') || {}; }catch(e){ return {}; }
 }
@@ -14943,11 +15102,8 @@ function renderDashboardExtras(){
   setBar('macroFatVal', 'macroFatFill', state.fatIntake, state.fatTarget);
   var pv = document.getElementById('macroProtVal');
   if(pv) pv.textContent = Math.round(state.proteinIntake) + ' / ' + state.proteinTarget + 'g';
-  var slots = {breakfast:'mtBreakfast', lunch:'mtLunch', dinner:'mtDinner', snack:'mtSnack'};
-  Object.keys(slots).forEach(function(k){
-    var el = document.getElementById(slots[k]);
-    if(el) el.innerHTML = state.mealTypeKcal[k].toLocaleString() + '<span> kcal</span>';
-  });
+  /* ホームの食事4マス（mtBreakfast等）は2026-08-14に削除したので更新処理も撤去した。
+     食事タブ側の4マスは別のid（mealSlotPick）で描いているため影響しない */
   /* きょうの食事スコア（2026-08-12・本家の「3食入力で食事スコア」の移植）。
      ★＝記録した食事の数（朝昼夕の3食で満点）。数字で叱らず星で褒める親しみ系 */
   var msl = document.getElementById('mealScoreLine');
@@ -14971,17 +15127,13 @@ function renderDashboardExtras(){
       msl.style.display = 'flex';
     }
   }
-  // 閉じたままでも今日の内訳が分かるように、開閉ヘッダーのサマリー行を更新する
-  var ms = document.getElementById('accMealSummary');
-  if(ms){
-    var mtk = state.mealTypeKcal;
-    ms.textContent = (mtk.breakfast || mtk.lunch || mtk.dinner || mtk.snack)
-      ? '朝' + mtk.breakfast + '・昼' + mtk.lunch + '・夕' + mtk.dinner + '・軽食' + mtk.snack + ' kcal'
-      : 'タップすると朝・昼・夕・軽食の記録がひらくよ';
-  }
+  /* ホームの開閉ヘッダー（accMealSummary）も2026-08-14の削除で無くなったため撤去 */
   var eb = document.getElementById('exBurnVal');
   if(eb) eb.textContent = '+' + state.exerciseKcal.toLocaleString() + ' kcal';
   renderWeightQuick();
+  /* 記録するたびに「今週のかたち」も更新する。ここを呼ばないと、記録した本人に
+     「今日はまだ何もしていない」と見せてしまう（2026-08-14検証で発覚） */
+  try{ renderWeekDots(); }catch(e){}
 }
 
 /* 体重クイックカード（スタート→目標のスライダー表示） */
@@ -15012,9 +15164,11 @@ function renderWeightQuick(){
   if(target === null){
     /* 目標未設定：進み具合を出しようがないので、作らずに決め方を案内する */
     fill.style.width = '0%'; thumb.style.left = '0%';
-    document.getElementById('wqStart').textContent = hist.length ? 'スタート ' + start.toFixed(1) + 'kg' : '記録はこれから';
-    document.getElementById('wqGoal').textContent = '目標 未設定';
-    document.getElementById('wqNote').textContent = '「食事」タブの「減量の目標を決める」で目標を決めると、ここに進み具合が出ます';
+    /* 目標を決めていない人に毎朝「未設定」と催促しない。目標が無くても記録だけで成立する
+       （決めたい人のための案内は、押したときに開くシートの側に置いてある）2026-08-14 */
+    document.getElementById('wqStart').textContent = hist.length ? '前回 ' + start.toFixed(1) + 'kg' : '';
+    document.getElementById('wqGoal').textContent = '';
+    document.getElementById('wqNote').textContent = hist.length ? '' : 'まだ記録がありません';
     return;
   }
   var span = start - target;
@@ -15038,10 +15192,18 @@ function addWater(n){
   var goal = waterGoalMl();
   var before = state.waterMl;
   state.waterMl = Math.max(0, Math.min(state.waterMl + n, 4000));
+  /* 上限4,000mlで頭打ちになったとき、押しても何も動かないと故障に見える（2026-08-14検証） */
+  if(n > 0 && state.waterMl === before){
+    showToast('今日の記録は上限（4,000ml）です。これ以上は足せません');
+    return;
+  }
   if(n > 0) state.waterLastAt = Date.now();
+  /* 0mlまで戻したら「前回いつ飲んだか」も消す（飲んでいないのに直前に飲んだ表示が残っていた） */
+  if(state.waterMl === 0) state.waterLastAt = 0;
   try{ localStorage.setItem('smile24_water', JSON.stringify({k:waterKey(), ml:state.waterMl, at:state.waterLastAt||0})); }catch(e){}
   renderWater();
   renderMissions();
+  try{ renderWeekDots(); }catch(e){}
   if(n > 0 && before < goal && state.waterMl >= goal) showToast('今日の水分目標 ' + goal.toLocaleString() + 'ml を達成！');
 }
 /* 前回の水分補給からの経過を見えるようにする（あきすぎのセルフチェック用） */
@@ -15075,11 +15237,13 @@ function renderWater(){
   if(!v) return;
   var goal = waterGoalMl();
   v.innerHTML = state.waterMl.toLocaleString() + '<span> / ' + goal.toLocaleString() + 'ml</span>';
-  document.getElementById('waterFill').style.height = Math.min(state.waterMl/goal*100, 100) + '%';
+  /* 2026-08-14：縦のコップ絵から横バーに変えたので height ではなく width を動かす */
+  var fill = document.getElementById('waterFill');
+  if(fill) fill.style.width = Math.min(state.waterMl / goal * 100, 100) + '%';
   document.getElementById('waterGlasses').textContent = 'コップ約' + Math.round(state.waterMl/250) + '杯分';
   renderWaterLast();
   var lbl = document.getElementById('waterGoalLabel');
-  if(lbl) lbl.textContent = '目標 ' + goal.toLocaleString() + 'ml（体重×35ml で自動計算）';
+  if(lbl) lbl.textContent = '目標 ' + goal.toLocaleString() + 'ml';
 }
 setInterval(renderWaterLast, 60000);   // 経過時間の表示を1分ごとに更新
 
@@ -15499,7 +15663,7 @@ function trendWater(){
     return '<div class="trend-card"><div class="trend-empty">'+
       '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></div>'+
       '<div class="te-t">まだデータがありません</div>'+
-      '<div class="te-d">コップ1杯（250ml）ずつ記録できるよ。<br>右下の＋ボタンやホームの「からだの記録」からでもOK</div>'+
+      '<div class="te-d">コップ1杯（250ml）ずつ記録できるよ。<br>右下の＋ボタンやホームの「きょうの記録」からでもOK</div>'+
       /* 「記録しに行く」でホームへ飛ばすだけだと、ボタン名と動きが合わない。
          この場で1杯ぶんを記録してグラフが出るところまで進める（2026-08-07・ユーザー指示） */
       '<button class="te-btn" onclick="addWater(250);showToast(\'お水を250ml記録したよ\');renderTrend();">水分を記録する</button>'+
@@ -16158,6 +16322,8 @@ checkStreakReminder();
 try{ restoreAthleteFromStorage(); }catch(e){ console.error('ガチ勢設定の復元に失敗:', e); }
 try{ renderLessonCard(); }catch(e){ console.error('おうちレッスンの初期化に失敗:', e); }
 try{ renderCircuitCard(); }catch(e){ console.error('30秒サーキットの初期化に失敗:', e); }
+try{ initTrainPlace(); }catch(e){ console.error('運動タブの切替の初期化に失敗:', e); }
+try{ renderWeekDots(); }catch(e){ console.error('今週のかたちの初期化に失敗:', e); }
 /* FC店舗コードの復元（店名・料金・連絡先・ブランド色）。既定のSMILE24なら何もしない */
 try{
   var fcBoot = localStorage.getItem('smile24_store_code');
