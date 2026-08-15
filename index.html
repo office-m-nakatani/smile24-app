@@ -13,6 +13,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="スマイル24">
 <link rel="apple-touch-icon" href="images/logo-transparent-sm.png">
+<!-- rel="icon" が無いとブラウザが /favicon.ico を暗黙要求して404になる（GitHub Pages公開版でも同様だった） -->
+<link rel="icon" type="image/png" href="images/logo-transparent-sm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 日本語Webフォントは1ウェイトあたり数百KB（文字ごとに分割配信されるため）。
@@ -3483,7 +3485,7 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-15a</b>（<b>「くらべる相手は過去の自分だけ」の運動記録が入りました</b>。①運動を記録した直後に<b>「きょうのきつさは？」（1〜10）</b>を任意で聞きます（スキップしても記録は残ります）。筋トレでセットごとの「余力」を入れた場合は自動で見積もり、タップで直せます。②「からだ」タブに<b>【うんどう】</b>が増えました：直近5週間のカレンダーに<b>その日の運動が円</b>で付きます（色＝種別・大きさ＝時間）。週ごとの<b>がんばり度</b>（分×きつさ・主観にもとづく目安）は、<b>自分の直近3週間の平均から出した帯</b>と見くらべる形で、帯より下の週は「回復週」です（順位や他の人との比較はありません）。③<b>【自己ベスト】</b>も増えました：種目ごとの最大重量・1回の最長運動・1日の歩数・週の来館回数の自分のトップ3がたまり、<b>更新したときだけ</b>お知らせします。チャットでも「今週の運動は？」「自己ベストは？」と聞けます）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-16a</b>（ブラウザで開いたとき、タブにスマイル24のロゴが表示されるようになりました）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
