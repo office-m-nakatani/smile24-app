@@ -54,6 +54,9 @@
   --grad-main-r: linear-gradient(90deg,#4A85F6 0%,#2BC48A 100%);
   --card-shadow: 0 4px 20px rgba(23,58,110,.07);
   --card-shadow-lg: 0 10px 34px rgba(23,58,110,.12);
+  /* うんどうカレンダーの「さんぽ」種別色（面用・PFCグラフの脂質と同系の紫）。
+     FC店舗テーマは上書きしないが、色の出どころを1か所にするためトークン化（2026-08-15） */
+  --ex-walk: #8B72F0;
   --radius: 22px;
   --radius-sm: 16px;
   --font-jp: 'Noto Sans JP', sans-serif;
@@ -2126,6 +2129,40 @@ input{font-family:inherit;}
 .cal-summary{text-align:center;font-size:11.5px;color:var(--text-mid);font-weight:600;margin-top:8px;}
 .cal-summary b{color:var(--gold-dk);font-family:var(--font-en);}
 
+/* きつさ（RPE 1-10）入力シート（2026-08-15 Strava調査の移植①）
+   面の色はトークン経由（FCテーマで塗り替わるため）。文字は -dk 系のみ（コントラスト規約） */
+.rpe-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0 4px;}
+.rpe-btn{aspect-ratio:1.25;border:none;border-radius:14px;background:#F5F8FC;color:var(--text-mid);font-family:var(--font-en);font-size:17px;font-weight:800;cursor:pointer;}
+.rpe-btn.on{background:var(--grad-main);color:#fff;}
+.rpe-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text-lt);font-weight:700;margin-bottom:8px;}
+.rpe-auto{font-size:11px;color:var(--gold-dk);background:#EAF1FE;border-radius:10px;padding:8px 12px;margin-bottom:6px;display:none;}
+
+/* うんどうバブルカレンダー（からだタブ・2026-08-15）
+   円の大きさ＝その日の運動分（実測）。数字を重ねず、日付11px＋円で見せる */
+.bb-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:10px 0 4px;}
+.bb-dow{text-align:center;font-size:11px;color:var(--text-lt);font-weight:700;}
+.bb-day{height:44px;border-radius:10px;background:#F9FBFD;display:flex;flex-direction:column;align-items:center;padding-top:2px;position:relative;}
+.bb-day.empty{background:transparent;}
+.bb-day.today{outline:2px solid var(--gold);outline-offset:1px;}
+.bb-day .bd-n{font-family:var(--font-en);font-size:11px;font-weight:600;color:var(--text-lt);line-height:1.2;}
+.bb-day .bd-b{border-radius:50%;position:absolute;bottom:3px;left:50%;transform:translateX(-50%);}
+.bb-legend{display:flex;gap:12px;justify-content:center;font-size:11px;color:var(--text-mid);font-weight:600;margin-top:6px;flex-wrap:wrap;}
+.bb-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:-1px;}
+.bb-wksum{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-mid);font-weight:600;background:#F5F8FC;border-radius:10px;padding:8px 12px;margin-top:8px;}
+.bb-wksum b{color:var(--gold-dk);font-family:var(--font-en);}
+
+/* 自己ベスト台帳（からだタブ・2026-08-15） */
+.best-cat{margin-top:12px;}
+.best-cat .bc-h{font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.best-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);}
+.best-row:last-child{border-bottom:none;}
+.best-row .br-rank{flex:0 0 26px;font-family:var(--font-en);font-size:12px;font-weight:800;color:var(--gold-dk);}
+.best-row .br-v{flex:1;font-size:13px;font-weight:700;color:var(--text);}
+.best-row .br-d{font-size:11px;color:var(--text-lt);font-weight:600;}
+/* がんばり度グラフのSVG文字：viewBox 320→実幅約294pxに縮む（×0.92）ため、
+   全体既定の12px（svg text）だと実効11.1pxで下限ぎりぎり。ここだけ12.5pxで余裕を持たせる */
+.exwk-svg text{font-size:12.5px;}
+
 /* SOS */
 .sos-btn-row{display:flex;gap:10px;margin:12px 0;}
 .sos-btn{flex:1;display:block;text-align:center;background:#FEEEEA;color:var(--notice-dk);border:1.5px solid var(--notice);border-radius:14px;padding:16px 8px;text-decoration:none;}
@@ -3446,14 +3483,14 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-14c</b>（<b>Cocoが名前で呼びかけるようになりました</b>。チャットを開いたときと、あいさつ（おはよう・こんにちは・こんばんは）の返事の頭に、登録した<b>下の名前＋「さん」</b>が付きます（例：陽介さん）。呼ばれ方はマイページの設定からいつでも<b>「名字」に切り替えられます</b>（高橋さん、のように）。体験モード・実名を登録していない場合は、これまでどおり名前なしの言い方のままです）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-15a</b>（<b>「くらべる相手は過去の自分だけ」の運動記録が入りました</b>。①運動を記録した直後に<b>「きょうのきつさは？」（1〜10）</b>を任意で聞きます（スキップしても記録は残ります）。筋トレでセットごとの「余力」を入れた場合は自動で見積もり、タップで直せます。②「からだ」タブに<b>【うんどう】</b>が増えました：直近5週間のカレンダーに<b>その日の運動が円</b>で付きます（色＝種別・大きさ＝時間）。週ごとの<b>がんばり度</b>（分×きつさ・主観にもとづく目安）は、<b>自分の直近3週間の平均から出した帯</b>と見くらべる形で、帯より下の週は「回復週」です（順位や他の人との比較はありません）。③<b>【自己ベスト】</b>も増えました：種目ごとの最大重量・1回の最長運動・1日の歩数・週の来館回数の自分のトップ3がたまり、<b>更新したときだけ</b>お知らせします。チャットでも「今週の運動は？」「自己ベストは？」と聞けます）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
            マイページのスクロールが終わらなかった。読めるようにするなら設定に「更新履歴」シートを
            新設する（今回はユーザー判断でコメント退避を選択）。
            ⚠️ この中にASCIIの -- を書かないこと（コメントが途中で閉じてHTMLが壊れる）
-――以下は前版までの履歴――<br>版 2026-08-14b（<b>「同じものが2か所にある」の整理と、正直さの手直し</b>です。①<b>写真を使わない記録を、食事タブの最初の画面に移しました</b>：「撮らずにサッと記録」「リストから選ぶ」「名前とカロリー」の3つが、カメラを開かなくても押せる位置に来ました。これまでは撮影画面の下にあり、カメラの許可を出さないと1つもたどり着けませんでした。②<b>記録を保存したあと、ホームではなく食事の画面に戻ります</b>：4マスと「今日あと食べられる量」がその場で新しくなります。あわせて、<b>保存後もカメラが動き続けていた不具合を直しました</b>。③<b>記録の日付が、実際の日付と時刻になりました</b>（これまでは固定の日付が入っていました）。④<b>「あと◯g」「あと◯日」「達成率◯%」の表示をやめました</b>：足りない分を数字で言われるより、いまの実測と目安を並べて出すほうが続けやすいためです。バッジの説明も「どうすればもらえるか」に変えました。⑤<b>「からだ」タブ</b>：BMIは<b>いつの体重で計算したか</b>を出すようにし、「適正体重」という呼び方をやめて「BMI22のときの体重」＋「一般的な指標です（あなたの目標ではありません）」に。栄養素バランスは<b>記録の無い日を0の棒で描くのをやめ「—」</b>に（すぐ上のカロリーのグラフと揃えました）。水分は記録が今日ぶんしか残らないので<b>「7日間」をやめて「今日」</b>の表示にしました。消費のカードは<b>「今日の総消費（基礎代謝込み・推計）」</b>と名前を変え、内訳を出しています。グラフの文字も大きくしました。⑥<b>マイページを整理しました</b>：「日々のカロリー推移」「週間 体重推移」「週間 栄養バランス」の3枚は「からだ」タブと同じ内容だったので、<b>推移はからだタブに一本化</b>しました（1行のリンクを置いています）。なお週間 栄養バランスは<b>実際の記録ではないサンプルの絵</b>でした。名前がほとんど同じだった「頑張りの記録」と「レベルとがんばりの記録」も<b>1枚にまとめました</b>。⑦<b>目標を決めていない方の画面を直しました</b>：運動プランの週数と日付に数字でない文字が出ていたのをやめ、目標を決めるまでは「目標を決めるとプランが出ます」と表示します。<b>決めていないのに「目標達成」バッジが点いていた</b>のも直しました。目標の編集は「目標コーチ」1つに統一しています。⑧<b>お友達紹介のコード表示をやめました</b>：全員に同じ固定のコードが出ていて、送っても特典になりませんでした。ご利用のときは受付でお申し出ください（特典の内容は変わりません）。⑨小さすぎた文字（バッジの説明・グラフの軸）を11px以上にし、「からだ」タブの上部ボタンを押しやすい高さにしました）<br>版 2026-08-13a（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）
+――以下は前版までの履歴――<br>版 2026-08-14c（<b>Cocoが名前で呼びかけるようになりました</b>。チャットを開いたときと、あいさつ（おはよう・こんにちは・こんばんは）の返事の頭に、登録した<b>下の名前＋「さん」</b>が付きます（例：陽介さん）。呼ばれ方はマイページの設定からいつでも<b>「名字」に切り替えられます</b>（高橋さん、のように）。体験モード・実名を登録していない場合は、これまでどおり名前なしの言い方のままです）<br>版 2026-08-14b（<b>「同じものが2か所にある」の整理と、正直さの手直し</b>です。①<b>写真を使わない記録を、食事タブの最初の画面に移しました</b>：「撮らずにサッと記録」「リストから選ぶ」「名前とカロリー」の3つが、カメラを開かなくても押せる位置に来ました。これまでは撮影画面の下にあり、カメラの許可を出さないと1つもたどり着けませんでした。②<b>記録を保存したあと、ホームではなく食事の画面に戻ります</b>：4マスと「今日あと食べられる量」がその場で新しくなります。あわせて、<b>保存後もカメラが動き続けていた不具合を直しました</b>。③<b>記録の日付が、実際の日付と時刻になりました</b>（これまでは固定の日付が入っていました）。④<b>「あと◯g」「あと◯日」「達成率◯%」の表示をやめました</b>：足りない分を数字で言われるより、いまの実測と目安を並べて出すほうが続けやすいためです。バッジの説明も「どうすればもらえるか」に変えました。⑤<b>「からだ」タブ</b>：BMIは<b>いつの体重で計算したか</b>を出すようにし、「適正体重」という呼び方をやめて「BMI22のときの体重」＋「一般的な指標です（あなたの目標ではありません）」に。栄養素バランスは<b>記録の無い日を0の棒で描くのをやめ「—」</b>に（すぐ上のカロリーのグラフと揃えました）。水分は記録が今日ぶんしか残らないので<b>「7日間」をやめて「今日」</b>の表示にしました。消費のカードは<b>「今日の総消費（基礎代謝込み・推計）」</b>と名前を変え、内訳を出しています。グラフの文字も大きくしました。⑥<b>マイページを整理しました</b>：「日々のカロリー推移」「週間 体重推移」「週間 栄養バランス」の3枚は「からだ」タブと同じ内容だったので、<b>推移はからだタブに一本化</b>しました（1行のリンクを置いています）。なお週間 栄養バランスは<b>実際の記録ではないサンプルの絵</b>でした。名前がほとんど同じだった「頑張りの記録」と「レベルとがんばりの記録」も<b>1枚にまとめました</b>。⑦<b>目標を決めていない方の画面を直しました</b>：運動プランの週数と日付に数字でない文字が出ていたのをやめ、目標を決めるまでは「目標を決めるとプランが出ます」と表示します。<b>決めていないのに「目標達成」バッジが点いていた</b>のも直しました。目標の編集は「目標コーチ」1つに統一しています。⑧<b>お友達紹介のコード表示をやめました</b>：全員に同じ固定のコードが出ていて、送っても特典になりませんでした。ご利用のときは受付でお申し出ください（特典の内容は変わりません）。⑨小さすぎた文字（バッジの説明・グラフの軸）を11px以上にし、「からだ」タブの上部ボタンを押しやすい高さにしました）<br>版 2026-08-13a（運動タブに「<b>30秒サーキット</b>」が入りました：6つの機材を順番に回って<b>全身を1周</b>する新しいメニューです。1つの機材で<b>30秒動いたら、次の機材へ移るまでの30秒はその場で足踏み</b>（止まらずに呼吸をととのえる「動く休憩」）。1周6分・2周12分・3周18分から選べて、大きなタイマー・次の種目の予告・音声での読み上げ（お好みで）・<b>マシンが使用中のときの「この種目をとばす」</b>ボタンつき。終わると運動記録に自動で入ります。回る順番は「大きい筋肉から先に・体幹は最後」という一般に推奨される並べ方にしています。消費kcalはメッツにもとづく<b>推計の目安</b>（安静時の代謝分を含み、個人差があります）。<b>「からだ」タブの「目標体重」と「消費エネルギー（実測）」のカードを外しました</b>：同じことが食事タブの「減量の目標を決める」とマイページの目標コーチでできるため、入口を1つにまとめました（これまでに設定した目標はそのまま使えます）。<b>目標体重の表示を正直にしました</b>：ホームの体重カードとマイページが、これまで<b>全員に共通のサンプル値</b>（目標59.8kg・あと2.4kg）を「あなたの目標」として表示し、下回っている方には設定してもいない目標の「達成」をお祝いしていました。これからは<b>ご自身で決めた目標だけ</b>を表示し、決めていないときは「未設定」と出します（決め方の案内つき）。<b>運動の消費kcalの数え方も見直しました</b>：じっとしていても使う分を差し引いた、運動でふえたぶんだけを数えます（歩数の計算と同じ考え方に揃えました）。<b>機材ガイドの動画をいったん取り下げました</b>：これまで載せていた2本が機材の使い方を写した映像ではなかったためです。使い方が分かる動画を用意でき次第あらためて掲載します。それまでは文章の手順とAI推奨値をご覧ください）<br>版 2026-08-12f（<b>「正直さ・安全・実機対応」の大型アップデート</b>：3人の専門家役（デザイナー/1000店舗FCオーナー/管理栄養士）による辛口監査の指摘を反映しました。①サンプル数値と実測をきっちり分離：登録会員の画面には<b>あなたの実際の記録だけ</b>を表示し、記録が足りないところは正直に「まだ足りない」と出ます（週間診断・体重/栄養グラフ・連続記録・レベルすべて）。体験モードには「数字はサンプル」の常設バナーが付きました。②混雑表示は「時間帯の傾向（目安）」に統一（人数のリアルタイム計測はセンサー導入後）。チャットの表示も「自動応答AI」と明記。③スマホ実機で<b>全画面表示</b>に対応（PCで見るときだけデモ用フレーム）。文字の最小サイズを11pxに引き上げ。④安全ガードを強化：18歳未満の方は減量目標の対象外に。妊娠中・治療中の方への注意書きを常設。週に体重の1%を超える減量ペースの組合せは選べなくなりました。⑤栄養計算を<b>日本人の食事摂取基準2025年版</b>に更新し、マクロ目標とカロリー予算のズレ（12%）・歩数の消費の二重計上も解消。⑥体験予約・退会申請は「店舗へ自動送信されない」ことを明示し、電話で確定する導線に（受付番号の発行をやめました）。⑦カード番号の入力欄を撤去：お支払い登録は店頭で（安全な決済システムは正式版で対応）。⑧ログインはこの端末の登録情報と照合するようになりました。会員番号は店舗コード入りの新形式に。⑨バックアップ（データの書き出し）が<b>食事・体重・筋トレ・レッスン記録も含めて全部</b>を保存するようになり、記録の保持も60日→3年に延長。⑩「よくある質問（FAQ）」と、故障・支払い・忘れ物などの質問に答える運用チャットを追加。写真AIの初回データ取得（約100MB）は事前に確認してから始まります）<br>版 2026-08-12e（運動タブに「<b>おうちレッスン</b>」が入りました：ジムに来られない日も、おうちで<b>動画つきレッスン</b>（全12本・ヨガ/ストレッチ/筋トレ/有酸素/瞑想・3〜10分）ができます。動画のお手本＋手順ガイド＋タイマーで進めて、終えると<b>消費カロリーが運動記録に自動で入ります</b>。あなたの目標（減量/維持/筋肥大）に合わせた「<b>きょうのおすすめ</b>」、1日1本の「<b>はじめての7日間チャレンジ</b>」（完走で<b>修了証</b>）、<b>連続記録</b>（うっかり1日空いても「お休み保険」で連続がつながる）つき。食事タブには「<b>きょうの食事スコア</b>」の星が付きました（3食そろうと★3つ）。※レッスン動画はPixabay（Content License・商用利用可）の素材を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています。食事の画面の「減量の目標を決める」を<b>見やすく作り直しました</b>：小さな入力欄に薄い文字で「例: 3」と出ていたのをやめて、<b>大きなボタンをタップするだけ</b>で決められるようにしました（何kg＝2/3/5/8kg、いつまでに＝4週・8週・12週・24週。それぞれ「約1か月」などの目安つき）。数字を自分で入れたい人のために大きな入力欄も残していて、入れた数字がボタンと同じならボタンも光ります。目標を決めると「あと3kgを8週間で。きょうの目安1,329kcal（消費より1日−412kcal）」と、決まった内容がそのまま文章で出ます。FC（フランチャイズ）展開の土台が入りました：マイページの「店舗」から<b>店舗コード</b>を入れると、店名・料金・入会金・キャンペーン・緊急連絡先・ブランド色が<b>1本のアプリのまま</b>その店舗のものに切り替わります（店舗ごとに別アプリを作る方式はApple審査で却下されるため、Apple公認のピッカー方式を採用。デモ用のダミー2店舗つき）。食事の記録が2品以上のとき、品目リストの上に<b>カロリーの内訳バー</b>が出るようになりました。どの品が何kcalで全体の何%かが色分きの棒と凡例で一目でわかります。量目や人数割りを変えるとその場で追従します。食べものの検索が<b>約3,700品</b>になりました。これまでの料理1,221品に加えて、<b>日本食品標準成分表（八訂）増補2023年（文部科学省）</b>の2,537品（食材・素材の100gあたりデータ）から検索できます。検索候補に「成分表」のマークが付いた品は100gあたりの値で、選んだあとグラム欄で食べた量に直せます。写真のAI認識はこれまでどおり料理1,221品の中から候補を出します（素材データは写真候補に混ざりません）。※食品成分データは日本食品標準成分表（八訂）増補2023年から引用し、アプリ用に編集・加工しています。「からだ」タブに<b>目標体重</b>のカードが付きました：目標体重と「いつまでに」（日付）を入れると、食事タブの<b>1日の食べる量</b>がその目標に合わせて切り替わり、進み具合のバーで「いま何kg・あと何kg」が見えます。食事タブの計算式も変わりました：目標を決めると「今日の目標」がただ小さくなるのではなく、「<b>消費の見込み − 目標のため ▲▲ − 食べた分 ＋ 運動した分 ＝ あと</b>」と、<b>なぜその数字なのか</b>が式の中に見えます。あわせて、運動した日に式の左端が運動を二重に数えていた表示も直しました。「ガチ勢モード」の名前を「<b>目標コーチ</b>」に変えました（中身は同じ。マイページから開けます）。運動の記録の「詳細（ガチ勢）」も「詳細（セットごと）」に。そして「食事」の画面に「<b>減量の目標を決める</b>」のチェックが付きました：チェックを入れた人にだけ「あと何kgを・何週間で」の入力が出て、入れるとその期間で届く<b>1日の食べる量</b>に目標が切り替わります（マイページの目標コーチと同じ仕組み・週1回の自動見直しつき。チェックを外せば通常の目標に戻ります）。会員登録画面の性別の並びも男性・女性の順にしました。ガチ勢モード（現・目標コーチ）の入力欄すべてに単位（kg・週間・cm・歳・%）を数値のすぐ横に表示し、性別の並びを男性・女性の順にしました。ガチ勢モードの機能を<b>表に出しました</b>：①ホームに目標の内訳「<b>消費 − 少なく食べる ＝ きょうの目安</b>」を常時表示（タップで設定へ）②週1回の見直し時期が来たら<b>ホームに呼び出しカード</b>が出て、タップで直接チェックインが開きます（提案が作れるだけの記録がある時だけ）③運動の記録で<b>筋トレを選んだ瞬間</b>、記録がある人は詳細（ガチ勢）が自動で開いて前回からの目安が入力欄に入ります（今までは4タップ先でした）。かんたんモードのままでも目安を一行表示。減量の目標を「<b>あと何kgを、何週間で</b>」から逆算できるようになりました。基礎代謝や消費と同じだけ食べると体重は釣り合って変わらないので、ガチ勢モードで目標のkgと週数を入れると、<b>消費より1日いくら少なく食べればいいか</b>と、そのときの摂取量・マクロを出します。速すぎるペース（週に体重の1%超）には注意書き、健康ライン（基礎代謝・女性1200/男性1500kcal）を下回る場合は下限に引き上げたうえで<b>現実的に何週間かかるか</b>を正直に表示。週次チェックインも「残りkg÷残り日数」で毎週逆算し直すので、予定より速く減っていれば目標は自然に緩み、遅れていれば少しきつくなります。筋トレの記録が<b>セットごと</b>になりました：セット1・2・3…それぞれの回数と余力（限界まであと何回）を入れられます。1RMはベストセット・トン数は全セット合計・次回の目安は1セット目（いちばん元気な状態）で判定。後半のセットが大きく落ちていたら「<b>休憩を伸ばそう</b>」と疲労の助言も出ます。マシンが混んでいたら<b>近い部位の種目に振替</b>できるボタン、<b>今日のメニュー案</b>（全身3種目・久しぶりの種目を優先）も付きました。目標の見直しは±120kcalの上限をやめて<b>差の半分ずつ寄せる</b>スムージング式に。体脂肪率が入っていれば体重1kgの変化を<b>脂肪と除脂肪の割合</b>で換算します（固定7700kcalをやめました）。実測の消費は「からだ」タブに常時表示。ガチ勢モードの中身を本家流に磨き直しました：①減量・筋肥大の目標が「<b>体重の◯%/週</b>」のペース基準に（体格が違っても同じ速さで進む）②たんぱく質は全プリセットで<b>体重×g</b>基準に（目標カロリーが低い人ほどたんぱく質が薄まる計算をやめた）③実測の消費は<b>直近28日</b>の記録だけで計算（1か月以上前の食事が今の消費を薄めない）④筋トレの目安は「<b>限界までやったら何回できたか</b>」（回数＋余力）で判定するように。余力を残さず追い込んだ日も、余力たっぷりの日も、同じ物差しで比べられます ⑤目標回数が種目別に（ベンチ・スクワット6〜10回、デッドリフト5〜8回、アームカール10〜15回など）。定食を<b>小鉢ごとに分ける</b>ときの数字が合うようになりました。野菜炒め定食は<b>肉入りの炒め</b>を、焼き鮭定食は<b>100gの切り身</b>を選べるようにしたので、分けても合計がほとんど変わりません。豚バラ・豚ロースには炒め物用の30g・50gが増えました。筋トレに<b>次にやるときの目安</b>が付きました。記録するときに「あと何回できそうだった？」を選ぶと、次は<b>重さを上げるのか・回数を1回増やすのか・同じでもう一度なのか</b>を出します（目標は8〜12回・あと2回残す設定。上げ幅は上半身2.5kg・下半身5kg）。目安は「からだ」タブの筋トレのカードでも見られます。週次チェックインが<b>あなたの実際の記録</b>で動くようになりました。これまではサンプルの記録で計算していましたが、これからは<b>あなたが記録した食事のカロリーと体重</b>がそのまま材料になります（記録するたびに自動でたまります・端末の中だけに保存されます）。記録が少ないうちは「まだ足りないよ」と正直に出して、式で計算した目標を使います。目安は食事10日ぶん・体重4回以上です。ガチ勢モードが<b>実測で賢くなる</b>のはこれまでどおり：食事と体重の記録が貯まると、式ではなく<b>あなたの実際の消費</b>（摂取と体重変化からの逆算）で目標を見直せます。マイページのガチ勢モードから<b>週次チェックイン</b>を開くと、トレンド体重・実測の消費・新しい目標の提案が見られて、反映するかは毎回あなたが決められます（勝手には変えません。変更は差の半分ずつ寄せるスムージング式・先週の未達を取り返させる調整はしません）。すすめ方も「おまかせ／週の予算だけ／自分で決める」から選べます。<b>ガチ勢モード</b>も引き続き：マイページの「ガチ勢モード」で、基礎代謝（体脂肪率が分かればより正確）→1日にいくらまで食べていいか→マクロ配分（バランス/高たんぱく/低脂質/低糖質）まで計算して目標に反映できます。運動の記録に「詳細（ガチ勢）」が増えて、トレッドミルは速度と傾斜から、筋トレは重量×回数×セットで記録。ベンチプレスなどのパワー（推定1RM）の推移は「からだ」タブで見られるよ。＋ボタンに「プロテインを飲んだ」の1タップも追加。「食事」の画面を作り直したよ。押してもすぐカメラは立ち上がらず、まず<b>◯月◯日の食事の記録</b>として<b>朝食・昼食・おやつ・夕食</b>から選ぶ形に。同じ画面で<b>今日あと食べられる量</b>（ホームから移しました）と<b>最近の食事</b>が見られて、タップすると過去の記録をふりかえれます。ホームもすっきりさせたよ。同じことが下のバーからできるボタン（今日のメニュー・食事を記録）と、会員カード・今日のミッションを外しました。連続来館などの「頑張りの記録」はこのマイページから見られます。食事の記録・履歴はこれまで通り（ホームの「今日の食事」と、下の「食事」タブの時計マーク）。AIパートナーCocoは、ひとことの下に<b>相談ボタン</b>を付けて、いつでも相談できることが分かるようにしたよ。入館QRは<b>まん中の丸</b>から。小鉢のカロリーは器の大きさ（小・中・大）で選べます）
       -->
     </section>
 
@@ -4147,6 +4184,21 @@ svg text{ font-size:12px; }
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-summary" id="calSummary"></div>
         <button class="sheet-cancel" onclick="hideSheet('calendarSheet')">閉じる</button>
+      </div>
+    </div>
+
+    <!-- きつさ（RPE）入力：運動を記録した直後に出す任意入力（2026-08-15 Strava移植①）。
+         Strava公式の Perceived Exertion（1-10・心拍計の代わりに使える設計）の移植。
+         スキップしても記録は残る＝入力のハードルを上げない -->
+    <div class="sheet" id="rpeSheet">
+      <div class="sheet-card">
+        <h3>きょうのきつさは？</h3>
+        <div class="sheet-desc" id="rpeDesc">どれくらいがんばったか、1〜10でタップしてね（スキップしても記録は残るよ）</div>
+        <div class="rpe-auto" id="rpeAutoNote">セットごとの「余力」の入力から自動で見積もったよ。違ったらタップで直してね</div>
+        <div class="rpe-grid" id="rpeGrid"></div>
+        <div class="rpe-ends"><span>1＝楽だった</span><span>10＝限界だった</span></div>
+        <button class="sheet-btn" id="rpeSaveBtn" onclick="rpeConfirm()" style="display:none;">これで記録する</button>
+        <button class="sheet-cancel" onclick="rpeSkip()">スキップ</button>
       </div>
     </div>
 
@@ -5199,6 +5251,9 @@ function saveManualSteps(){
   var a = walkAgg();
   showToast('今日の歩数 ' + a.steps.toLocaleString() + ' 歩を記録したよ（+' + a.kcal + 'kcal 消費）');
   setFlagToday('smile24_walk_day');
+  /* 1日の歩数の自己ベスト（同じ日は置き換え。分の情報が無いのでがんばり度の対象外。2026-08-15） */
+  bestConsider('steps', a.steps, dayKey(), null, true);
+  rpeFlushBest();
 }
 
 /* ── さんぽ計測（セッション中だけセンサーを使う） ── */
@@ -5459,6 +5514,9 @@ function walkFinish(){
   showToast('さんぽ ' + mins + '分・' + steps.toLocaleString() + '歩・' +
             (dist >= 1000 ? (dist/1000).toFixed(1) + 'km' : dist + 'm') +
             ' を記録したよ（+' + kcal + 'kcal 消費）');
+  /* きつさ(RPE)の任意入力＋歩数の自己ベスト（1日の合計＝同じ日は置き換え。2026-08-15 Strava移植） */
+  try{ bestConsider('steps', walkAgg().steps, dayKey(), null, true); }catch(e){}
+  askRpe(logEffort(mins, 'walk', 'さんぽ（計測）'));
 }
 function walkClose(){
   if(walk.on){ walkStopSensors(); walk.on = false; }   // 記録せず中断
@@ -5879,10 +5937,13 @@ function completeCourse(){
   recordMuscles(currentCourse.items);
   hideSheet('courseSheet');
   showToast('「'+currentCourse.def.name+'」完了！ +'+currentCourse.totalKcal+'kcal'+(state.jewelEnabled?' ＋15ジュエル':''));
-  setTimeout(function(){
-    document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', currentCourse.totalMin);
+  /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①） */
+  var ccMin = currentCourse.totalMin;
+  var ccRef = logEffort(ccMin, 'gym', currentCourse.def.name);
+  askRpe(ccRef, { then: function(){
+    document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', ccMin);
     showSheet('beautySheet');
-  }, 900);
+  }});
 }
 
 function renderEquipCards(){
@@ -6208,6 +6269,8 @@ function cirFinish(auto){
   if(cirSkipped > 0) msg += '（とばした種目 ' + cirSkipped + '件）';
   msg += '。最後にストレッチで整えてね';
   showToast(msg);
+  /* きつさ(RPE)の任意入力（2026-08-15 Strava移植①） */
+  askRpe(logEffort(minutes, 'gym', label));
 }
 function cirClose(){
   /* 記録できる量（cirFinishと同じ30秒以上）動いていたら、黙って捨てずに必ず一度たずねる */
@@ -6308,10 +6371,13 @@ function completeOmakase(){
   recordMuscles(okPlan.items);
   hideSheet('omakaseSheet');
   showToast('今日のワークアウト完了！ +'+okPlan.totalKcal+'kcal 消費'+(state.jewelEnabled?' ＋15ジュエル':''));
-  setTimeout(function(){
-    document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', okPlan.totalMin);
+  /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①） */
+  var okMin = okPlan.totalMin;
+  var okRef = logEffort(okMin, 'gym', 'AIおまかせワークアウト');
+  askRpe(okRef, { then: function(){
+    document.getElementById('beautyMsg').textContent = beautyAdviceFor('strength', okMin);
     showSheet('beautySheet');
-  }, 900);
+  }});
 }
 
 /* ============ ジュエル＆ご褒美ビューティーアドバイス ============ */
@@ -12316,11 +12382,19 @@ function saveExercise(){
   hideSheet('exerciseSheet');
   showToast(MET[selectedActivity].label+'を記録したよ！ +'+kcal+'kcal 消費'+(state.jewelEnabled?' ＋10ジュエル':''));
   var act = selectedActivity, mins = minutes;
-  setTimeout(function(){
+  /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①）。
+     筋トレ詳細はセットの余力(RIR)から自動見積もり（同じ概念の二重入力を作らない・タップで上書き可） */
+  /* 手動記録はジム前提のマシン運動＝筋トレ以外は有酸素にまとめる（さんぽは専用経路が walk を付ける） */
+  var exKind = (act === 'strength') ? 'gym' : 'cardio';
+  var exRef = logEffort(minutes, exKind, label);
+  var exAuto = (exMode === 'detail' && act === 'strength' && detail && detail.setsDetail) ? rpeFromSets(detail.setsDetail) : null;
+  /* 種目別の最大重量の自己ベスト（台帳は記録だけ・提案はしない） */
+  if(exMode === 'detail' && act === 'strength' && detail && detail.kg > 0) bestConsider('str:' + detail.name, detail.kg, dayKey());
+  askRpe(exRef, { auto: exAuto, then: function(){
     document.getElementById('beautyMsg').textContent = beautyAdviceFor(act, mins);
     document.getElementById('bsJewel').style.display = state.jewelEnabled ? 'block' : 'none';
     showSheet('beautySheet');
-  }, 900);
+  }});
 }
 function renderExerciseLog(){
   var list = document.getElementById('exLogList');
@@ -12561,6 +12635,14 @@ function weeklyDiagnosis(){
     lines.push('・たんぱく質：直近' + pDays + '日の1日あたり平均 ' + Math.round(pGramSum / pDays) + 'g（1日の目安 ' + Math.round(state.proteinTarget) + 'g・推計）');
     enough = true;
   }
+  /* 運動の実測（日別ログ row.ex・2026-08-15）。回数と分だけ＝達成率・目標比は出さない */
+  var exDays2 = 0, exCnt2 = 0, exMin2 = 0;
+  for(var xi2 = 0; xi2 < 7; xi2++){
+    var xd2 = new Date(); xd2.setDate(xd2.getDate() - xi2);
+    var xr2 = log[dayKey(xd2)];
+    if(xr2 && xr2.ex && xr2.ex.length){ exDays2++; exCnt2 += xr2.ex.length; xr2.ex.forEach(function(e){ exMin2 += e.m; }); }
+  }
+  if(exCnt2 > 0){ lines.push('・運動：7日のうち' + exDays2 + '日・' + exCnt2 + '回・合計' + exMin2 + '分'); enough = true; }
   if(mealDays > 0){ lines.push('・食事の記録：7日のうち' + mealDays + '日'); }
   if(!enough && mealDays === 0){
     return '【今週のAI診断レポート】\nまだ今週の記録が足りないみたい。食事・体重・来館の記録が貯まると、ここで毎週の診断を作れるよ（目安：食事3日ぶん）。まずは今日の食事から記録してみよう！';
@@ -12583,6 +12665,36 @@ var chatTopics = [
   { keys:['家で','自宅','おうち','宅トレ','ジムに行けない','行けない'], gen:function(){
       var n = (typeof LESSONS !== 'undefined' && LESSONS.length) ? LESSONS.length : 12;
       return '家でやるなら【運動】タブの「おうちで」を開いてみて。動画つきのおうちレッスンが' + n + '本あって、ヨガ・ストレッチ・筋トレ・有酸素・瞑想から3〜10分で選べるよ。終わると消費の目安が運動の記録に入るから、ジムに行った日と同じところにたまっていくよ。疲れている日は「深呼吸リセット」（3分）だけでも大丈夫';
+  }},
+  /* 自己ベスト・今週の運動（2026-08-15 Strava移植）。汎用の「運動」トピックより先に置く（部分一致で食われないように）。
+     実測と目安の併記だけ＝達成率・「あと◯回」は言わない（原則2・チャット経路の取り残し事故の再発防止） */
+  { keys:['自己ベスト','じこべすと','ベスト記録','最高記録'], gen:function(){
+      if(!isRegisteredMember()) return '自己ベストは会員登録すると、あなたの実際の記録からたまっていくよ。種目ごとの最大重量・1回の最長運動・1日の歩数・週の来館回数を「からだ」タブの【自己ベスト】で見られるよ（いまはサンプル表示）';
+      var b = loadBest();
+      var lines = [];
+      Object.keys(b).forEach(function(c){
+        if(b[c] && b[c].length && lines.length < 5) lines.push('・' + BEST_CAT_LABEL(c) + '：' + BEST_FMT(c, b[c][0].v) + '（' + b[c][0].d + '）');
+      });
+      var vt = weekVisitTops();
+      if(vt.length && lines.length < 6) lines.push('・週の来館回数：週' + vt[0].v + '回');
+      if(!lines.length) return chatCallPrefix() + '自己ベストはこれからだよ！運動を記録していくと、種目ごとの最大重量・最長運動・歩数のベストがたまっていくの。くらべる相手は過去の自分だけ、が合言葉だよ';
+      return chatCallPrefix() + 'あなたの自己ベストだよ！\n' + lines.join('\n') + '\nくわしくは「からだ」タブの【自己ベスト】で見られるよ。くらべる相手は過去の自分だけ！';
+  }},
+  { keys:['今週の運動','今週の記録','運動量','がんばり度'], gen:function(){
+      if(!isRegisteredMember()) return '会員登録すると、今週の運動の回数・時間・がんばり度（分×きつさの目安）をここで振り返れるよ。いまは「からだ」タブの【うんどう】でサンプルが見られるよ';
+      var ed = effortData();
+      var n = 0, m = 0, eff = 0, noR = 0;
+      var baseDow = new Date().getDay();
+      ed.list.forEach(function(e){
+        if(Math.floor((e.ago + 6 - baseDow) / 7) !== 0) return;   // 日曜はじまり（trendExと同式）
+        n++; m += e.m;
+        if(e.r) eff += e.m * e.r; else noR++;
+      });
+      if(n === 0) return chatCallPrefix() + '今週はまだ運動の記録がないみたい。コースでもさんぽでも、1回記録すると「からだ」タブの【うんどう】に円がつくよ。まずは軽くからだを動かしてみない？';
+      var t = chatCallPrefix() + '今週はここまで ' + n + '回・合計' + m + '分だよ！';
+      if(eff > 0) t += '\n・がんばり度：' + Math.round(eff).toLocaleString() + '（分×きつさ・主観にもとづく目安' + (noR > 0 ? '。きつさ未入力の' + noR + '件は含まず' : '') + '）';
+      t += '\n毎週のかたちは「からだ」タブの【うんどう】で円になって見られるよ';
+      return t;
   }},
   { keys:['運動','トレーニング','筋トレ','有酸素','ストレッチ','ワークアウト','鍛え','体を動か'], gen:function(){
       var g = currentGoal();
@@ -13154,6 +13266,7 @@ function chatHelp(){
     '・栄養素の相談：「鉄分が摂れる食べ物は？」「葉酸は？」「オメガ3って？」\n' +
     '・シーン別の相談：「トレ前は何食べる？」「夜遅い食事はどうすれば？」「夏バテで食欲ない」\n' +
     '・今日の振り返り：「今日のバランスは？」\n' +
+    '・運動の振り返り：「今週の運動は？」「自己ベストは？」\n' +
     'ジムのこと（混雑・マシン・おすすめコース）も聞いてね！';
 }
 function genReply(text){
@@ -14128,6 +14241,8 @@ function finishLesson(){
   closeLesson();
   showToast(msg);
   renderLessonCard();
+  /* きつさ(RPE)の任意入力（2026-08-15 Strava移植①） */
+  askRpe(logEffort(minutes, 'home', 'おうちレッスン・' + lnCur.title));
 }
 /* 修了証（本家: チャレンジプレイリスト完走→修了証、の移植） */
 function showCert(){
@@ -15280,6 +15395,18 @@ function renderWeekDots(){
   /* 今日ぶんの水分・運動・歩数。3行の値が入っているのに今日の点が消えている、を防ぐ */
   if(state.waterMl > 0 || state.exerciseKcal > 0 || (state.exerciseLog && state.exerciseLog.length)) done[0] = 1;
   try{ if(walkAgg && walkAgg().steps > 0) done[0] = 1; }catch(e){}
+  /* 過去日の運動は日別ログの row.ex から拾えるようになった（2026-08-15。従来は今日ぶんしか判定できなかった） */
+  try{
+    if(isRegisteredMember()){
+      var exLog = loadDailyLog();
+      var exBase = new Date(); exBase.setHours(0, 0, 0, 0);
+      for(var xi = 0; xi <= 6; xi++){
+        var xd = new Date(exBase.getTime()); xd.setDate(xd.getDate() - xi);
+        var xr = exLog[dayKey(xd)];
+        if(xr && xr.ex && xr.ex.length) done[xi] = 1;
+      }
+    }
+  }catch(e){}
   var names = ['日','月','火','水','木','金','土'];
   var base = appToday();
   var html = '';
@@ -15525,7 +15652,9 @@ var TREND_TABS = [
   {key:'kcalin', label:'カロリー摂取'},
   {key:'kcalout', label:'カロリー消費'},
   {key:'pfc', label:'栄養素'},
+  {key:'ex', label:'うんどう'},
   {key:'str', label:'筋トレ'},
+  {key:'best', label:'自己ベスト'},
   {key:'water', label:'水を飲む'}
 ];
 var trendTab = 'bmi';
@@ -15554,7 +15683,9 @@ function renderTrend(){
     '<div class="trend-sec" id="trendsec-kcalin">' + trendKcal('in') + '</div>' +
     '<div class="trend-sec" id="trendsec-kcalout">' + trendKcal('out') + '</div>' +
     '<div class="trend-sec" id="trendsec-pfc">' + trendPFC() + '</div>' +
+    '<div class="trend-sec" id="trendsec-ex">' + trendEx() + '</div>' +
     '<div class="trend-sec" id="trendsec-str">' + trendStrength() + '</div>' +
+    '<div class="trend-sec" id="trendsec-best">' + trendBest() + '</div>' +
     '<div class="trend-sec" id="trendsec-water">' + trendWater() + '</div>';
 }
 
@@ -15643,6 +15774,374 @@ function trendStrength(){
 function refreshStrTrend(){
   var el = document.getElementById('trendsec-str');
   if(el) el.innerHTML = trendStrength();
+}
+
+/* ============ うんどうの記録・がんばり度・自己ベスト（2026-08-15 Strava調査の移植・コア4件） ============
+   出典: _claude_work/strava-research-20260815.md（検証26件確定）
+   ①きつさ(RPE 1-10)＋がんばり度＝分×きつさ（Strava公式が「心拍計なし→主観強度で代替」を公認する設計の移植）
+   ②バブルカレンダー（色=種別・大きさ=分。順位も他人比較も無い一人用の俯瞰）
+   ③週次がんばり度レンジ（直近3週平均の帯。未達を数字で告げず「回復週」は肯定文言）
+   ④自己ベスト台帳（更新時だけ祝う。提案はしない＝既存の漸進提案2系統と役割がぶつからないように）
+   原則: 実測だけ・達成率/あと◯回を書かない・推計は推計と明記・きつさ未入力の運動をがんばり度に含めない */
+
+/* 運動1件を日別ログ(smile24_daily_log)の row.ex に積む。state.exerciseLog は揮発（リロードで消える）ため、
+   日をまたぐ表示はすべてこちらを読む。kind: gym(ジム・筋トレ)/cardio(有酸素)/walk(さんぽ)/home(おうち) */
+function logEffort(min, kind, label){
+  if(!isRegisteredMember()) return null;   // 体験モードは書かない（架空履歴を実測に混ぜない）
+  var log = loadDailyLog();
+  var k = dayKey();
+  var row = log[k] || {};
+  row.ex = row.ex || [];
+  if(row.ex.length >= 20) return null;     // 異常な連打の暴走ガード
+  row.ex.push({ m: Math.max(1, Math.round(min)), r: null, k: kind, l: String(label).slice(0, 40) });
+  log[k] = row;
+  var keys = Object.keys(log).sort();
+  while(keys.length > DAILY_LOG_KEEP_DAYS){ delete log[keys.shift()]; }
+  try{ localStorage.setItem(DAILY_LOG_KEY, JSON.stringify(log)); }catch(e){}
+  /* 1回の最長運動の自己ベスト（分）。さんぽはさんぽの部でも数える */
+  bestConsider('min', Math.round(min), k, label);
+  if(kind === 'walk') bestConsider('walkmin', Math.round(min), k, label);
+  return { day: k, idx: row.ex.length - 1, min: Math.max(1, Math.round(min)) };
+}
+function setEffortRpe(ref, rpe){
+  if(!ref) return;
+  var log = loadDailyLog();
+  var row = log[ref.day];
+  if(!row || !row.ex || !row.ex[ref.idx]) return;
+  row.ex[ref.idx].r = rpe;
+  try{ localStorage.setItem(DAILY_LOG_KEY, JSON.stringify(log)); }catch(e){}
+}
+/* 体験モード用サンプル（登録会員の実測とは絶対に混ぜない。ago=appToday比の日数） */
+var DEMO_EX = [
+  {ago:34,m:42,r:6,k:'gym'},{ago:32,m:25,r:5,k:'walk'},{ago:30,m:38,r:7,k:'gym'},
+  {ago:27,m:45,r:7,k:'gym'},{ago:26,m:30,r:4,k:'walk'},{ago:24,m:20,r:5,k:'home'},{ago:23,m:40,r:6,k:'gym'},
+  {ago:20,m:44,r:7,k:'gym'},{ago:18,m:28,r:5,k:'cardio'},{ago:16,m:41,r:8,k:'gym'},{ago:15,m:26,r:4,k:'walk'},
+  {ago:13,m:39,r:6,k:'gym'},{ago:11,m:22,r:5,k:'home'},{ago:9,m:46,r:7,k:'gym'},{ago:8,m:31,r:5,k:'walk'},
+  {ago:6,m:40,r:6,k:'gym'},{ago:4,m:27,r:5,k:'cardio'},{ago:2,m:43,r:7,k:'gym'},{ago:1,m:24,r:null,k:'walk'}
+];
+/* 表示用の一覧。登録会員=日別ログの実測だけ／体験=サンプル（real で見分ける） */
+function effortData(){
+  var base, list = [];
+  if(!isRegisteredMember()){
+    base = appToday(); base.setHours(0,0,0,0);
+    DEMO_EX.forEach(function(e){
+      var d = new Date(base.getTime()); d.setDate(d.getDate() - e.ago);
+      list.push({ dk: dayKey(d), date: d, ago: e.ago, m: e.m, r: e.r, k: e.k, l: '' });
+    });
+    return { list: list, real: false };
+  }
+  base = new Date(); base.setHours(0,0,0,0);
+  var log = loadDailyLog();
+  Object.keys(log).forEach(function(k){
+    var row = log[k];
+    if(!row || !row.ex || !row.ex.length) return;
+    var p = k.split('-');
+    var d = new Date(+p[0], (+p[1]) - 1, +p[2]);
+    if(isNaN(d)) return;
+    var ago = Math.round((base - d) / 86400000);
+    if(ago < 0) return;
+    row.ex.forEach(function(e, i){
+      list.push({ dk: k, date: d, ago: ago, m: e.m, r: e.r, k: e.k, l: e.l || '', idx: i });
+    });
+  });
+  return { list: list, real: true };
+}
+/* セットごとの余力(RIR)からきつさを自動見積もり（二重入力を作らないため。手動優先＝タップで上書き可） */
+function rpeFromSets(setsDetail){
+  if(!setsDetail || !setsDetail.length) return null;
+  var sum = 0;
+  setsDetail.forEach(function(s){ sum += (s.rir != null ? s.rir : 2); });
+  var avg = sum / setsDetail.length;
+  return Math.max(1, Math.min(10, Math.round(10 - avg * 1.5)));
+}
+
+/* ── きつさ入力シート ── */
+var rpePending = null;   // {ref, then, auto}
+function askRpe(ref, opts){
+  opts = opts || {};
+  /* 体験モード等で記録先が無いときは、後続（ご褒美シート等）だけ実行して静かに流す */
+  if(!ref){ if(opts.then) setTimeout(opts.then, 900); rpeFlushBest(); return; }
+  rpePending = { ref: ref, then: opts.then || null, auto: opts.auto || null, sel: opts.auto || null };
+  var grid = document.getElementById('rpeGrid');
+  if(!grid){ if(opts.then) setTimeout(opts.then, 900); rpeFlushBest(); return; }
+  var html = '';
+  for(var v = 1; v <= 10; v++){
+    html += '<button type="button" class="rpe-btn' + (rpePending.auto === v ? ' on' : '') + '" onclick="pickRpe(' + v + ')">' + v + '</button>';
+  }
+  grid.innerHTML = html;
+  document.getElementById('rpeAutoNote').style.display = rpePending.auto ? 'block' : 'none';
+  document.getElementById('rpeSaveBtn').style.display = rpePending.auto ? 'block' : 'none';
+  setTimeout(function(){ showSheet('rpeSheet'); }, 350);
+}
+function pickRpe(v){
+  if(!rpePending) return;
+  setEffortRpe(rpePending.ref, v);
+  showToast('きつさ ' + v + ' で記録したよ（がんばり度 ' + (rpePending.ref.min * v) + '・主観にもとづく目安）');
+  rpeCloseAnd();
+}
+function rpeConfirm(){ if(rpePending && rpePending.auto) pickRpe(rpePending.auto); }
+function rpeSkip(){ rpeCloseAnd(); }
+function rpeCloseAnd(){
+  hideSheet('rpeSheet');
+  var p = rpePending; rpePending = null;
+  refreshExTrend();
+  if(p && p.then) setTimeout(p.then, 500);
+  rpeFlushBest();
+}
+
+/* ── 自己ベスト台帳 ──
+   保存するのは「そのままだと消えてしまうもの」だけ：
+   ・種目別の最大重量（strength_logは200件で古い行から消える）
+   ・1日の最多歩数（smile24_walkは当日分しか残らない）
+   ・1回の最長運動/さんぽ（日別ログからも出せるが、更新判定を記録時に行うためここで持つ）
+   週の来館回数は入退館ログから毎回導出する（二重管理しない）。
+   提案（次はもっと重く等）は一切しない＝strengthSuggestion・機材ガイドの+2.5kgと役割を分ける */
+var BEST_KEY = 'smile24_best';
+function loadBest(){
+  try{
+    var j = JSON.parse(localStorage.getItem(BEST_KEY) || 'null');
+    if(j && typeof j === 'object') return j;
+  }catch(e){}
+  return {};
+}
+var bestMsgQueue = [];
+/* value が既存1位を超えたら記録し、3件以上の実績がある部でだけ祝う（初回から連発で祝わない）。
+   sameDay=true は「同じ日の値は置き換え」（1日の合計歩数のような積み上げ値用） */
+function bestConsider(cat, value, dk, label, sameDay){
+  if(!isRegisteredMember() || !(value > 0)) return;
+  var b = loadBest();
+  var arr = b[cat] || [];
+  var prevTop = arr.length ? arr[0].v : 0;
+  var prevCount = arr.length;
+  if(sameDay){
+    arr = arr.filter(function(e){ return e.d !== dk; });
+    prevCount = arr.length;
+    prevTop = arr.length ? arr[0].v : 0;
+  }
+  arr.push({ v: value, d: dk, l: label ? String(label).slice(0, 24) : undefined });
+  arr.sort(function(a, c){ return c.v - a.v; });
+  b[cat] = arr.slice(0, 12);   // 生涯トップ3＋年内トップ10が入る保持数（Best Efforts型）
+  try{ localStorage.setItem(BEST_KEY, JSON.stringify(b)); }catch(e){}
+  if(value > prevTop && prevCount >= 3){
+    bestMsgQueue.push(BEST_CAT_LABEL(cat) + ' ' + BEST_FMT(cat, value));
+  }
+}
+function BEST_CAT_LABEL(cat){
+  if(cat.indexOf('str:') === 0) return cat.slice(4);
+  return { min: '1回の最長運動', walkmin: 'さんぽの最長', steps: '1日の歩数' }[cat] || cat;
+}
+function BEST_FMT(cat, v){
+  if(cat.indexOf('str:') === 0) return v + 'kg';
+  if(cat === 'steps') return v.toLocaleString() + '歩';
+  return v + '分';
+}
+function rpeFlushBest(){
+  if(!bestMsgQueue.length) return;
+  var msg = '自己ベスト更新！ ' + bestMsgQueue.join('・');
+  bestMsgQueue = [];
+  setTimeout(function(){ showToast(msg); }, 700);
+}
+/* 週の来館回数トップ（入退館ログから導出・日曜はじまり） */
+function weekVisitTops(){
+  if(!isRegisteredMember()) return [{v:4,d:'サンプル'},{v:3,d:'サンプル'},{v:3,d:'サンプル'}];
+  var byWeek = {};
+  try{
+    var ent = JSON.parse(localStorage.getItem('smile24_entry_log') || '[]');
+    var days = {};
+    (Array.isArray(ent) ? ent : []).forEach(function(l){
+      var d = new Date(l.at); if(isNaN(d)) return;
+      days[dayKey(d)] = 1;
+    });
+    Object.keys(days).forEach(function(k){
+      var p = k.split('-');
+      var d = new Date(+p[0], (+p[1]) - 1, +p[2]);
+      d.setDate(d.getDate() - d.getDay());   // その週の日曜へ
+      var wk = dayKey(d);
+      byWeek[wk] = (byWeek[wk] || 0) + 1;
+    });
+  }catch(e){}
+  return Object.keys(byWeek).map(function(wk){
+    return { v: byWeek[wk], d: wk };
+  }).sort(function(a, b){ return b.v - a.v; }).slice(0, 3);
+}
+
+/* ── からだタブ「うんどう」セクション（バブルカレンダー＋週次がんばり度レンジ） ── */
+var EX_KIND = {
+  gym:    { label:'ジム・筋トレ', color:'var(--gold)' },
+  cardio: { label:'有酸素',       color:'var(--positive)' },
+  walk:   { label:'さんぽ',       color:'var(--ex-walk)' },
+  home:   { label:'おうち',       color:'var(--notice)' }
+};
+function trendEx(){
+  var ed = effortData();
+  var base = ed.real ? new Date() : appToday();
+  base.setHours(0,0,0,0);
+  if(ed.real && !ed.list.length){
+    return '<div class="trend-card"><div class="trend-empty">' +
+      '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></div>' +
+      '<div class="te-t">まだ運動の記録がありません</div>' +
+      '<div class="te-d">コース・おまかせ・さんぽ・おうちレッスン、どれでも記録すると<br>ここに毎週のかたちが円で見えてくるよ</div>' +
+      '</div></div>';
+  }
+  /* 日ごとに集計：合計分＋いちばん長くやった種別の色 */
+  var byDay = {};
+  ed.list.forEach(function(e){
+    var o = byDay[e.dk] || (byDay[e.dk] = { m: 0, kinds: {} });
+    o.m += e.m;
+    o.kinds[e.k] = (o.kinds[e.k] || 0) + e.m;
+  });
+  /* 直近5週間のバブルカレンダー（日曜はじまり・今週が最下段）。
+     月のグリッドだと月初は誰でもほぼ空白になるため、Strava本家のトレーニングログと同じ
+     「月境界に縛られない連続した週」で見せる */
+  var dow = ['日','月','火','水','木','金','土'];
+  var cells = dow.map(function(w){ return '<div class="bb-dow">' + w + '</div>'; }).join('');
+  var gridStart = new Date(base.getTime());
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay() - 28);   // 4週間前の日曜
+  for(var ci = 0; ci < 35; ci++){
+    var dObj = new Date(gridStart.getTime());
+    dObj.setDate(dObj.getDate() + ci);
+    var k = dayKey(dObj);
+    var o = byDay[k];
+    var isToday = (k === dayKey(base));
+    var future = dObj > base;
+    var bub = '';
+    if(o && !future){
+      var domK = 'gym', domV = 0;
+      Object.keys(o.kinds).forEach(function(kk){ if(o.kinds[kk] > domV){ domV = o.kinds[kk]; domK = kk; } });
+      var sz = Math.round(Math.max(8, Math.min(26, 6 + o.m * 0.33)));
+      bub = '<i class="bd-b" style="width:' + sz + 'px;height:' + sz + 'px;background:' + (EX_KIND[domK] || EX_KIND.gym).color + ';"></i>';
+    }
+    /* 月をまたいだ初日は「8/1」の形で月も見せる */
+    var nLabel = (dObj.getDate() === 1) ? (dObj.getMonth() + 1) + '/1' : dObj.getDate();
+    cells += '<div class="bb-day' + (isToday ? ' today' : '') + (future ? ' empty' : '') + '">' +
+      (future ? '' : '<span class="bd-n">' + nLabel + '</span>') + bub + '</div>';
+  }
+  var legend = Object.keys(EX_KIND).map(function(kk){
+    return '<span><i style="background:' + EX_KIND[kk].color + ';"></i>' + EX_KIND[kk].label + '</span>';
+  }).join('');
+  /* 今週・先週の実測合計（達成率・目標比は出さない）。
+     何週前か＝floor((ago + 今日が週の何日目かの残り(6-getDay())) / 7)。日曜はじまり。
+     （2巡目検証の指摘：ago+getDay()だと水曜以外で今週/先週がずれる） */
+  var wkAgg = { 0: { n: 0, m: 0 }, 1: { n: 0, m: 0 } };
+  ed.list.forEach(function(e){
+    var wkAgo = Math.floor((e.ago + 6 - base.getDay()) / 7);
+    if(wkAgg[wkAgo]){ wkAgg[wkAgo].n++; wkAgg[wkAgo].m += e.m; }
+  });
+  var wksum = '<div class="bb-wksum"><span>今週 <b>' + wkAgg[0].n + '</b>回・<b>' + wkAgg[0].m + '</b>分</span>' +
+    '<span>先週 <b>' + wkAgg[1].n + '</b>回・<b>' + wkAgg[1].m + '</b>分</span></div>';
+  /* 週次がんばり度（きつさ入力済みの運動だけ合算）＋直近3週平均の帯 */
+  var weeks = [];   // [0]=今週 … [5]=5週前
+  for(var w = 0; w < 6; w++) weeks.push({ eff: 0, noRpe: 0 });
+  ed.list.forEach(function(e){
+    var wkAgo2 = Math.floor((e.ago + 6 - base.getDay()) / 7);   // 日曜はじまり（wkAggと同式）
+    if(wkAgo2 < 0 || wkAgo2 > 5) return;
+    if(e.r) weeks[wkAgo2].eff += e.m * e.r;
+    else weeks[wkAgo2].noRpe++;
+  });
+  var band = null;
+  if(weeks[1].eff > 0 && weeks[2].eff > 0 && weeks[3].eff > 0){
+    var avg3 = (weeks[1].eff + weeks[2].eff + weeks[3].eff) / 3;
+    band = { lo: avg3 * 0.8, hi: avg3 * 1.2 };
+  }
+  var W = 320, H = 150, padT = 24, padB = 22, padL = 10, padR = 10;
+  var maxV = 1;
+  weeks.forEach(function(wv){ if(wv.eff > maxV) maxV = wv.eff; });
+  if(band && band.hi > maxV) maxV = band.hi;
+  maxV *= 1.12;
+  var svg = '';
+  if(band){
+    var byLo = H - padB - (band.lo / maxV) * (H - padT - padB);
+    var byHi = H - padB - (band.hi / maxV) * (H - padT - padB);
+    svg += '<rect x="' + padL + '" y="' + byHi + '" width="' + (W - padL - padR) + '" height="' + Math.max(2, byLo - byHi) + '" rx="4" fill="var(--gold)" opacity=".13"/>';
+    svg += '<text x="' + (W - padR) + '" y="' + (byHi - 4) + '" text-anchor="end" fill="#5A6778">いつものペースの帯</text>';
+  }
+  var slot = (W - padL - padR) / 6, bw = 26;
+  var wkLabels = ['5週前','4週前','3週前','2週前','先週','今週'];
+  for(var wi = 5; wi >= 0; wi--){
+    var col = 5 - wi;
+    var cx = padL + slot * col + slot / 2;
+    var val = weeks[wi].eff;
+    if(val > 0){
+      var bh = Math.max(4, (val / maxV) * (H - padT - padB));
+      svg += '<rect x="' + (cx - bw / 2) + '" y="' + (H - padB - bh) + '" width="' + bw + '" height="' + bh + '" rx="6" fill="' + (wi === 0 ? 'var(--gold)' : '#B8D0F5') + '"/>';
+      if(wi === 0) svg += '<text x="' + cx + '" y="' + (H - padB - bh - 6) + '" text-anchor="middle" font-weight="700" fill="#2A59C4">' + Math.round(val).toLocaleString() + '</text>';
+    } else {
+      svg += '<rect x="' + (cx - bw / 2) + '" y="' + (H - padB - 5) + '" width="' + bw + '" height="5" rx="2.5" fill="#EDF1F7"/>';
+    }
+    svg += '<text x="' + cx + '" y="' + (H - 6) + '" text-anchor="middle" fill="' + (wi === 0 ? '#2A59C4' : '#5A6778') + '">' + wkLabels[col] + '</text>';
+  }
+  var chart = '<svg class="exwk-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="margin-top:10px;">' + svg + '</svg>';
+  /* 帯との位置は3区分の言葉だけ。未達の数字・％は出さない。帯より下は「回復週」と肯定する（Strava公式の枠組み） */
+  var judge = '';
+  if(band && weeks[0].eff > 0){
+    judge = weeks[0].eff < band.lo ? '今週はいつもより控えめ。回復週だね、休むのも練習のうち！'
+          : weeks[0].eff > band.hi ? '今週はいつもよりがんばってるね。休養も忘れずに！'
+          : '今週はいつものペース。いいリズムだよ！';
+    judge = '<div class="ath-note" style="margin-top:2px;">' + judge + '</div>';
+  } else if(!band && ed.list.length){
+    judge = '<div class="ath-note" style="margin-top:2px;">きつさ入りの記録が3週間ぶんたまると、「いつものペースの帯」と見くらべられるようになるよ</div>';
+  }
+  var noRpeNote = weeks[0].noRpe > 0 ? '<div class="ath-note" style="margin-top:2px;">きつさ未入力の運動 ' + weeks[0].noRpe + '件は、がんばり度に入っていません</div>' : '';
+  return '<div class="trend-card">' +
+    '<div class="cc-title-row"><div><div class="cc-title">うんどうのカレンダー</div>' +
+    '<div class="cc-sub">円の大きさ＝その日の運動時間（実測）・直近5週間' + (ed.real ? '' : '・体験用サンプル') + '</div></div></div>' +
+    '<div class="bb-grid">' + cells + '</div>' +
+    '<div class="bb-legend">' + legend + '</div>' +
+    wksum +
+    '<div class="cc-title" style="margin-top:16px;">週ごとのがんばり度</div>' +
+    chart + judge + noRpeNote +
+    '<div class="ath-note">がんばり度＝運動の分数×きつさ(1〜10)。主観にもとづく目安です。帯＝直近3週間の自分の平均から出した範囲（±20%）で、他の人との比較ではありません</div>' +
+    '</div>';
+}
+/* からだタブ「自己ベスト」セクション。自分の過去とだけ競う台帳（生涯トップ3方式） */
+function trendBest(){
+  var reg = isRegisteredMember();
+  var b = reg ? loadBest() : {
+    'str:ベンチプレス': [{v:40,d:'2026-06-18'},{v:37.5,d:'2026-06-04'},{v:35,d:'2026-05-21'}],
+    min: [{v:52,d:'2026-06-25'},{v:48,d:'2026-06-11'},{v:45,d:'2026-05-28'}],
+    steps: [{v:11840,d:'2026-06-08'},{v:10920,d:'2026-05-30'},{v:10480,d:'2026-06-20'}]
+  };
+  var cats = Object.keys(b).filter(function(c){ return b[c] && b[c].length; });
+  var visits = weekVisitTops();
+  if(!cats.length && !visits.length){
+    return '<div class="trend-card"><div class="trend-empty">' +
+      '<div class="te-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg></div>' +
+      '<div class="te-t">自己ベストはこれから</div>' +
+      '<div class="te-d">運動を記録していくと、種目ごとの最大重量・最長運動・歩数の<br>「自分のトップ3」がここにたまっていくよ</div>' +
+      '</div></div>';
+  }
+  function rows(arr, fmt){
+    return arr.slice(0, 3).map(function(e, i){
+      return '<div class="best-row"><span class="br-rank">' + (i + 1) + '位</span>' +
+        '<span class="br-v">' + fmt(e.v) + '</span><span class="br-d">' + escHtml(String(e.d)) + '</span></div>';
+    }).join('');
+  }
+  var html = '';
+  var strCats = cats.filter(function(c){ return c.indexOf('str:') === 0; });
+  if(strCats.length){
+    html += '<div class="best-cat"><div class="bc-h">種目別の最大重量</div>' +
+      strCats.slice(0, 6).map(function(c){
+        var top = b[c][0];
+        return '<div class="best-row"><span class="br-v">' + escHtml(c.slice(4)) + '</span>' +
+          '<span class="br-v" style="flex:0 0 auto;">' + top.v + 'kg</span><span class="br-d">' + escHtml(String(top.d)) + '</span></div>';
+      }).join('') + '</div>';
+  }
+  if(b.min && b.min.length) html += '<div class="best-cat"><div class="bc-h">1回の最長運動</div>' + rows(b.min, function(v){ return v + '分'; }) + '</div>';
+  if(b.walkmin && b.walkmin.length) html += '<div class="best-cat"><div class="bc-h">さんぽの最長</div>' + rows(b.walkmin, function(v){ return v + '分'; }) + '</div>';
+  if(b.steps && b.steps.length) html += '<div class="best-cat"><div class="bc-h">1日の歩数</div>' + rows(b.steps, function(v){ return v.toLocaleString() + '歩'; }) + '</div>';
+  if(visits.length) html += '<div class="best-cat"><div class="bc-h">週の来館回数</div>' + rows(visits, function(v){ return '週' + v + '回'; }) + '</div>';
+  return '<div class="trend-card">' +
+    '<div class="cc-title-row"><div><div class="cc-title">自己ベスト</div>' +
+    '<div class="cc-sub">くらべる相手は過去の自分だけ' + (reg ? '' : '・体験用サンプル') + '</div></div></div>' +
+    html +
+    '<div class="ath-note">更新したときだけお知らせします。記録が無い期間があっても、ベストは消えません</div>' +
+    '</div>';
+}
+function refreshExTrend(){
+  var el = document.getElementById('trendsec-ex');
+  if(el) el.innerHTML = trendEx();
+  var el2 = document.getElementById('trendsec-best');
+  if(el2) el2.innerHTML = trendBest();
 }
 
 /* 直近7日の曜日ラベル（末尾=今日） */
