@@ -12,9 +12,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="スマイル24">
+<link rel="icon" href="images/logo-transparent-sm.png">
 <link rel="apple-touch-icon" href="images/logo-transparent-sm.png">
-<!-- rel="icon" が無いとブラウザが /favicon.ico を暗黙要求して404になる（GitHub Pages公開版でも同様だった） -->
-<link rel="icon" type="image/png" href="images/logo-transparent-sm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 日本語Webフォントは1ウェイトあたり数百KB（文字ごとに分割配信されるため）。
@@ -432,6 +431,39 @@ input{font-family:inherit;}
 .wk-sensor span{flex:1;text-align:center;font-size:10.5px;font-weight:700;padding:6px 4px;border-radius:100px;background:var(--white);border:1.5px solid var(--line);color:var(--text-lt);}
 .wk-sensor span.on{border-color:var(--gold);color:var(--gold-dk);background:var(--pastel-1);}
 .wk-privacy{font-size:10px;color:var(--text-lt);line-height:1.6;margin:8px 2px 0;}
+/* ── さんぽの道順マップ（2026-08-16）──
+   地図ライブラリは使わず、国土地理院のタイル画像＋自前SVGで描く。
+   理由：会員アプリは単一HTML 1.9MBで、地図を一度も使わない人にも重い外部JSを配りたくない。
+   タイルが取れない（オフライン・不通）ときはタイルだけ消えて、軌跡のSVGはそのまま残る設計。 */
+.wk-map{position:relative;width:100%;height:190px;border-radius:14px;overflow:hidden;background:var(--field);margin-bottom:10px;}
+.wk-map .wm-tiles{position:absolute;inset:0;overflow:hidden;}
+/* タイルはこのペインの中に絶対座標で置き、地図の移動はペインの transform で吸収する
+   （毎回 <img> を作り直すと数秒おきにちらつき、再デコードと通信の無駄が出る） */
+.wk-map .wm-pane{position:absolute;left:0;top:0;will-change:transform;}
+.wk-map .wm-pane img{position:absolute;width:256px;height:256px;user-select:none;-webkit-user-drag:none;}
+.wk-map .wm-ov{position:absolute;inset:0;}
+.wk-map .wm-attr{position:absolute;right:4px;bottom:3px;font-size:11px;color:var(--text-mid);background:rgba(255,255,255,.82);border-radius:5px;padding:1px 5px;line-height:1.5;}
+.wk-map .wm-fail{position:absolute;left:6px;right:6px;bottom:6px;font-size:11px;line-height:1.5;color:var(--text-mid);background:rgba(255,255,255,.86);border-radius:8px;padding:5px 8px;text-align:center;}
+.wk-map .wm-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:0 18px;}
+.wk-map .wm-empty .t{font-size:12px;font-weight:700;color:var(--text-mid);}
+.wk-map .wm-empty .d{font-size:11px;color:var(--text-lt);line-height:1.6;}
+/* 道順オフのときの誘い（見えない機能にしないための入口） */
+.wk-mapoff{display:flex;align-items:center;gap:10px;background:var(--pastel-1);border-radius:14px;padding:11px 12px;margin-bottom:10px;}
+.wk-mapoff .mo-t{flex:1;font-size:11.5px;line-height:1.6;color:var(--text-mid);}
+.wk-mapoff .mo-t b{display:block;font-size:12.5px;color:var(--text);margin-bottom:2px;}
+.wk-mapoff button{flex:0 0 auto;border:none;background:var(--grad-main);color:#fff;font-weight:700;font-size:11.5px;border-radius:100px;padding:9px 14px;cursor:pointer;font-family:inherit;}
+/* さんぽの記録（履歴シート） */
+.rt-item{background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:10px;margin-bottom:9px;}
+.rt-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.rt-head .rh-d{flex:1;font-size:12px;font-weight:700;color:var(--text);}
+.rt-head .rh-del{flex:0 0 auto;border:1.5px solid var(--line);background:var(--white);color:var(--text-lt);font-size:11px;font-weight:700;border-radius:100px;padding:5px 11px;cursor:pointer;font-family:inherit;}
+.rt-stats{display:flex;gap:10px;margin-top:8px;}
+.rt-stats div{font-size:11px;color:var(--text-lt);font-weight:600;}
+.rt-stats div b{color:var(--text-mid);font-size:12px;}
+.rt-empty{text-align:center;font-size:11.5px;color:var(--text-lt);line-height:1.8;padding:18px 6px;}
+/* .acc-more はページ本文（左右padding無し）用に width:calc(100% - 44px) で作られている。
+   シートの中（.sheet-card は padding 22px）に置くと右に44pxの余白が空くので、ここで打ち消す */
+.sheet-card .acc-more{width:100%;margin:10px 0 0;}
 /* 自動計測の状態行（タップでON/OFF） */
 .walk-auto{display:flex;align-items:center;gap:7px;margin-top:9px;padding:9px 12px;border-radius:12px;background:var(--pastel-1);cursor:pointer;font-size:11.5px;color:var(--text-mid);}
 .walk-auto .wa-dot{width:8px;height:8px;border-radius:50%;background:#C9CBD4;flex:0 0 auto;}
@@ -809,7 +841,7 @@ input{font-family:inherit;}
 .exlog-item .ei-icon{width:30px;height:30px;border-radius:50%;background:#EFF3F8;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .exlog-item .ei-icon svg{width:15px;height:15px;color:var(--gold-dk);}
 .exlog-item .ei-name{font-size:12.5px;font-weight:600;}
-.exlog-item .ei-sub{font-size:10.5px;color:var(--text-lt);}
+.exlog-item .ei-sub{font-size:11px;color:var(--text-lt);}
 .exlog-item .ei-kcal{font-family:var(--font-en);font-size:13px;font-weight:700;color:var(--text);margin-left:auto;}
 .exlog-add{margin-top:10px;width:100%;padding:11px;border-radius:100px;border:1.5px dashed var(--gold);color:var(--gold-dk);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;}
 .exlog-add svg{width:15px;height:15px;}
@@ -1619,6 +1651,17 @@ input{font-family:inherit;}
 .week-dots .wd span{font-size:11px;font-weight:700;color:var(--text-lt);}
 .week-dots .wd.today span{color:var(--gold-dk);}
 .week-dots-note{margin:8px 22px 0;font-size:11px;color:var(--text-lt);font-weight:600;line-height:1.6;}
+/* ホームの「今週のうんどう」要約（2026-08-16）。からだタブの詳細への入口 */
+.hex-card{margin:0 22px;background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:14px 16px;}
+.hex-row{display:flex;align-items:flex-end;gap:14px;}
+.hex-n{font-family:var(--font-en);font-size:26px;font-weight:700;color:var(--text);line-height:1;}
+.hex-n span{font-size:11px;color:var(--text-lt);font-weight:600;margin-left:2px;}
+.hex-l{font-size:11px;color:var(--text-lt);margin-top:4px;}
+.hex-bars{flex:1;display:flex;align-items:flex-end;justify-content:flex-end;gap:4px;height:38px;}
+.hex-bars i{width:11px;border-radius:3px;background:#E4EAF2;display:block;}
+.hex-bars i.now{background:var(--grad-main);}
+.hex-note{margin-top:10px;font-size:11.5px;line-height:1.6;color:var(--text-mid);background:var(--pastel-1);border-radius:12px;padding:8px 11px;}
+.hex-empty{font-size:11.5px;line-height:1.7;color:var(--text-lt);text-align:center;padding:6px 2px 2px;}
 /* ========= 運動タブ：ジムで／おうちで の切替（2026-08-14） ========= */
 .seg-wrap{position:sticky;top:0;z-index:6;background:var(--bg);padding:10px 22px 12px;margin:0 0 4px;}
 .seg{display:flex;gap:8px;}
@@ -2490,7 +2533,7 @@ svg text{ font-size:12px; }
 .rec-item{display:flex;align-items:center;gap:12px;background:#F4F7FB;border:none;border-radius:14px;padding:13px 15px;min-height:56px;cursor:pointer;width:100%;text-align:left;font-family:inherit;}
 .rec-item svg{width:20px;height:20px;flex:0 0 auto;color:var(--gold-dk);}
 .rec-item .ri-t{font-size:13px;font-weight:700;color:var(--text);}
-.rec-item .ri-s{font-size:10px;color:var(--text-lt);font-weight:600;margin-top:1px;}
+.rec-item .ri-s{font-size:11px;color:var(--text-lt);font-weight:600;margin-top:1px;}
 
 /* ヘッダー常設のSOS（無人時間帯の緊急導線。全画面の右上に置く） */
 .icon-btn.sosq{background:#FEE9E5;color:#D1401F;}
@@ -2500,7 +2543,7 @@ svg text{ font-size:12px; }
 .hedit-link svg{width:14px;height:14px;}
 .hedit-row{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-bottom:1px solid #EDF1F7;}
 .hedit-row .ht{font-size:13px;font-weight:700;}
-.hedit-row .hs{font-size:10px;color:var(--text-lt);font-weight:600;margin-top:2px;}
+.hedit-row .hs{font-size:11px;color:var(--text-lt);font-weight:600;margin-top:2px;}
 .hedit-sw{width:46px;height:26px;border-radius:100px;background:#D8DFE8;position:relative;transition:background .2s;flex:0 0 auto;cursor:pointer;}
 .hedit-sw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
 .hedit-sw.on{background:var(--gold);}
@@ -2653,6 +2696,12 @@ svg text{ font-size:12px; }
       <div class="section-label" style="margin-top:20px;">今週の記録<a href="javascript:void(0)" onclick="goTab('trend');renderTrend()">推移を見る</a></div>
       <div class="week-dots" id="weekDots"></div>
       <div class="week-dots-note">なにか1つでも記録した日に色がつきます（食事・体重・水分・運動・来館）</div>
+
+      <!-- 今週のうんどう（2026-08-16）。からだタブに作った うんどうカレンダー・がんばり度・自己ベストは
+           奥にあって気づかれなかったので、ホームに要約だけ出して入口にする。
+           ⚠️ ここは要約に徹する（5週グリッドや自己ベスト一覧を再掲しない＝食事4マスで起きた重複の轍を踏まない） -->
+      <div class="section-label" style="margin-top:20px;">今週のうんどう<a href="javascript:void(0)" onclick="goTab('trend');renderTrend();setTimeout(function(){selectTrend('ex')},40)">くわしく見る</a></div>
+      <div id="homeExSummary"></div>
 
       <!-- いま混んでる？（2026-08-14に運動タブから移設）。
            「いまから行くか」を決める情報なので、入館QRと同じ画面にある必要がある -->
@@ -3485,7 +3534,7 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-16a</b>（ブラウザで開いたとき、タブにスマイル24のロゴが表示されるようになりました）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-16a</b>（<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。ただし<b>地図を表示するあいだだけ</b>、いま見ている範囲がおおよそ250m四方の粗さで地図の配信元（国土地理院）に伝わります。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週のうんどう」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました。<br><br>前の版（2026-08-15a）：<b>「くらべる相手は過去の自分だけ」の運動記録が入りました</b>。①運動を記録した直後に<b>「きょうのきつさは？」（1〜10）</b>を任意で聞きます（スキップしても記録は残ります）。筋トレでセットごとの「余力」を入れた場合は自動で見積もり、タップで直せます。②「からだ」タブに<b>【うんどう】</b>が増えました：直近5週間のカレンダーに<b>その日の運動が円</b>で付きます（色＝種別・大きさ＝時間）。週ごとの<b>がんばり度</b>（分×きつさ・主観にもとづく目安）は、<b>自分の直近3週間の平均から出した帯</b>と見くらべる形で、帯より下の週は「回復週」です（順位や他の人との比較はありません）。③<b>【自己ベスト】</b>も増えました：種目ごとの最大重量・1回の最長運動・1日の歩数・週の来館回数の自分のトップ3がたまり、<b>更新したときだけ</b>お知らせします。チャットでも「今週の運動は？」「自己ベストは？」と聞けます）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
@@ -4099,10 +4148,50 @@ svg text{ font-size:12px; }
           <div class="wk-cell"><div class="v" id="wkDist">0<span>m</span></div><div class="l">距離</div></div>
           <div class="wk-cell"><div class="v" id="wkKcal">0<span>kcal</span></div><div class="l">消費カロリー</div></div>
         </div>
+        <!-- 地図は数字と主ボタンの「下」に置く。上に置くと小さい端末（iPhone SE等）で
+             「終了して記録する」がシート内スクロールの下に落ちる（検証指摘） -->
         <div class="wk-status" id="wkStatus"></div>
         <button class="sheet-btn" id="wkMainBtn" onclick="walkToggle()">計測をはじめる</button>
+        <!-- 道順マップ（2026-08-16）。オフのときは誘いカード、オンのときは地図。
+             どちらか片方だけを出す（walkRenderMapArea が切り替える）。
+             ⚠️ どちらも主ボタンの「下」に置く。上に置くと、小さい端末（iPhone SE等）で
+                「計測をはじめる／終了して記録する」がシート内スクロールの下へ落ちる（検証指摘） -->
+        <div class="wk-mapoff" id="wkMapOff" style="margin-top:10px;">
+          <div class="mo-t"><b>歩いた道順を地図で残す</b>いま歩いている場所と道順が地図に出ます。道順は<b>このスマホの中だけ</b>に保存され、アプリからサーバーや運営へ送信することはありません（＝このスマホを使える人には見えます。画面ロックをかけてお使いください）。地図を表示するあいだだけ、いま見ている範囲（おおよそ250m四方）が地図の配信元＝国土地理院に伝わります。あとからオフにでき、オフにすると保存した道順も消えます<span id="wkMapOffMinor"></span></div>
+          <button type="button" onclick="walkRouteOptIn()">地図をオンにする</button>
+        </div>
+        <div class="wk-map" id="wkMap" style="display:none;margin-top:10px;">
+          <div class="wm-tiles" id="wkMapTiles"></div>
+          <svg class="wm-ov" id="wkMapOv" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="wm-empty" id="wkMapEmpty">
+            <div class="t">まだ道順がありません</div>
+            <div class="d">「計測をはじめる」を押して歩きだすと、ここに現在地と道順が出ます</div>
+          </div>
+          <div class="wm-attr" id="wkMapAttr" style="display:none;">地図：国土地理院</div>
+        </div>
+        <div class="wk-privacy" id="wkMapGap" style="display:none;color:var(--notice-dk);"></div>
         <button class="sheet-cancel" id="wkCloseBtn" onclick="walkClose()">とじる</button>
-        <div class="wk-privacy">位置情報は距離の計算にその場で使うだけで、道順や座標は保存しません。残るのは距離・歩数・カロリーの数字だけ。計測はこの画面を開いている間だけ動きます</div>
+        <div class="acc-more" id="wkHistLink" onclick="openRouteSheet()">さんぽの記録を見る（道順の地図つき）</div>
+        <!-- ⚠️ この文言は実装と必ず一対で直すこと。道順オフ＝座標を一切持たない／オン＝この端末にだけ残す -->
+        <div class="wk-privacy" id="wkPrivacyNote"></div>
+      </div>
+    </div>
+
+    <!-- さんぽの記録（道順の地図つき・2026-08-16）。
+         このシートに出るものはすべて、この端末のブラウザの中だけにあるデータ。
+         運営の管理画面にも、バックアップの書き出しにも入らない（EXPORT_EXCLUDE_KEYS） -->
+    <div class="sheet" id="routeSheet">
+      <div class="sheet-card">
+        <h3>さんぽの記録</h3>
+        <div class="sheet-desc">歩いた道順は、このスマホの中だけに残ります（このスマホを使える人以外は見られません）。直近30件まで残ります</div>
+        <div id="routeList"></div>
+        <div class="settings-toggle-row" style="margin-top:4px;">
+          <div><div class="str-t">歩いた道順を地図で残す</div><div class="str-d">オフにすると、これまでの道順もすべて消えて、以後は座標を持ちません</div></div>
+          <div class="ob-switch" id="routeSwitch" onclick="toggleRouteSave()"></div>
+        </div>
+        <button class="privacy-danger" id="routeClearBtn" onclick="clearAllRoutes()" style="margin-top:8px;">保存した道順をすべて消す</button>
+        <button class="sheet-cancel" onclick="hideSheet('routeSheet')">とじる</button>
+        <div class="wk-privacy">道順はこのスマホのブラウザにだけ保存されます。アプリからサーバーや運営へ送信することはありません。ただし<b>地図を表示するあいだだけ</b>、いま見ている範囲（おおよそ250m四方）が地図の配信元＝国土地理院に伝わります（緯度経度そのものや道順のデータは送りません）。スマホには画面ロックをかけてね。機種変更やブラウザのデータ削除で消えます（バックアップの書き出しにも、外に出さないためあえて含めていません）</div>
       </div>
     </div>
 
@@ -4117,6 +4206,12 @@ svg text{ font-size:12px; }
         </div>
         <div class="wk-status" id="stepsPreview"></div>
         <button class="sheet-btn" onclick="saveManualSteps()">この歩数で記録する</button>
+        <!-- 歩数の手入力が「毎日の主な使い方」なので、この動線の人にも道順機能を知らせる
+             （ここに置かないと、さんぽ計測を開かない会員は永久に気づかない・検証指摘） -->
+        <div class="wk-mapoff" style="margin-top:12px;">
+          <div class="mo-t"><b>歩いた道を地図で残せます</b>「さんぽを計測する」で歩くと、通った道が地図で残ります（このスマホの中だけ）</div>
+          <button type="button" onclick="hideSheet('stepsSheet');openWalkSheet()">さんぽを計測</button>
+        </div>
         <!-- ホームの歩数カードを1行に縮めた際に、距離・消費・自動計測をここへ移した（2026-08-14） -->
         <div class="walk-info" style="margin-top:14px;">
           <div class="wir"><span>歩いた距離</span><b id="walkDistVal">0.0 km</b></div>
@@ -4362,9 +4457,13 @@ svg text{ font-size:12px; }
           <div><div class="str-t">お知らせメールの受信</div><div class="str-d">キャンペーン・メンテナンス等のお知らせメール</div></div>
           <div class="ob-switch" id="privacySwitch-marketing" onclick="togglePrivacyPref('marketing')"></div>
         </div>
+        <!-- 位置情報の設定は「さんぽの記録」に集約する（オン/オフ・道順の確認・削除が1画面で完結する） -->
+        <div class="acc-more" onclick="hideSheet('privacySheet');openRouteSheet()">
+          さんぽの道順（位置情報）の設定と削除<span id="privRouteState"></span>
+        </div>
         <div class="backup-box">
           <div class="bb-title">記録データのバックアップ</div>
-          <div class="bb-desc">記録はこの端末のブラウザ内に保存されます。端末の変更やブラウザのデータ削除に備えて、定期的な書き出しをおすすめします</div>
+          <div class="bb-desc">記録はこの端末のブラウザ内に保存されます。端末の変更やブラウザのデータ削除に備えて、定期的な書き出しをおすすめします（さんぽの道順は、外に出さないためあえて含めていません。読み込むと、この端末の道順は消えます）</div>
           <div class="bb-btns">
             <button class="bb-btn" onclick="exportAppData()">書き出す</button>
             <button class="bb-btn" onclick="document.getElementById('importFile').click()">読み込む</button>
@@ -4931,6 +5030,8 @@ svg text{ font-size:12px; }
             当ジムはスタッフが常駐しない無人運営です。緊急時はご自身で警察（110）・救急（119）へご連絡ください。当ジムに故意または重大な過失がない限り、利用中の怪我・事故等について責任を負いません。損害賠償の上限は直近3ヶ月分の月会費相当額とします。
             <h4>個人情報の取扱い</h4>
             ご登録いただいた個人情報は適切に管理し、法令を遵守の上、目的外での使用は行いません。
+            <h4>位置情報について</h4>
+            さんぽ計測の位置情報は、距離の計算のためにその場で使うだけで、当ジムは取得しません。「歩いた道順を地図で残す」をご自身でオンにされた場合のみ、道順がお使いの端末内にのみ保存され、アプリから当ジムのサーバーや運営へ送信されることはありません（オフに戻すと保存分も削除されます）。地図の表示中のみ、表示範囲のおおよその区画が地図配信元（国土地理院）に伝わります。
             <p style="margin-top:10px;"><a href="https://office-m-nakatani.github.io/smile24/terms.html" target="_blank" rel="noopener">利用規約全文はこちら（公式サイト）</a></p>
           </div>
           <div class="ob-check-row"><input type="checkbox" id="obAgreeTerms"><div class="oc-txt"><b>利用規約</b>に同意します</div></div>
@@ -5133,7 +5234,20 @@ function calcKcal(met, minutes){
    ①手入力：スマホに出ている「今日の合計歩数」を写す（毎日の主な使い方）
    ②さんぽ計測：散歩の間だけ画面を点けたまま、GPSで距離・加速度センサーで歩数を実測
    同じ日に両方使うと歩数が二重になるので、手入力は「計測ぶんを差し引いた残り」だけを
-   カロリー換算する（勝手に二重加算しない）。位置座標は保存しない＝残すのは数字だけ */
+   カロリー換算する（勝手に二重加算しない）。
+
+   ⚠️ 位置座標の扱い（2026-08-16に変更・ここが唯一の契約）
+   ・既定は今までどおり「座標を一切持たない」。walk.pts にも入れず、地図も出さない
+   ・会員が「歩いた道順を地図で見る」を自分でオンにしたときだけ、座標を扱う（ROUTE_ON_KEY）
+   ・オンでも、残す先は smile24_walk_routes（この端末のlocalStorage）だけ。
+     サーバー送信なし・運営の管理画面にも出さない・バックアップ書き出しにも入れない
+     （EXPORT_EXCLUDE_KEYS に入れてある。機種変更で消えるのは、その代償として承知のうえ）
+   ・オフに戻したら、保存済みの道順もその場で全部消す（toggleRouteSave）
+   この4行を破る変更をするときは、開示している6面すべてを必ず同時に直す：
+   ①オプトインカード(.wk-mapoff) ②#wkPrivacyNote ③routeSheet の注記 ④版バッジ(.app-ver)
+   ⑤利用規約の「位置情報について」 ⑥Cocoチャットの道順トピック。
+   探し方＝「250m四方」でgrepすると①②③④⑥が、「位置情報について」で⑤が出る
+   （2面しか書いていなかったため、3巡目で①⑥だけ旧表現が残る事故が起きた） */
 var WALK_GOAL_STEPS = 8000;
 function walkStride(){
   // 歩幅(m) ≒ 身長×0.43。極端な値にならないよう範囲を絞る
@@ -5264,11 +5378,496 @@ var walk = {
   steps:0, dist:0, lastFix:null, watchId:null,
   gpsOk:false, motionOk:false, wakeLock:null,
   emaG:null, smooth:0, above:false, lastStepAt:0,
-  lastTickSteps:0, lastTickDist:0
+  lastTickSteps:0, lastTickDist:0,
+  /* pts＝今回のさんぽの道順 [[lat,lon],…]。道順オンのときだけ点が入る。
+     距離に加算した測位と同じ点だけを積む＝画面の距離と地図の線が食い違わない。
+     null は「ここで線を切る」印（速すぎる移動を挟んだとき）。ptBreak はその予約フラグ。
+     gpsDenied は位置情報を断られた／使えないとき（地図の空表示を正直な文面に変える） */
+  pts:[], ptBreak:false, gpsDenied:false
 };
+
+/* ============ さんぽの道順マップ（2026-08-16・自前実装／外部JSなし） ============
+   地図ライブラリ（Leaflet等）は入れない。単一HTML 1.9MBのアプリに、地図を使わない人まで
+   巻き込む外部JSとCSSを足したくないため。やっているのは次の2つだけ：
+   ①国土地理院のタイル画像（無料・APIキー不要・出典表示のみ必要）を <img> で並べる
+   ②その上に SVG で軌跡の線と現在地を描く
+   タイルが取れない（オフライン・不通）ときは①だけが消え、②の線は残る＝機能が死なない */
+var ROUTE_KEY = 'smile24_walk_routes';   // [{id,ts,d,min,steps,dist,kcal,pts}]
+var ROUTE_ON_KEY = 'smile24_route_on';   // '1'=道順を残す（既定は未設定＝オフ）
+var ROUTE_KEEP = 30;                     // 直近30本まで（localStorage容量への配慮）
+var ROUTE_MAX_PTS = 300;                 // 1本あたりの点の上限（超えたら間引く）
+var GSI_TILE = 'https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png';
+
+/* ⚠️ 道順の判定に isRegisteredMember() を単独で使わないこと。
+   あれは「この端末に会員アカウントの記録があるか」しか見ておらず、ログアウト後も true のまま。
+   その状態で体験モードに入られると、前の会員の道順（自宅が写る地図）が第三者に見え、
+   さらにその人のさんぽ座標が前の会員の一覧へ追記される（2巡目検証で成立を確認）。
+   道順のように「誰のものか」が決定的なデータは、必ずログイン中かどうかまで見る */
+function hasMemberSession(){
+  try{
+    return isRegisteredMember() && localStorage.getItem('smile24_logged_in') === '1';
+  }catch(e){ return false; }
+}
+function routeSaveOn(){
+  try{ return hasMemberSession() && localStorage.getItem(ROUTE_ON_KEY) === '1'; }catch(e){ return false; }
+}
+function loadRoutes(){
+  try{
+    var j = JSON.parse(localStorage.getItem(ROUTE_KEY) || 'null');
+    return Array.isArray(j) ? j : [];
+  }catch(e){ return []; }
+}
+function saveRoutes(list){
+  /* 容量オーバーは黙って捨てない：古い順に段階的に減らし、減らしたら必ず本人に伝える
+     （黙って20本消えると「勝手に消えた」になる） */
+  var steps = [ROUTE_KEEP, 25, 20, 15, 10, 5];
+  for(var i = 0; i < steps.length; i++){
+    var keep = list.slice(-steps[i]);
+    try{
+      localStorage.setItem(ROUTE_KEY, JSON.stringify(keep));
+      /* ⚠️ ここで showToast しない。walkFinish は直後に記録完了のトーストを出すので、
+         トーストが1枚しか出ない実装では必ず上書きされて会員に届かない（5巡目検証）。
+         何が起きたかを返し、呼び出し側で1枚の文にまとめる */
+      if(i > 0) return { shrunk: keep.length };
+      if(list.length > ROUTE_KEEP) return { dropped: list.length - keep.length };
+      return {};
+    }catch(e){}
+  }
+  return { failed: true };
+}
+/* 座標は小数5桁（約1m）に丸める。それ以上の桁は歩行の精度では意味がなく、容量だけ食う */
+function routeRound(pt){ return [Math.round(pt[0]*1e5)/1e5, Math.round(pt[1]*1e5)/1e5]; }
+/* pts には null を「線の区切り」として混ぜる。
+   区切りが要るのは、車などで速すぎる移動（v>4.2m/s）を距離にも線にも入れないのに
+   基準点だけ進めるため、そのまま結ぶと歩いていない区間が線になってしまうから
+   （検証で 実測240m に対し 線439m になった）。区切って描けば線と距離が一致する */
+function routeSegments(pts){
+  var segs = [], cur = [];
+  (pts || []).forEach(function(p){
+    if(!p){ if(cur.length > 0) segs.push(cur); cur = []; }
+    else cur.push(p);
+  });
+  if(cur.length > 0) segs.push(cur);
+  return segs;
+}
+function routeFlat(pts){ return (pts || []).filter(Boolean); }
+/* 点が多すぎるときは等間隔で間引く（区切りと、各区間の始点・終点は必ず残す） */
+function routeThin(pts, max){
+  var segs = routeSegments(pts);
+  var total = routeFlat(pts).length;
+  if(total <= max) return pts;
+  /* 区間ごとに最低2点は残すので、区間が多いと合計が max を超えうる。
+     そのときは長い区間から順に削って上限に収める（短い区間＝寄り道も形は残す） */
+  var quotas = segs.map(function(seg){ return Math.min(seg.length, Math.max(2, Math.round(seg.length / total * max))); });
+  var sum = function(){ return quotas.reduce(function(a, b){ return a + b; }, 0); };
+  var guard = 0;
+  while(sum() > max && guard++ < 5000){
+    var bigI = 0;
+    for(var q = 1; q < quotas.length; q++){ if(quotas[q] > quotas[bigI]) bigI = q; }
+    if(quotas[bigI] <= 2) break;   // これ以上は形が壊れるので諦める（容量側で受け止める）
+    quotas[bigI]--;
+  }
+  var out = [];
+  segs.forEach(function(seg, si){
+    if(si > 0) out.push(null);
+    var quota = quotas[si];
+    if(seg.length <= quota){ out = out.concat(seg); return; }
+    var step = (seg.length - 1) / (quota - 1);
+    for(var i = 0; i < quota; i++) out.push(seg[Math.round(i * step)]);
+  });
+  return out;
+}
+
+/* ── Webメルカトルのタイル座標（地図ライブラリを使わないので自前で持つ） ── */
+function lon2x(lon, z){ return (lon + 180) / 360 * Math.pow(2, z); }
+function lat2y(lat, z){
+  var r = lat * Math.PI / 180;
+  return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * Math.pow(2, z);
+}
+/* 軌跡が収まる縮尺を選ぶ。1点しかない（歩き始め）ときは近景のz17 */
+function routeZoom(pts, wPx, hPx){
+  if(pts.length < 2) return 17;
+  var lats = pts.map(function(p){ return p[0]; }), lons = pts.map(function(p){ return p[1]; });
+  var minLat = Math.min.apply(null, lats), maxLat = Math.max.apply(null, lats);
+  var minLon = Math.min.apply(null, lons), maxLon = Math.max.apply(null, lons);
+  /* 上限を17にしているのは、会員に約束した「おおよそ250m四方の粗さ」を実装で守るため。
+     z18まで許すとタイル1枚が約126m四方になり、開示より2倍細かい区画が地図配信元に伝わる。
+     ⚠️ ここを18に戻すなら、文言（オプトインカード・#wkPrivacyNote・routeSheet・版バッジ・規約）も同時に直すこと */
+  for(var z = 17; z >= 10; z--){
+    var w = (lon2x(maxLon, z) - lon2x(minLon, z)) * 256;
+    var h = (lat2y(minLat, z) - lat2y(maxLat, z)) * 256;
+    if(w <= wPx - 40 && h <= hPx - 40) return z;   // 余白40pxぶん内側に収まる最大の縮尺
+  }
+  return 10;
+}
+
+/* 道順を地図に描く。box＝.wk-map 相当の要素（tiles/ov/empty/attr の4つを内側に持つ）。
+   live=true なら最後の点を「現在地」として強調する */
+function drawRouteMap(box, pts, live){
+  if(!box) return;
+  var tiles = box.querySelector('.wm-tiles'), ov = box.querySelector('.wm-ov');
+  var empty = box.querySelector('.wm-empty'), attr = box.querySelector('.wm-attr');
+  if(!tiles || !ov) return;
+  var W = box.clientWidth || 300, H = box.clientHeight || 190;
+  /* 描くのは2点以上ある区間だけ。孤立した1点（区切り直後に1回しか測位できなかった等）は
+     縮尺にも始点マーカーにも参加させない。参加させると、車で来ただけの出発地に
+     「ここから歩いた」の白丸が立ち、そこまで入る縮尺で本来の道が点にしか見えなくなる。
+     ⚠️ 全部が孤立点なら「道順なし」として扱う（routeFlat へ落とすと上の問題がそのまま復活する） */
+  var drawnSegs = routeSegments(pts).filter(function(s){ return s.length >= 2; });
+  var flat = drawnSegs.length ? drawnSegs.reduce(function(a, b){ return a.concat(b); }, []) : [];
+  /* 計測中は「いまいる場所」＝最新の測位。区切り直後で新区間がまだ1点のときも、
+     現在地だけは最新の点を指し、縮尺にも含める。
+     ⚠️ 速すぎる移動中（v>4.2m/s）は測位を pts に積まないので、乗車中は現在地も動かない。
+        直るのは「降りて歩き出し、新区間の1点目が入ってから」＝そこは仕様（歩いた道だけを描く） */
+  var livePt = null;
+  if(live){
+    var allPts = routeFlat(pts);
+    if(allPts.length){
+      livePt = allPts[allPts.length - 1];
+      if(flat.indexOf(livePt) < 0) flat = flat.concat([livePt]);
+    }
+  }
+  if(!flat.length){
+    tiles.innerHTML = ''; ov.innerHTML = ''; box._tileKey = '';
+    if(empty) empty.style.display = 'flex';
+    if(attr) attr.style.display = 'none';
+    var f0 = box.querySelector('.wm-fail'); if(f0) f0.remove();
+    return;
+  }
+  if(empty) empty.style.display = 'none';
+  var z = routeZoom(flat, W, H);
+  var n = Math.pow(2, z);
+  /* 軌跡の中心をタイル座標で出し、それが画面中央に来るよう左上のピクセル原点を決める */
+  var fx = flat.map(function(p){ return lon2x(p[1], z); });
+  var fy = flat.map(function(p){ return lat2y(p[0], z); });
+  var cx = (Math.min.apply(null, fx) + Math.max.apply(null, fx)) / 2;
+  var cy = (Math.min.apply(null, fy) + Math.max.apply(null, fy)) / 2;
+  var originX = cx * 256 - W / 2, originY = cy * 256 - H / 2;
+  /* ① タイル：必要な範囲が前回と同じなら作り直さず、ペインを動かすだけにする
+        （毎測位で innerHTML を組み直すと地図がちらつき、通信と再デコードが無駄になる） */
+  var tx0 = Math.floor(originX / 256), tx1 = Math.floor((originX + W) / 256);
+  var ty0 = Math.floor(originY / 256), ty1 = Math.floor((originY + H) / 256);
+  var key = z + ':' + tx0 + ',' + ty0 + ',' + tx1 + ',' + ty1;
+  var pane = tiles.querySelector('.wm-pane');
+  if(box._tileKey !== key || !pane){
+    var html = '';
+    for(var ty = ty0; ty <= ty1; ty++){
+      for(var tx = tx0; tx <= tx1; tx++){
+        if(tx < 0 || ty < 0 || tx >= n || ty >= n) continue;
+        var url = GSI_TILE.replace('{z}', z).replace('{x}', tx).replace('{y}', ty);
+        /* referrerpolicy＝どのページから見ているかを地図の配信元に渡さない */
+        html += '<img src="' + url + '" alt="" decoding="async" referrerpolicy="no-referrer"' +
+                ' style="left:' + (tx * 256) + 'px;top:' + (ty * 256) + 'px;"' +
+                ' onload="mapTileDone(this,1)" onerror="mapTileDone(this,0)">';
+      }
+    }
+    tiles.innerHTML = '<div class="wm-pane">' + html + '</div>';
+    pane = tiles.querySelector('.wm-pane');
+    box._tileKey = key;
+    box._tileOk = 0; box._tileNg = 0;
+  }
+  if(pane) pane.style.transform = 'translate3d(' + (-originX) + 'px,' + (-originY) + 'px,0)';
+  if(attr) attr.style.display = 'block';
+  /* ② 軌跡と現在地（タイルが出なくてもここは必ず描かれる）。null で線を区切る */
+  var toPx = function(p){ return { x: lon2x(p[1], z) * 256 - originX, y: lat2y(p[0], z) * 256 - originY }; };
+  var dParts = drawnSegs.map(function(seg){
+    return seg.map(function(p, i){ var q = toPx(p); return (i ? 'L' : 'M') + q.x.toFixed(1) + ' ' + q.y.toFixed(1); }).join(' ');
+  });
+  var d = dParts.join(' ');
+  /* 始点＝実際に描いた線の先頭。終点は計測中なら最新の測位、それ以外は線の末尾 */
+  var firstP = drawnSegs.length ? drawnSegs[0][0] : flat[0];
+  var lastP = livePt || (drawnSegs.length ? drawnSegs[drawnSegs.length - 1].slice(-1)[0] : flat[flat.length - 1]);
+  var first = toPx(firstP), last = toPx(lastP);
+  var svg = '';
+  if(d){
+    svg += '<path d="' + d + '" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>';
+    svg += '<path d="' + d + '" fill="none" stroke="var(--ex-walk)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+    svg += '<circle cx="' + first.x.toFixed(1) + '" cy="' + first.y.toFixed(1) + '" r="5" fill="#fff" stroke="var(--ex-walk)" stroke-width="2.5"/>';
+  }
+  /* 現在地は計測中だけ。終わった記録に「いまここ」を出さない */
+  if(live) svg += '<circle cx="' + last.x.toFixed(1) + '" cy="' + last.y.toFixed(1) + '" r="13" fill="var(--gold)" opacity=".18"/>';
+  svg += '<circle cx="' + last.x.toFixed(1) + '" cy="' + last.y.toFixed(1) + '" r="' + (live ? 7 : 5) + '" fill="' + (live ? 'var(--gold)' : 'var(--ex-walk)') + '" stroke="#fff" stroke-width="3"/>';
+  ov.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  ov.innerHTML = svg;
+}
+/* タイルの成否を数え、全滅したときだけ「読み込めなかった」と正直に出す
+   （無地の灰色に出典表記だけ残ると、壊れて見えるうえ出典としても嘘になる） */
+function mapTileDone(img, ok){
+  var box = img.closest ? img.closest('.wk-map') : null;
+  if(!box) return;
+  if(ok){ box._tileOk = (box._tileOk || 0) + 1; }
+  else { box._tileNg = (box._tileNg || 0) + 1; img.style.display = 'none'; }
+  var attr = box.querySelector('.wm-attr');
+  var fail = box.querySelector('.wm-fail');
+  if(!box._tileOk && box._tileNg){
+    if(attr) attr.style.display = 'none';
+    if(!fail){
+      fail = document.createElement('div');
+      fail.className = 'wm-fail';
+      fail.textContent = '地図の画像を読み込めませんでした（歩いた道のかたちだけ表示しています）';
+      box.appendChild(fail);
+    }
+  }else if(box._tileOk){
+    if(attr) attr.style.display = 'block';
+    if(fail) fail.remove();
+  }
+}
+
+/* さんぽシートの地図エリア：道順オン/オフで出し分ける */
+function walkRenderMapArea(){
+  var on = routeSaveOn();
+  var offCard = document.getElementById('wkMapOff'), map = document.getElementById('wkMap');
+  if(offCard) offCard.style.display = on ? 'none' : 'flex';
+  /* 未成年の会員には、保護者にも伝えてから使うよう1行だけ添える（機能は制限しない）。
+     規約で16〜18歳未満は保護者同意＋夜間の利用自粛を求めているため */
+  var minor = document.getElementById('wkMapOffMinor');
+  if(minor) minor.textContent = (typeof isMinorMember === 'function' && isMinorMember())
+    ? '。未成年の方は、保護者の方にも伝えてから使ってね' : '';
+  if(map) map.style.display = on ? 'block' : 'none';
+  var note = document.getElementById('wkPrivacyNote');
+  if(note){
+    note.textContent = on
+      ? '道順はこのスマホの中だけに残ります（アプリからサーバーや運営へ送信することはありません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ250m四方の粗さで国土地理院に伝わります。計測はこの画面を開いている間だけ動きます'
+      : '位置情報は距離の計算にその場で使うだけで、道順や座標は保存しません。残るのは距離・歩数・カロリーの数字だけ。計測はこの画面を開いている間だけ動きます';
+  }
+  var link = document.getElementById('wkHistLink');
+  /* .acc-more は display:flex で中央寄せする作り。'block' に戻すと文字が左へ寄る */
+  if(link) link.style.display = on ? 'flex' : 'none';
+  if(on) walkDrawLive();
+}
+/* 計測中のライブ描画。点が無いときは「なぜ出ていないか」を状態ごとに正直に出す。
+   描画は1.5秒に1回までに抑える（測位のたびに地図を組み直すと、ちらつきと電池の無駄になる） */
+var walkDrawAt = 0, walkDrawTimer = null;
+function walkDrawLive(force){
+  var box = document.getElementById('wkMap');
+  if(!box || !routeSaveOn()) return;
+  var now = Date.now();
+  if(!force && walk.on && now - walkDrawAt < 1500){
+    if(!walkDrawTimer){
+      walkDrawTimer = setTimeout(function(){ walkDrawTimer = null; walkDrawLive(true); },
+                                 1500 - (now - walkDrawAt));
+    }
+    return;
+  }
+  walkDrawAt = now;
+  var empty = document.getElementById('wkMapEmpty');
+  if(!routeFlat(walk.pts).length && empty){
+    var t = empty.querySelector('.t'), dd = empty.querySelector('.d');
+    var msg;
+    if(!walk.on){
+      msg = ['まだ道順がありません', '「計測をはじめる」を押して歩きだすと、ここに現在地と道順が出ます'];
+    }else if(walk.gpsDenied){
+      msg = ['位置情報が使えません', '道順は出せませんが、歩数での計測は続いています。スマホの設定でこのページの位置情報を許可すると使えるよ'];
+    }else if(!walk.gpsOk){
+      msg = ['GPSを待っています', '空が見える場所だと早く見つかるよ。GPSが使えなくても、歩数での計測は続いています'];
+    }else{
+      /* 電波を拾ってはいるが精度が粗くて1点も採れていない状態（屋内・ビル陰） */
+      msg = ['場所をしぼりこんでいます', 'いまは測位が粗いので、まだ道順に足していません。空が見える場所に出ると出はじめるよ'];
+    }
+    if(t) t.textContent = msg[0];
+    if(dd) dd.textContent = msg[1];
+  }
+  drawRouteMap(box, walk.pts, walk.on);
+  /* 距離の数字と地図の線が大きく食い違うときは、その理由を出す。
+     （屋内・ビル陰で測位が捨てられ続けると、距離は歩数からの推計で伸びる一方、
+      地図にはGPSが拾えた区間しか描けない。黙っていると「数字が嘘」に見える） */
+  var gapNote = document.getElementById('wkMapGap');
+  if(gapNote){
+    var dEff = walkEffectiveDist(), lineM = routeLineMeters(walk.pts);
+    if(walk.on && walk.routeMidStart){
+      /* 途中からオンにした回。原因はGPS不達ではないので、そう言ってはいけない */
+      gapNote.style.display = 'block';
+      gapNote.textContent = '地図は「オンにしたところ」から描いています。この回の道順は残さないよ（次のさんぽから残ります）';
+    }else{
+      var show = walk.on && dEff > 50 && lineM > 0 && lineM < dEff * 0.6;
+      gapNote.style.display = show ? 'block' : 'none';
+      if(show) gapNote.textContent = 'GPSが届かなかった区間は地図に出ていません（距離は歩数からの推計を含みます）';
+    }
+  }
+}
+/* 「地図をオンにする」＝その場でオンにして地図を出す（設定画面まで行かせない）。
+   ⚠️ 未登録の体験では実際の道順を残さない。店頭の体験端末を複数人が使うと、
+      前の人の自宅までの道順が次の人に見えてしまうため（登録会員と体験を混ぜない原則にも合わせる） */
+function walkRouteOptIn(){
+  /* ⚠️ 会員セッションの確認を必ず最初に行う。ここを飛ばすと、体験モードやログアウト中の
+     第三者がボタンを押すだけで同意フラグ（ROUTE_ON_KEY）が立ち、本人が再ログインしたとき
+     「自分では一度も押していないのに保存が始まる」状態を作れる（5巡目検証で成立を確認）。
+     規約とコメントの契約は『会員が自分でオンにしたときだけ座標を扱う』なので、順序が本質 */
+  if(!hasMemberSession()){
+    showToast(isRegisteredMember()
+      ? 'ログインすると、あなたの道順がまた見られるよ'
+      : '道順の保存は会員登録すると使えるよ。「さんぽの記録」で見本を見てみてね');
+    openRouteSheet();
+    return;
+  }
+  try{ localStorage.setItem(ROUTE_ON_KEY, '1'); }catch(e){}
+  walkRenderMapArea();
+  /* 計測中にオンにされた回は、オンより前に歩いたぶんが walk.dist に入っているのに
+     線はオン以降しか描けない＝「500m歩いたのに地図の線は17m」の記録になる。
+     その回は保存せず、次のさんぽから有効にする（開示文とも整合する） */
+  if(walk.on){
+    walk.routeMidStart = true;
+    showToast('地図をオンにしたよ。いま計測中の分は途中からになるので、道順は次のさんぽから残すね');
+    return;
+  }
+  showToast('道順の地図をオンにしたよ。消したいときは「さんぽの記録」からいつでも消せるよ');
+}
+/* 設定トグル（さんぽの記録シート）。オフにしたら保存済みの道順もその場で消す */
+function toggleRouteSave(){
+  if(!hasMemberSession()){
+    showToast(isRegisteredMember() ? 'ログインすると使えるよ' : '道順の保存は会員登録すると使えるよ');
+    return;
+  }
+  var next = !routeSaveOn();
+  var hadRoutes = loadRoutes().length;   // 消す前の件数（トーストで実測だけを言うために控える）
+  if(!next && hadRoutes){
+    if(!confirm('オフにすると、保存済みの道順もすべて消えます。よろしいですか？')) return;
+  }
+  try{
+    localStorage.setItem(ROUTE_ON_KEY, next ? '1' : '0');
+    if(!next){ localStorage.removeItem(ROUTE_KEY); walk.pts = []; }
+  }catch(e){}
+  var sw = document.getElementById('routeSwitch');
+  if(sw) sw.classList.toggle('on', next);
+  renderRouteList();
+  walkRenderMapArea();
+  /* 計測中にここでオンにされた回も walkRouteOptIn と同じ扱いにする。
+     塞がないと「計測中はボタンから押せないが、スイッチからなら途中オンできる」迂回路になる */
+  if(next && walk.on){
+    walk.routeMidStart = true;
+    showToast('道順をオンにしたよ。いま計測中の分は途中からになるので、残すのは次のさんぽからね');
+    return;
+  }
+  showToast(next ? '道順を残すようにしたよ（このスマホの中だけ）'
+                 : (hadRoutes ? '道順をオフにして、保存していた' + hadRoutes + '件も消したよ' : '道順をオフにしたよ'));
+}
+function openRouteSheet(){
+  var sw = document.getElementById('routeSwitch');
+  if(sw) sw.classList.toggle('on', routeSaveOn());
+  /* 体験モードでは保存できないことを、スイッチの説明文でも正直に言う */
+  var row = document.querySelector('#routeSheet .settings-toggle-row .str-d');
+  if(row){
+    row.textContent = hasMemberSession()
+      ? 'オフにすると、これまでの道順もすべて消えて、以後は座標を持ちません'
+      : (isRegisteredMember()
+          ? 'ログインすると、あなたの道順がまた見られます'
+          : '会員登録すると使えます（体験モードでは道順を保存しません）');
+  }
+  renderRouteList();
+  showSheet('routeSheet');
+}
+/* 体験モード（未登録）用のサンプル道順。ジム周辺を1周した想定の作り値で、
+   ⚠️ 登録会員には絶対に混ぜない（実測とデモを混ぜない原則。ラベルにも「体験用サンプル」と出す） */
+/* ⚠️ 数字（分・歩数・距離・kcal）は、下の座標から実際に出る道のりと合わせてある。
+   ここがちぐはぐだと「地図は600mなのに1.2kmと書いてある」見本になる（周囲約1.21km・歩幅0.68m換算） */
+var DEMO_ROUTE = {
+  id: -1, ts: 0, d: '', min: 17, steps: 1780, dist: 1210, kcal: 60,
+  label: '体験用サンプル（ジムのまわりを1周）',
+  pts: [
+    [34.25922,134.17625],
+    [34.25921,134.17680],[34.25919,134.17735],[34.25921,134.17790],[34.25918,134.17845],
+    [34.25920,134.17900],[34.25917,134.17950],[34.25916,134.17990],
+    [34.25958,134.17992],[34.26000,134.17994],[34.26042,134.17991],[34.26084,134.17993],
+    [34.26126,134.17990],[34.26160,134.17988],
+    [34.26161,134.17935],[34.26159,134.17880],[34.26162,134.17825],[34.26160,134.17770],
+    [34.26158,134.17715],[34.26161,134.17660],[34.26159,134.17615],
+    [34.26118,134.17613],[34.26076,134.17616],[34.26034,134.17612],[34.25992,134.17614],
+    [34.25950,134.17611],[34.25922,134.17625]
+  ]
+};
+function renderRouteList(){
+  var wrap = document.getElementById('routeList');
+  if(!wrap) return;
+  var list = loadRoutes();
+  /* 未登録の体験では実際の道順を保存できない代わりに、何ができる機能なのかは見せる。
+     ラベルに「体験用サンプル」と出し、削除ボタンも出さない（実データと混ぜない） */
+  if(!hasMemberSession()) list = [DEMO_ROUTE];
+  var btn = document.getElementById('routeClearBtn');
+  if(btn) btn.style.display = (list.length && list[0].id !== -1) ? 'block' : 'none';
+  if(!list.length){
+    wrap.innerHTML = '<div class="rt-empty">' +
+      (routeSaveOn()
+        ? 'まだ道順の記録がありません。<br>さんぽを計測すると、歩いた道が地図で残ります'
+        : '道順の保存はオフになっています。<br>下のスイッチをオンにすると、次のさんぽから地図で残せます') +
+      '</div>';
+    return;
+  }
+  wrap.innerHTML = list.slice().reverse().map(function(r){
+    return '<div class="rt-item">' +
+      '<div class="rt-head"><div class="rh-d">' + escHtml(r.label || routeDateLabel(r)) + '</div>' +
+      (r.id === -1 ? '' : '<button type="button" class="rh-del" onclick="deleteRoute(' + r.id + ')">消す</button>') + '</div>' +
+      '<div class="wk-map" style="height:150px;" data-route="' + r.id + '">' +
+        '<div class="wm-tiles"></div><svg class="wm-ov" xmlns="http://www.w3.org/2000/svg"></svg>' +
+        '<div class="wm-empty" style="display:none;"></div><div class="wm-attr">地図：国土地理院</div>' +
+      '</div>' +
+      '<div class="rt-stats"><div><b>' + r.min + '</b>分</div><div><b>' + (r.steps || 0).toLocaleString() + '</b>歩</div>' +
+      '<div><b>' + (r.dist >= 1000 ? (r.dist/1000).toFixed(2) + '</b>km' : r.dist + '</b>m') + '</div>' +
+      '<div><b>' + r.kcal + '</b>kcal</div></div>' +
+      (r.est ? '<div class="wk-privacy" style="color:var(--notice-dk);">GPSが届かなかった区間は地図に出ていません（距離は歩数からの推計を含みます）</div>' : '') +
+      '</div>';
+  }).join('');
+  /* 地図は要素が確定してから描く（clientWidth が0だと縮尺を決められない） */
+  routeListShown = list;
+  setTimeout(redrawRouteList, 30);
+}
+/* 画面の幅が変わったら描き直す。
+   SVGは viewBox に描画時の実寸を焼き込むので、回転や幅変更のあとは
+   線だけが拡縮されてタイルとずれる（ライブ地図は毎秒描き直すので自己修復するが、
+   一覧の地図は一度きりの描画なので直らない） */
+var routeListShown = [];
+function redrawRouteList(){
+  var wrap = document.getElementById('routeList');
+  if(!wrap) return;
+  routeListShown.forEach(function(r){
+    var box = wrap.querySelector('.wk-map[data-route="' + r.id + '"]');
+    if(box) drawRouteMap(box, r.pts, false);
+  });
+}
+var routeResizeTimer = null;
+function onRouteViewportChange(){
+  if(routeResizeTimer) clearTimeout(routeResizeTimer);
+  routeResizeTimer = setTimeout(function(){
+    routeResizeTimer = null;
+    var sheet = document.getElementById('routeSheet');
+    if(sheet && sheet.classList.contains('active')) redrawRouteList();
+    var ws = document.getElementById('walkSheet');
+    if(walk.on || (ws && ws.classList.contains('active'))) walkDrawLive(true);
+  }, 250);
+}
+/* 端末によって回転時に飛ぶイベントが違うので両方拾う（重複してもデバウンスで1回にまとまる） */
+window.addEventListener('resize', onRouteViewportChange);
+window.addEventListener('orientationchange', onRouteViewportChange);
+function routeDateLabel(r){
+  var d = new Date(r.ts);
+  return (d.getMonth()+1) + '月' + d.getDate() + '日（' + ['日','月','火','水','木','金','土'][d.getDay()] + '）' +
+         d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+function deleteRoute(id){
+  /* 道順はバックアップに含めない＝消したら戻せない。全消しに確認があるのに
+     1件だけ無確認なのは不整合なので、こちらにも確認を出す */
+  if(!confirm('この日の道順を消します。戻すことはできません。よろしいですか？')) return;
+  var list = loadRoutes().filter(function(r){ return r.id !== id; });
+  var res = saveRoutes(list);
+  if(res && res.failed){ showToast('道順の保存に失敗したよ（端末の空き容量が少ないみたい）'); return; }
+  if(res && res.shrunk){
+    renderRouteList();
+    showToast('この道順を消したよ（端末の空き容量が少ないため、古い道順も減らして' + res.shrunk + '件にしたよ）');
+    return;
+  }
+  renderRouteList();
+  showToast('この道順を消したよ');
+}
+function clearAllRoutes(){
+  if(!confirm('保存した道順をすべて消します。よろしいですか？（歩数・距離・カロリーの記録は残ります）')) return;
+  try{ localStorage.removeItem(ROUTE_KEY); }catch(e){}
+  renderRouteList();
+  showToast('保存していた道順をすべて消したよ');
+}
 function openWalkSheet(){
   walkResetUi();
   showSheet('walkSheet');
+  /* 地図の縮尺は要素の実寸から決めるので、シートが開いて幅が確定してから描く */
+  setTimeout(walkRenderMapArea, 30);
 }
 function walkResetUi(){
   document.getElementById('wkTime').textContent = '0:00';
@@ -5294,6 +5893,9 @@ function walkStart(){
   walk.gpsOk = false; walk.motionOk = false;
   walk.emaG = null; walk.smooth = 0; walk.above = false; walk.lastStepAt = 0;
   walk.lastTickSteps = 0; walk.lastTickDist = 0;
+  walk.pts = []; walk.ptBreak = false; walk.gpsDenied = false;   // 前回の道順・状態を引きずらない
+  walk.routeMidStart = false;                                    // 途中からオンにした印も毎回リセット
+  walkDrawLive(true);
   document.getElementById('wkMainBtn').textContent = '終了して記録する';
   document.getElementById('wkStatus').textContent = '計測中…。ポケットや手に持ったままでOK。終わったら「終了して記録する」を押してね';
 
@@ -5301,9 +5903,14 @@ function walkStart(){
   if(navigator.geolocation){
     walk.watchId = navigator.geolocation.watchPosition(walkOnFix, function(){
       walkSensorChip('wkSensorGps', 'GPS なし（歩数で計算）', false);
+      /* 地図側にも伝える。伝えないと「GPSを待っています」が永久に残って壊れて見える */
+      walk.gpsDenied = true;
+      walkDrawLive(true);
     }, { enableHighAccuracy:true, maximumAge:1000, timeout:15000 });
   }else{
     walkSensorChip('wkSensorGps', 'GPS 非対応', false);
+    walk.gpsDenied = true;
+    walkDrawLive(true);
   }
   // 加速度センサー（iOSは明示的な許可が必要。この関数はボタンタップから呼ばれるので出せる）
   if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
@@ -5436,16 +6043,52 @@ window.addEventListener('pagehide', function(){ walkAutoFlush(); });
 /* GPS：精度の悪い測位とその場の揺らぎを捨て、徒歩としてあり得る移動だけ距離に足す */
 function walkOnFix(pos){
   var c = pos.coords;
-  if(!walk.gpsOk){ walk.gpsOk = true; walkSensorChip('wkSensorGps', 'GPS 計測中', true); }
+  if(!walk.gpsOk){
+    walk.gpsOk = true; walkSensorChip('wkSensorGps', 'GPS 計測中', true);
+    walkDrawLive();                                     // 「GPSを待っています」の表示を消す
+  }
   if(c.accuracy > 35) return;                           // ビル陰などの粗い測位は使わない
+  /* 「途中からオンになった回」の検出はここ1か所に集約する。
+     入口（オプトインカード・記録シートのスイッチ・計測中のログイン…）ごとに潰すと必ず取りこぼす
+     （実際に doLogin 経由の抜け道が6巡目で見つかった。ログインは reload せずフラグだけ立てるので、
+     計測を続けたまま routeSaveOn() が false→true に反転する）。
+     条件＝同意オン・計測中・すでに距離は乗っているのに線が1点も無い＝途中から始まった回。
+     計測前からオンの正常系は walkStart が dist=0/pts=[] に戻すので誤検出しない */
+  if(routeSaveOn() && walk.on && !walk.routeMidStart && walk.dist > 0 && !routeFlat(walk.pts).length){
+    walk.routeMidStart = true;
+    walkDrawLive(true);
+  }
   var cur = { lat: c.latitude, lon: c.longitude, t: pos.timestamp || Date.now() };
-  if(!walk.lastFix){ walk.lastFix = cur; return; }
+  if(!walk.lastFix){
+    walk.lastFix = cur;
+    /* 道順オンなら、この最初の1点＝スタート地点として地図に出す */
+    if(routeSaveOn() && walk.on){ walk.pts.push(routeRound([cur.lat, cur.lon])); walkDrawLive(); }
+    return;
+  }
   var d = walkHaversine(walk.lastFix, cur);
   var dt = (cur.t - walk.lastFix.t) / 1000;
   if(dt <= 0) return;
   if(d < Math.max(6, c.accuracy * 0.5)) return;         // 立ち止まり中のジッタは無視
   var v = d / dt;
-  if(v <= 4.2) walk.dist += d;                          // 徒歩〜小走りの速度だけ加算（車やワープは捨てる）
+  if(v <= 4.2){
+    /* 区切り直後の1点目は「新しい区間の起点」＝そこまでの移動は歩いた道ではないので、
+       距離にも足さない（足すと画面の距離だけ増えて、地図の線と原理的に合わなくなる。
+       2巡目検証では区切りが増えるほど乖離が拡大し、9回で-30%になった） */
+    var isSegStart = walk.ptBreak;
+    if(!isSegStart) walk.dist += d;
+    /* 距離に足した測位だけを地図の線にする＝画面の距離と地図の道順が食い違わない。
+       直前に速すぎる移動を捨てていたら、その間は歩いていないので線を区切る（null） */
+    if(routeSaveOn() && walk.on){
+      if(isSegStart && walk.pts.length){ walk.pts.push(null); }
+      walk.pts.push(routeRound([cur.lat, cur.lon]));
+      if(routeFlat(walk.pts).length > ROUTE_MAX_PTS * 2) walk.pts = routeThin(walk.pts, ROUTE_MAX_PTS);
+      walkDrawLive();
+    }
+    walk.ptBreak = false;
+  }else{
+    /* 距離に足さずに基準点だけ進める＝この区間は歩いた道ではない。次の点から線を切る */
+    walk.ptBreak = true;
+  }                          // 徒歩〜小走りの速度だけ加算（車やワープは捨てる）
   walk.lastFix = cur;
 }
 function walkHaversine(a, b){
@@ -5471,10 +6114,24 @@ function walkTick(){
     : Math.round(dEff) + '<span>m</span>';
   document.getElementById('wkKcal').innerHTML = walkSessionKcal() + '<span>kcal</span>';
 }
-/* 距離はGPSを優先し、GPSが使えない（屋内・許可なし）時だけ歩数×歩幅で推定する */
+/* 距離はGPSを優先し、GPSが使えない（屋内・許可なし）時だけ歩数×歩幅で推定する。
+   ⚠️ 地図に線を描けているあいだは歩数推定へ落とさない。落とすと
+   「画面は877m・地図の線は25m」のように、同じ画面の数字と地図が桁違いになる
+   （区切りが入って walk.dist が30m以下に留まると起きる。2026-08-16 3巡目検証） */
 function walkEffectiveDist(){
   if(walk.dist > 30) return walk.dist;
   return walk.steps * walkStride();
+}
+/* 地図に描けている線の実長（m）。距離の数字と食い違うときに、その理由を出すために使う。
+   ⚠️ この値は表示専用。距離・カロリー・歩数の計算には絶対に混ぜない（二重計上になる） */
+function routeLineMeters(pts){
+  var m = 0;
+  routeSegments(pts).forEach(function(seg){
+    for(var i = 1; i < seg.length; i++){
+      m += walkHaversine({lat:seg[i-1][0], lon:seg[i-1][1]}, {lat:seg[i][0], lon:seg[i][1]});
+    }
+  });
+  return m;
 }
 function walkSessionKcal(){
   var mins = walk.activeSecs / 60;
@@ -5502,10 +6159,35 @@ function walkFinish(){
   if(walk.elapsed < 60 || (steps < 30 && dist < 50)){
     document.getElementById('wkStatus').textContent = '短すぎたので記録しなかったよ（1分以上・30歩以上が目安）。もう一度どうぞ';
     document.getElementById('wkMainBtn').textContent = '計測をはじめる';
+    /* ここでセンサーは既に止まっている＝このセッションは終了。記録しない道順は残さない */
+    walk.pts = []; walk.ptBreak = false;
+    walkDrawLive(true);
     return;
   }
   walkDay.sessions.push({ min: mins, steps: steps, dist: dist, kcal: kcal });
   walkSave();
+  /* 道順の保存（オンのときだけ・2点以上あるときだけ）。
+     ⚠️ 保存先は smile24_walk（当日で消える）ではなく専用キー。この端末の中だけに残る */
+  var savedRoute = false, routeSaveResult = null;
+  /* 保存するのは「線として描ける」道順だけ（2点以上の区間が1つ以上）。
+     孤立点だけの記録を保存すると、一覧に線の無い地図が残る */
+  var drawableSegs = routeSegments(walk.pts).filter(function(s){ return s.length >= 2; });
+  if(routeSaveOn() && drawableSegs.length && !walk.routeMidStart){
+    var list = loadRoutes();
+    list.push({
+      id: Date.now(), ts: Date.now(), d: dayKey(),
+      min: mins, steps: steps, dist: dist, kcal: kcal,
+      /* est＝距離がGPSではなく歩数からの推計（GPSが途中で途絶えた回）。
+         この印が無いと、一覧で「2.04km」と14mの線が並んで数字が嘘に見える */
+      est: (walk.dist <= 30),
+      pts: routeThin(walk.pts, ROUTE_MAX_PTS)
+    });
+    routeSaveResult = saveRoutes(list);
+    savedRoute = !(routeSaveResult && routeSaveResult.failed);
+  }
+  /* 保存したら手元からは消す。残すと、次にシートを開いたとき前回の道順が
+     「いまここ」マーカー付きで出る（0分・0歩の画面と矛盾する） */
+  walk.pts = []; walk.ptBreak = false;
   renderWalkCard();
   recalc();
   state.exerciseLog.push({ label:'さんぽ（計測）', minutes: mins, kcal: kcal, ts: Date.now() });
@@ -5515,13 +6197,26 @@ function walkFinish(){
   hideSheet('walkSheet');
   showToast('さんぽ ' + mins + '分・' + steps.toLocaleString() + '歩・' +
             (dist >= 1000 ? (dist/1000).toFixed(1) + 'km' : dist + 'm') +
-            ' を記録したよ（+' + kcal + 'kcal 消費）');
+            ' を記録したよ（+' + kcal + 'kcal 消費）' +
+            (savedRoute ? '。歩いた道順も残したよ' : '') +
+            /* 上限で押し出した・容量で減らした・保存できなかったことは、必ずこの1枚に含める */
+            (routeSaveResult && routeSaveResult.dropped ? '（直近' + ROUTE_KEEP + '件までなので、いちばん古い' + routeSaveResult.dropped + '件を消したよ）' : '') +
+            (routeSaveResult && routeSaveResult.shrunk ? '（端末の空き容量が少ないため、古い道順を減らして' + routeSaveResult.shrunk + '件にしたよ）' : '') +
+            (routeSaveResult && routeSaveResult.failed ? '（道順の保存には失敗したよ。端末の空き容量が少ないみたい）' : '') +
+            (walk.routeMidStart ? '。道順は途中からになるので今回は残していないよ' : ''));
   /* きつさ(RPE)の任意入力＋歩数の自己ベスト（1日の合計＝同じ日は置き換え。2026-08-15 Strava移植） */
   try{ bestConsider('steps', walkAgg().steps, dayKey(), null, true); }catch(e){}
-  askRpe(logEffort(mins, 'walk', 'さんぽ（計測）'));
+  /* 上限や容量の告知を足した回は、RPEシートで上書きされる前に読めるよう少し待つ */
+  var extraMsg = !!(routeSaveResult && (routeSaveResult.dropped || routeSaveResult.shrunk || routeSaveResult.failed));
+  var eff = logEffort(mins, 'walk', 'さんぽ（計測）');
+  if(extraMsg) setTimeout(function(){ askRpe(eff); }, 2600); else askRpe(eff);
 }
 function walkClose(){
   if(walk.on){ walkStopSensors(); walk.on = false; }   // 記録せず中断
+  /* 中断した道順はどこにも残さない（記録していない歩きの座標を持ち続けない）。
+     スロットルの予約も落とす（残すと閉じたあとに消したはずの地図を描き直す） */
+  walk.pts = []; walk.ptBreak = false;
+  if(walkDrawTimer){ clearTimeout(walkDrawTimer); walkDrawTimer = null; }
   hideSheet('walkSheet');
 }
 
@@ -12670,6 +13365,25 @@ var chatTopics = [
   }},
   /* 自己ベスト・今週の運動（2026-08-15 Strava移植）。汎用の「運動」トピックより先に置く（部分一致で食われないように）。
      実測と目安の併記だけ＝達成率・「あと◯回」は言わない（原則2・チャット経路の取り残し事故の再発防止） */
+  /* 道順マップ（2026-08-16）。「地図」「道順」で聞かれたら答える。
+     ⚠️ 汎用の「運動」「さんぽ」系より前に置く（部分一致で食われるため） */
+  { keys:['道順','地図','どこ歩いた','どこを歩いた','ルート','歩いた道'], gen:function(){
+      var on = (typeof routeSaveOn === 'function' && routeSaveOn());
+      var base = 'さんぽで歩いた道は、地図で残せるよ！【運動】タブか、ホームの歩数の「さんぽ」ボタンから「さんぽを計測する」を開いてね。';
+      /* ⚠️ 他の5面（オプトインカード・wkPrivacyNote・routeSheet・版バッジ・規約）と同じ開示をここにも必ず入れる。
+         地図について一番自然に聞かれる経路がここなので、ここだけ抜けると「開示なしで同意へ送る」導線になる */
+      var tile = 'ただし地図が出ているあいだだけ、いま見ている範囲（おおよそ250m四方）が地図の配信元＝国土地理院に伝わるよ。';
+      if(!hasMemberSession()){
+        return base + '会員登録すると自分の道順を残せるよ（いまは「さんぽの記録」で見本が見られるよ）。道順はこのスマホの中だけに保存されて、アプリからサーバーや運営へ送ることはないよ。' + tile;
+      }
+      if(!on){
+        return base + 'いまは道順の保存が「オフ」だよ。計測の画面にある「地図をオンにする」を押すと、次のさんぽから道が地図に出るようになるよ。道順はこのスマホの中だけに残って、アプリからサーバーや運営へ送ることはないよ。' + tile + 'このスマホを使える人には見えるから、画面ロックはかけておいてね。あとからオフにすれば保存した分も消せるよ';
+      }
+      var n = loadRoutes().length;
+      return chatCallPrefix() + '道順の地図はオンになってるよ！' +
+        (n ? 'いままでに' + n + '件たまってるから、「さんぽの記録」で地図つきで見られるよ。' : 'まだ記録は無いから、次のさんぽで残るのを楽しみにしててね。') +
+        '道順はこのスマホの中だけにあって、アプリからサーバーや運営へ送ることはないよ。消したいときは1件ずつでも、まとめてでも消せるよ。' + tile;
+  }},
   { keys:['自己ベスト','じこべすと','ベスト記録','最高記録'], gen:function(){
       if(!isRegisteredMember()) return '自己ベストは会員登録すると、あなたの実際の記録からたまっていくよ。種目ごとの最大重量・1回の最長運動・1日の歩数・週の来館回数を「からだ」タブの【自己ベスト】で見られるよ（いまはサンプル表示）';
       var b = loadBest();
@@ -14730,8 +15444,13 @@ function completeRegistration(){
     localStorage.setItem('smile24_home_store', localStorage.getItem('smile24_store_code') || 'SMILE24');
     /* 体験モードの作り置き実績（XP2450=LV.7・自己申告の入退館ログ・混雑カウンタ）を持ち越さない。
        体験→入会は最普通の導線で、ここを消さないと実会員が初日から偽実績を持つ（2026-08-12再監査指摘）。
-       食事・体重の記録（smile24_daily_log等）は本人の実データなので消さない */
-    ['smile24_xp', 'smile24_entry_log', 'smile24_occupancy', 'smile24_checked_in'].forEach(function(k){
+       食事・体重の記録（smile24_daily_log等）は本人の実データなので消さない。
+       ⚠️ さんぽの道順（smile24_walk_routes）と同意（smile24_route_on）も必ず消す：
+          同じ端末で別の人が新規登録したとき、前の人の自宅が写る地図がそのまま見え、
+          さらに同じ配列へ追記されて2人分が混ざる（2026-08-16 3巡目検証で成立を確認）。
+          位置は「誰のものか」を取り違えると取り返しがつかないので、迷わず消す側に倒す */
+    ['smile24_xp', 'smile24_entry_log', 'smile24_occupancy', 'smile24_checked_in',
+     'smile24_walk_routes', 'smile24_route_on'].forEach(function(k){
       localStorage.removeItem(k);
     });
     if(regData.password && window.crypto && crypto.subtle){
@@ -15065,6 +15784,12 @@ function openPrivacySheet(){
   var p = getPrivacyPrefs();
   document.getElementById('privacySwitch-analytics').classList.toggle('on', !!p.analytics);
   document.getElementById('privacySwitch-marketing').classList.toggle('on', !!p.marketing);
+  /* 道順の現在の状態を、設定を開いた時点で正直に見せる（オフなら「オフ」と書く） */
+  var st = document.getElementById('privRouteState');
+  if(st){
+    var n = routeSaveOn() ? loadRoutes().length : 0;
+    st.textContent = routeSaveOn() ? ('　オン・' + n + '件') : '　オフ';
+  }
   showSheet('privacySheet');
 }
 function togglePrivacyPref(key){
@@ -15077,8 +15802,15 @@ function togglePrivacyPref(key){
    固定リスト方式をやめ、confirmClearDataと同じ「smile24_全キー走査＋除外リスト」方式へ統一
    （2026-08-12監査 M-03/栄D-01）。旧リストは食事履歴・体重・筋トレ・レッスン・姿勢・目標コーチを
    1バイトも書き出しておらず、「備え」を名乗りながら一番価値あるデータを落としていた。
-   除外＝実運用の入館トークン（扉の鍵。ファイルに混ぜない方針は従来どおり）と再取得可能な大容量キャッシュ */
-var EXPORT_EXCLUDE_KEYS = ['smile24_entry_token', 'smile24_meal_textemb_v1'];
+   除外＝実運用の入館トークン（扉の鍵。ファイルに混ぜない方針は従来どおり）と再取得可能な大容量キャッシュ、
+   および さんぽの道順（smile24_walk_routes）。道順は自宅や職場が分かるデータで、書き出したJSONは
+   メールやクラウドに置かれて他人の目に触れうる＝「この端末の中だけ・本人だけが見る」約束を守れない。
+   機種変更で道順が引き継げない不便より、外へ出ない確実さを優先する（2026-08-16ユーザー指示）。
+   同意のフラグ（smile24_route_on）も一緒に除外する。座標を端末から出さないと決めた以上、
+   その同意だけが新しい端末へ移って「説明画面を一度も見ないまま記録が始まる」のは筋が通らない
+   （同意は端末ごとに取り直す） */
+var EXPORT_EXCLUDE_KEYS = ['smile24_entry_token', 'smile24_meal_textemb_v1',
+                           'smile24_walk_routes', 'smile24_route_on'];
 function exportTargetKeys(){
   var keys = [];
   try{
@@ -15110,6 +15842,23 @@ function importAppData(input){
     try{
       var data = JSON.parse(reader.result);
       if(!data || data.app !== 'smile24' || !data.values){ showToast('スマイル24のバックアップファイルではないようです'); return; }
+      /* ⚠️ 読み込みは「別のアカウントに入れ替わる」操作でもある（smile24_account も
+         smile24_logged_in も上書きされる）。道順は書き出しに含めていないので上書きされず、
+         この端末に前の人のぶんが残ったままになる＝別人の自宅が写る地図を引き継いでしまう。
+         新規登録時（completeRegistration）と同じ扱いで、必ず消してから読み込む（4巡目検証） */
+      var keepN = loadRoutes().length;
+      /* 0件でも同意（ROUTE_ON_KEY）は消すので、オンの人には必ず知らせる（黙ってオフに戻さない） */
+      if(!keepN && routeSaveOn() && !confirm('読み込むと「歩いた道順を地図で残す」の設定はオフに戻ります（同意は端末ごとに取り直します）。\n読み込みを続けますか？')){
+        showToast('読み込みをやめたよ');
+        return;
+      }
+      if(keepN && !confirm('この端末に保存されている「さんぽの道順」' + keepN + '件は消えます。\n道順はバックアップに含めていないため、戻すことはできません。\n読み込みを続けますか？')){
+        showToast('読み込みをやめたよ');
+        return;
+      }
+      ['smile24_walk_routes', 'smile24_route_on'].forEach(function(k){
+        try{ localStorage.removeItem(k); }catch(e){}
+      });
       Object.keys(data.values).forEach(function(k){
         /* smile24_のキーだけ受け入れる（書き出しと同じ全キー方式）。鍵は移さない */
         if(k.indexOf('smile24_') === 0 && EXPORT_EXCLUDE_KEYS.indexOf(k) < 0){ try{ localStorage.setItem(k, data.values[k]); }catch(e){} }
@@ -15125,7 +15874,7 @@ function importAppData(input){
 /* 削除しても差し支えないが消す必要もない、個人データを含まない再取得可能なキャッシュ */
 var CLEAR_KEEP_KEYS = ['smile24_meal_textemb_v1'];
 function confirmClearData(){
-  if(!confirm('この端末に保存されている記録（体重・食事・入退館履歴・運営とのメッセージなど）と、保存済みの入館QR（扉の鍵）をすべて削除します。よろしいですか？')) return;
+  if(!confirm('この端末に保存されている記録（体重・食事・入退館履歴・さんぽの道順・運営とのメッセージなど）と、保存済みの入館QR（扉の鍵）をすべて削除します。よろしいですか？')) return;
   /* APP_DATA_KEYS を使い回すのはやめ、smile24_ で始まるキーを総当たりで消す。
      機能を足すたびに削除リストへの追記を忘れ、姿勢ログ・運営メッセージ・入館QR（扉の鍵）が
      端末に残る事故が起きたため、「消す物を並べる」のではなく「残す物だけ並べる」方式にしている。
@@ -15247,6 +15996,11 @@ function submitWithdraw(){
 
 function logout(){
   try{ localStorage.removeItem('smile24_logged_in'); }catch(e){}
+  /* ⚠️ 道順の同意（ROUTE_ON_KEY）はここで消さない。
+     ログアウト中の第三者からの遮断は routeSaveOn() の hasMemberSession() 判定が担っている。
+     ここで消すと、本人が再ログインしたとき「スイッチはオフ・説明は"オフにすると全部消えます"なのに
+     道順はN件残っている」という、表示と実体が食い違う状態になる（4巡目検証）。
+     別人が新規登録した場合は completeRegistration 側で座標ごと消える */
   clearRegDraft();   // 入会フローを覗いた痕跡を残さない（次の起動でログイン画面に戻す）
   location.reload();
 }
@@ -15503,6 +16257,7 @@ function renderDashboardExtras(){
   /* 記録するたびに「今週のかたち」も更新する。ここを呼ばないと、記録した本人に
      「今日はまだ何もしていない」と見せてしまう（2026-08-14検証で発覚） */
   try{ renderWeekDots(); }catch(e){}
+  try{ renderHomeEx(); }catch(e){}   // 同じ理由：運動を記録したら今週の要約もその場で更新する
 }
 
 /* 体重クイックカード（スタート→目標のスライダー表示） */
@@ -15671,7 +16426,10 @@ function renderTrendTabs(){
 function selectTrend(key, el){
   trendTab = key;
   document.querySelectorAll('#trendTabs .tt-chip').forEach(function(c){ c.classList.remove('active'); });
+  /* el 無しで呼ばれる経路（ホームの「くわしく見る」）は、上の一括removeのあとに
+     描き直して trendTab のチップを点ける。順番を逆にすると消灯したままになる */
   if(el) el.classList.add('active');
+  else renderTrendTabs();
   var sec = document.getElementById('trendsec-' + key);
   if(sec) sec.scrollIntoView({ behavior:'smooth', block:'start' });
 }
@@ -15803,6 +16561,11 @@ function logEffort(min, kind, label){
   /* 1回の最長運動の自己ベスト（分）。さんぽはさんぽの部でも数える */
   bestConsider('min', Math.round(min), k, label);
   if(kind === 'walk') bestConsider('walkmin', Math.round(min), k, label);
+  /* ⚠️ ホームの「今週のうんどう」はここで更新する。
+     各記録経路は recalc() を先に、logEffort() を後に呼ぶので、recalc 側の再描画だけでは
+     必ず1件前の状態を描いてしまう（記録した本人に「まだ記録がありません」と見せる）。
+     この関数が6経路すべての唯一の書き込み口なので、ここに置けば経路追加でも漏れない */
+  try{ renderHomeEx(); }catch(e){}
   return { day: k, idx: row.ex.length - 1, min: Math.max(1, Math.round(min)) };
 }
 function setEffortRpe(ref, rpe){
@@ -15887,6 +16650,7 @@ function rpeCloseAnd(){
   hideSheet('rpeSheet');
   var p = rpePending; rpePending = null;
   refreshExTrend();
+  try{ renderHomeEx(); }catch(e){}   // きつさを入れたらホームのがんばり度も同時に合わせる
   if(p && p.then) setTimeout(p.then, 500);
   rpeFlushBest();
 }
@@ -15923,8 +16687,13 @@ function bestConsider(cat, value, dk, label, sameDay){
   arr.push({ v: value, d: dk, l: label ? String(label).slice(0, 24) : undefined });
   arr.sort(function(a, c){ return c.v - a.v; });
   b[cat] = arr.slice(0, 12);   // 生涯トップ3＋年内トップ10が入る保持数（Best Efforts型）
+  var celebrated = (value > prevTop && prevCount >= 3);
+  /* ホームの要約で「更新があった週」と言うための時刻。祝った時と同じ条件でだけ立てる
+     （画面ごとに「更新」の意味が変わらないようにする）。
+     ⚠️ 配列ではないキーだが、trendBest の cats 抽出は b[c].length で絞るので混ざらない */
+  if(celebrated) b.updatedAt = Date.now();
   try{ localStorage.setItem(BEST_KEY, JSON.stringify(b)); }catch(e){}
-  if(value > prevTop && prevCount >= 3){
+  if(celebrated){
     bestMsgQueue.push(BEST_CAT_LABEL(cat) + ' ' + BEST_FMT(cat, value));
   }
 }
@@ -15965,6 +16734,60 @@ function weekVisitTops(){
   return Object.keys(byWeek).map(function(wk){
     return { v: byWeek[wk], d: wk };
   }).sort(function(a, b){ return b.v - a.v; }).slice(0, 3);
+}
+
+/* ── ホームの「今週のうんどう」要約（2026-08-16）──
+   からだタブの trendEx と同じ材料・同じ週の切り方（日曜はじまり）で、回数・分・6週の棒だけ出す。
+   ⚠️ 原則2：達成率・「あと◯回」は出さない。棒は実測の高さだけで、目標線も帯も引かない
+      （帯の判定はからだタブに1つだけ置く＝2か所で違う判定が出る事故を作らない） */
+function renderHomeEx(){
+  var wrap = document.getElementById('homeExSummary');
+  if(!wrap) return;
+  var ed = effortData();
+  if(ed.real && !ed.list.length){
+    wrap.innerHTML = '<div class="hex-card"><div class="hex-empty">' +
+      'まだ運動の記録がありません。<br>コース・おまかせ・さんぽ・おうちレッスン、どれでも記録すると、ここに今週のかたちが出るよ</div></div>';
+    return;
+  }
+  var base = ed.real ? new Date() : appToday();
+  base.setHours(0, 0, 0, 0);
+  var baseDow = base.getDay();
+  var weeks = [];
+  for(var i = 0; i < 6; i++) weeks.push({ n: 0, m: 0, eff: 0 });
+  ed.list.forEach(function(e){
+    var w = Math.floor((e.ago + 6 - baseDow) / 7);       // 日曜はじまり（trendExと同式）
+    if(w < 0 || w > 5) return;
+    weeks[w].n++; weeks[w].m += e.m;
+    if(e.r) weeks[w].eff += e.m * e.r;
+  });
+  var now = weeks[0];
+  var maxM = Math.max.apply(null, weeks.map(function(w){ return w.m; }).concat([1]));
+  /* 棒は古い週→今週の順（左から右）。データの無い週は最低2pxの土台だけ描く */
+  var bars = weeks.slice().reverse().map(function(w, i){
+    var h = Math.max(2, Math.round(w.m / maxM * 38));
+    return '<i class="' + (i === 5 ? 'now' : '') + '" style="height:' + h + 'px;"></i>';
+  }).join('');
+  var note;
+  if(now.n === 0){
+    note = '今週はまだ記録がないよ。5分の さんぽ でも、ここに1つ増えるよ';
+  }else{
+    /* 「今週」と言う以上、自己ベスト更新も今週（日曜はじまり）の中の出来事だけを指す。
+       直近7日で見ると、火曜に開いたとき先週金曜の更新を今週のことのように書いてしまう */
+    var weekStart = new Date(base.getTime());
+    weekStart.setDate(weekStart.getDate() - baseDow);
+    var best = loadBest();
+    var updated = (best && best.updatedAt && best.updatedAt >= weekStart.getTime());
+    note = '今週は ' + now.n + '回・' + now.m + '分。' +
+      (updated ? '自己ベストの更新もあったよ！' : 'この調子でいこう');
+  }
+  wrap.innerHTML = '<div class="hex-card">' +
+    '<div class="hex-row">' +
+      '<div><div class="hex-n">' + now.n + '<span>回</span></div><div class="hex-l">今週のうんどう' + (ed.real ? '' : '（体験用サンプル）') + '</div></div>' +
+      '<div><div class="hex-n">' + now.m + '<span>分</span></div><div class="hex-l">合計時間</div></div>' +
+      '<div class="hex-bars">' + bars + '</div>' +
+    '</div>' +
+    '<div class="hex-note">' + escHtml(note) + '</div>' +
+    '</div>';
 }
 
 /* ── からだタブ「うんどう」セクション（バブルカレンダー＋週次がんばり度レンジ） ── */
@@ -16752,7 +17575,9 @@ function openCalendarSheet(){
     html += '<div class="cal-day' + (visited?' visited':'') + (isToday?' today':'') + '">' + d + (visited?'<span class="cd-check"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>':'') + '</div>';
   }
   document.getElementById('calGrid').innerHTML = html;
-  document.getElementById('calSummary').innerHTML = '今月 <b>' + count + '</b> 回来館・月間皆勤まであと <b>' + Math.max(0, 20-count) + '</b> 回';
+  /* 「皆勤まであと◯回」は未達を数字で告げる表現（原則2違反）だったので、実測だけにした。
+     20回という基準にも根拠が無く、届かない人ほど毎月その数字を突きつけられていた（2026-08-16検証） */
+  document.getElementById('calSummary').innerHTML = '今月 <b>' + count + '</b> 回来館';
   showSheet('calendarSheet');
 }
 
@@ -17180,6 +18005,7 @@ try{ renderLessonCard(); }catch(e){ console.error('おうちレッスンの初�
 try{ renderCircuitCard(); }catch(e){ console.error('30秒サーキットの初期化に失敗:', e); }
 try{ initTrainPlace(); }catch(e){ console.error('運動タブの切替の初期化に失敗:', e); }
 try{ renderWeekDots(); }catch(e){ console.error('今週のかたちの初期化に失敗:', e); }
+try{ renderHomeEx(); }catch(e){ console.error('今週のうんどうの初期化に失敗:', e); }
 /* FC店舗コードの復元（店名・料金・連絡先・ブランド色）。既定のSMILE24なら何もしない */
 try{
   var fcBoot = localStorage.getItem('smile24_store_code');
