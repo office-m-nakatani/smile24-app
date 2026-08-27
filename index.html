@@ -1414,7 +1414,19 @@ input{font-family:inherit;}
 .eq-step .es-txt{flex:1;font-size:12px;line-height:1.7;color:var(--text);}
 .eq-caution{font-size:10px;color:var(--notice-dk);background:#FEF1ED;border-radius:10px;padding:8px 12px;margin-top:8px;}
 .eq-video.has-video{height:230px;padding:0;background:#000;overflow:hidden;}
-.eq-video video{width:100%;height:100%;object-fit:cover;border-radius:14px;display:block;}
+.eq-video video{width:100%;height:100%;object-fit:contain;border-radius:14px;display:block;}
+/* 3アングル切替（2026-08-28）。既定は真横、斜め前・後ろを下に小さく並べる。
+   ⚠️ タイルの位置は固定する。押すたびに並びが入れ替わると、いまどれを見ているのか
+      分からなくなる（対象が60代以上のため、位置の安定を優先する） */
+.ev-angles{display:none;gap:8px;margin:8px 0 2px;}
+.ev-a{flex:1;min-width:0;background:none;border:none;padding:0;display:flex;flex-direction:column;gap:4px;cursor:pointer;}
+.ev-a .eva-thumb{position:relative;border-radius:9px;overflow:hidden;background:#000;border:2px solid transparent;aspect-ratio:16/9;}
+.ev-a.on .eva-thumb{border-color:var(--gold);}
+.ev-a .eva-thumb video{width:100%;height:100%;object-fit:cover;border-radius:0;display:block;}
+.ev-a .eva-now{position:absolute;left:0;right:0;bottom:0;background:var(--gold);color:#fff;font-size:9.5px;font-weight:700;line-height:1.6;display:none;}
+.ev-a.on .eva-now{display:block;}
+.ev-a .eva-l{font-size:11.5px;font-weight:700;color:var(--text-mid);text-align:center;}
+.ev-a.on .eva-l{color:var(--gold-dk);}
 
 /* ========================================
    デザイン刷新：ホームヒーロー＆AIおまかせワークアウト
@@ -1707,6 +1719,9 @@ input{font-family:inherit;}
 /* 実施順は折り返して全部見せる（横スクロールだと3番目以降に気づけない） */
 .cir-order{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
 .cir-order i{font-style:normal;font-size:11px;font-weight:700;color:var(--text-mid);background:#F4F7FB;border-radius:100px;padding:5px 10px;}
+/* タップすると使い方と動画が開くステーション。押せることが分かるように色と下線を付ける */
+.cir-order i.tap{color:var(--gold-dk);background:#EAF1FE;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.cir-order i.tap:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 .cir-start{width:100%;min-height:50px;margin-top:13px;border:none;border-radius:100px;background:var(--grad-main);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(74,133,246,.25);}
 .cir-note{margin-top:11px;padding:10px 12px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;font-size:11px;color:var(--text-mid);line-height:1.7;}
 .cir-last{font-size:11px;color:var(--text-mid);margin-top:9px;text-align:center;line-height:1.6;}
@@ -3539,7 +3554,7 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-21b</b>（<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-28a</b>（<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
@@ -3871,14 +3886,15 @@ svg text{ font-size:12px; }
         <h3 id="eqModel" style="margin-top:2px;"></h3>
         <div class="chip-row" id="eqTargets" style="margin-top:8px;"></div>
         <div class="eq-video" id="eqVideoWrap"></div>
-        <div class="eq-rec">
+        <div class="ev-angles" id="eqAngles"></div>
+        <div class="eq-rec" id="eqRecBox">
           <div class="er-title" id="eqRecTitle">あなたへのAI推奨値</div>
           <div class="er-row">
-            <div class="er-item"><div class="el">シート位置</div><div class="ev" id="eqRecSeat">3</div></div>
+            <div class="er-item"><div class="el" id="eqRecSeatL">シート位置</div><div class="ev" id="eqRecSeat">3</div></div>
             <div class="er-div"></div>
-            <div class="er-item"><div class="el">重量の目安</div><div class="ev" id="eqRecWeight">15<span>kg</span></div></div>
+            <div class="er-item"><div class="el" id="eqRecWeightL">重量の目安</div><div class="ev" id="eqRecWeight">15<span>kg</span></div></div>
             <div class="er-div"></div>
-            <div class="er-item"><div class="el">回数×セット</div><div class="ev" id="eqRecReps">15×3</div></div>
+            <div class="er-item"><div class="el" id="eqRecRepsL">回数×セット</div><div class="ev" id="eqRecReps">15×3</div></div>
           </div>
           <div class="er-note" id="eqRecNote"></div>
         </div>
@@ -6576,6 +6592,122 @@ function startMenuAsExercise(){
   updateExercisePreview();
 }
 
+/* ============ 機材動画：3アングル切替（2026-08-28） ============
+   1つの機材を真横・斜め前・後ろの3方向から撮った動画を、1画面で見比べられるようにする。
+   ・既定は「真横」。他の2つは下に小さく並び、タップすると大きい方と入れ替わる
+   ・タイルの位置は固定（並びが動くと、いまどれを見ているのか分からなくなる）
+   ・アングルを変えても再生位置と再生状態を引き継ぐ＝「同じ場面を別の角度から」見られる
+   ・⚠️ ファイルの有無をコードに書かない：小さいタイルを読み込みプローブとして使い、
+     読めたアングルだけを出す。全滅なら従来どおり「準備中」に戻る。
+     つまり videos/machines/ に置いた瞬間から出て、消せば自動で準備中に戻る
+   ・置き場所と名前： videos/machines/<機材キー>-<side|diag|back>.mp4
+     例）レッグプレス＝ videos/machines/lf-leg-side.mp4 / -diag.mp4 / -back.mp4 */
+var EQ_ANGLES = [
+  { k:'side', label:'真横' },
+  { k:'diag', label:'斜め前' },
+  { k:'back', label:'後ろ' }
+];
+var EQ_VIDEO_DIR = 'videos/machines/';
+function equipVideoSrc(key, angle){ return EQ_VIDEO_DIR + key + '-' + angle + '.mp4'; }
+/* 開くたびに増える通し番号。シートを閉じたり別の機材を開いたあとに
+   前の機材の読み込み結果が返ってきても、画面を書き換えないための番号 */
+var eqVidSeq = 0;
+var eqVid = null;   // {seq, key, ok:[bool,bool,bool], cur:index|-1}
+
+function eqSoonHtml(){
+  return '<div class="ev-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span><b>この機材の動画は準備中です</b><br>いまは下の「使い方のステップ」と、あなた専用のAI推奨値（シート位置・重量）でお使いいただけます。読み上げボタンで音声でも聞けます</span></div>';
+}
+function eqOpenVideo(key){
+  var wrap = document.getElementById('eqVideoWrap');
+  var row  = document.getElementById('eqAngles');
+  if(!wrap || !row) return;
+  eqVidSeq++;
+  eqVid = { seq: eqVidSeq, key: key, ok: [false, false, false], cur: -1 };
+  /* まずは「準備中」から始める。読めたアングルが1つでも見つかった時点で動画に切り替える。
+     逆順（先に動画を出して失敗したら戻す）にすると、動画が無い機材で黒い箱が一瞬映る */
+  wrap.classList.remove('has-video');
+  wrap.onclick = null;
+  wrap.innerHTML = eqSoonHtml();
+  row.style.display = 'none';
+  row.innerHTML = EQ_ANGLES.map(function(a, i){
+    return '<button type="button" class="ev-a" id="evA' + i + '" style="display:none;" ' +
+             'onclick="eqSwitchAngle(' + i + ')" aria-label="' + a.label + 'からの動画にする">' +
+             '<span class="eva-thumb">' +
+               '<video muted playsinline preload="metadata" src="' + equipVideoSrc(key, a.k) + '" ' +
+                 'onloadedmetadata="eqAngleReady(' + eqVid.seq + ',' + i + ')" ' +
+                 'onerror="eqAngleMissing(' + eqVid.seq + ',' + i + ')"></video>' +
+               '<span class="eva-now">表示中</span>' +
+             '</span>' +
+             '<span class="eva-l">' + a.label + '</span>' +
+           '</button>';
+  }).join('');
+}
+/* 1つでも読めたら、そのアングルを出す（真横を最優先） */
+function eqAngleReady(seq, i){
+  if(!eqVid || eqVid.seq !== seq) return;   // 別の機材を開いたあとの遅れて届いた通知
+  eqVid.ok[i] = true;
+  var btn = document.getElementById('evA' + i);
+  if(btn) btn.style.display = 'flex';
+  document.getElementById('eqAngles').style.display = 'flex';
+  /* まだ何も大きく出していない、または今より優先度の高い（＝真横に近い）アングルが
+     あとから読めたときは、そちらに寄せる。読み込み順は端末やネットで前後するため */
+  if(eqVid.cur < 0 || i < eqVid.cur) eqSetMain(i, true);
+}
+function eqAngleMissing(seq, i){
+  if(!eqVid || eqVid.seq !== seq) return;
+  eqVid.ok[i] = false;
+  var btn = document.getElementById('evA' + i);
+  if(btn) btn.style.display = 'none';
+  /* 3つとも無い＝この機材はまだ撮影していない。準備中の案内に戻す */
+  if(eqVid.ok.indexOf(true) < 0){
+    var wrap = document.getElementById('eqVideoWrap');
+    var row  = document.getElementById('eqAngles');
+    if(wrap && eqVid.cur < 0){ wrap.classList.remove('has-video'); wrap.innerHTML = eqSoonHtml(); }
+    if(row) row.style.display = 'none';
+  }
+}
+/* 大きい方を i 番のアングルに差し替える。first=true は最初の表示（引き継ぐ再生位置が無い） */
+function eqSetMain(i, first){
+  if(!eqVid || !eqVid.ok[i]) return;
+  var wrap = document.getElementById('eqVideoWrap');
+  if(!wrap) return;
+  var old = document.getElementById('eqMainVid');
+  /* 同じ場面を別の角度から見られるように、再生位置と再生中かどうかを引き継ぐ */
+  var at = 0, wasPlaying = false;
+  if(old && !first){
+    at = old.currentTime || 0;
+    wasPlaying = !old.paused && !old.ended;
+    old.pause();
+  }
+  wrap.classList.add('has-video');
+  wrap.innerHTML = '<video id="eqMainVid" controls playsinline preload="metadata" ' +
+                   'src="' + equipVideoSrc(eqVid.key, EQ_ANGLES[i].k) + '"></video>';
+  var v = document.getElementById('eqMainVid');
+  if(v && !first){
+    v.addEventListener('loadedmetadata', function(){
+      /* 角度によって尺が数秒ちがうので、引き継ぎ先の長さを超えないように丸める */
+      try{ v.currentTime = Math.min(at, Math.max(0, (v.duration || 0) - 0.1)); }catch(e){}
+      if(wasPlaying){ var pr = v.play(); if(pr && pr.catch) pr.catch(function(){}); }
+    }, { once:true });
+  }
+  eqVid.cur = i;
+  EQ_ANGLES.forEach(function(a, n){
+    var b = document.getElementById('evA' + n);
+    if(b) b.classList.toggle('on', n === i);
+  });
+}
+function eqSwitchAngle(i){
+  if(!eqVid || !eqVid.ok[i] || eqVid.cur === i) return;
+  eqSetMain(i, false);
+}
+/* シートを閉じたときに音が鳴り続けないよう、確実に止める */
+function eqStopVideo(){
+  var v = document.getElementById('eqMainVid');
+  if(v){ try{ v.pause(); }catch(e){} }
+  eqVidSeq++;          // 読み込み中の通知を無効化する
+  eqVid = null;
+}
+
 /* ============ スマート機材ガイド（型番連動・AI推奨値） ============ */
 var machines = {
   /* videoUrl を外した理由（2026-08-13）：videos/smile24-howto-01.mp4 は機材の使い方ではなく
@@ -6606,8 +6738,47 @@ var machines = {
     category:'core', targets:['くびれ','体幹'],
     seat:{min:1,max:5}, weight:{min:5,max:40,step:5}, videoSec:15,
     steps:['骨盤を固定して座る','息を吐きながら上体だけをゆっくり回す','左右同じ回数ずつ行う'],
-    caution:'腰をひねりすぎないようにしてください' }
+    caution:'腰をひねりすぎないようにしてください' },
+  /* ── 有酸素マシン（2026-08-28・サーキット以外の機材）──
+     kind:'cardio' の機材は、シート位置・重量ではなく「速さ・傾斜・時間」を出す。
+     ⚠️ 速さは断定しない：正解は数字ではなく「会話できるペース」。数字はあくまで出発点として
+        示し、画面にも会話ペース優先と明記する（アプリ全体の「断定しない」原則）。
+     brand は実機のメーカーが未確認のため空にしてある（推測で書かない）。分かり次第入れる */
+  'tm-tread': { brand:'', model:'ランニングマシン', img:'images/gym-03-sm.jpg',
+    kind:'cardio', category:'cardio', targets:['全身','心肺'], videoSec:30,
+    steps:['ベルトに乗る前に、必ず非常停止クリップを服に留める','両脇の手すりを持ち、ベルトが動きはじめてから足を合わせる','慣れるまでは手すりに軽く手を添えたまま、まっすぐ前を見て歩く'],
+    caution:'降りるときは必ずベルトを止めてから。動いたまま飛び降りないでください' },
+  /* ⚠️ kind:'pending' ＝ 動画だけ先に出し、使い方・注意書き・推奨値は出さない状態。
+     機材が特定できていないのに手順や注意書きを書くと、ジムでの怪我につながる推測になる。
+     機材名・メーカーが分かったら、他の機材と同じ形（steps/caution/kind）に書き換える */
+  'sl-slicer': { brand:'', model:'スライサー', img:'images/gym-03-sm.jpg',
+    kind:'pending', category:'cardio', targets:[], videoSec:30, steps:[], caution:'' },
+  'tm-self': { brand:'', model:'自走式ランニングマシン', img:'images/gym-03-sm.jpg',
+    kind:'cardio', category:'cardio', selfPowered:true, targets:['全身','心肺'], videoSec:30,
+    steps:['手すりをしっかり持ってからベルトに乗る','自分の脚でベルトを送るので、はじめはゆっくり小さく歩く','止まりたいときは歩くのをやめれば自然に止まる'],
+    caution:'モーターがなく自分の力で動かすぶん、同じ速さでも通常のランニングマシンよりきつく感じます。無理をせず短い時間から始めてください' }
 };
+/* 有酸素マシンの目安（2026-08-28）。筋トレの重量計算とは別物なので関数を分ける。
+   ⚠️ 速さを断定しない：正解は数字ではなく「会話できるペース」。ここで出すのは出発点。
+      年齢で上限を抑える（60代以上は歩行速度から始める）のは、この機材を主に使うのが
+      その年代のため。心拍数の管理は医療機器ではないので扱わない */
+function cardioRecommend(m){
+  /* ⚠️ GOALS の各要素に key は無い（currentGoal() は値だけを返す）ので、
+     目的の判定は state.goalType を見る。g.key で書くと常に未一致になる */
+  var isDiet = (state.goalType === 'diet');
+  var age = 0;
+  try{ var a = JSON.parse(localStorage.getItem('smile24_account')||'null'); if(a && a.age) age = a.age; }catch(e){}
+  /* 出発点の速さ（km/h）：ふつうの歩行4.5〜5.0。60歳以上は4.0から、若い層でも5.5まで */
+  var kmh = age >= 60 ? 4.0 : (age >= 40 ? 4.5 : 5.0);
+  if(isDiet) kmh += 0.5;                        // 脂肪燃焼目的は少し速く（それでも会話できる範囲）
+  if(m.selfPowered) kmh = Math.max(3.0, kmh - 1.0);   // 自走式は同じ速さでもきつい
+  kmh = Math.round(kmh * 10) / 10;
+  var incline = isDiet ? 2 : 1;                  // 傾斜1〜2%：平地に近く、膝への負担も小さい
+  var min = age >= 60 ? 15 : 20;
+  return { kmh: kmh, incline: incline, min: min,
+    note:'数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さ。'
+       + 'きつければ下げて大丈夫だよ。物足りなければ少しずつ上げてね' };
+}
 // 仕様書§3-4のaiRecommendロジック（ルールベース・説明可能）のJS移植
 // 回数×セットは「なりたい自分」の目標に連動
 function equipRecommend(m){
@@ -6757,31 +6928,64 @@ function renderEquipCards(){
 }
 function openEquipDetail(key){
   var m = machines[key];
-  var rec = equipRecommend(m);
+  var isPending = (m.kind === 'pending');   // 使い方が未確定の機材（動画だけ先に出す）
+  var isCardio = (m.kind === 'cardio');
+  var rec = isPending ? null : (isCardio ? cardioRecommend(m) : equipRecommend(m));
   document.getElementById('eqPhoto').src = m.img;
   document.getElementById('eqBrand').textContent = m.brand;
   document.getElementById('eqModel').textContent = m.model;
   document.getElementById('eqTargets').innerHTML = m.targets.map(function(t){ return '<span class="md-target-chip">'+t+'</span>'; }).join('');
-  var vw = document.getElementById('eqVideoWrap');
-  if(m.videoUrl){
-    vw.classList.add('has-video');
-    vw.onclick = null;
-    vw.innerHTML = '<video src="'+m.videoUrl+'" controls playsinline preload="metadata"></video>';
+  eqOpenVideo(key);
+  var recBox = document.getElementById('eqRecBox');
+  if(recBox) recBox.style.display = isPending ? 'none' : '';
+  if(isPending){
+    /* 推奨値は出さない。前回重量も出さない */
+    var lwP = document.getElementById('eqLastW');
+    if(lwP) lwP.style.display = 'none';
+    currentEquipKey = key;
+  } else if(isCardio){
+    /* 有酸素は「シート位置・重量・回数」が意味を持たないので、速さ・傾斜・時間に置き換える */
+    document.getElementById('eqRecTitle').textContent = '「'+currentGoal().label+'」が目標のあなたへ（目安）';
+    document.getElementById('eqRecSeatL').textContent   = '速さの目安';
+    document.getElementById('eqRecSeat').innerHTML      = rec.kmh+'<span>km/h</span>';
+    document.getElementById('eqRecWeightL').textContent = '傾斜';
+    document.getElementById('eqRecWeight').innerHTML    = rec.incline+'<span>%</span>';
+    document.getElementById('eqRecRepsL').textContent   = '時間の目安';
+    document.getElementById('eqRecReps').innerHTML      = rec.min+'<span>分</span>';
+    document.getElementById('eqRecNote').textContent    = rec.note;
+    /* 前回の重量は筋トレ専用。有酸素では出さない */
+    var lwBox = document.getElementById('eqLastW');
+    if(lwBox) lwBox.style.display = 'none';
+    currentEquipKey = key;
   } else {
-    vw.classList.remove('has-video');
-    vw.onclick = null;
-    vw.innerHTML = '<div class="ev-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg><span><b>この機材の動画は準備中です</b><br>いまは下の「使い方のステップ」と、あなた専用のAI推奨値（シート位置・重量）でお使いいただけます。読み上げボタンで音声でも聞けます</span></div>';
+    document.getElementById('eqRecTitle').textContent = state.height+'cm・「'+currentGoal().label+'」が目標のあなたへ';
+    document.getElementById('eqRecSeatL').textContent   = 'シート位置';
+    document.getElementById('eqRecSeat').textContent    = rec.seat;
+    document.getElementById('eqRecWeightL').textContent = '重量の目安';
+    document.getElementById('eqRecWeight').innerHTML    = rec.weight+'<span>kg</span>';
+    document.getElementById('eqRecRepsL').textContent   = '回数×セット';
+    document.getElementById('eqRecReps').textContent    = rec.reps+'×'+rec.sets;
+    document.getElementById('eqRecNote').textContent    = rec.note;
+    updateEquipLastWeight(key, rec);
   }
-  document.getElementById('eqRecTitle').textContent = state.height+'cm・「'+currentGoal().label+'」が目標のあなたへ';
-  document.getElementById('eqRecSeat').textContent = rec.seat;
-  document.getElementById('eqRecWeight').innerHTML = rec.weight+'<span>kg</span>';
-  document.getElementById('eqRecReps').textContent = rec.reps+'×'+rec.sets;
-  document.getElementById('eqRecNote').textContent = rec.note;
-  updateEquipLastWeight(key, rec);
-  document.getElementById('eqSteps').innerHTML = m.steps.map(function(st,i){
-    return '<div class="eq-step"><div class="es-num">'+(i+1)+'</div><div class="es-txt">'+st+'</div></div>';
-  }).join('');
-  document.getElementById('eqCaution').textContent = 'ご注意：'+m.caution;
+  var voiceBtn = document.getElementById('eqVoiceBtn');
+  if(isPending){
+    /* 手順が無いのに空欄を出すと壊れて見える。正直に準備中と伝え、人に聞ける導線を残す */
+    document.getElementById('eqSteps').innerHTML =
+      '<div class="eq-step"><div class="es-num">?</div><div class="es-txt">' +
+      'この機材の使い方の説明は準備中です。動画が入っている場合は動画をご覧ください。' +
+      'ご不明なときは、遠慮なくスタッフにお声がけください</div></div>';
+    document.getElementById('eqCaution').textContent =
+      'ご注意：はじめて使う機材は、無理のない範囲でお試しください';
+    if(voiceBtn) voiceBtn.style.display = 'none';   // 読み上げる手順が無い
+  } else {
+    if(voiceBtn) voiceBtn.style.display = '';
+    document.getElementById('eqSteps').innerHTML = m.steps.map(function(st,i){
+      return '<div class="eq-step"><div class="es-num">'+(i+1)+'</div><div class="es-txt">'+st+'</div></div>';
+    }).join('');
+    document.getElementById('eqCaution').textContent = 'ご注意：'+m.caution;
+  }
+  /* ⚠️ シートを開くのは最後の1回だけ。ここより前で return すると画面が開かない */
   showSheet('equipSheet');
 }
 function demoQR(){
@@ -6789,10 +6993,15 @@ function demoQR(){
   setTimeout(function(){ openEquipDetail('lf-leg'); }, 900);
 }
 function startEquipExercise(){
+  /* 有酸素マシンから押されたときに「筋トレ」で記録されると消費カロリーが別物になる（2026-08-28）。
+     開いていた機材の種別に合わせて、記録の種目もあらかじめ選んでおく */
+  var m = machines[currentEquipKey];
+  var isCardio = !!(m && m.kind === 'cardio');
+  var act = isCardio ? 'cardio' : 'strength';
   hideSheet('equipSheet');
   openExerciseSheet();
-  selectActivity('strength', document.querySelector('#activityChips .chip-select[data-act="strength"]'));
-  document.getElementById('exMinutes').value = 15;
+  selectActivity(act, document.querySelector('#activityChips .chip-select[data-act="'+act+'"]'));
+  document.getElementById('exMinutes').value = isCardio ? 20 : 15;
   updateExercisePreview();
 }
 
@@ -6815,7 +7024,11 @@ var CIRCUIT = {
   stations: [
     { key:'lf-leg',    cue:'背中をシートにつけたまま、2秒で押して3秒かけて戻す' },
     { key:'tg-lat',    cue:'胸を張って、バーは鎖骨へ。肩をすくめないように' },
+    /* detail＝タップしたときに開く機材ガイドの行き先（2026-08-28）。
+       key は消費calcや写真の分岐が見ているので変えない。バイクもある位置なので
+       表示名は「有酸素マシン」のまま、動画と使い方はランニングマシンのページへ送る */
     { key:'cardio',    name:'有酸素マシン（バイク・トレッドミル）', targets:['全身','心肺'],
+      detail:'tm-tread',
       cue:'会話できる速さで。息が上がりすぎたらペースを落としてOK' },
     { key:'lf-row',    cue:'肩甲骨を寄せるイメージで引く。反動は使わない' },
     { key:'mx-crunch', cue:'おへそをのぞきこむように、息を吐きながら丸める' },
@@ -6862,8 +7075,15 @@ function renderCircuitCard(){
   var laps = [1, 2, 3].map(function(n){
     return '<button type="button" class="' + (n === cirLaps ? 'on' : '') + '" onclick="cirSetLaps(' + n + ')">' + n + '周</button>';
   }).join('');
+  /* 各ステーションをタップすると、その機材の使い方と3アングル動画が開く（2026-08-28）。
+     行き先は machines のキー。有酸素は st.detail で指定する */
   var order = CIRCUIT.stations.map(function(st, i){
-    return '<i>' + (i + 1) + '. ' + escHtml(cirName(st)) + '</i>';
+    var goKey = st.detail || (machines[st.key] ? st.key : null);
+    var label = (i + 1) + '. ' + escHtml(cirName(st));
+    if(!goKey) return '<i>' + label + '</i>';
+    /* 属性の中の引用符は &#39; で書く（JS側のエスケープを増やさないため） */
+    return '<i class="tap" role="button" tabindex="0" onclick="openEquipDetail(&#39;' + goKey + '&#39;)">' +
+             label + '</i>';
   }).join('');
   wrap.innerHTML =
     '<div class="cir-card">' +
@@ -13403,6 +13623,8 @@ function showSheet(id){ document.getElementById(id).classList.add('active'); }
 function hideSheet(id){
   document.getElementById(id).classList.remove('active');
   if(id === 'equipSheet' && typeof stopEquipVoice === 'function') stopEquipVoice();
+  /* 機材シートを閉じたら動画も止める（閉じても音だけ鳴り続けるのを防ぐ・2026-08-28） */
+  if(id === 'equipSheet' && typeof eqStopVideo === 'function') eqStopVideo();
 }
 
 /* ============ チャット ============ */
