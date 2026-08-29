@@ -2037,13 +2037,6 @@ input{font-family:inherit;}
 .streak-card .sk-t{font-size:10.5px;color:var(--text-lt);font-weight:700;}
 .streak-card .sk-v{font-size:13.5px;font-weight:700;color:var(--text);margin-top:1px;}
 .streak-card .chev{margin-left:auto;width:14px;height:14px;color:var(--text-lt);flex:0 0 auto;}
-/* 頑張りの記録シート：連続来館はジュエルのオンオフに関わらず出す */
-.jw-streak{
-  margin:6px 0 2px;padding:11px 0;border-radius:12px;background:#FDECE6;
-  text-align:center;font-size:13px;font-weight:700;color:#C4472A;
-}
-.jw-streak b{font-family:var(--font-en);font-size:19px;margin-right:2px;}
-.jw-streak span{font-size:11px;font-weight:600;color:#A85B45;}
 
 /* 食事タブの最初の画面：どの食事かを選んでからカメラへ（2026-08-07） */
 .slot-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:12px 22px 0;}
@@ -2232,23 +2225,6 @@ input{font-family:inherit;}
 .hr-thumb svg{width:22px;height:22px;color:#fff;}
 .pi-icon svg{width:17px;height:17px;color:var(--gold);}
 
-/* ========================================
-   ジュエル（頑張りの記録・オプトイン）
-   ======================================== */
-.jw-total{font-family:var(--font-en);font-size:38px;font-weight:700;text-align:center;margin-top:6px;}
-.jw-total span{font-size:12px;font-family:var(--font-jp);color:var(--text-lt);font-weight:600;}
-.jw-sub{font-size:10px;color:var(--text-lt);text-align:center;margin-top:2px;}
-.jw-label{font-size:11px;font-weight:700;color:var(--text-mid);margin:16px 0 6px;}
-.jw-month{display:flex;flex-direction:column;gap:8px;}
-.jw-mrow{display:flex;align-items:center;gap:8px;}
-.jw-mrow .jm-l{width:34px;font-size:10px;color:var(--text-lt);font-weight:700;flex:0 0 auto;}
-.jw-mrow .jm-bar{flex:1;height:14px;border-radius:100px;background:#EDF1F7;overflow:hidden;}
-.jw-mrow .jm-bar i{display:block;height:100%;border-radius:100px;transition:width .5s ease;}
-.jw-mrow.prev .jm-bar i{background:#C6D4E8;}
-.jw-mrow.cur .jm-bar i{background:var(--grad-main-r);}
-.jw-mrow .jm-v{font-family:var(--font-en);font-size:10.5px;font-weight:700;flex:0 0 auto;white-space:nowrap;}
-.jw-cheer{margin-top:12px;background:var(--pastel-2);color:var(--positive-dk);font-size:11.5px;font-weight:700;border-radius:10px;padding:10px 12px;text-align:center;}
-.jw-off{margin-top:8px;width:100%;text-align:center;font-size:11px;color:var(--text-lt);font-weight:600;padding:8px;}
 
 /* ========================================
    食事履歴：写真サムネイル＆日別合計
@@ -2407,9 +2383,6 @@ input{font-family:inherit;}
 .best-row .br-rank{flex:0 0 26px;font-family:var(--font-en);font-size:12px;font-weight:800;color:var(--gold-dk);}
 .best-row .br-v{flex:1;font-size:13px;font-weight:700;color:var(--text);}
 .best-row .br-d{font-size:11px;color:var(--text-lt);font-weight:600;}
-/* がんばり度グラフのSVG文字：viewBox 320→実幅約294pxに縮む（×0.92）ため、
-   全体既定の12px（svg text）だと実効11.1pxで下限ぎりぎり。ここだけ12.5pxで余裕を持たせる */
-.exwk-svg text{font-size:12.5px;}
 
 /* SOS */
 .sos-btn-row{display:flex;gap:10px;margin:12px 0;}
@@ -2537,7 +2510,6 @@ input{font-family:inherit;}
 .ob-plan-price span, .ob-plan-desc, .ob-hint, .ob-step-label,
 .trial-summary .ts-row span, .app-ver, .eq-rec .er-item .el,
 .eq-rec .er-item .ev span, .pos-score-ring .num span, .pos-hist-item .hs span,
-.jw-sub, .jw-mrow .jm-l, .jw-mrow .jm-v,
 .cc-hourly-label, .exlog-hint, .goal-tag, .sos-link,
 .ob-tel-hint, .qno,
 /* 追加で見つかった9〜10.5pxの本文 */
@@ -2665,7 +2637,7 @@ svg text{ font-size:12px; }
 
 /* テキストリンクは面で押せるようにする（実測15〜17pxしかなかった） */
 .sos-link, .ob-link, .manual-meal-link, .plan-edit-link, .ok-regen,
-.jw-off, .qclose, .qr-setting-link, .retake-btn, .sheet-cancel,
+.qclose, .qr-setting-link, .retake-btn, .sheet-cancel,
 .pos-sub-link, .section-label a{
   min-height:44px; display:flex; align-items:center; justify-content:center;
 }
@@ -2919,10 +2891,10 @@ svg text{ font-size:12px; }
         <div class="cc-hourly" id="occHourly"></div>
       </div>
 
-      <!-- 今日のミッション（がんばりの記録＝連続来館・ポイントもここに集約） -->
       <!-- 「今日のミッション」カードは削除（2026-08-07・ユーザー指示）。
-           連続来館とジュエル（頑張りの記録）はマイページから見られるようにした。
-           食事の履歴は食事タブの時計アイコンから見られる -->
+           連続来館（頑張りの記録）はマイページから見られるようにした。
+           食事の履歴は食事タブの時計アイコンから見られる。
+           ジュエル（ポイント）機能は2026-08-29にユーザー指示で完全に削除した -->
 
       <!-- 条件付きで出る2枚は下にまとめる（2026-08-14）。
            上に積むと、出る日だけ記録の3行が画面外へ押し出されて位置が毎日動いていた。
@@ -3558,15 +3530,13 @@ svg text{ font-size:12px; }
       </div>
 
       <!-- ホームの「今日のミッション」を消した分の受け皿（2026-08-07）。
-           設定リストの中に置くと下の「ジュエル」トグルと紛らわしいので、
            記録として読めるプロフィール直下に出す。
            2026-08-14b：下にあった「レベルとがんばりの記録」と名前がほぼ同じで飛び先だけ違う
            状態だったので、レベル表示をこのカードへ移して1枚に統合した。
            飛び先は openWeeklyReport（今週の来館・連続来館・体重の変化・平均消費を実測で出す）。
-           ⚠️ openJewelSheet と jewelSheet はコードごと残してある。ジュエル総数が localStorage に
-              保存されず起動のたび0に戻る＝「記録」として成立していないため入口だけ外した。
-              永続化したら入口を戻してよい（そのとき addJewels の保存も必ず入れること） -->
-      <div class="streak-card" id="jewelRecordRow" onclick="openWeeklyReport()" role="button" tabindex="0">
+           ⚠️ ジュエル機能は2026-08-29にユーザー指示で完全に削除した
+              （トグル・シート・addJewels・state.jewels系すべて） -->
+      <div class="streak-card" id="streakRecordRow" onclick="openWeeklyReport()" role="button" tabindex="0">
         <span class="sk-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
         <div>
           <div class="sk-t">がんばりの記録</div>
@@ -3734,12 +3704,11 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="showSheet('faqSheet')" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .3c0 1.7-2.5 2.2-2.5 3.7"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>よくある質問（FAQ）</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <!-- ガチ勢モード（2026-08-07）: 基礎代謝からの目標計算・マクロ選択 -->
         <div class="list-item" onclick="openAthleteSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6.5" y1="12" x2="17.5" y2="12"/><rect x="2" y="9.5" width="4.5" height="5" rx="1"/><rect x="17.5" y="9.5" width="4.5" height="5" rx="1"/></svg><span>目標コーチ（食べる量を計算）</span><span class="lval" id="athLval">オフ</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="list-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>ジュエル（頑張りの見える化）</span><div class="ob-switch" id="jewelSwitch" onclick="toggleJewel()" style="flex:0 0 auto;"></div></div>
         <div class="list-item" onclick="openWithdrawSheet()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>退会・休会のお手続き</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-29j</b>（<b>「どの食事を記録する？」の4マスを、ひと目で見分けられるようはっきり4色に分けました</b>：朝食＝オレンジ、昼食＝黄色、おやつ＝グリーン、夕食＝紫。<br><br>前の版（2026-08-29i）：<b>水・太陽など、実物に色のイメージがあるアイコンはブランド色にせず戻しました</b>。ホームの「水分」の水滴は水色に、食事タブの「昼食」の太陽アイコンは暖かい黄色に。歩数・体重などのアイコンは引き続きブランドのローズです。<br><br>前の版（2026-08-29h）：<b>他のタブも、運動タブと同じローズ×アプリコットの配色にそろえました</b>。ホーム・食事・姿勢診断・からだの記録・マイページと下タブバーの各アイコンが、運動タブと同じ暖色になります。数字やグラフの色（たんぱく質・脂質・炭水化物の色分け、BMIの健康ゾーン、体重や運動カテゴリの凡例など、見た目で意味を判別している色）はすべて今までどおりで、ブランドのボタン・バッジ・枠線などの部分だけを変えています。<br><br>前の版（2026-08-29g）：<b>運動タブの配色を、ローズ×アプリコットの暖色に変更しました</b>。「ジムで/おうちで」の切替ボタン・「運動を記録する」・30秒サーキットのカード・スマート機材ガイドなど、運動タブとその中の画面だけを対象にしています。文字の見やすさ（コントラスト）は、白い面でも淡い色の面でも基準を満たすことを確認しています。<br><br>前の版（2026-08-29f）：<b>30秒サーキットの画面を4点整理しました</b>。①右上に閉じる×ボタンを追加（下までスクロールしなくても閉じられます）②はじめる前の一覧から種目名を消し、「ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びです」という案内に変えました（種目名は始めてから画面に出ます）③音声設定のラベルを「ラスト3秒をピッ・ピッ・ポーンでカウント」に変更④機材ガイドを開いたとき、前に見ていた画面の下の方から始まってしまう不具合を直し、必ず一番上（機材名）から開くようにしました。あわせて、レッグプレスなど機材ガイドの一番上にあった小さな写真を削除し、動画がすぐ出るようにしました。<br><br>前の版（2026-08-29e）：<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-29k</b>（<b>「週ごとのがんばり度」のグラフと「ジュエル」機能を削除しました</b>。からだの記録タブは、運動のカレンダーと今週・先週の実測件数だけのシンプルな表示になりました。ジュエルは交換・景品のない「続けた証」の機能でしたが、設定からトグルごと無くしています。連続来館の記録（マイページの「がんばりの記録」）は今までどおりです。<br><br>前の版（2026-08-29j）：<b>「どの食事を記録する？」の4マスを、ひと目で見分けられるようはっきり4色に分けました</b>：朝食＝オレンジ、昼食＝黄色、おやつ＝グリーン、夕食＝紫。<br><br>前の版（2026-08-29i）：<b>水・太陽など、実物に色のイメージがあるアイコンはブランド色にせず戻しました</b>。ホームの「水分」の水滴は水色に、食事タブの「昼食」の太陽アイコンは暖かい黄色に。歩数・体重などのアイコンは引き続きブランドのローズです。<br><br>前の版（2026-08-29h）：<b>他のタブも、運動タブと同じローズ×アプリコットの配色にそろえました</b>。ホーム・食事・姿勢診断・からだの記録・マイページと下タブバーの各アイコンが、運動タブと同じ暖色になります。数字やグラフの色（たんぱく質・脂質・炭水化物の色分け、BMIの健康ゾーン、体重や運動カテゴリの凡例など、見た目で意味を判別している色）はすべて今までどおりで、ブランドのボタン・バッジ・枠線などの部分だけを変えています。<br><br>前の版（2026-08-29g）：<b>運動タブの配色を、ローズ×アプリコットの暖色に変更しました</b>。「ジムで/おうちで」の切替ボタン・「運動を記録する」・30秒サーキットのカード・スマート機材ガイドなど、運動タブとその中の画面だけを対象にしています。文字の見やすさ（コントラスト）は、白い面でも淡い色の面でも基準を満たすことを確認しています。<br><br>前の版（2026-08-29f）：<b>30秒サーキットの画面を4点整理しました</b>。①右上に閉じる×ボタンを追加（下までスクロールしなくても閉じられます）②はじめる前の一覧から種目名を消し、「ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びです」という案内に変えました（種目名は始めてから画面に出ます）③音声設定のラベルを「ラスト3秒をピッ・ピッ・ポーンでカウント」に変更④機材ガイドを開いたとき、前に見ていた画面の下の方から始まってしまう不具合を直し、必ず一番上（機材名）から開くようにしました。あわせて、レッグプレスなど機材ガイドの一番上にあった小さな写真を削除し、動画がすぐ出るようにしました。<br><br>前の版（2026-08-29e）：<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
@@ -4791,44 +4760,12 @@ svg text{ font-size:12px; }
       </div>
     </div>
 
-    <!-- ジュエル（頑張りの記録・交換や景品なし） -->
-    <div class="sheet" id="jewelSheet">
-      <div class="sheet-card">
-        <h3>頑張りの記録</h3>
-        <!-- 連続来館はジュエルのオン/オフに関わらず常に見せる（2026-08-07）。
-             ホームの「今日のミッション」を消したので、ここが唯一の表示場所になった -->
-        <div class="jw-streak" id="jwStreak"><b>5</b>日連続 来館中<span>／今週5回</span></div>
-        <!-- ジュエルがオフの時の案内。オフのまま即returnすると、押しても何も起きない導線になる -->
-        <div id="jewelOffBox" style="display:none;">
-          <div class="sheet-desc" style="margin-top:12px;">「ジュエル」をオンにすると、来館・食事記録・運動記録の積み重ねがグラフで見られます（交換や景品はありません）</div>
-          <button class="sheet-btn" onclick="toggleJewel();openJewelSheet();">ジュエルをオンにする</button>
-          <button class="sheet-cancel" onclick="hideSheet('jewelSheet')">閉じる</button>
-        </div>
-        <div id="jewelBody">
-        <div class="sheet-desc">ジュエルは交換や景品のない、あなたが「続けた証」。昨日までの自分と比べて、頑張りを見える化します</div>
-        <div class="jw-total" id="jwTotal">340<span> ジュエル</span></div>
-        <div class="jw-sub">来館・食事記録・運動記録で +10 ずつ</div>
-        <div class="jw-label">毎日のジュエル（7日間）</div>
-        <div id="jwWeekChart"></div>
-        <div class="jw-label">毎月のジュエル（先月の自分と比較）</div>
-        <div class="jw-month">
-          <div class="jw-mrow prev"><span class="jm-l">先月</span><div class="jm-bar"><i id="jwPrevBar"></i></div><span class="jm-v" id="jwPrevVal">780</span></div>
-          <div class="jw-mrow cur"><span class="jm-l">今月</span><div class="jm-bar"><i id="jwCurBar"></i></div><span class="jm-v" id="jwCurVal">55</span></div>
-        </div>
-        <div class="jw-cheer" id="jwCheer"></div>
-        <button class="sheet-btn" onclick="hideSheet('jewelSheet')">今日もコツコツ頑張る</button>
-        <button class="jw-off" onclick="toggleJewel();hideSheet('jewelSheet')">ジュエル機能をオフにする</button>
-        </div>
-      </div>
-    </div>
-
     <!-- ご褒美ビューティーアドバイス -->
     <div class="sheet" id="beautySheet">
       <div class="sheet-card" style="text-align:center;">
         <div style="color:#E88BB1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;"><circle cx="12" cy="12" r="2.6"/><circle cx="12" cy="6.5" r="3"/><circle cx="17.5" cy="12" r="3"/><circle cx="12" cy="17.5" r="3"/><circle cx="6.5" cy="12" r="3"/></svg></div>
         <h3 style="margin-top:4px;">ご褒美ビューティーアドバイス</h3>
         <div id="beautyMsg" style="font-size:13px;line-height:1.9;color:var(--text);margin:12px 0 6px;text-align:left;background:#EAF1FE;border-radius:14px;padding:14px 16px;"></div>
-        <div id="bsJewel" style="display:none;font-size:11px;color:var(--gold-dk);font-weight:700;margin:10px 0 4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px;margin-right:3px;"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>+10ジュエル獲得！</div>
         <button class="sheet-btn" onclick="hideSheet('beautySheet')">うれしい！</button>
       </div>
     </div>
@@ -5317,12 +5254,6 @@ const state = {
   waterLastAt: 0,             // 最後に水を飲んだ時刻(ms)。前回からの間隔セルフチェック用
   goalDiffKg: 2.4,
   goalDeadline: '2026-09-30',
-  jewels: 340,                 // ジュエル（来館・記録で貯まる）
-  jewelEnabled: (function(){ try{ return localStorage.getItem('smile24_jewel_on')==='1'; }catch(e){ return false; } })(), // オプトイン（マイページでON/OFF）
-  jewelToday: 0,               // 今日獲得したジュエル
-  jewelWeek: [30,20,40,30,20,30], // 過去6日の日別獲得（デモ値）
-  jewelPrevMonth: 780,         // 先月の合計獲得（デモ値）
-  jewelMonthBase: 55,          // 今月の獲得（今日の分を除く・デモ値）
   goalType: (function(){ try{ return localStorage.getItem('smile24_goal') || 'shape'; }catch(e){ return 'shape'; } })(),
   partnerName: (function(){ try{ return localStorage.getItem('smile24_partner_name') || 'Coco'; }catch(e){ return 'Coco'; } })(),
   exerciseLog: [],
@@ -6498,7 +6429,7 @@ function walkFinish(){
   recalc();
   state.exerciseLog.push({ label:'さんぽ（計測）', minutes: mins, kcal: kcal, ts: Date.now() });
   if(typeof renderExerciseLog === 'function') renderExerciseLog();
-  addJewels(10); addXp(20);
+  addXp(20);
   setFlagToday('smile24_walk_day');
   hideSheet('walkSheet');
   showToast('さんぽ ' + mins + '分・' + steps.toLocaleString() + '歩・' +
@@ -6811,7 +6742,13 @@ var EQ_ANGLES = [
    これを分けたのは、真横が先頭でない機材（下記）で「既定は真横のはずなのに違う動画が開く」
    事故が起きたため。1つの配列で両方を賄おうとしたのが原因だった */
 var EQ_ANGLE_SETS = {
-  'lf-leg':    [{ k:'diag', label:'斜め前' }, { k:'side', label:'真横' },   { k:'back', label:'斜め後ろ' }],
+  /* ⚠️ 2026-08-29 再修正：実機の動画を見たユーザーから「真横が実は斜め後ろで、
+     斜め後ろの動画が2本ある（side/backが同じような角度）」と指摘があり、再度写真を見比べて
+     是正した。diagが最も真横に近い（顔は見えないが体の側面がまっすぐ見える）、
+     side/backはどちらも背後寄りで、backの方がより真後ろに近い。
+     side/backの2本が実際にかなり近い角度なのは事実で、これはコード側では直しようがない
+     （見分けやすい別角度を撮り直すしかない）。 */
+  'lf-leg':    [{ k:'diag', label:'真横' },   { k:'side', label:'斜め後ろ' }, { k:'back', label:'後ろ' }],
   'lf-row':    [{ k:'side', label:'斜め前' }, { k:'diag', label:'真横' },   { k:'back', label:'後ろ' }],
   'tg-lat':    [{ k:'diag', label:'斜め前' }, { k:'side', label:'真横' },   { k:'back', label:'後ろ' }],
   'mx-crunch': [{ k:'side', label:'斜め前' }, { k:'back', label:'斜め後ろ' }],
@@ -7218,12 +7155,11 @@ function completeCourse(){
   state.exerciseLog.push({ label:currentCourse.def.name, minutes:currentCourse.totalMin, kcal:currentCourse.totalKcal, ts: Date.now() });
   renderExerciseLog();
   recalc();
-  addJewels(15);
   addXp(30);
   setFlagToday('smile24_ex_day');
   recordMuscles(currentCourse.items);
   hideSheet('courseSheet');
-  showToast('「'+currentCourse.def.name+'」完了！ +'+currentCourse.totalKcal+'kcal'+(state.jewelEnabled?' ＋15ジュエル':''));
+  showToast('「'+currentCourse.def.name+'」完了！ +'+currentCourse.totalKcal+'kcal');
   /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①） */
   var ccMin = currentCourse.totalMin;
   var ccRef = logEffort(ccMin, 'gym', currentCourse.def.name);
@@ -7847,12 +7783,11 @@ function completeOmakase(){
   state.exerciseLog.push({ label:'AIおまかせワークアウト', minutes: okPlan.totalMin, kcal: okPlan.totalKcal, ts: Date.now() });
   renderExerciseLog();
   recalc();
-  addJewels(15);
   addXp(30);
   setFlagToday('smile24_ex_day');
   recordMuscles(okPlan.items);
   hideSheet('omakaseSheet');
-  showToast('今日のワークアウト完了！ +'+okPlan.totalKcal+'kcal 消費'+(state.jewelEnabled?' ＋15ジュエル':''));
+  showToast('今日のワークアウト完了！ +'+okPlan.totalKcal+'kcal 消費');
   /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①） */
   var okMin = okPlan.totalMin;
   var okRef = logEffort(okMin, 'gym', 'AIおまかせワークアウト');
@@ -7862,63 +7797,6 @@ function completeOmakase(){
   }});
 }
 
-/* ============ ジュエル＆ご褒美ビューティーアドバイス ============ */
-/* ジュエルはオプトイン制。交換・景品はなく「頑張りの見える化」専用 */
-function addJewels(n){
-  if(!state.jewelEnabled) return;
-  state.jewels += n;
-  state.jewelToday += n;
-  renderJewelChip();
-}
-function renderJewelChip(){
-  var chip = document.getElementById('jewelChip');
-  if(chip) chip.style.display = state.jewelEnabled ? 'flex' : 'none';
-  var v = document.getElementById('jewelVal');
-  if(v) v.textContent = state.jewels;
-  var nx = document.getElementById('jewelNext');
-  if(nx) nx.textContent = state.jewelToday > 0 ? '今日 +'+state.jewelToday+'・タップで頑張りの記録' : 'タップで頑張りの記録を見る';
-}
-function toggleJewel(){
-  state.jewelEnabled = !state.jewelEnabled;
-  try{ localStorage.setItem('smile24_jewel_on', state.jewelEnabled ? '1' : '0'); }catch(e){}
-  var sw = document.getElementById('jewelSwitch');
-  if(sw) sw.classList.toggle('on', state.jewelEnabled);
-  renderJewelChip();
-  showToast(state.jewelEnabled ? 'ジュエルをオンにしました。頑張りが見える化されるよ！' : 'ジュエルをオフにしました。マイページからいつでも再開できます');
-}
-function openJewelSheet(){
-  /* 2026-08-07: ホームの「今日のミッション」を消し、マイページの「頑張りの記録」が
-     連続来館を見る唯一の導線になった。ジュエルは任意機能（既定オフ）なので、
-     オフのまま即returnすると押しても何も起きない＝導線が死ぬ。
-     オフの時は連続来館だけを見せ、ジュエルはその場でオンにできるようにする */
-  var off = !state.jewelEnabled;
-  var body = document.getElementById('jewelBody');
-  var offBox = document.getElementById('jewelOffBox');
-  if(body) body.style.display = off ? 'none' : '';
-  if(offBox) offBox.style.display = off ? 'block' : 'none';
-  var st = document.getElementById('jwStreak');
-  if(st){
-    var s = computeVisitStreak();
-    st.innerHTML = '<b>' + s.streak + '</b>日連続 来館中<span>／今週' + s.weekCount + '回</span>';
-  }
-  if(off){ showSheet('jewelSheet'); return; }
-  document.getElementById('jwTotal').innerHTML = state.jewels.toLocaleString()+'<span> ジュエル</span>';
-  var vals = state.jewelWeek.concat([state.jewelToday]);
-  document.getElementById('jwWeekChart').innerHTML = trendBarsSVG(vals, {grad:['#7FAFFA','#4A85F6'], base:'#DBE9FE', avg:false});
-  var cur = state.jewelMonthBase + state.jewelToday;
-  var prev = state.jewelPrevMonth;
-  var pace = Math.round(cur/2*30); // デモ基準日=7/2（月の2日目）のペース換算
-  var mx = Math.max(prev, pace, 1);
-  document.getElementById('jwPrevBar').style.width = Math.round(prev/mx*100)+'%';
-  document.getElementById('jwCurBar').style.width = Math.round(pace/mx*100)+'%';
-  document.getElementById('jwPrevVal').textContent = prev.toLocaleString();
-  document.getElementById('jwCurVal').textContent = cur+'（ペース '+pace.toLocaleString()+'）';
-  var diff = Math.round((pace-prev)/prev*100);
-  document.getElementById('jwCheer').textContent = diff >= 0
-    ? '先月の自分を '+diff+'% 上回るペース！この調子！'
-    : '先月まであと少し。今日の記録ですぐ追いつけるよ！';
-  showSheet('jewelSheet');
-}
 /* 効果の断定（「倍増」「〜しますよ」の言い切り）はしない（2026-08-12監査 栄D-10） */
 function beautyAdviceFor(actKey, minutes){
   if(actKey==='strength' && minutes>=15)
@@ -12208,7 +12086,6 @@ function commitMeal(m){
   setFlagToday('smile24_meal_day');   // recalc内のミッション判定より先にフラグを立てる
   recalc();
   saveNutritionToday();   // 記録した日はリロードしても数字が残るように保存
-  addJewels(10);
   addXp(10);
 }
 /* 複数品目をまとめて記録（1品ずつmealLogへ・ごほうびは1食につき1回） */
@@ -12233,7 +12110,6 @@ function commitMealItems(items, photo){
   setFlagToday('smile24_meal_day');
   recalc();
   saveNutritionToday();   // 記録した日はリロードしても数字が残るように保存
-  addJewels(10);
   addXp(10);
 }
 /* プロテイン1タップ記録（2026-08-07・ガチ勢要望）。
@@ -12245,7 +12121,7 @@ function quickLogProtein(){
   var it = newMealItem(idx);
   commitMealItems([it], null);
   var po = FOOD_DB[idx].portions[FOOD_DB[idx].def || 0];
-  showToast('プロテイン1杯を記録したよ（+' + po.kcal + 'kcal・たんぱく質' + po.p + 'g）' + (state.jewelEnabled ? ' ＋10ジュエル' : ''));
+  showToast('プロテイン1杯を記録したよ（+' + po.kcal + 'kcal・たんぱく質' + po.p + 'g）');
 }
 
 function saveMeal(){
@@ -12260,7 +12136,7 @@ function saveMeal(){
     return;
   }
   commitMealItems(mealSel, pendingMealPhoto);
-  showToast(mealSel.length + '品を記録しました！この画面の残りの量に反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
+  showToast(mealSel.length + '品を記録しました！この画面の残りの量に反映したよ');
   /* ⚠️ 保存後にホームへ飛ばさず、同じ食事タブのスロット選択画面へ戻す（2026-08-14b）。
      旧: goTab('home') が stopMealCamera した直後に retake() 末尾の startMealCamera() が走り、
      ホームを表示している間もカメラのストリームが生き続けていた（プライバシー・電池の実害）。
@@ -12362,7 +12238,7 @@ function saveManualMeal(){
   }
   commitMeal({name:name, kcal:kcal, p:p, f:f, c:c, photo:null, icon:'bento'});
   hideSheet('manualMealSheet');
-  showToast('記録したよ！この画面の残りの量に反映したよ'+(state.jewelEnabled?' ＋10ジュエル':''));
+  showToast('記録したよ！この画面の残りの量に反映したよ');
   /* 保存後は食事タブに留まる（2026-08-14b）。手入力経路は mealSel を使わずカメラも
      起動していないので resetMealDraft は不要 */
   setTimeout(function(){ showMealSlotPick(); }, 700);
@@ -12850,14 +12726,9 @@ function rebuildChartsFromLog(){
   state.bodyFatHistory = fArr.slice(-7);
   state.weekCalorieHistory = kArr.slice(-6);   // renderTrendChart が今日ぶんを末尾に足す
 }
-/* 登録会員にデモの作り置き数値（ジュエル340・先月780等）を見せない（2026-08-12監査 D-03）。
-   ジュエルは現状セッション内カウンタなので、登録会員は0から誠実に数える */
+/* 登録会員にデモの作り置き数値を見せない（2026-08-12監査 D-03） */
 function sanitizeMemberState(){
   if(!isRegisteredMember()) return;
-  state.jewels = 0;
-  state.jewelWeek = [0, 0, 0, 0, 0, 0];
-  state.jewelPrevMonth = 0;
-  state.jewelMonthBase = 0;
   /* 目標体重の初期デモ値（あと2.4kg・2026-09-30）も落とす。
      本人が決めていない目標を本人のものとして見せないため（2026-08-13） */
   state.goalDiffKg = 0;
@@ -13888,12 +13759,11 @@ function saveExercise(){
   state.exerciseLog.push({label:label, minutes:minutes, kcal:kcal, ts: Date.now()});
   renderExerciseLog();
   recalc();
-  addJewels(10);
   addXp(20);
   setFlagToday('smile24_ex_day');
   recordMuscles([{name: selectedActivity === 'strength' ? '筋トレ' : '有酸素マシン', machineKey:null}]);
   hideSheet('exerciseSheet');
-  showToast(MET[selectedActivity].label+'を記録したよ！ +'+kcal+'kcal 消費'+(state.jewelEnabled?' ＋10ジュエル':''));
+  showToast(MET[selectedActivity].label+'を記録したよ！ +'+kcal+'kcal 消費');
   var act = selectedActivity, mins = minutes;
   /* きつさ(RPE)を任意で聞いてから、従来のご褒美シートへ（2026-08-15 Strava移植①）。
      筋トレ詳細はセットの余力(RIR)から自動見積もり（同じ概念の二重入力を作らない・タップで上書き可） */
@@ -13905,7 +13775,6 @@ function saveExercise(){
   if(exMode === 'detail' && act === 'strength' && detail && detail.kg > 0) bestConsider('str:' + detail.name, detail.kg, dayKey());
   askRpe(exRef, { auto: exAuto, then: function(){
     document.getElementById('beautyMsg').textContent = beautyAdviceFor(act, mins);
-    document.getElementById('bsJewel').style.display = state.jewelEnabled ? 'block' : 'none';
     showSheet('beautySheet');
   }});
 }
@@ -14332,10 +14201,6 @@ var chatTopics = [
   }},
   { keys:['退会','休会','やめたい','辞め'], gen:function(){
       return '正直に話してくれてありがとう。無理に引き止めないよ。ただ「休会」なら月額を止めてデータも残せるから、疲れてるだけなら休会がおすすめ。手続きはマイページ→退会・休会からできるよ（毎月9日締め）。';
-  }},
-  { keys:['ジュエル','ポイント','特典'], gen:function(){
-      if(!state.jewelEnabled) return 'ジュエルはいまオフになってるよ。マイページの「ジュエル」をオンにすると、来館・食事・運動の記録が+10ずつ貯まって、毎日・毎月の頑張りが見える化されるよ。交換や景品はない、純粋な「続けた証」なんだ';
-      return 'いま' + state.jewels + 'ジュエル。今日は+' + state.jewelToday + '、今月は' + (state.jewelMonthBase + state.jewelToday) + '貯まったよ 先月（' + state.jewelPrevMonth + '）の自分を超えるのが今月の目標！交換や景品はないけど、これはあなたが続けてきた頑張りの証だよ。';
   }},
   { keys:['ありがとう','嬉しい','うれしい'], gen:function(){
       return 'こちらこそ、いつも頑張ってるあなたを見られてうれしいよ。何かあったらいつでも話しかけてね。';
@@ -15215,9 +15080,8 @@ function simulateScan(){
     state.occupancy++;
     state.checkedIn = true;
     logEntry('入館');
-    addJewels(10);
     addXp(50);
-    showToast('ようこそ！入館を記録しました'+(state.jewelEnabled?' ＋10ジュエル':''));
+    showToast('ようこそ！入館を記録しました');
   } else {
     state.occupancy = Math.max(0, state.occupancy - 1);
     state.checkedIn = false;
@@ -17728,68 +17592,14 @@ function trendEx(){
   });
   var wksum = '<div class="bb-wksum"><span>今週 <b>' + wkAgg[0].n + '</b>回・<b>' + wkAgg[0].m + '</b>分</span>' +
     '<span>先週 <b>' + wkAgg[1].n + '</b>回・<b>' + wkAgg[1].m + '</b>分</span></div>';
-  /* 週次がんばり度（きつさ入力済みの運動だけ合算）＋直近3週平均の帯 */
-  var weeks = [];   // [0]=今週 … [5]=5週前
-  for(var w = 0; w < 6; w++) weeks.push({ eff: 0, noRpe: 0 });
-  ed.list.forEach(function(e){
-    var wkAgo2 = Math.floor((e.ago + 6 - base.getDay()) / 7);   // 日曜はじまり（wkAggと同式）
-    if(wkAgo2 < 0 || wkAgo2 > 5) return;
-    if(e.r) weeks[wkAgo2].eff += e.m * e.r;
-    else weeks[wkAgo2].noRpe++;
-  });
-  var band = null;
-  if(weeks[1].eff > 0 && weeks[2].eff > 0 && weeks[3].eff > 0){
-    var avg3 = (weeks[1].eff + weeks[2].eff + weeks[3].eff) / 3;
-    band = { lo: avg3 * 0.8, hi: avg3 * 1.2 };
-  }
-  var W = 320, H = 150, padT = 24, padB = 22, padL = 10, padR = 10;
-  var maxV = 1;
-  weeks.forEach(function(wv){ if(wv.eff > maxV) maxV = wv.eff; });
-  if(band && band.hi > maxV) maxV = band.hi;
-  maxV *= 1.12;
-  var svg = '';
-  if(band){
-    var byLo = H - padB - (band.lo / maxV) * (H - padT - padB);
-    var byHi = H - padB - (band.hi / maxV) * (H - padT - padB);
-    svg += '<rect x="' + padL + '" y="' + byHi + '" width="' + (W - padL - padR) + '" height="' + Math.max(2, byLo - byHi) + '" rx="4" fill="var(--gold)" opacity=".13"/>';
-    svg += '<text x="' + (W - padR) + '" y="' + (byHi - 4) + '" text-anchor="end" fill="#5A6778">いつものペースの帯</text>';
-  }
-  var slot = (W - padL - padR) / 6, bw = 26;
-  var wkLabels = ['5週前','4週前','3週前','2週前','先週','今週'];
-  for(var wi = 5; wi >= 0; wi--){
-    var col = 5 - wi;
-    var cx = padL + slot * col + slot / 2;
-    var val = weeks[wi].eff;
-    if(val > 0){
-      var bh = Math.max(4, (val / maxV) * (H - padT - padB));
-      svg += '<rect x="' + (cx - bw / 2) + '" y="' + (H - padB - bh) + '" width="' + bw + '" height="' + bh + '" rx="6" fill="' + (wi === 0 ? 'var(--gold)' : '#B8D0F5') + '"/>';
-      if(wi === 0) svg += '<text x="' + cx + '" y="' + (H - padB - bh - 6) + '" text-anchor="middle" font-weight="700" fill="#2A59C4">' + Math.round(val).toLocaleString() + '</text>';
-    } else {
-      svg += '<rect x="' + (cx - bw / 2) + '" y="' + (H - padB - 5) + '" width="' + bw + '" height="5" rx="2.5" fill="#EDF1F7"/>';
-    }
-    svg += '<text x="' + cx + '" y="' + (H - 6) + '" text-anchor="middle" fill="' + (wi === 0 ? '#2A59C4' : '#5A6778') + '">' + wkLabels[col] + '</text>';
-  }
-  var chart = '<svg class="exwk-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="margin-top:10px;">' + svg + '</svg>';
-  /* 帯との位置は3区分の言葉だけ。未達の数字・％は出さない。帯より下は「回復週」と肯定する（Strava公式の枠組み） */
-  var judge = '';
-  if(band && weeks[0].eff > 0){
-    judge = weeks[0].eff < band.lo ? '今週はいつもより控えめ。回復週だね、休むのも練習のうち！'
-          : weeks[0].eff > band.hi ? '今週はいつもよりがんばってるね。休養も忘れずに！'
-          : '今週はいつものペース。いいリズムだよ！';
-    judge = '<div class="ath-note" style="margin-top:2px;">' + judge + '</div>';
-  } else if(!band && ed.list.length){
-    judge = '<div class="ath-note" style="margin-top:2px;">きつさ入りの記録が3週間ぶんたまると、「いつものペースの帯」と見くらべられるようになるよ</div>';
-  }
-  var noRpeNote = weeks[0].noRpe > 0 ? '<div class="ath-note" style="margin-top:2px;">きつさ未入力の運動 ' + weeks[0].noRpe + '件は、がんばり度に入っていません</div>' : '';
+  /* ⚠️ 2026-08-29：「週ごとのがんばり度」の週別バーチャート（分×きつさの推計）は
+     ユーザー指示で削除した。運動のカレンダー（バブル）と今週/先週の実測件数だけを表示する */
   return '<div class="trend-card">' +
     '<div class="cc-title-row"><div><div class="cc-title">運動のカレンダー</div>' +
     '<div class="cc-sub">円の大きさ＝その日の運動時間（実測）・直近5週間' + (ed.real ? '' : '・体験用サンプル') + '</div></div></div>' +
     '<div class="bb-grid">' + cells + '</div>' +
     '<div class="bb-legend">' + legend + '</div>' +
     wksum +
-    '<div class="cc-title" style="margin-top:16px;">週ごとのがんばり度</div>' +
-    chart + judge + noRpeNote +
-    '<div class="ath-note">がんばり度＝運動の分数×きつさ(1〜10)。主観にもとづく目安です。帯＝直近3週間の自分の平均から出した範囲（±20%）で、他の人との比較ではありません</div>' +
     '</div>';
 }
 /* からだタブ「自己ベスト」セクション。自分の過去とだけ競う台帳（生涯トップ3方式） */
@@ -18757,11 +18567,6 @@ renderMenusForGoal();
 renderWeekStrip();
 renderTrendTabs();
 renderTrend();
-(function initJewel(){
-  var sw = document.getElementById('jewelSwitch');
-  if(sw && state.jewelEnabled) sw.classList.add('on');
-  renderJewelChip();
-})();
 (function initCallSurname(){
   var on = (localStorage.getItem('smile24_call_surname') === '1');
   var sw = document.getElementById('callSurnameSwitch');
