@@ -1753,6 +1753,11 @@ input{font-family:inherit;}
 .ath-macro .am b{display:block;font-family:var(--font-en);font-size:14px;}
 .ath-macro .am span{font-size:9px;color:var(--text-lt);font-weight:700;}
 .ath-note{font-size:10px;color:var(--text-lt);line-height:1.7;margin-top:8px;}
+/* ⚠️ 2026-08-30：この見た目のルールはもと .jw-off（ジュエル機能）と共用していた。
+   ジュエル削除のときにクラスごと消してしまい、無関係のこのボタンが無地表示になっていた
+   （気付いた経緯：7日間チャレンジ削除の作業中に、min-height:44pxの一覧から
+   .jw-off が抜けているのを見つけて追跡した）。専用クラス名に直して復元する */
+.ath-off-link{margin-top:8px;width:100%;text-align:center;font-size:11px;color:var(--text-lt);font-weight:600;padding:8px;}
 /* 筋トレ記録（からだタブ） */
 .str-hist{margin-top:8px;}
 .str-hist .sh-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F0F3F7;font-size:12px;}
@@ -1783,17 +1788,6 @@ input{font-family:inherit;}
 .ln-rec .chev{width:16px;height:16px;color:var(--text-lt);flex:0 0 16px;}
 .ln-ic{width:34px;height:34px;border-radius:10px;background:#F4F7FB;display:flex;align-items:center;justify-content:center;flex:0 0 34px;}
 .ln-ic svg{width:19px;height:19px;}
-.ch-box{margin-top:12px;padding:11px 13px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;}
-.ch-label{font-size:11.5px;font-weight:700;color:var(--text-mid);}
-.ch-label a{color:var(--gold-dk);font-weight:800;}
-.ch-days{display:flex;gap:6px;margin-top:8px;}
-.ch-day{
-  flex:1;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--white);
-  font-family:var(--font-en);font-size:10px;font-weight:800;color:var(--text-lt);cursor:default;padding:0 2px;
-}
-.ch-day.done{background:var(--grad-main);border-color:transparent;color:#fff;}
-.ch-day.done svg{width:15px;height:15px;}
-.ch-day.next{border-color:var(--gold);color:var(--gold-dk);cursor:pointer;box-shadow:0 2px 8px rgba(230,168,60,.18);}
 .ln-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px;}
 .ln-tile{
   border:1px solid #E3EAF3;border-radius:var(--radius-sm);background:var(--white);padding:11px 12px;
@@ -1948,17 +1942,6 @@ input{font-family:inherit;}
 .cir-head-row .closeb svg{width:15px;height:15px;}
 .cir-voice{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;min-height:44px;font-size:12.5px;color:var(--text-mid);font-weight:700;cursor:pointer;}
 .cir-voice input{width:22px;height:22px;}
-/* 修了証 */
-.cert-card{
-  border:2px solid var(--gold);border-radius:var(--radius);padding:26px 20px;text-align:center;
-  background:linear-gradient(180deg,#FFFDF7 0%,#FDF6E7 100%);
-}
-.cert-ribbon{width:52px;height:52px;margin:0 auto;border-radius:50%;background:var(--grad-main);color:#fff;display:flex;align-items:center;justify-content:center;}
-.cert-ribbon svg{width:26px;height:26px;}
-.cert-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:.35em;text-indent:.35em;margin-top:12px;}
-.cert-name{font-size:17px;font-weight:800;color:var(--gold-dk);margin-top:10px;}
-.cert-body{font-size:12.5px;color:var(--text-mid);line-height:1.9;margin-top:10px;text-align:left;}
-.cert-date{font-size:11px;color:var(--text-lt);margin-top:12px;}
 /* きょうの食事スコア（食事タブ） */
 .meal-score{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;font-weight:700;color:var(--text-mid);flex-wrap:wrap;}
 .meal-score .ms-stars{display:inline-flex;gap:2px;}
@@ -2581,11 +2564,11 @@ svg text{ font-size:12px; }
 .ok-stat .os-v span, .ok-stat .os-l, .course-card .cc-meta,
 .macro .m-head span, .macro .m-head b, .ex-note, .ex-str-stats .st span,
 .ath-macro .am span, .ath-note, .str-hist .sh-d, .lnh-title .lnh-sub, .lnh-freeze,
-.ln-rec .ln-rec-tag, .ln-rec span, .ch-day, .ln-genre, .ln-done-mark, .ln-tile span,
+.ln-rec .ln-rec-tag, .ln-rec span, .ln-genre, .ln-done-mark, .ln-tile span,
 .dg-chip span, .goal-line .gl-tag, .streak-card .sk-t,
 .recent-row .rc-when, .recent-row .rc-kcal span, .meal-cell .mc-name,
 .dash-head .dh-s, .dash-head .dh-r span, .water-info .wv span, .water-info .wg,
-.wq-labels, .gq-label, .tc-legend span, .jw-sub, .jw-mrow .jm-l, .jw-mrow .jm-v,
+.wq-labels, .gq-label, .tc-legend span,
 .history-total b i, .mission-row .mi-xp, .wr-stat .v span, .wr-stat .l,
 .wo-step-label, .cal-dow, .sos-btn .t, .sos-link, .theme-opt .tp-name,
 .eq-lastw .lw-save, .pos-score-ring .num span, .pos-chip,
@@ -2655,7 +2638,7 @@ svg text{ font-size:12px; }
 
 /* テキストリンクは面で押せるようにする（実測15〜17pxしかなかった） */
 .sos-link, .ob-link, .manual-meal-link, .plan-edit-link, .ok-regen,
-.qclose, .qr-setting-link, .retake-btn, .sheet-cancel,
+.qclose, .qr-setting-link, .retake-btn, .sheet-cancel, .ath-off-link,
 .pos-sub-link, .section-label a{
   min-height:44px; display:flex; align-items:center; justify-content:center;
 }
@@ -3726,7 +3709,7 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-30b</b>（<b>入会前に「どんな機材があるの？」が分かる画面を追加しました</b>。最初の「ようこそ」画面に<b>「どんな機材があるの？」</b>のリンクを付けました。会員登録をしていなくても、店内にある機材の写真・鍛えられる部位が一覧で見られます（使い方動画やAI推奨値は、これまでどおりご入会後にご案内します）。<br><br>前の版（2026-08-30a）：<b>機材ガイドの写真を3点直しました</b>。①ベンチプレスの写真がストレッチエリアの無関係な写真だったので、実際のダンベル・プレートの写真に差し替えました。②エアロバイク・スライサー・ステップマシンは、実物と違う写真（ランニングマシンが並ぶ別の場所の写真）が出ていたため、正直に「写真は準備中」の表示に変えました（動画はもともと正しいものが出ています）。③「クロストレーナー」として案内していた機材は、動画を見直したところ実際は<b>スライサー</b>でしたので、名前を直しました（もともと機材名が未特定だった枠の「スライサー」は重複するため削除しています）。<br><br>前の版（2026-08-29l）：<b>機材動画の「向きの名前」を実際の映像に合わせて直しました</b>。アブドミナルクランチで「斜め前」と出ていた動画は、実際には<b>真横</b>から撮ったものでしたので、名前を直しました。レッグプレスの「真横」も、ちゃんと真横の動画が出るようになっています（この直しは前の版でできていましたが、公開が済んでいなかったため、お使いのアプリでは古い名前のままになっていました。失礼いたしました）。なお<b>レッグプレスとアブドミナルクランチには、斜め前から撮った動画がもともとありません</b>（撮影できているのが真横・斜め後ろ・後ろだけのためです）。<br><br>前の版（2026-08-29k）：<b>「週ごとのがんばり度」のグラフと「ジュエル」機能を削除しました</b>。からだの記録タブは、運動のカレンダーと今週・先週の実測件数だけのシンプルな表示になりました。ジュエルは交換・景品のない「続けた証」の機能でしたが、設定からトグルごと無くしています。連続来館の記録（マイページの「がんばりの記録」）は今までどおりです。<br><br>前の版（2026-08-29j）：<b>「どの食事を記録する？」の4マスを、ひと目で見分けられるようはっきり4色に分けました</b>：朝食＝オレンジ、昼食＝黄色、おやつ＝グリーン、夕食＝紫。<br><br>前の版（2026-08-29i）：<b>水・太陽など、実物に色のイメージがあるアイコンはブランド色にせず戻しました</b>。ホームの「水分」の水滴は水色に、食事タブの「昼食」の太陽アイコンは暖かい黄色に。歩数・体重などのアイコンは引き続きブランドのローズです。<br><br>前の版（2026-08-29h）：<b>他のタブも、運動タブと同じローズ×アプリコットの配色にそろえました</b>。ホーム・食事・姿勢診断・からだの記録・マイページと下タブバーの各アイコンが、運動タブと同じ暖色になります。数字やグラフの色（たんぱく質・脂質・炭水化物の色分け、BMIの健康ゾーン、体重や運動カテゴリの凡例など、見た目で意味を判別している色）はすべて今までどおりで、ブランドのボタン・バッジ・枠線などの部分だけを変えています。<br><br>前の版（2026-08-29g）：<b>運動タブの配色を、ローズ×アプリコットの暖色に変更しました</b>。「ジムで/おうちで」の切替ボタン・「運動を記録する」・30秒サーキットのカード・スマート機材ガイドなど、運動タブとその中の画面だけを対象にしています。文字の見やすさ（コントラスト）は、白い面でも淡い色の面でも基準を満たすことを確認しています。<br><br>前の版（2026-08-29f）：<b>30秒サーキットの画面を4点整理しました</b>。①右上に閉じる×ボタンを追加（下までスクロールしなくても閉じられます）②はじめる前の一覧から種目名を消し、「ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びです」という案内に変えました（種目名は始めてから画面に出ます）③音声設定のラベルを「ラスト3秒をピッ・ピッ・ポーンでカウント」に変更④機材ガイドを開いたとき、前に見ていた画面の下の方から始まってしまう不具合を直し、必ず一番上（機材名）から開くようにしました。あわせて、レッグプレスなど機材ガイドの一番上にあった小さな写真を削除し、動画がすぐ出るようにしました。<br><br>前の版（2026-08-29e）：<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-30c</b>（<b>体験モードの歩数・水分をサンプル表示に、「はじめての7日間チャレンジ」を削除しました</b>。①体験モードでは、まだ何も記録していない歩数・水分が「0」のまま表示されていました（体重は最初からサンプル値が出ていたのに不揃いでした）。歩数は<b>5,500歩</b>、水分は<b>1,250ml</b>のサンプル表示に揃えています（会員登録すると、ご自身の記録に置き換わります）。②おうちレッスンの<b>「はじめての7日間チャレンジ」と修了証</b>を削除しました。連続記録・お休み保険の仕組みは今までどおりです。<br><br>前の版（2026-08-30b）：<b>入会前に「どんな機材があるの？」が分かる画面を追加しました</b>。最初の「ようこそ」画面に<b>「どんな機材があるの？」</b>のリンクを付けました。会員登録をしていなくても、店内にある機材の写真・鍛えられる部位が一覧で見られます（使い方動画やAI推奨値は、これまでどおりご入会後にご案内します）。<br><br>前の版（2026-08-30a）：<b>機材ガイドの写真を3点直しました</b>。①ベンチプレスの写真がストレッチエリアの無関係な写真だったので、実際のダンベル・プレートの写真に差し替えました。②エアロバイク・スライサー・ステップマシンは、実物と違う写真（ランニングマシンが並ぶ別の場所の写真）が出ていたため、正直に「写真は準備中」の表示に変えました（動画はもともと正しいものが出ています）。③「クロストレーナー」として案内していた機材は、動画を見直したところ実際は<b>スライサー</b>でしたので、名前を直しました（もともと機材名が未特定だった枠の「スライサー」は重複するため削除しています）。<br><br>前の版（2026-08-29l）：<b>機材動画の「向きの名前」を実際の映像に合わせて直しました</b>。アブドミナルクランチで「斜め前」と出ていた動画は、実際には<b>真横</b>から撮ったものでしたので、名前を直しました。レッグプレスの「真横」も、ちゃんと真横の動画が出るようになっています（この直しは前の版でできていましたが、公開が済んでいなかったため、お使いのアプリでは古い名前のままになっていました。失礼いたしました）。なお<b>レッグプレスとアブドミナルクランチには、斜め前から撮った動画がもともとありません</b>（撮影できているのが真横・斜め後ろ・後ろだけのためです）。<br><br>前の版（2026-08-29k）：<b>「週ごとのがんばり度」のグラフと「ジュエル」機能を削除しました</b>。からだの記録タブは、運動のカレンダーと今週・先週の実測件数だけのシンプルな表示になりました。ジュエルは交換・景品のない「続けた証」の機能でしたが、設定からトグルごと無くしています。連続来館の記録（マイページの「がんばりの記録」）は今までどおりです。<br><br>前の版（2026-08-29j）：<b>「どの食事を記録する？」の4マスを、ひと目で見分けられるようはっきり4色に分けました</b>：朝食＝オレンジ、昼食＝黄色、おやつ＝グリーン、夕食＝紫。<br><br>前の版（2026-08-29i）：<b>水・太陽など、実物に色のイメージがあるアイコンはブランド色にせず戻しました</b>。ホームの「水分」の水滴は水色に、食事タブの「昼食」の太陽アイコンは暖かい黄色に。歩数・体重などのアイコンは引き続きブランドのローズです。<br><br>前の版（2026-08-29h）：<b>他のタブも、運動タブと同じローズ×アプリコットの配色にそろえました</b>。ホーム・食事・姿勢診断・からだの記録・マイページと下タブバーの各アイコンが、運動タブと同じ暖色になります。数字やグラフの色（たんぱく質・脂質・炭水化物の色分け、BMIの健康ゾーン、体重や運動カテゴリの凡例など、見た目で意味を判別している色）はすべて今までどおりで、ブランドのボタン・バッジ・枠線などの部分だけを変えています。<br><br>前の版（2026-08-29g）：<b>運動タブの配色を、ローズ×アプリコットの暖色に変更しました</b>。「ジムで/おうちで」の切替ボタン・「運動を記録する」・30秒サーキットのカード・スマート機材ガイドなど、運動タブとその中の画面だけを対象にしています。文字の見やすさ（コントラスト）は、白い面でも淡い色の面でも基準を満たすことを確認しています。<br><br>前の版（2026-08-29f）：<b>30秒サーキットの画面を4点整理しました</b>。①右上に閉じる×ボタンを追加（下までスクロールしなくても閉じられます）②はじめる前の一覧から種目名を消し、「ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びです」という案内に変えました（種目名は始めてから画面に出ます）③音声設定のラベルを「ラスト3秒をピッ・ピッ・ポーンでカウント」に変更④機材ガイドを開いたとき、前に見ていた画面の下の方から始まってしまう不具合を直し、必ず一番上（機材名）から開くようにしました。あわせて、レッグプレスなど機材ガイドの一番上にあった小さな写真を削除し、動画がすぐ出るようにしました。<br><br>前の版（2026-08-29e）：<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
@@ -3998,7 +3981,7 @@ svg text{ font-size:12px; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16v-5"/><path d="M12 16V8"/><path d="M17 16v-3"/></svg>
           週次チェックイン（実測にもとづく見直し）
         </button>
-        <button class="jw-off" id="athOffBtn" style="display:none;" onclick="clearAthlete()">目標コーチをやめる（通常の目標に戻す）</button>
+        <button class="ath-off-link" id="athOffBtn" style="display:none;" onclick="clearAthlete()">目標コーチをやめる（通常の目標に戻す）</button>
         <button class="sheet-cancel" onclick="hideSheet('athleteSheet')">閉じる</button>
       </div>
     </div>
@@ -4539,13 +4522,6 @@ svg text{ font-size:12px; }
         <div class="ex-note">重さは機材ガイドのAI推奨値より<b>軽めから</b>。力を入れるときは<b>息を止めずに吐きます</b>（息こらえは血圧が上がります）。マシンが使用中のときは「この種目をとばす」で先に進めます。<br><b>胸の痛み・強い息切れ・めまい・吐き気・関節の痛みが出たら、すぐ中止して休んでください。</b>持病のある方・服薬中の方・妊娠中の方は、はじめる前にかかりつけ医にご相談ください（本アプリは診断・治療を目的とするものではありません）。</div>
         <button class="exlog-add" onclick="cirFinish()">おわり！（ここまでを記録する）</button>
         <button class="sheet-cancel" onclick="cirClose()">とじる</button>
-      </div>
-    </div>
-    <!-- 7日間チャレンジの修了証 -->
-    <div class="sheet" id="certSheet">
-      <div class="sheet-card">
-        <div class="cert-card" id="certBody"></div>
-        <button class="sheet-cancel" onclick="hideSheet('certSheet')">とじる</button>
       </div>
     </div>
 
@@ -5475,23 +5451,33 @@ function walkExtraKcal(){
 function activityKcal(){
   return state.exerciseKcal + walkExtraKcal();
 }
+/* 体験モード（未登録）のサンプル歩数。DEMO_WEIGH_LOG等と同じ「未登録＝ショーケース」の
+   方針（2026-08-05b）に、歩数だけ揃っていなかった（2026-08-30ユーザー指摘）。
+   実測が1歩でもあれば、その時点で実測を優先する（demo扱いは「本当に何も記録していない」ときだけ） */
+var WALK_DEMO_STEPS = 5500;
 function renderWalkCard(){
   var a = walkAgg();
   var el = function(id){ return document.getElementById(id); };
   if(!el('walkStepsVal')) return;
+  var demo = !isRegisteredMember() && a.steps === 0;
+  var steps = demo ? WALK_DEMO_STEPS : a.steps;
+  var dist  = demo ? steps * walkStride() : a.dist;
+  var kcal  = demo ? calcKcal(3.5, steps / 100) : a.kcal;   // walkAgg()と同じ「100歩/分」換算
   /* 未記録の日に「0歩・目標の0%」と出すと、やっていないことを実績の形で突きつけてしまう。
-     記録が無いうちは数字を出さず「まだ記録がありません」と正直に書く（2026-08-14検証） */
-  var has = a.steps > 0;
-  el('walkStepsVal').textContent = has ? a.steps.toLocaleString() : '—';
-  el('walkDistVal').textContent = (a.dist / 1000).toFixed(1) + ' km';
-  el('walkKcalVal').textContent = '+' + a.kcal.toLocaleString() + ' kcal（推計）';
-  el('walkBurnVal').textContent = has
-    ? '歩いたぶんの消費 +' + a.kcal.toLocaleString() + ' kcal（推計）'
-    : 'まだ記録がありません';
-  el('walkGoalPct').textContent = Math.min(999, Math.round(a.steps / WALK_GOAL_STEPS * 100)) + '%';
+     記録が無いうちは数字を出さず「まだ記録がありません」と正直に書く（2026-08-14検証）。
+     ただし体験モードは「画面の数字はサンプルです」の前提なので、上のdemoでサンプル値に差し替える */
+  var has = steps > 0;
+  el('walkStepsVal').textContent = has ? steps.toLocaleString() : '—';
+  el('walkDistVal').textContent = (dist / 1000).toFixed(1) + ' km';
+  el('walkKcalVal').textContent = '+' + kcal.toLocaleString() + ' kcal（推計）';
+  el('walkBurnVal').textContent = !has ? 'まだ記録がありません'
+    : demo ? 'サンプル表示です（会員登録すると、あなたの記録に置き換わります）'
+    : '歩いたぶんの消費 +' + kcal.toLocaleString() + ' kcal（推計）';
+  el('walkGoalPct').textContent = Math.min(999, Math.round(steps / WALK_GOAL_STEPS * 100)) + '%';
   var note = el('walkNote');
   /* 達成表示は歩数を訂正して下回ったら元に戻す（前は一度書き換わると戻らなかった） */
-  if(a.steps >= WALK_GOAL_STEPS) note.textContent = '今日の目安 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩に届きました';
+  if(steps >= WALK_GOAL_STEPS) note.textContent = '今日の目安 ' + WALK_GOAL_STEPS.toLocaleString() + ' 歩に届きました';
+  else if(demo) note.textContent = 'サンプル表示です（会員登録すると、あなたの記録から作られます）';
   else note.textContent = '画面を消している間のぶんはスマホの歩数計に残っています。ここに写せば重複なしで合算します';
   var row = el('walkAutoRow');
   if(row){
@@ -15503,14 +15489,16 @@ function renderPriceTotals(){
 
 /* ============ おうちレッスン（2026-08-12・宅トレ動画アプリの徹底オマージュ） ============
    deep-research（2026-08-12）で確定した仕様の移植:
-   ・目的×レベルのルールベース推薦／ジャンル絞り込み／7日間チャレンジ→修了証／
+   ・目的×レベルのルールベース推薦／ジャンル絞り込み／
      連続記録＋お休み保険（フリーズ）／「◯日連続達成！」の祝福——いずれも本家の公開仕様
    ・動画はPixabay Content License素材（商用可・帰属不要）。ただし「素材集のままの
-     再配布」は規約違反になるため、必ず手順ガイド・タイマー・消費目安・チャレンジと
+     再配布」は規約違反になるため、必ず手順ガイド・タイマー・消費目安と
      一体の「レッスン」として提示する（この一体化がライセンス順守の要件）
    ・ジュエル/ポイント演出は使わない（ユーザー指示「親しみやすいゲーム感覚」）
    ・「見放題/受け放題」の誇張はせず本数を正確に書く（景表法未検証のため安全側）
-   ・効能の断定（「痩せる」「治る」）は書かない。部位と動作の説明だけにする */
+   ・効能の断定（「痩せる」「治る」）は書かない。部位と動作の説明だけにする
+   ⚠️ 2026-08-30：「はじめての7日間チャレンジ→修了証」はユーザー指示で削除した
+   （LN_CH7・lnState.ch・showCert()・certSheet・.ch-box系CSS・.cert-card系CSSを全削除） */
 var LESSONS = [
   { id:'ln-yoga-am',  title:'朝の目覚めヨガ',        genre:'ヨガ',     min:5,  level:1, mets:2.5, video:'lessons/ln-yoga-am.mp4',
     desc:'起きぬけのかたまった体を、深い呼吸と一緒にゆっくり起こします',
@@ -15552,12 +15540,14 @@ var LESSONS = [
 var LN_GENRES = ['すべて', 'ヨガ', 'ストレッチ', '筋トレ', '有酸素', '瞑想'];
 var LN_COLORS = { 'ヨガ':'#B48CF2', 'ストレッチ':'#6FD6AC', '筋トレ':'#4A85F6', '有酸素':'#F6B24A', '瞑想':'#7FC7E8' };
 /* 7日間チャレンジ「はじめての7日間」（本家のチャレンジプレイリスト→修了証の骨格を移植） */
-var LN_CH7 = ['ln-yoga-am', 'ln-fullbody', 'ln-squat', 'ln-seated', 'ln-pushup', 'ln-night', 'ln-dance'];
 var lnFilter = 'すべて';
+/* ⚠️ 2026-08-30：「はじめての7日間チャレンジ」（LN_CH7・lnState.ch・修了証）はユーザー指示で
+   削除した。既存端末のlocalStorageに残っているchキーは読まなくなるだけで害はないため、
+   マイグレーション（消す処理）はあえて入れていない */
 function loadLnState(){
   try{ return JSON.parse(localStorage.getItem('smile24_lessons') || 'null') ||
-       { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 }, ch:{ done:[], certAt:null } }; }
-  catch(e){ return { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 }, ch:{ done:[], certAt:null } }; }
+       { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 } }; }
+  catch(e){ return { days:{}, last:{}, streak:{ last:'', count:0, freeze:1 } }; }
 }
 var lnState = loadLnState();
 function saveLnState(){ try{ localStorage.setItem('smile24_lessons', JSON.stringify(lnState)); }catch(e){} }
@@ -15595,20 +15585,6 @@ function renderLessonCard(){
   var streakLine = st.count > 0
     ? '<span class="lnh-streak">' + st.count + '日連続</span>' + (st.freeze > 0 ? '<span class="lnh-freeze">お休み保険 ' + st.freeze + '</span>' : '')
     : '<span class="lnh-streak lnh-zero">きょうの1本からスタート</span>';
-  /* 7日間チャレンジのDAYチップ */
-  var chDone = lnState.ch.done.length;
-  var chips = LN_CH7.map(function(id, i){
-    var l = lnById(id);
-    var cls = i < chDone ? ' done' : i === chDone ? ' next' : '';
-    var inner = i < chDone
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-      : 'DAY' + (i + 1);
-    return '<button type="button" class="ch-day' + cls + '" ' + (i === chDone ? 'onclick="openLesson(\'' + id + '\')"' : i < chDone ? '' : 'disabled') + '>' + inner + '</button>';
-  }).join('');
-  var chLabel = lnState.ch.certAt
-    ? '7日間チャレンジ 完走！ <a href="javascript:void(0)" onclick="showCert()">修了証を見る</a>'
-    : chDone === 0 ? 'はじめての7日間チャレンジ（1日1本・完走で修了証）'
-    : 'はじめての7日間チャレンジ　あと' + (7 - chDone) + '日で修了証';
   /* ジャンル絞り込み＋一覧 */
   var filters = LN_GENRES.map(function(g){
     return '<button type="button" class="chip-select' + (g === lnFilter ? ' active' : '') + '" onclick="lnFilter=\'' + g + '\';renderLessonCard()">' + g + '</button>';
@@ -15630,7 +15606,6 @@ function renderLessonCard(){
         '<div class="ln-rec-body"><div class="ln-ic">' + lnIcon(rec.genre) + '</div>' +
         '<div><b>' + escHtml(rec.title) + '</b><span>' + rec.genre + '・' + rec.min + '分・約' + lessonKcal(rec) + 'kcal</span></div></div>' +
         '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>' +
-      '<div class="ch-box"><div class="ch-label">' + chLabel + '</div><div class="ch-days">' + chips + '</div></div>' +
       '<div class="chip-row" style="margin-top:12px;">' + filters + '</div>' +
       '<div class="ln-grid">' + list + '</div>' +
       '<div class="ath-note">ジムに来られない日も、おうちで5分から。動画素材はPixabay（Content License）を、手順・タイマー・消費目安と一体のレッスンとして編集・構成しています</div>' +
@@ -15703,35 +15678,12 @@ function finishLesson(){
     if(st.count > 0 && st.count % 7 === 0 && st.freeze < 1){ st.freeze = 1; msg += '。7日達成でお休み保険が1枚たまったよ'; }
     if(st.count >= 2) msg = st.count + '日連続達成！ ' + msg;
   }
-  /* 7日間チャレンジの進行 */
-  if(!lnState.ch.certAt && LN_CH7[lnState.ch.done.length] === lnCur.id){
-    lnState.ch.done.push(today);
-    if(lnState.ch.done.length >= 7){
-      lnState.ch.certAt = today;
-      setTimeout(showCert, 700);
-    } else {
-      msg += '。チャレンジDAY' + lnState.ch.done.length + 'クリア！';
-    }
-  }
   saveLnState();
   closeLesson();
   showToast(msg);
   renderLessonCard();
   /* きつさ(RPE)の任意入力（2026-08-15 Strava移植①） */
   askRpe(logEffort(minutes, 'home', 'おうちレッスン・' + lnCur.title));
-}
-/* 修了証（本家: チャレンジプレイリスト完走→修了証、の移植） */
-function showCert(){
-  var name = (document.getElementById('greetName') || {}).textContent || 'あなた';
-  var d = lnState.ch.certAt || dayKey();
-  var p = String(d).split('-');
-  document.getElementById('certBody').innerHTML =
-    '<div class="cert-ribbon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg></div>' +
-    '<div class="cert-title">修了証</div>' +
-    '<div class="cert-name">' + escHtml(name) + '</div>' +
-    '<div class="cert-body">おうちレッスン「はじめての7日間チャレンジ」を完走されたことを、ここに証します。この7日間の積み重ねが、これからのあなたの味方になります。</div>' +
-    '<div class="cert-date">' + (+p[0]) + '年' + (+p[1]) + '月' + (+p[2]) + '日　スマイル24・AIパートナー Coco</div>';
-  showSheet('certSheet');
 }
 
 /* ============ FC店舗コード（2026-08-12・単一アプリ＋店舗切替） ============
@@ -17161,12 +17113,16 @@ function addWater(n){
 }
 /* 前回の水分補給からの経過を見えるようにする（あきすぎのセルフチェック用） */
 var WATER_GAP_WARN_MIN = 120;   // これ以上あいたら「そろそろ飲もう」
+/* 体験モード（未登録）のサンプル水分量。歩数と同じ理由（2026-08-30ユーザー指摘）で追加 */
+var WATER_DEMO_ML = 1250;
 function renderWaterLast(){
   var el = document.getElementById('waterLast');
   if(!el) return;
   var at = state.waterLastAt || 0;
   if(!at){
-    el.textContent = '今日はまだ記録なし。起きたらまず1杯がおすすめ';
+    el.textContent = (!isRegisteredMember() && state.waterMl === 0)
+      ? 'サンプル表示です（会員登録すると、あなたの記録に置き換わります）'
+      : '今日はまだ記録なし。起きたらまず1杯がおすすめ';
     el.classList.remove('warn');
     return;
   }
@@ -17189,11 +17145,12 @@ function renderWater(){
   var v = document.getElementById('waterVal');
   if(!v) return;
   var goal = waterGoalMl();
-  v.innerHTML = state.waterMl.toLocaleString() + '<span> / ' + goal.toLocaleString() + 'ml</span>';
+  var ml = (!isRegisteredMember() && state.waterMl === 0) ? WATER_DEMO_ML : state.waterMl;
+  v.innerHTML = ml.toLocaleString() + '<span> / ' + goal.toLocaleString() + 'ml</span>';
   /* 2026-08-14：縦のコップ絵から横バーに変えたので height ではなく width を動かす */
   var fill = document.getElementById('waterFill');
-  if(fill) fill.style.width = Math.min(state.waterMl / goal * 100, 100) + '%';
-  document.getElementById('waterGlasses').textContent = 'コップ約' + Math.round(state.waterMl/250) + '杯分';
+  if(fill) fill.style.width = Math.min(ml / goal * 100, 100) + '%';
+  document.getElementById('waterGlasses').textContent = 'コップ約' + Math.round(ml/250) + '杯分';
   renderWaterLast();
   var lbl = document.getElementById('waterGoalLabel');
   if(lbl) lbl.textContent = '目標 ' + goal.toLocaleString() + 'ml';
