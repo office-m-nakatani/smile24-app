@@ -1388,7 +1388,6 @@ input{font-family:inherit;}
 .equip-card .eq-name{font-size:12px;font-weight:700;line-height:1.45;margin-top:2px;min-height:2.6em;}
 .equip-card .eq-ai{display:inline-block;margin-top:6px;font-size:9px;font-weight:700;color:var(--gold-dk);background:var(--pastel-1);border-radius:100px;padding:3px 9px;}
 
-.eq-photo{width:100%;height:150px;object-fit:cover;border-radius:14px;margin-bottom:12px;background:var(--pastel-1);}
 .eq-video{position:relative;height:120px;border-radius:14px;background:linear-gradient(160deg,#2C3A4E,#1A2432);display:flex;align-items:center;justify-content:center;margin:14px 0 4px;cursor:pointer;}
 .eq-video:not(.has-video){cursor:default;}
 .eq-video .ev-play{width:46px;height:46px;border-radius:50%;background:rgba(74,133,246,.92);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;padding-left:3px;}
@@ -1718,12 +1717,6 @@ input{font-family:inherit;}
 .cir-laps .cl-label{font-size:11.5px;font-weight:700;color:var(--text-mid);}
 .cir-laps button{min-height:44px;padding:8px 16px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;}
 .cir-laps button.on{border-color:var(--gold);background:var(--pastel-1);color:var(--gold-dk);}
-/* 実施順は折り返して全部見せる（横スクロールだと3番目以降に気づけない） */
-.cir-order{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
-.cir-order i{font-style:normal;font-size:11px;font-weight:700;color:var(--text-mid);background:#F4F7FB;border-radius:100px;padding:5px 10px;}
-/* タップすると使い方と動画が開くステーション。押せることが分かるように色と下線を付ける */
-.cir-order i.tap{color:var(--gold-dk);background:#EAF1FE;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
-.cir-order i.tap:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 .cir-start{width:100%;min-height:50px;margin-top:13px;border:none;border-radius:100px;background:var(--grad-main);color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(74,133,246,.25);}
 .cir-note{margin-top:11px;padding:10px 12px;border-radius:var(--radius-sm);background:#F7FAFE;border:1px solid #E3EAF3;font-size:11px;color:var(--text-mid);line-height:1.7;}
 .cir-last{font-size:11px;color:var(--text-mid);margin-top:9px;text-align:center;line-height:1.6;}
@@ -1757,6 +1750,12 @@ input{font-family:inherit;}
 .cir-ctrl{display:flex;gap:8px;margin-top:12px;}
 .cir-ctrl button{flex:1;min-height:46px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
 .cir-ctrl button.primary{border:none;background:var(--grad-main);color:#fff;}
+/* 見出しの右端に×（2026-08-29追加）。h3のmargin-bottomは行そのものに寄せる。
+   ⚠️ .closeb の見た目は本来 .chat-hd 配下でのみ効くスコープ付きCSSなので、ここでも明示する */
+.cir-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.cir-head-row h3{margin-bottom:0;}
+.cir-head-row .closeb{flex:0 0 auto;width:32px;height:32px;border-radius:50%;background:#E9EEF5;display:flex;align-items:center;justify-content:center;color:var(--text-mid);cursor:pointer;}
+.cir-head-row .closeb svg{width:15px;height:15px;}
 .cir-voice{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;min-height:44px;font-size:12.5px;color:var(--text-mid);font-weight:700;cursor:pointer;}
 .cir-voice input{width:22px;height:22px;}
 /* 修了証 */
@@ -3566,7 +3565,7 @@ svg text{ font-size:12px; }
         <div class="list-item" onclick="logout()" style="cursor:pointer;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>ログアウト</span></div>
       </div>
 
-      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-29e</b>（<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
+      <p class="app-ver">スマイル24 AIパートナー<br><b>版 2026-08-29f</b>（<b>30秒サーキットの画面を4点整理しました</b>。①右上に閉じる×ボタンを追加（下までスクロールしなくても閉じられます）②はじめる前の一覧から種目名を消し、「ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びです」という案内に変えました（種目名は始めてから画面に出ます）③音声設定のラベルを「ラスト3秒をピッ・ピッ・ポーンでカウント」に変更④機材ガイドを開いたとき、前に見ていた画面の下の方から始まってしまう不具合を直し、必ず一番上（機材名）から開くようにしました。あわせて、レッグプレスなど機材ガイドの一番上にあった小さな写真を削除し、動画がすぐ出るようにしました。<br><br>前の版（2026-08-29e）：<b>動画の再生ボタン・10秒送り戻しが、再生中は2秒で自動的に消えるようにしました</b>。もう一度画面に触れると出てきます。<br><br>前の版（2026-08-29d）：<b>動画の並びと既定の仕組みを整理しました</b>。すべての機材で、タイルの並びを<b>斜め前・真横・斜め後ろ</b>の順に統一し、大きく出る動画は並びに関係なく必ず<b>「真横」</b>になるようにしました（これまでは並びの先頭が既定を兼ねていたため、並びを変えると既定までずれる不具合がありました）。<br><br>前の版（2026-08-29b）：<b>レッグプレスの動画の呼び方を直しました</b>（斜め前・真横・斜め後ろ）。<br><br>前の版（2026-08-29a）：<b>30秒サーキットでも、動画の向きを切り替えられるようになりました</b>。動いているあいだの動画の下に、ほかの向きの動画が小さく並びます。押すとその向きに切り替わり、見ていた場面はそのまま引き継がれます。1つしか動画が無いステーションでは出ません。<b>3番目を有酸素マシンからチェストプレスに変えました</b>（有酸素マシンの使い方は、これまでどおり運動タブの機材ガイドでご覧いただけます）。<b>ラスト3秒が音で分かるようになりました</b>：「次の種目を音声で読み上げる」をオンにすると、残り2秒・1秒で小さく「ピッ」、切り替わりの瞬間に大きく「ポーン」と鳴ります。読み上げに対応していない機種でも、この音だけはお使いいただけます。ラットプルダウンの最初に出る向きを<b>真横</b>に直しました。<br><br>前の版（2026-08-28c）：<b>30秒サーキットに、マシンの動画が入りました</b>。動く30秒のあいだ、そのマシンの動画がくり返し流れます。<b>残り秒数は右上に小さく</b>出るので、動きを見ながら数えられます。足踏みの30秒は、これまでどおり写真に戻ります。あわせて<b>動画の向きの名前を直しました</b>（「真横」と「斜め後ろ」が入れかわっていた点です。マシンごとに撮れている向きに合わせて、正面・真横・斜め前・斜め後ろ・後ろと出るようにしました）。<b>動画の上下に出ていた黒い帯をなくし</b>、画面いっぱいに映るようにしました。<b>動画の音声はすべて外しています</b>ので、音が出る心配なくご覧いただけます。<b>ランニングマシンと自走式ランニングマシンを、それぞれの動画に分けました</b>。ランニングマシンは<b>「歩く」と「走る」</b>の2つを選べます。ランニングマシンでは<b>傾斜を1〜3%つけると、速さはそのままでも坂道を登るような負荷</b>をかけられること、自走式では<b>負荷（重さ）を上げると山道のような手ごたえのある歩きに、軽くすると外を走っているような感覚に</b>なることを、使い方の手順に加えました。ステップマシンには全体と足もとの2つの動画が付いています。<br><br>前の版（2026-08-28b）：<b>マシンの使い方の動画が入りました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>別の向き</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。<b>トルソーローテーション</b>には、右ひねりと左ひねりを切り替えるための<b>「椅子の調整」</b>の動画も入っています。あわせて<b>チェストプレス・ベンチプレス・エアロバイク・クロストレーナー・ステップマシン</b>を機材ガイドに追加しました。<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開きます。<b>通信量にも配慮しています</b>：小さいタイルは静止画で表示し、動画は押したときにだけ読み込みます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。<br><br>前の版（2026-08-28a）：<b>マシンの使い方の動画が、3つの向きから見られるようになりました</b>。運動タブの「スマート機材ガイド」でマシンを選ぶと、<b>真横からの動画</b>が大きく出て、その下に<b>斜め前</b>と<b>後ろ</b>が小さく並びます。小さい方を押すと大きく切り替わり、見ていた場面はそのまま引き継がれるので、<b>同じ動きを別の角度から</b>見くらべられます。まだ撮影していない向きのボタンは出ませんので、あるぶんだけご覧いただけます。あわせて、<b>30秒サーキットの6つのステーション名を押すと</b>、そのマシンの使い方と動画がすぐ開くようにしました。<b>ランニングマシン・自走式ランニングマシン・スライサーを機材ガイドに追加</b>しています。ランニングマシンでは、シート位置や重量のかわりに<b>速さ・傾斜・時間の目安</b>が出ます（数字は出発点の目安です。正解は「となりの人と会話できるくらい」の速さで、きつければ下げて大丈夫です）。なお<b>動画は順次追加していきます</b>。まだ入っていないマシンは、これまでどおり文章の手順とAI推奨値でご利用ください。<br><br>前の版（2026-08-21b）：<b>「うんどう」の表記を「運動」に統一しました</b>。運動タブの名前やホームの週間まとめ、Cocoの案内文でひらがなと漢字が混ざっていた箇所を直しています。表示の見た目だけの変更で、記録や機能に影響はありません。<br><br>前の版（2026-08-21a）：<b>ご登録の画面で、入力もれのお知らせが出ない不具合を直しました</b>。これまで、必須項目が空のまま「次へ」を押すと<b>画面が何も反応しないように見えて</b>、お手続きを進められないことがありました。お知らせの表示がご登録の画面の裏に隠れていたためで、いまは<b>「必須項目をすべて入力してください」などのご案内がきちんと表示されます</b>（ご登録の全ステップと体験のご予約で確認済みです）。<br><br>前の版（2026-08-17a）：<b>さんぽの地図が見やすくなりました</b>。実機で「地図の色がアプリと合っていない・細かすぎる」との声を受けて、地図の色をアプリに合わせて調整し（山の茶色い等高線の線を消し、ため池や川を澄んだ水色に）、最初に出す縮尺もGoogleマップの近所表示と同じくらいに広げました。地図はこれまでどおり国土地理院のタイルを、<b>お使いのスマホの中だけで</b>色を変えて表示しています（外部の地図サービスは増やしていません）。地図を表示するあいだだけ、いま見ている範囲がおおよそ500m四方の粗さで地図の配信元（国土地理院）に伝わります（前の版より粗くしたので、伝わる細かさはむしろ下がっています）。<b>食事の履歴が、前の日の分も見られるようになりました</b>。これまでは品目の記録が翌日に消えて、当日の分しか見られませんでした。この版から、品目の記録が<b>お使いのスマホの中に約180日分</b>残ります（写真は履歴には保存されません。サーバーやジムの運営へ送信することもありません）。あわせて、記録データが消えにくくなるよう、ブラウザに保存の保護をお願いする設定を入れました。<b>iPhoneのSafariは、約7日間ひらかない状態が続くと保存データを自動で消すことがあります</b>。マイページの「記録データのバックアップ」でときどき書き出すか、共有メニューの<b>「ホーム画面に追加」</b>からのご利用がおすすめです。<br><br>前の版（2026-08-16a）：<b>さんぽで歩いた道順が、地図で見られるようになりました</b>。「さんぽを計測する」で<b>「地図をオンにする」</b>を押すと、計測中の画面に<b>いまいる場所と歩いた道</b>が地図で出て、終わると「さんぽの記録」に地図つきで残ります。<b>道順はお使いのスマホの中だけに保存され</b>、アプリからサーバーやジムの運営へ送信することはありません。記録データの書き出し（バックアップ）にも、外に出さないためあえて含めていません（そのぶん機種変更では引き継げません）。1件ずつでも、まとめてでも消すことができ、スイッチをオフに戻すと保存済みの道順もすべて消えます。<b>既定はオフ</b>で、オフのあいだは今までどおり距離の計算に使うだけで座標は一切残りません。スマホには画面ロックをかけてお使いください。あわせて、ホームに<b>「今週の運動」</b>の要約（今週の回数・時間と6週間の推移）が出るようになりました）</p>
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
            1つの<p>に可視6,337字が入っており、11px・375pxで概算350行超のテキストの壁になって
@@ -3893,7 +3892,6 @@ svg text{ font-size:12px; }
     <!-- スマート機材ガイド 詳細シート -->
     <div class="sheet" id="equipSheet">
       <div class="sheet-card">
-        <img class="eq-photo" id="eqPhoto" alt="" decoding="async">
         <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--text-lt);" id="eqBrand"></div>
         <h3 id="eqModel" style="margin-top:2px;"></h3>
         <div class="chip-row" id="eqTargets" style="margin-top:8px;"></div>
@@ -4352,7 +4350,11 @@ svg text{ font-size:12px; }
     <!-- 30秒サーキットのプレイヤー（30秒動く→30秒その場で足踏み） -->
     <div class="sheet" id="circuitSheet">
       <div class="sheet-card">
-        <h3 id="cirTitle">30秒サーキット</h3>
+        <div class="cir-head-row">
+          <h3 id="cirTitle">30秒サーキット</h3>
+          <!-- 一番下までスクロールしなくても閉じられるように（2026-08-29指示） -->
+          <div class="closeb" onclick="cirClose()" role="button" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        </div>
         <div class="sheet-desc" id="cirMeta"></div>
         <div class="cir-stage" id="cirStage">
           <img id="cirPhoto" alt="" width="320" height="172">
@@ -4372,7 +4374,7 @@ svg text{ font-size:12px; }
           <button type="button" class="primary" id="cirPlayBtn" onclick="cirPlayPause()">スタート</button>
           <button type="button" id="cirSkipBtn" onclick="cirSkip()">この種目をとばす</button>
         </div>
-        <label class="cir-voice"><input type="checkbox" id="cirVoiceChk" onchange="cirVoiceToggle()">次の種目を音声で読み上げる（ラスト3秒はピッ・ピッ・ポーンでお知らせ）</label>
+        <label class="cir-voice"><input type="checkbox" id="cirVoiceChk" onchange="cirVoiceToggle()">ラスト3秒をピッ・ピッ・ポーンでカウント（次の種目も音声で案内）</label>
         <div class="ex-note">重さは機材ガイドのAI推奨値より<b>軽めから</b>。力を入れるときは<b>息を止めずに吐きます</b>（息こらえは血圧が上がります）。マシンが使用中のときは「この種目をとばす」で先に進めます。<br><b>胸の痛み・強い息切れ・めまい・吐き気・関節の痛みが出たら、すぐ中止して休んでください。</b>持病のある方・服薬中の方・妊娠中の方は、はじめる前にかかりつけ医にご相談ください（本アプリは診断・治療を目的とするものではありません）。</div>
         <button class="exlog-add" onclick="cirFinish()">おわり！（ここまでを記録する）</button>
         <button class="sheet-cancel" onclick="cirClose()">とじる</button>
@@ -7080,7 +7082,6 @@ function openEquipDetail(key){
      数字を作れないものに無理やり数字を出さないための分岐（2026-08-28） */
   var noRec    = isPending || !!m.noSpeed;
   var rec = noRec ? null : (isCardio ? cardioRecommend(m) : equipRecommend(m));
-  document.getElementById('eqPhoto').src = m.img;
   document.getElementById('eqBrand').textContent = m.brand;
   document.getElementById('eqModel').textContent = m.model;
   document.getElementById('eqTargets').innerHTML = m.targets.map(function(t){ return '<span class="md-target-chip">'+t+'</span>'; }).join('');
@@ -7317,16 +7318,6 @@ function renderCircuitCard(){
   var laps = [1, 2, 3].map(function(n){
     return '<button type="button" class="' + (n === cirLaps ? 'on' : '') + '" onclick="cirSetLaps(' + n + ')">' + n + '周</button>';
   }).join('');
-  /* 各ステーションをタップすると、その機材の使い方と3アングル動画が開く（2026-08-28）。
-     行き先は machines のキー。有酸素は st.detail で指定する */
-  var order = CIRCUIT.stations.map(function(st, i){
-    var goKey = st.detail || (machines[st.key] ? st.key : null);
-    var label = (i + 1) + '. ' + escHtml(cirName(st));
-    if(!goKey) return '<i>' + label + '</i>';
-    /* 属性の中の引用符は &#39; で書く（JS側のエスケープを増やさないため） */
-    return '<i class="tap" role="button" tabindex="0" onclick="openEquipDetail(&#39;' + goKey + '&#39;)">' +
-             label + '</i>';
-  }).join('');
   wrap.innerHTML =
     '<div class="cir-card">' +
       '<div class="cir-head">' +
@@ -7339,8 +7330,10 @@ function renderCircuitCard(){
         '<div><b>' + est.kcal + '</b><span>kcalの目安</span></div>' +
       '</div>' +
       '<div class="cir-laps"><span class="cl-label">何周する？</span>' + laps + '</div>' +
-      '<div class="cir-order">' + order + '</div>' +
-      '<div class="cir-note">大きい筋肉から先に・体幹は最後、という一般に推奨される並べ方です。' +
+      /* ⚠️ 種目名は事前には出さない（2026-08-29指示）。実際の並びはジムの入口から北方面へ、
+         機材を1つずつ回っていく物理的な順路そのもの。種目名は始めてから画面に出る */
+      '<div class="cir-note">ジムの入口から北方面へ、機材を1つずつ順番にこなしていく並びになっています。' +
+        '大きい筋肉から先に・体幹は最後、という一般に推奨される並べ方です。' +
         'はじめる前に3〜5分の歩行などで体を温め、終わったらストレッチで整えてください。<br>' +
         'kcalはメッツ（サーキットトレーニング・中強度＝5.0）にもとづく<b>推計の目安</b>です' +
         '（じっとしていても使う安静時の分を差し引いた、運動でふえたぶんの目安。個人差があります）。</div>' +
@@ -13919,7 +13912,16 @@ function renderPlan(){
 }
 
 /* ============ シート共通 ============ */
-function showSheet(id){ document.getElementById(id).classList.add('active'); }
+/* ⚠️ シートはHTML上に常駐していて display だけを切り替える作りなので、
+   前に別の機材を下の方までスクロールして見たあと閉じると、次に開いたときも
+   スクロール位置が残ったまま＝「一番下から出てきたように見える」事故になる（2026-08-29指摘）。
+   開くたびに必ず先頭へ戻す */
+function showSheet(id){
+  var el = document.getElementById(id);
+  el.classList.add('active');
+  var card = el.querySelector('.sheet-card');
+  if(card) card.scrollTop = 0;
+}
 function hideSheet(id){
   document.getElementById(id).classList.remove('active');
   if(id === 'equipSheet' && typeof stopEquipVoice === 'function') stopEquipVoice();
