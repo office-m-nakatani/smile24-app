@@ -2556,6 +2556,9 @@ input{font-family:inherit;}
    ⚠️ タイルの位置は固定する。押すたびに並びが入れ替わると、いまどれを見ているのか
       分からなくなる（対象が60代以上のため、位置の安定を優先する） */
 .ev-angles{display:none;gap:8px;margin:8px 0 2px;}
+/* サーキットの「見る向きを変えられます」（2026-09-05）。タイルが切り替えられることに
+   気づかない人がいたので見出しを足した。文字は13px以上・地色の上で4.5:1以上を守る */
+.cir-anglab{font-size:13px;font-weight:700;color:var(--text-mid);margin:10px 0 2px;}
 .ev-a{flex:1;min-width:0;background:none;border:none;padding:0;display:flex;flex-direction:column;gap:4px;cursor:pointer;}
 .ev-a .eva-thumb{position:relative;border-radius:9px;overflow:hidden;background:#000;border:2px solid transparent;aspect-ratio:16/9;}
 .ev-a.on .eva-thumb{border-color:var(--brand-face);}
@@ -4836,7 +4839,7 @@ svg text{ font-size:13px; }
         <div class="list-item" role="button" tabindex="0" onclick="showSheet('versionSheet')">
           <svg class="li-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.6" x2="12" y2="7.61"/></svg>
           <div class="li-b"><div class="li-l">このアプリについて</div></div>
-          <span class="li-v" id="mypageVerVal">版 2026-09-04a</span>
+          <span class="li-v" id="mypageVerVal">版 2026-09-05a</span>
           <svg class="li-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </div>
         <div class="list-item" role="button" tabindex="0" onclick="logout()">
@@ -4850,7 +4853,7 @@ svg text{ font-size:13px; }
       <p class="scr-note" id="mypageNote"></p>
 
       <!-- 版表記は設定の「このアプリについて」1行に移した（§2.6）。要素は残す -->
-      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-04a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
+      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-05a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
 
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
@@ -5329,7 +5332,7 @@ svg text{ font-size:13px; }
         </div>
         <div class="sheet-body">
           <div class="ver-name" id="versionAppName">スマイル24 AIパートナー</div>
-          <div class="ver-num" id="versionNum">版 2026-09-04a</div>
+          <div class="ver-num" id="versionNum">版 2026-09-05a</div>
           <p class="ver-p">記録はこの端末のブラウザに保存されます。機種変更やブラウザのデータ削除に備えて、設定の「データ」から書き出しておくと安心です。</p>
           <!-- §11 の言い換え表「推計→目安」。同じ意味の語を重ねない（S6修正1） -->
           <p class="ver-p">カロリーや消費エネルギーは目安です。体調や食事のことは、気になるときに医師・管理栄養士へご相談ください。</p>
@@ -5998,7 +6001,11 @@ svg text{ font-size:13px; }
           <div class="cs-count" id="cirCount">30</div>
           <div class="cs-name" id="cirName"></div>
         </div>
-        <!-- ほかの向きの動画があるステーションでは、ここで切り替えられる（機材ガイドと同じ作り） -->
+        <!-- ほかの向きの動画があるステーションでは、ここで切り替えられる（機材ガイドと同じ作り）。
+             ⚠️ 2026-09-05：初心者は「真横しか無い」と受け取っていたので、見出しを付けて
+             切り替えられることを明示した（ユーザー指摘）。タイルは静止画＋preload=none なので
+             ここに置いても通信は増えない（動画本体は選んだ1本だけ読む） -->
+        <div class="cir-anglab" id="cirAngLab" style="display:none;">見る向きを変えられます</div>
         <div class="ev-angles" id="cirAngles"></div>
         <div class="cir-bar"><i id="cirBar" style="width:0%"></i></div>
         <div class="cir-dots" id="cirDots"></div>
@@ -6245,6 +6252,7 @@ svg text{ font-size:13px; }
              現在のUIラベルと区別する1行をここに置く（S8・検証役の指摘 minor への対応） -->
         <div class="sheet-desc">以下は過去の更新内容の記録です。当時の画面の呼び方をそのまま載せているため、いまの画面の表記と違うことがあります。</div>
         <div class="clg-body" id="changelogBody">
+          <div class="clg-item"><div class="clg-ver">版 2026-09-05a</div><p><b>30秒サーキットで、機材の動画がまた出るようになりました</b>。ホームや運動タブの「はじめる」から入ったときに動画が出ていない不具合を直しました。動くあいだは、その機材の使い方の動画がくり返し流れます。あわせて<b>見る向き（真横・斜め前・斜め後ろなど）を切り替えるボタン</b>を、はじめる前と足踏み中もずっと出るようにしました。また、<b>朝食・昼食・おやつ・夕食の名前を押すと、そのまま入力できる</b>ようにしました（朝食を抜いた日は「昼食」を押してすぐ書けます）。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-04a</div><p><b>「今日やること」を1枚にして、記録を1〜2タップに短くしました</b>。①ホームと運動タブの一番上に<b>きょうの1枚</b>を置き、入館を記録したあとは館内メニューに切り替わります。②食事は入力欄からそのまま検索して、候補をタップすれば保存できます。「昨日の朝食と同じ」は1タップです。記録の修正・取り消しも、当日と過去の日どちらもできるようになりました。③運動は下の固定バーから記録でき、「いつもの」があれば2タップで終わります。マシンに貼った札のQRを読むと、その機材の動画と使い方が開きます。④「からだ」のグラフは<b>マイページ →からだの記録</b>にまとめました。グラフの文字も大きくしています。⑤入会のお手続きを8画面から<b>6画面</b>にし、ご連絡先は任意にしました。⑥文字は最小13px、押すところは44px以上に揃えました。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-02a</div><p><b>マイページの整理と、記録の扱いを正直にする直しです</b>。①この更新履歴を、マイページの一番下に長く並べるのをやめて、「更新履歴を見る」から開くこの画面に移しました（マイページのスクロールが短くなります）。②会員登録の直後に、サンプルの歩数・水分・体重・レベルがご本人の記録のように出ていたのをやめ、登録した瞬間から<b>ご自身の記録だけ</b>を表示します。③ログアウトしたあとの体験モードで、会員の食事・体重・筋トレ・入館QRの記録に触れられる状態になっていたのを直しました（体験モードでの操作は端末に残さず、もう一度ログインするとご本人の記録がそのまま戻ります）。④運動を記録したあとにアプリを開き直すと、その日の運動ログが消えていたのを直しました。⑤からだの記録の「鍛えた部位」が、まだ記録していないのに参考値（脚2回など）を出していたのをやめ、登録会員には実際に記録した運動だけを反映します（30秒サーキット・おうちレッスンも数えます）。⑥緊急連絡先（SOS）に出る住所を、実際の店舗の住所に直しました。⑦体験モードの水分で「＋1杯」を押すとサンプルの1,250mlが250mlに減って見えていたのを直しました（サンプルの1,250mlからそのまま増減します）。あわせて、水分の＋−を押したときに「お水を250ml記録したよ」などのひとことを必ず出すようにしました。⑧マイページの「基礎代謝（BMR）」が、登録のときや目標コーチで計算した数字と食い違うことがあった（最初の値の1,320のまま残る）のを直し、いまアプリが使っている基礎代謝と常に同じ数字を出すようにしました。⑨画面のいちばん上に、どの画面からでも押せる<b>Coco・お知らせ・SOS</b>を置きました。下のバーの5つめは「からだ」から<b>マイページ</b>に変わり、からだのグラフはマイページの「からだの記録」から見られます。入館QRの画面には店名・住所と緊急の連絡先を足しました。Cocoは、痛みや体調のご相談には運動をすすめず、気になる部位を伝えると<b>その場からマシンやメニューを開けるボタン</b>を出すようにしました。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-08-31a</div><p><b>機材動画の向きの呼び方と、30秒サーキットの種目名を直しました</b>。①アブドミナルクランチに<b>斜め前</b>から撮った動画を追加しました（新しくいただいた動画で、機材前面のパネルも見えるはっきりした斜め前です）。②動画の向きの呼び方を、すべての機材で<b>「斜め前・真横・斜め後ろ」</b>の3つに統一しました（チェストプレスの「正面」→「斜め前」、レッグプレス・シーテッドロー・ラットプルダウン・トルソーローテーションの「後ろ」→「斜め後ろ」。中身の映像は変えていません。ベンチプレスだけは機材の裏側が無いため対象外で「頭の側」のままです）。③30秒サーキットの種目名を、<b>「レッグプレス」などの機材名から「太もも・ヒップ」など鍛えている部位の名前</b>に変えました（機材名は使い方動画の画面で引き続きご案内します）。</p></div>
@@ -9201,16 +9209,23 @@ function cirProbeVideos(){
 function cirRenderAngles(st, isWork){
   var row = document.getElementById('cirAngles');
   if(!row) return;
-  var info = isWork ? cirVideoSrcOf(st) : null;
+  var lab = document.getElementById('cirAngLab');
+  /* ⚠️ 2026-09-05：以前は isWork のときだけタイルを出していたので、
+     開いた直後（スタート前）と足踏み中の30秒は消えていた＝会員が
+     「真横しか無い」と受け取っていた（ユーザー指摘）。向きの選択は
+     どの場面でも有効なので、シートが開いているあいだは出しっぱなしにする。 */
+  var info = cirVideoSrcOf(st);
   var ok = info ? (cirVidOk[info.key] || []) : [];
   var found = ok.filter(Boolean).length;
   if(!info || found < 2){          // 切り替える先が無いときは出さない
     if(row.getAttribute('data-sig')){ row.removeAttribute('data-sig'); row.innerHTML = ''; }
     row.style.display = 'none';
+    if(lab) lab.style.display = 'none';
     return;
   }
   var sig = info.key + '|' + ok.join('') + '|' + info.idx;
   row.style.display = 'flex';
+  if(lab) lab.style.display = 'block';
   if(row.getAttribute('data-sig') === sig) return;
   row.setAttribute('data-sig', sig);
   row.innerHTML = info.list.map(function(a, i){
@@ -9231,7 +9246,10 @@ function cirSwitchAngle(i){
   cirPaint();
 }
 /* 動画の読み込みを止める（シートを閉じたとき・写真に戻すとき）。
-   pause だけでは通信が続くので src を外す */
+   pause だけでは通信が続くので src を外す。
+   ⚠️ 2026-09-05：向きのタイルはここで消さない。cirPaint は1秒ごとに走り、足踏みの30秒は
+   毎秒ここを通るので、ここで innerHTML を空にすると毎秒タイルを作り直して
+   静止画を取り直す（ちらつき＋通信）。タイルを畳むのはシートを閉じるときだけ＝cirClearAngles()。 */
 function cirStopVideo(){
   var v = document.getElementById('cirVideo');
   if(!v) return;
@@ -9241,8 +9259,13 @@ function cirStopVideo(){
   }
   var stage = document.getElementById('cirStage');
   if(stage) stage.classList.remove('has-video');
+}
+/* 向きのタイルを畳む（シートを開き直すとき・閉じたとき） */
+function cirClearAngles(){
   var row = document.getElementById('cirAngles');
   if(row){ row.style.display = 'none'; row.innerHTML = ''; row.removeAttribute('data-sig'); }
+  var lab = document.getElementById('cirAngLab');
+  if(lab) lab.style.display = 'none';
 }
 function cirKcalRaw(sec){ return (CIRCUIT.met - 1) * state.weight * (sec / 3600) * 1.05; }
 function cirEstimate(laps){
@@ -9323,6 +9346,7 @@ function cirOpen(){
   document.getElementById('cirMeta').textContent =
     cirLaps + '周・' + CIRCUIT.stations.length + 'ステーション／30秒動いて30秒足踏み（約' + cirEstimate(cirLaps).min + '分）';
   cirStopVideo();
+  cirClearAngles();
   cirProbeVideos();
   cirPaint();
   showSheet('circuitSheet');
@@ -10233,9 +10257,28 @@ function pickMealSlot(slot){
   if(SLOT_KEYS.indexOf(slot) < 0) return;
   mealPickedSlot = slot;
   pendingMealSlot = slot;
-  renderSlotKcals();
+  renderSlotKcals();          // 選択の反映・注記・プレースホルダ（「昼食を記録」）もここで更新される
   renderMealQuickChips();
   renderMealQuickFoot();
+  /* ⚠️ 2026-09-05（ユーザー指示）：区分名を押したら、そのまま打てるようにする。
+     既定の区分は時刻から決めているが、朝食を抜く人は「朝食」のまま昼に開くことになり、
+     区分を押す → 入力欄まで指を動かして押す、の2手が要っていた。
+     区分名＝「ここに記録する」の宣言なので、押した時点でキーボードまで開く。
+     pickMealSlot の呼び出し元は区分チップ4つの onclick だけ＝実際のタップのときにしか走らない
+     （初期化から呼ぶと、食事タブを開いただけでキーボードが出てしまう。増やすときは要注意）。 */
+  focusMealInput();
+}
+/* 入力欄を画面内に寄せてからフォーカスする。
+   ⚠️ focus() が先だとブラウザが独自にスクロールして固定バーの裏に入ることがあるので、
+   位置合わせは scrollIntoView に任せ、focus は preventScroll で位置を動かさない */
+function focusMealInput(){
+  var inp = document.getElementById('mealQuickInput');
+  if(!inp) return;
+  var bar = document.getElementById('mealInputBar');
+  try{ if(bar && bar.scrollIntoView) bar.scrollIntoView({ block:'center', behavior:'smooth' }); }catch(e){}
+  try{ inp.focus({ preventScroll:true }); }catch(e){ try{ inp.focus(); }catch(e2){} }
+  /* 打つ前でも「1タップで積める候補」を出しておく（空欄なら常時6チップのまま） */
+  if(typeof onMealQuickInput === 'function') onMealQuickInput();
 }
 function backToSlotPick(){ showMealSlotPick(); }
 
@@ -17090,7 +17133,7 @@ function hideSheet(id){
   if(id === 'equipSheet' && typeof stopEquipVoice === 'function') stopEquipVoice();
   /* 機材シートを閉じたら動画も止める（閉じても音だけ鳴り続けるのを防ぐ・2026-08-28） */
   if(id === 'equipSheet' && typeof eqStopVideo === 'function') eqStopVideo();
-  if(id === 'circuitSheet' && typeof cirStopVideo === 'function') cirStopVideo();
+  if(id === 'circuitSheet' && typeof cirStopVideo === 'function'){ cirStopVideo(); cirClearAngles(); }
 }
 
 /* ============ チャット ============ */
@@ -17944,7 +17987,8 @@ function chatAction(type, key){
     else if(type === 'course'){ goTab('training'); if(typeof openMenuDetail === 'function') openMenuDetail(key); }
     /* ジムのコース（COURSES のキー）。部位別メニュー（menuDetails）とは別物なので分けている */
     else if(type === 'gymcourse'){ goTab('training'); if(typeof openCourse === 'function') openCourse(key); }
-    else if(type === 'circuit'){ goTab('training'); showSheet('circuitSheet'); }
+    /* cirOpen() で開く（showSheet だけだと動画のHEAD確認が走らず動画も向きも出ない。2026-09-05） */
+    else if(type === 'circuit'){ goTab('training'); cirOpen(); }
     /* 店舗の機材だけで必ず組める行き先（S7 修正1）。部位別メニューが無い店舗の受け皿 */
     else if(type === 'todaymenu'){ goTab('training'); if(typeof openMenuPick === 'function') openMenuPick(); }
     else if(type === 'omakase15'){ goTab('training'); if(typeof openOmakase === 'function') openOmakase(true); }
@@ -22119,10 +22163,17 @@ function todayMenuTitle(m){
 }
 function startTodayMenu(){
   var m = pickTodayMenu();
-  if(m.kind === 'circuit'){ showSheet('circuitSheet'); return; }
+  /* ⚠️ 2026-09-05：ここで showSheet('circuitSheet') を直接呼んではいけない。
+     動画の有無をHEADで調べる cirProbeVideos() と、周回・カウントの初期化・cirMeta の
+     文言はすべて cirOpen() の中にある。S5 でホーム／運動タブの「はじめる」を新設したとき
+     showSheet だけを呼んだため、この主導線から入ると cirVidOk が空のままになり
+     「機材の動画が1本も出ない・向きの切り替えタイルも出ない」状態になっていた
+     （改修前は入口が cirOpen 経由の1本だけだったので起きなかった。ユーザー指摘で発覚）。
+     サーキットへ入る道はすべて cirOpen() を通す。 */
+  if(m.kind === 'circuit'){ cirOpen(); return; }
   if(m.kind === 'omakase15'){ openOmakase(true); return; }
   if(m.courseKey && COURSES[m.courseKey]){ openCourse(m.courseKey); return; }
-  showSheet('circuitSheet');
+  cirOpen();
 }
 
 /* ============ S5 運動タブ ============================================
