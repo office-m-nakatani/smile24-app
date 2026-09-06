@@ -2881,6 +2881,30 @@ input{font-family:inherit;}
 .cir-cue{margin-top:12px;padding:11px 13px;min-height:92px;border-radius:var(--radius-sm);background:var(--field);border:1px solid var(--line);font-size:13px;color:var(--text);line-height:1.65;}
 .cir-caution{display:block;margin-top:6px;padding-top:6px;border-top:1px dashed #D6E0EC;font-size:13px;color:var(--red-dk,#B03A2E);font-weight:700;}
 .cir-next{margin-top:8px;font-size:13px;color:var(--text-mid);font-weight:700;text-align:center;}
+/* ⚠️ 2026-09-06：サーキットは画面全体で出す（ユーザー指示）。運動しながら見るので、
+   後ろに別の画面が透けているより1画面に集中できるほうがよい。
+   .sheet は既定で下寄せ（align-items:flex-end）なので、そこも合わせて上書きする */
+.sheet.sheet-full{ align-items:stretch; }
+.sheet.sheet-full .sheet-card{
+  height:100%; max-height:100%; border-radius:0;
+  padding-top:calc(18px + env(safe-area-inset-top));
+  animation:none;                     /* 全画面では下からせり上がる動きは不要 */
+}
+/* サーキットの固定フッター。1段目＝スタート／一時停止（この画面でまず押すもの）、
+   2段目＝走り出してから使う2つ。すべて実寸44px以上 */
+.cir-foot{ gap:8px; }
+.cir-main{
+  width:100%; min-height:52px; border:none; border-radius:100px;
+  background:var(--gold-dk); color:#fff;
+  font-family:inherit; font-size:15px; font-weight:800; cursor:pointer;
+}
+.cir-subrow{ display:flex; gap:8px; }
+.cir-subrow > button{
+  flex:1; min-width:0; min-height:44px; margin-top:0;
+  border-radius:100px; border:1.5px solid var(--line); background:var(--white);
+  color:var(--text-mid); font-family:inherit; font-size:13px; font-weight:800; cursor:pointer;
+}
+.cir-subrow > .exlog-add{ border-style:dashed; border-color:var(--gold); color:var(--gold-dk); }
 .cir-ctrl{display:flex;gap:8px;margin-top:12px;}
 .cir-ctrl button{flex:1;min-height:46px;border-radius:100px;border:1.5px solid var(--line);background:var(--white);color:var(--text-mid);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
 .cir-ctrl button.primary{border:none;background:var(--gold-dk);color:#fff;}
@@ -3792,8 +3816,9 @@ svg text{ font-size:13px; }
            文字サイズ「特大」では #device.is-xl が効いて1列に落ちる（横あふれ防止）。
            行内に注記は書かない（「サンプル表示です」「推計」は画面末尾の1行に集約） -->
       <div class="rec-grid">
-        <!-- 水分：＋1杯／＋500 はその場で記録される（画面を切り替えない） -->
-        <div class="rec-tile rec-wide">
+        <!-- ⚠️ 2026-09-06（ユーザー指示）：水を飲んだかどうかの記録はやめた。
+             要素は消さずに隠す（#waterVal などを JS が触るため。renderWater は空振りするだけ） -->
+        <div class="rec-tile rec-wide" id="recTileWater" style="display:none;">
           <div class="rt-main">
             <span class="rr-l">
               <!-- ⚠️ 水は「水色」のままにする（2026-08-29指示）。ブランドのローズを
@@ -3848,7 +3873,7 @@ svg text{ font-size:13px; }
         <div class="wk-line" id="homeExSummary"></div>
       </div>
       <!-- 凡例は週のかたちの1行に吸収した（要素は温存して非表示） -->
-      <div class="week-dots-note" style="display:none;">なにか1つでも記録した日に色がつきます（食事・体重・水分・運動・来館）</div>
+      <div class="week-dots-note" style="display:none;">なにか1つでも記録した日に色がつきます（食事・体重・運動・来館）</div>
 
       <!-- ふりかえり（週次チェックインの呼び出し。月曜・日曜で、提案が作れるときだけ出す） -->
       <div class="checkin-callout" id="homeCheckinCallout" style="display:none;" onclick="openCheckin()" role="button" tabindex="0" aria-label="今週の目標見直しをひらく">
@@ -4839,7 +4864,7 @@ svg text{ font-size:13px; }
         <div class="list-item" role="button" tabindex="0" onclick="showSheet('versionSheet')">
           <svg class="li-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.6" x2="12" y2="7.61"/></svg>
           <div class="li-b"><div class="li-l">このアプリについて</div></div>
-          <span class="li-v" id="mypageVerVal">版 2026-09-05a</span>
+          <span class="li-v" id="mypageVerVal">版 2026-09-06a</span>
           <svg class="li-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </div>
         <div class="list-item" role="button" tabindex="0" onclick="logout()">
@@ -4853,7 +4878,7 @@ svg text{ font-size:13px; }
       <p class="scr-note" id="mypageNote"></p>
 
       <!-- 版表記は設定の「このアプリについて」1行に移した（§2.6）。要素は残す -->
-      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-05a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
+      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-06a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
 
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
@@ -5332,7 +5357,7 @@ svg text{ font-size:13px; }
         </div>
         <div class="sheet-body">
           <div class="ver-name" id="versionAppName">スマイル24 AIパートナー</div>
-          <div class="ver-num" id="versionNum">版 2026-09-05a</div>
+          <div class="ver-num" id="versionNum">版 2026-09-06a</div>
           <p class="ver-p">記録はこの端末のブラウザに保存されます。機種変更やブラウザのデータ削除に備えて、設定の「データ」から書き出しておくと安心です。</p>
           <!-- §11 の言い換え表「推計→目安」。同じ意味の語を重ねない（S6修正1） -->
           <p class="ver-p">カロリーや消費エネルギーは目安です。体調や食事のことは、気になるときに医師・管理栄養士へご相談ください。</p>
@@ -5985,7 +6010,7 @@ svg text{ font-size:13px; }
       </div>
     </div>
     <!-- 30秒サーキットのプレイヤー（30秒動く→30秒その場で足踏み） -->
-    <div class="sheet" id="circuitSheet">
+    <div class="sheet sheet-full" id="circuitSheet">
       <div class="sheet-card">
         <div class="cir-head-row">
           <h3 id="cirTitle">30秒サーキット</h3>
@@ -6011,17 +6036,19 @@ svg text{ font-size:13px; }
         <div class="cir-dots" id="cirDots"></div>
         <div class="cir-cue" id="cirCue"></div>
         <div class="cir-next" id="cirNext"></div>
-        <div class="cir-ctrl">
-          <button type="button" class="primary" id="cirPlayBtn" onclick="cirPlayPause()">スタート</button>
-          <button type="button" id="cirSkipBtn" onclick="cirSkip()">この種目をとばす</button>
-        </div>
         <label class="cir-voice"><input type="checkbox" id="cirVoiceChk" onchange="cirVoiceToggle()">ラスト3秒をピッ・ピッ・ポーンでカウント（次の種目も音声で案内）</label>
         <div class="ex-note">重さは機材ガイドのAI推奨値より<b>軽めから</b>。力を入れるときは<b>息を止めずに吐きます</b>（息こらえは血圧が上がります）。マシンが使用中のときは「この種目をとばす」で先に進めます。<br><b>胸の痛み・強い息切れ・めまい・吐き気・関節の痛みが出たら、すぐ中止して休んでください。</b>持病のある方・服薬中の方・妊娠中の方は、はじめる前にかかりつけ医にご相談ください（本アプリは病気の判断や治療を目的とするものではありません）。</div>
-        <!-- ⚠️ §10 の優先5シート。本文（動画＋手順＋注意）が816pxあるので、
-             ここを固定フッターにしないと開いた時点で主ボタンが画面外に出る -->
-        <div class="sheet-foot">
-          <button type="button" class="exlog-add" onclick="cirFinish()">おわり！（ここまでを記録する）</button>
-          <button type="button" class="btn-ghost" onclick="cirClose()">閉じる</button>
+        <!-- ⚠️ §10 の優先5シート。本文（動画＋手順＋注意）が816pxあるので固定フッターにする。
+             ⚠️ 2026-09-06（ユーザー指摘）：ここに「おわり！」と「閉じる」だけを置いていたため、
+             開いた時点で肝心の【スタート】が画面外にあった（本文の下＝スクロールしないと出てこない）。
+             この画面でまず押すのはスタートなので、主ボタンをフッターに移した。
+             「とばす」「おわり！」は走り出してから使うので2段目に置く。閉じるは見出しの×（44px）が担当。 -->
+        <div class="sheet-foot cir-foot">
+          <button type="button" class="cir-main" id="cirPlayBtn" onclick="cirPlayPause()">スタート</button>
+          <div class="cir-subrow">
+            <button type="button" id="cirSkipBtn" onclick="cirSkip()">この種目をとばす</button>
+            <button type="button" class="exlog-add" onclick="cirFinish()">おわり！（記録する）</button>
+          </div>
         </div>
       </div>
     </div>
@@ -6252,6 +6279,7 @@ svg text{ font-size:13px; }
              現在のUIラベルと区別する1行をここに置く（S8・検証役の指摘 minor への対応） -->
         <div class="sheet-desc">以下は過去の更新内容の記録です。当時の画面の呼び方をそのまま載せているため、いまの画面の表記と違うことがあります。</div>
         <div class="clg-body" id="changelogBody">
+          <div class="clg-item"><div class="clg-ver">版 2026-09-06a</div><p><b>30秒サーキットを画面いっぱいに表示し、「スタート」を最初から見えるところに置きました</b>。これまでは開いた時点でスタートが画面の下に隠れていて、スクロールしないと押せませんでした。いまは画面の一番下に大きく固定しています（走り出すと「一時停止」に変わります）。「この種目をとばす」「おわり！（記録する）」はその下に並べました。閉じるときは右上の×です。あわせて<b>水を飲んだかどうかの記録をやめました</b>（ホームの水分の行、からだの記録の水分グラフ、「記録する」の水を飲んだ、「まずはこれ」の水を1杯を、いずれも取りやめています）。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-05a</div><p><b>30秒サーキットで、機材の動画がまた出るようになりました</b>。ホームや運動タブの「はじめる」から入ったときに動画が出ていない不具合を直しました。動くあいだは、その機材の使い方の動画がくり返し流れます。あわせて<b>見る向き（真横・斜め前・斜め後ろなど）を切り替えるボタン</b>を、はじめる前と足踏み中もずっと出るようにしました。また、<b>朝食・昼食・おやつ・夕食の名前を押すと、そのまま入力できる</b>ようにしました（朝食を抜いた日は「昼食」を押してすぐ書けます）。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-04a</div><p><b>「今日やること」を1枚にして、記録を1〜2タップに短くしました</b>。①ホームと運動タブの一番上に<b>きょうの1枚</b>を置き、入館を記録したあとは館内メニューに切り替わります。②食事は入力欄からそのまま検索して、候補をタップすれば保存できます。「昨日の朝食と同じ」は1タップです。記録の修正・取り消しも、当日と過去の日どちらもできるようになりました。③運動は下の固定バーから記録でき、「いつもの」があれば2タップで終わります。マシンに貼った札のQRを読むと、その機材の動画と使い方が開きます。④「からだ」のグラフは<b>マイページ →からだの記録</b>にまとめました。グラフの文字も大きくしています。⑤入会のお手続きを8画面から<b>6画面</b>にし、ご連絡先は任意にしました。⑥文字は最小13px、押すところは44px以上に揃えました。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-02a</div><p><b>マイページの整理と、記録の扱いを正直にする直しです</b>。①この更新履歴を、マイページの一番下に長く並べるのをやめて、「更新履歴を見る」から開くこの画面に移しました（マイページのスクロールが短くなります）。②会員登録の直後に、サンプルの歩数・水分・体重・レベルがご本人の記録のように出ていたのをやめ、登録した瞬間から<b>ご自身の記録だけ</b>を表示します。③ログアウトしたあとの体験モードで、会員の食事・体重・筋トレ・入館QRの記録に触れられる状態になっていたのを直しました（体験モードでの操作は端末に残さず、もう一度ログインするとご本人の記録がそのまま戻ります）。④運動を記録したあとにアプリを開き直すと、その日の運動ログが消えていたのを直しました。⑤からだの記録の「鍛えた部位」が、まだ記録していないのに参考値（脚2回など）を出していたのをやめ、登録会員には実際に記録した運動だけを反映します（30秒サーキット・おうちレッスンも数えます）。⑥緊急連絡先（SOS）に出る住所を、実際の店舗の住所に直しました。⑦体験モードの水分で「＋1杯」を押すとサンプルの1,250mlが250mlに減って見えていたのを直しました（サンプルの1,250mlからそのまま増減します）。あわせて、水分の＋−を押したときに「お水を250ml記録したよ」などのひとことを必ず出すようにしました。⑧マイページの「基礎代謝（BMR）」が、登録のときや目標コーチで計算した数字と食い違うことがあった（最初の値の1,320のまま残る）のを直し、いまアプリが使っている基礎代謝と常に同じ数字を出すようにしました。⑨画面のいちばん上に、どの画面からでも押せる<b>Coco・お知らせ・SOS</b>を置きました。下のバーの5つめは「からだ」から<b>マイページ</b>に変わり、からだのグラフはマイページの「からだの記録」から見られます。入館QRの画面には店名・住所と緊急の連絡先を足しました。Cocoは、痛みや体調のご相談には運動をすすめず、気になる部位を伝えると<b>その場からマシンやメニューを開けるボタン</b>を出すようにしました。</p></div>
@@ -6425,7 +6453,7 @@ svg text{ font-size:13px; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8"/><path d="M9 2v2.4a2 2 0 0 1-.6 1.4L6 8.2a2 2 0 0 0-.6 1.4V20a2 2 0 0 0 2 2h9.2a2 2 0 0 0 2-2V9.6a2 2 0 0 0-.6-1.4l-2.4-2.4a2 2 0 0 1-.6-1.4V2"/><path d="M6 13h12"/></svg>
           <div><div class="ri-t">プロテインを飲んだ（＋1杯）</div><div class="ri-s">水割り1杯＝約115kcal・たんぱく質21g</div></div>
         </button>
-        <button class="rec-item" onclick="hideSheet('recordSheet');addWater(250)">
+        <button class="rec-item" id="recItemWater" style="display:none;" onclick="hideSheet('recordSheet');addWater(250)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
           <div><div class="ri-t">水を飲んだ（＋250ml）</div><div class="ri-s">コップ1杯ぶんをすぐ記録</div></div>
         </button>
@@ -6445,7 +6473,7 @@ svg text{ font-size:13px; }
       <div class="sheet-desc">よく使うものだけ残せます。非表示にしても記録データは消えず、いつでも戻せます</div>
       <!-- 「今日の食事」の行は削除（2026-08-14）。カード自体をホームから外したため（食事タブと重複） -->
       <div class="hedit-row sw-row" style="border-bottom:none;" onclick="rowToggle(event, toggleHomePref, 'body')">
-        <div><div class="ht">きょうの記録</div><div class="hs">歩数・水分・体重の3行</div></div>
+        <div><div class="ht">きょうの記録</div><div class="hs">体重・歩数の2つ</div></div>
         <div class="hedit-sw on" id="hsw-body" role="switch" aria-checked="true" tabindex="0" onclick="toggleHomePref('body')"></div>
       </div>
       <!-- 「今日のミッション」の行は削除（2026-08-07）。カード自体をホームから外したため -->
@@ -21360,7 +21388,8 @@ function renderTrend(){
       '<div class="trend-sec" id="trendsec-weight">' + trendWeight() + '</div>' +
       '<div class="trend-sec" id="trendsec-bmi">' + trendBMI() + '</div>' +
       '<div class="trend-sec" id="trendsec-bodyfat"><div id="slot-bodyfat"></div></div>' +
-      '<div class="trend-sec" id="trendsec-water">' + trendWater() + '</div>' +
+      /* 2026-09-06：水分の記録をやめたので出さない（枠＝id は残す） */
+      '<div class="trend-sec" id="trendsec-water" style="display:none;"></div>' +
       '<div class="trend-sec" id="trendsec-posture">' + trendPostureLink() + '</div>';
   } else if(trendTab === 'ex'){
     var hasStr = (typeof strengthLog !== 'undefined' && strengthLog && strengthLog.length > 0);
@@ -22732,10 +22761,8 @@ var TODAY_ONE = [
   { kind:'weight',  w:20, cond:function(c){ return !c.weightToday && (c.dow === 1 || c.dow === 4); },
     text:function(){ return '今日の体重を記録しませんか'; },
     goals:['diet'],
-    cta:'記録する', run:function(){ openWeightSheet(); } },
-  { kind:'water',   w:10, cond:function(c){ return c.water < 500 && c.hour >= 13; },
-    text:function(){ return 'お水を1杯、記録しておきませんか'; },
-    cta:'記録する', run:function(){ addWater(250); } }
+    cta:'記録する', run:function(){ openWeightSheet(); } }
+  /* 2026-09-06：水を飲んだかどうかの記録をやめたので、水の候補は出さない（ユーザー指示） */
 ];
 /* #firstStepsCard が出ている間は、3チェックと重なる候補を外す（同じことを2回言わない） */
 function firstStepsVisible(){
@@ -22873,7 +22900,7 @@ function renderFirstSteps(){
   var c = todayCtx();
   /* label＝チップの表示（横1列に3つ並ぶので短く）／aria＝読み上げ・支援技術向けの全文 */
   var items = [
-    { k:'water',  label:'水を1杯',   aria:'水を1杯 記録する',     done: c.water > 0 || !!s.water,  run:function(){ addWater(250); } },
+    /* 2026-09-06：「水を1杯」は削除（ユーザー指示）。残り2つ＝体重・メニュー */
     { k:'weight', label:'体重',      aria:'今日の体重を記録する', done: c.weightToday || !!s.weight, run:function(){ openWeightSheet(); } },
     { k:'menu',   label:'メニュー',  aria:'今日のメニューを見る', done: !!s.menu,                  run:function(){ markFirstStep('menu'); goTab('training'); } }
   ];
@@ -22890,7 +22917,7 @@ function renderFirstSteps(){
   var ck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
   /* 説明文は置かない（3行の44pxを並べると、ここが2行あるだけでホームが1画面ぶん伸びる）。
      チップは横1列。タップ対象は44pxのまま、カードは96px前後に収まる（S3修正1） */
-  el.innerHTML = '<div class="fs-t">まずはこれ<span class="fs-n">' + (3 - left) + ' / 3</span></div>' +
+  el.innerHTML = '<div class="fs-t">まずはこれ<span class="fs-n">' + (items.length - left) + ' / ' + items.length + '</span></div>' +
     '<div class="fs-list">' + items.map(function(it, i){
       return '<button type="button" class="fs-item' + (it.done ? ' done' : '') + '" data-i="' + i + '"' +
         ' aria-label="' + escHtml(it.aria) + (it.done ? '（できました）' : '') + '">' +
@@ -22921,7 +22948,7 @@ function openHomeHelp(){
         '<div class="list-item" style="cursor:default;"><div><b>消費カロリー</b>' +
           '<div class="tp-s">体重・運動の時間・一般的な強度の表から計算した目安です。実測ではありません</div></div></div>' +
         '<div class="list-item" style="cursor:default;"><div><b>週のかたち</b>' +
-          '<div class="tp-s">食事・体重・水分・運動・来館のどれか1つでも記録した日に色がつきます</div></div></div>' +
+          '<div class="tp-s">食事・体重・運動・来館のどれか1つでも記録した日に色がつきます</div></div></div>' +
       '</div>' +
       '<p class="scr-note" style="margin-left:0;margin-right:0;">' + escHtml(DISCLAIMER_TEXT) + '</p>';
   }
@@ -23716,7 +23743,7 @@ function renderGreeting(){
   var nowP = Math.round(state.proteinIntake);
   var msg;
   if(!hasAny){
-    msg = 'まず水を1杯 記録しよう';
+    msg = 'まず体重を記録しよう';        /* 2026-09-06：水の記録をやめたので体重に */
   }else{
     var s = computeVisitStreak();
     if(s.streak >= 2) msg = s.streak + '日つづけて来られてるね';
