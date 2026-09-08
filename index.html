@@ -4864,7 +4864,7 @@ svg text{ font-size:13px; }
         <div class="list-item" role="button" tabindex="0" onclick="showSheet('versionSheet')">
           <svg class="li-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.6" x2="12" y2="7.61"/></svg>
           <div class="li-b"><div class="li-l">このアプリについて</div></div>
-          <span class="li-v" id="mypageVerVal">版 2026-09-06a</span>
+          <span class="li-v" id="mypageVerVal">版 2026-09-08a</span>
           <svg class="li-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </div>
         <div class="list-item" role="button" tabindex="0" onclick="logout()">
@@ -4878,7 +4878,7 @@ svg text{ font-size:13px; }
       <p class="scr-note" id="mypageNote"></p>
 
       <!-- 版表記は設定の「このアプリについて」1行に移した（§2.6）。要素は残す -->
-      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-06a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
+      <p class="app-ver" style="display:none;">スマイル24 AIパートナー <b>版 2026-09-08a</b><br><button type="button" class="app-ver-link" onclick="showSheet('changelogSheet')">更新履歴を見る ›</button></p>
 
 
       <!-- 版履歴（画面からは外したが情報は残す・2026-08-14b）。
@@ -5357,7 +5357,7 @@ svg text{ font-size:13px; }
         </div>
         <div class="sheet-body">
           <div class="ver-name" id="versionAppName">スマイル24 AIパートナー</div>
-          <div class="ver-num" id="versionNum">版 2026-09-06a</div>
+          <div class="ver-num" id="versionNum">版 2026-09-08a</div>
           <p class="ver-p">記録はこの端末のブラウザに保存されます。機種変更やブラウザのデータ削除に備えて、設定の「データ」から書き出しておくと安心です。</p>
           <!-- §11 の言い換え表「推計→目安」。同じ意味の語を重ねない（S6修正1） -->
           <p class="ver-p">カロリーや消費エネルギーは目安です。体調や食事のことは、気になるときに医師・管理栄養士へご相談ください。</p>
@@ -6279,6 +6279,7 @@ svg text{ font-size:13px; }
              現在のUIラベルと区別する1行をここに置く（S8・検証役の指摘 minor への対応） -->
         <div class="sheet-desc">以下は過去の更新内容の記録です。当時の画面の呼び方をそのまま載せているため、いまの画面の表記と違うことがあります。</div>
         <div class="clg-body" id="changelogBody">
+          <div class="clg-item"><div class="clg-ver">版 2026-09-08a</div><p><b>ぶら下がりバーを追加しました</b>（マシン12台→13台）。使い方の動画と手順、部位（背中・二の腕・お腹）が見られます。自分の体重で行う種目なので、重さの目安は出していません。握力に不安があるときは足を床につけたままで行ってください。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-06a</div><p><b>30秒サーキットを画面いっぱいに表示し、「スタート」を最初から見えるところに置きました</b>。これまでは開いた時点でスタートが画面の下に隠れていて、スクロールしないと押せませんでした。いまは画面の一番下に大きく固定しています（走り出すと「一時停止」に変わります）。「この種目をとばす」「おわり！（記録する）」はその下に並べました。閉じるときは右上の×です。あわせて<b>水を飲んだかどうかの記録をやめました</b>（ホームの水分の行、からだの記録の水分グラフ、「記録する」の水を飲んだ、「まずはこれ」の水を1杯を、いずれも取りやめています）。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-05a</div><p><b>30秒サーキットで、機材の動画がまた出るようになりました</b>。ホームや運動タブの「はじめる」から入ったときに動画が出ていない不具合を直しました。動くあいだは、その機材の使い方の動画がくり返し流れます。あわせて<b>見る向き（真横・斜め前・斜め後ろなど）を切り替えるボタン</b>を、はじめる前と足踏み中もずっと出るようにしました。また、<b>朝食・昼食・おやつ・夕食の名前を押すと、そのまま入力できる</b>ようにしました（朝食を抜いた日は「昼食」を押してすぐ書けます）。</p></div>
           <div class="clg-item"><div class="clg-ver">版 2026-09-04a</div><p><b>「今日やること」を1枚にして、記録を1〜2タップに短くしました</b>。①ホームと運動タブの一番上に<b>きょうの1枚</b>を置き、入館を記録したあとは館内メニューに切り替わります。②食事は入力欄からそのまま検索して、候補をタップすれば保存できます。「昨日の朝食と同じ」は1タップです。記録の修正・取り消しも、当日と過去の日どちらもできるようになりました。③運動は下の固定バーから記録でき、「いつもの」があれば2タップで終わります。マシンに貼った札のQRを読むと、その機材の動画と使い方が開きます。④「からだ」のグラフは<b>マイページ →からだの記録</b>にまとめました。グラフの文字も大きくしています。⑤入会のお手続きを8画面から<b>6画面</b>にし、ご連絡先は任意にしました。⑥文字は最小13px、押すところは44px以上に揃えました。</p></div>
@@ -8526,7 +8527,11 @@ var EQ_ANGLE_SETS = {
   'tm-self':   [{ k:'side', label:'真横' }],
   'st-step':   [{ k:'wide', label:'全体' },   { k:'side', label:'足もと' }],
   'cy-bike':   [{ k:'side', label:'真横' }],
-  'xt-cross':  [{ k:'side', label:'真横' }]
+  'xt-cross':  [{ k:'side', label:'真横' }],
+  /* ⚠️ ぶら下がりバーは真後ろから撮った1本だけ（2026-09-08 ユーザー支給）。
+     bp-bench の「頭の側」と同じで、斜め前・真横・斜め後ろの3分類に当てはまらないので
+     実態どおり「後ろ」と呼ぶ */
+  'pt-chin':   [{ k:'back', label:'後ろ' }]
 };
 function eqAnglesFor(key){
   var m = machines[key];
@@ -8783,7 +8788,14 @@ var machines = {
   'st-step': { brand:'', model:'ステップマシン', img:'images/gym-03-sm.jpg', noPhoto:true,
     kind:'cardio', noSpeed:true, category:'cardio', targets:['下半身','心肺'], videoSec:30,
     steps:['手すりを持ってから、片足ずつステップに乗る','背すじを伸ばし、手すりに体重を預けすぎないようにする','ゆっくり一定のリズムで昇る'],
-    caution:'手すりから手を離すとバランスを崩しやすいので、慣れるまでは軽く持ってください' }
+    caution:'手すりから手を離すとバランスを崩しやすいので、慣れるまでは軽く持ってください' },
+  /* ── 自重（ウエイトを積まない種目。重量の目安は出さず、手順と回数で案内する）──
+     ⚠️ kind:'bodyweight' は equipRecommend を通さない（m.weight を持たないため）。
+        noRec の分岐に入れてあるので、推奨値の枠と「前回の重量」は出ない */
+  'pt-chin': { brand:'', model:'ぶら下がりバー', img:'images/machine-chin-sm.jpg',
+    kind:'bodyweight', category:'upper', targets:['背中','二の腕','お腹'], videoSec:7,
+    steps:['バーの下に立ち、肩幅より少し広めに順手で握る','足を床から離し、肩をすくめずに肩甲骨を下げる','ゆっくりぶら下がる。慣れてきたら、ひじを曲げて体を引き上げる'],
+    caution:'手が滑るとそのまま落ちます。握力に不安があるときは足を床につけたままで行い、無理に体を引き上げないでください' }
 };
 /* 有酸素マシンの目安（2026-08-28）。筋トレの重量計算とは別物なので関数を分ける。
    ⚠️ 速さを断定しない：正解は数字ではなく「会話できるペース」。ここで出すのは出発点。
@@ -9009,7 +9021,8 @@ function openEquipDetail(key){
   var isFree   = (m.kind === 'free');       // フリーウエイト（シート位置の概念が無い）
   /* バイク・クロストレーナー等は「km/h」が当てはまらないので推奨値の枠を出さない。
      数字を作れないものに無理やり数字を出さないための分岐（2026-08-28） */
-  var noRec    = isPending || !!m.noSpeed;
+  /* 自重（ぶら下がりバー等）は積む重さが無いので、推奨値の枠を出さない（2026-09-08） */
+  var noRec    = isPending || m.kind === 'bodyweight' || !!m.noSpeed;
   var rec = noRec ? null : (isCardio ? cardioRecommend(m) : equipRecommend(m));
   document.getElementById('eqBrand').textContent = m.brand;
   document.getElementById('eqModel').textContent = m.model;
@@ -18947,7 +18960,7 @@ var STORE = {
   /* この店舗に置いてある機材（machines のキー・S7b）。機材ガイド・サーキット・コース・
      きょうのメニュー・種目チップ・マシン札の並びは、すべてこの配列で絞られる。
      写真・動画・使い方は本部の資産（machines 側）なので、店舗マスタはキーだけを持つ */
-  machines: ['lf-leg','tg-lat','lf-row','mx-crunch','mx-torso','ch-press','bp-bench','tm-tread','tm-self','cy-bike','xt-cross','st-step'],
+  machines: ['lf-leg','tg-lat','lf-row','mx-crunch','mx-torso','ch-press','bp-bench','pt-chin','tm-tread','tm-self','cy-bike','xt-cross','st-step'],
   /* 店舗ごとに違う運用ルール（FAQ・規約抜粋・Cocoの返答が同じ数値を見る・S7b）。
      ここを直せば3か所が同時に変わる＝画面ごとに数字が食い違わない */
   rules: { lostFound:'1ヶ月', minorAge:'16〜18歳未満', minorHours:'朝5:00〜夜21:00', ordinance:'香川県の条例' },
